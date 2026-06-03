@@ -9,6 +9,7 @@ namespace TCM;
 
 use TCM\Contracts\Registerable;
 use TCM\Frontend\Assets;
+use TCM\Frontend\Shortcodes;
 use TCM\PostTypes\CampaignPostType;
 use TCM\PostTypes\PrayerPostType;
 use TCM\Rest\RestController;
@@ -89,6 +90,7 @@ final class Plugin {
                 new CampaignPostType(),
                 new PrayerPostType(),
                 new Assets(),
+                new Shortcodes(),
                 new RestController(),
             );
         }

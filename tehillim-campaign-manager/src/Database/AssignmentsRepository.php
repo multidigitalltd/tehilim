@@ -227,6 +227,44 @@ final class AssignmentsRepository extends Repository {
     }
 
     /**
+     * All rows in a round, ordered by chapter number.
+     *
+     * @param int $campaign_id Campaign.
+     * @param int $round       Round.
+     * @return array<int,object>
+     */
+    public function round_rows($campaign_id, $round) {
+        $sql = $this->db->prepare(
+            "SELECT * FROM {$this->table}
+             WHERE campaign_id=%d AND round_number=%d
+             ORDER BY chapter_number ASC",
+            $campaign_id,
+            $round
+        );
+        return $this->db->get_results($sql);
+    }
+
+    /**
+     * All chapters belonging to one claim (same round + token), ordered.
+     *
+     * @param int    $campaign_id Campaign.
+     * @param int    $round       Round.
+     * @param string $token       Claim token.
+     * @return array<int,object>
+     */
+    public function claim_siblings($campaign_id, $round, $token) {
+        $sql = $this->db->prepare(
+            "SELECT * FROM {$this->table}
+             WHERE campaign_id=%d AND round_number=%d AND token=%s
+             ORDER BY chapter_number ASC",
+            $campaign_id,
+            $round,
+            $token
+        );
+        return $this->db->get_results($sql);
+    }
+
+    /**
      * The next still-taken chapter in the same claim (same round + token).
      *
      * @param int    $campaign_id Campaign.

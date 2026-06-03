@@ -1,11 +1,10 @@
 /**
  * Tehillim Campaign Manager — front-end script (v3.0).
  *
- * Progressive enhancement only: copy-to-clipboard with an accessible
- * announcement, and reader actions (done / take-more / release) via the REST
- * API so marking a chapter never requires a full page reload. All endpoints
- * are token-authorised server-side; this script only sends the token it was
- * given in the page.
+ * Progressive enhancement: accessible copy-to-clipboard, join submission and
+ * reader actions (done / take-more / release) via the REST API, so nothing
+ * requires a full page reload mid-flow. Endpoints are authorised server-side;
+ * this script only forwards the token it was handed in the page.
  */
 (function () {
 	'use strict';
@@ -18,17 +17,39 @@
 			region = document.createElement('div');
 			region.id = 'tcm-live';
 			region.setAttribute('aria-live', 'polite');
-			region.style.position = 'absolute';
-			region.style.width = '1px';
-			region.style.height = '1px';
-			region.style.overflow = 'hidden';
-			region.style.clip = 'rect(1px, 1px, 1px, 1px)';
+			region.className = 'screen-reader-text';
 			document.body.appendChild(region);
 		}
 		region.textContent = message;
 	}
 
-	// Copy-to-clipboard buttons.
+	function readUrl(permalink, id, token) {
+		var sep = permalink.indexOf('?') > -1 ? '&' : '?';
+		return permalink + sep + 'tcm_read=' + encodeURIComponent(id) + '&token=' + encodeURIComponent(token) + '#tcm-read';
+	}
+
+	function withMsg(permalink, msg) {
+		var sep = permalink.indexOf('?') > -1 ? '&' : '?';
+		return permalink + sep + 'tcm_msg=' + encodeURIComponent(msg) + '#tcm';
+	}
+
+	function post(path, body) {
+		return fetch(data.restUrl + path, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': data.nonce || '' },
+			body: JSON.stringify(body || {})
+		}).then(function (res) {
+			return res.json().then(function (json) {
+				return { ok: res.ok, json: json };
+			});
+		});
+	}
+
+	function errorText() {
+		return (data.i18n && data.i18n.error) || 'Error';
+	}
+
+	// Copy-to-clipboard.
 	document.addEventListener('click', function (e) {
 		var btn = e.target.closest('[data-tcm-copy]');
 		if (!btn) {
@@ -48,22 +69,61 @@
 		}
 	});
 
-	// Reader actions via REST.
-	function post(path, body) {
-		return fetch(data.restUrl + path, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-WP-Nonce': data.nonce || ''
-			},
-			body: JSON.stringify(body || {})
-		}).then(function (res) {
-			return res.json().then(function (json) {
-				return { ok: res.ok, json: json };
-			});
-		});
-	}
+	// Join form submission.
+	document.addEventListener('submit', function (e) {
+		var form = e.target.closest('form[data-tcm-join]');
+		if (!form) {
+			return;
+		}
+		e.preventDefault();
 
+		var id = form.getAttribute('data-tcm-id');
+		var permalink = form.getAttribute('data-tcm-permalink');
+		var choice = (form.querySelector('[name="choice"]') || {}).value || '0';
+		var body = {
+			name: (form.querySelector('[name="name"]') || {}).value || '',
+			email: (form.querySelector('[name="email"]') || {}).value || '',
+			phone: (form.querySelector('[name="phone"]') || {}).value || '',
+			turnstile: (form.querySelector('[name="cf-turnstile-response"]') || {}).value || ''
+		};
+
+		if (choice.indexOf('multi:') === 0) {
+			body.mode = 'multi';
+			body.count = parseInt(choice.slice(6), 10) || 0;
+		} else if (choice.indexOf('book:') === 0) {
+			body.mode = 'book';
+		} else {
+			body.mode = 'single';
+			body.chapter = parseInt(choice, 10) || 0;
+		}
+
+		var submit = form.querySelector('[type="submit"]');
+		var errBox = form.querySelector('.tcm-form-error');
+		if (submit) {
+			submit.setAttribute('disabled', 'disabled');
+		}
+
+		post('/campaigns/' + encodeURIComponent(id) + '/join', body)
+			.then(function (result) {
+				if (!result.ok || !result.json || !result.json.assignment_id) {
+					var msg = (result.json && result.json.message) || errorText();
+					throw new Error(msg);
+				}
+				window.location.href = readUrl(permalink, result.json.assignment_id, result.json.token);
+			})
+			.catch(function (err) {
+				if (submit) {
+					submit.removeAttribute('disabled');
+				}
+				if (errBox) {
+					errBox.textContent = err.message || errorText();
+					errBox.hidden = false;
+				}
+				announce(err.message || errorText());
+			});
+	});
+
+	// Reader actions.
 	document.addEventListener('click', function (e) {
 		var btn = e.target.closest('[data-tcm-action]');
 		if (!btn) {
@@ -73,21 +133,30 @@
 		var action = btn.getAttribute('data-tcm-action');
 		var id = btn.getAttribute('data-tcm-id');
 		var token = btn.getAttribute('data-tcm-token');
+		var permalink = btn.getAttribute('data-tcm-permalink');
 		btn.setAttribute('disabled', 'disabled');
 
 		post('/assignments/' + encodeURIComponent(id) + '/' + action, { token: token })
 			.then(function (result) {
-				if (!result.ok || !result.json || result.json.ok === false) {
-					throw new Error('action_failed');
+				var json = result.json || {};
+				if (!result.ok || json.ok === false) {
+					throw new Error(errorText());
 				}
-				// Let the page decide how to react (navigate / re-render).
-				document.dispatchEvent(
-					new CustomEvent('tcm:action', { detail: { action: action, result: result.json } })
-				);
+				if (action === 'done') {
+					window.location.href = json.next
+						? readUrl(permalink, json.next.assignment_id, json.next.token)
+						: withMsg(permalink, 'done');
+				} else if (action === 'take-more') {
+					window.location.href = json.assignment_id
+						? readUrl(permalink, json.assignment_id, json.token)
+						: withMsg(permalink, 'full');
+				} else {
+					window.location.href = withMsg(permalink, 'released');
+				}
 			})
 			.catch(function () {
 				btn.removeAttribute('disabled');
-				announce((data.i18n && data.i18n.error) || 'Error');
+				announce(errorText());
 			});
 	});
 })();

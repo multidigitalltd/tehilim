@@ -41,3 +41,6 @@ jobs:
       - name: PHPStan (static analysis)
         run: composer analyze
         continue-on-error: true
+
+      - name: Unit tests
+        run: composer test

@@ -216,6 +216,53 @@ final class AssignmentsRepository extends Repository {
     }
 
     /**
+     * All rows for an email (privacy export).
+     *
+     * @param string $email Email.
+     * @return array<int,object>
+     */
+    public function all_by_email($email) {
+        $sql = $this->db->prepare("SELECT * FROM {$this->table} WHERE participant_email=%s", $email);
+        return $this->db->get_results($sql);
+    }
+
+    /**
+     * Strip personal data from every row of an email (privacy erasure), keeping
+     * the chapter/merit record intact but anonymous.
+     *
+     * @param string $email Email.
+     * @return int Rows affected.
+     */
+    public function anonymize_by_email($email) {
+        return (int) $this->db->query(
+            $this->db->prepare(
+                "UPDATE {$this->table}
+                 SET participant_name=NULL, participant_email=NULL, participant_phone=NULL, updated_at=%s
+                 WHERE participant_email=%s",
+                current_time('mysql'),
+                $email
+            )
+        );
+    }
+
+    /**
+     * All participant rows for a campaign (CSV export).
+     *
+     * @param int $campaign_id Campaign.
+     * @return array<int,object>
+     */
+    public function participants_for_campaign($campaign_id) {
+        $sql = $this->db->prepare(
+            "SELECT participant_name, participant_email, participant_phone, chapter_number, round_number, status, taken_at, completed_at
+             FROM {$this->table}
+             WHERE campaign_id=%d AND status IN ('taken','done')
+             ORDER BY round_number ASC, chapter_number ASC",
+            $campaign_id
+        );
+        return $this->db->get_results($sql);
+    }
+
+    /**
      * Recent activity for a participant email.
      *
      * @param string $email Email.

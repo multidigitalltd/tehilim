@@ -121,6 +121,27 @@ final class SubscribersRepository extends Repository {
     }
 
     /**
+     * All subscribers for an email (privacy export).
+     *
+     * @param string $email Email.
+     * @return array<int,object>
+     */
+    public function all_by_email($email) {
+        $sql = $this->db->prepare("SELECT * FROM {$this->table} WHERE email=%s", $email);
+        return $this->db->get_results($sql);
+    }
+
+    /**
+     * Delete every subscriber row for an email (privacy erasure).
+     *
+     * @param string $email Email.
+     * @return int Rows deleted.
+     */
+    public function delete_by_email($email) {
+        return (int) $this->db->delete($this->table, array('email' => $email), array('%s'));
+    }
+
+    /**
      * Mark a subscriber as sent now.
      *
      * @param int $id Subscriber id.

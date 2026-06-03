@@ -84,6 +84,7 @@ final class Dashboard implements Registerable {
                         <th><?php esc_html_e('Completed', 'tehillim-campaign-manager'); ?></th>
                         <th><?php esc_html_e('Current book', 'tehillim-campaign-manager'); ?></th>
                         <th><?php esc_html_e('Progress', 'tehillim-campaign-manager'); ?></th>
+                        <th><?php esc_html_e('Export', 'tehillim-campaign-manager'); ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -100,6 +101,9 @@ final class Dashboard implements Registerable {
                             <td><?php echo esc_html($s['completed_books']); ?></td>
                             <td><?php echo esc_html($s['round']); ?></td>
                             <td><?php echo esc_html($s['percent']); ?>%</td>
+                            <td>
+                                <a class="button" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=' . Exporter::ACTION . '&campaign_id=' . $campaign->ID), 'tcm_export')); ?>"><?php esc_html_e('CSV', 'tehillim-campaign-manager'); ?></a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

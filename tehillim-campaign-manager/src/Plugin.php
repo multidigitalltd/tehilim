@@ -23,6 +23,7 @@ use TCM\Frontend\Widgets;
 use TCM\PostTypes\AdPostType;
 use TCM\PostTypes\CampaignPostType;
 use TCM\PostTypes\PrayerPostType;
+use TCM\Privacy\PrivacyModule;
 use TCM\Rest\RestController;
 use TCM\Services\CronService;
 use TCM\Services\MailService;
@@ -116,6 +117,7 @@ final class Plugin {
                 new MailService(),
                 new WebhookService(),
                 new CronService(),
+                new PrivacyModule(),
             );
 
             if (is_admin()) {
@@ -126,6 +128,7 @@ final class Plugin {
                         new SettingsPage(),
                         new ChaptersPage(),
                         new CampaignMetabox(),
+                        new \TCM\Admin\Exporter(),
                     )
                 );
             }

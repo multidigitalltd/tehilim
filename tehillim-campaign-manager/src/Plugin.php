@@ -17,6 +17,7 @@ use TCM\Frontend\Shortcodes;
 use TCM\PostTypes\CampaignPostType;
 use TCM\PostTypes\PrayerPostType;
 use TCM\Rest\RestController;
+use TCM\Services\CronService;
 use TCM\Services\MailService;
 use TCM\Services\WebhookService;
 
@@ -100,6 +101,7 @@ final class Plugin {
                 new RestController(),
                 new MailService(),
                 new WebhookService(),
+                new CronService(),
             );
 
             if (is_admin()) {

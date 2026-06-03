@@ -359,6 +359,57 @@ final class AssignmentsRepository extends Repository {
     }
 
     /**
+     * Still-taken rows that carry a token (candidates for reminders / release).
+     *
+     * @param int $limit Max rows per run.
+     * @return array<int,object>
+     */
+    public function due_taken($limit = 200) {
+        $sql = $this->db->prepare(
+            "SELECT * FROM {$this->table}
+             WHERE status='taken' AND token IS NOT NULL AND token<>''
+             ORDER BY id ASC LIMIT %d",
+            max(1, (int) $limit)
+        );
+        return $this->db->get_results($sql);
+    }
+
+    /**
+     * Record that a reminder was sent.
+     *
+     * @param int $id    Row id.
+     * @param int $count New reminder count.
+     * @return void
+     */
+    public function record_reminder($id, $count) {
+        $now = current_time('mysql');
+        $this->db->update(
+            $this->table,
+            array('reminder_count' => (int) $count, 'last_reminder_at' => $now, 'updated_at' => $now),
+            array('id' => (int) $id),
+            array('%d', '%s', '%s'),
+            array('%d')
+        );
+    }
+
+    /**
+     * Record that a release warning was sent.
+     *
+     * @param int $id Row id.
+     * @return void
+     */
+    public function record_release_notice($id) {
+        $now = current_time('mysql');
+        $this->db->update(
+            $this->table,
+            array('release_notice_at' => $now, 'updated_at' => $now),
+            array('id' => (int) $id),
+            array('%s', '%s'),
+            array('%d')
+        );
+    }
+
+    /**
      * Begin a transaction (InnoDB).
      *
      * @return void

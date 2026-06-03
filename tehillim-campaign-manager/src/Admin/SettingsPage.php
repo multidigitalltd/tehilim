@@ -93,6 +93,13 @@ final class SettingsPage implements Registerable {
         // Checkboxes.
         $clean['allow_multi_chapters'] = empty($input['allow_multi_chapters']) ? '0' : '1';
         $clean['allow_full_book']      = empty($input['allow_full_book']) ? '0' : '1';
+        $clean['reminders_enabled']    = empty($input['reminders_enabled']) ? '0' : '1';
+
+        // Reminder timings (integers with sensible minimums).
+        $ints = array('reminder_hours' => 1, 'reminder_max' => 0, 'release_warning_hours' => 1, 'release_after_hours' => 1);
+        foreach ($ints as $key => $min) {
+            $clean[$key] = (string) max($min, isset($input[$key]) ? absint($input[$key]) : (int) ($existing[$key] ?? $min));
+        }
 
         // Long text (placeholders + light HTML allowed).
         $clean['email_body'] = isset($input['email_body']) ? wp_kses_post($input['email_body']) : ($existing['email_body'] ?? '');
@@ -133,6 +140,7 @@ final class SettingsPage implements Registerable {
         $tabs = array(
             'general'   => __('General', 'tehillim-campaign-manager'),
             'messaging' => __('Messaging', 'tehillim-campaign-manager'),
+            'reminders' => __('Reminders', 'tehillim-campaign-manager'),
             'webhooks'  => __('Webhooks', 'tehillim-campaign-manager'),
             'design'    => __('Design', 'tehillim-campaign-manager'),
         );
@@ -175,6 +183,13 @@ final class SettingsPage implements Registerable {
         } elseif ('messaging' === $tab) {
             $this->text_row('email_subject', __('Email subject', 'tehillim-campaign-manager'), $o);
             $this->textarea_row('email_body', __('Email body', 'tehillim-campaign-manager'), $o, __('Placeholders: {name}, {campaign_title}, {chapter}, {read_url}', 'tehillim-campaign-manager'));
+        } elseif ('reminders' === $tab) {
+            echo '<tr><td colspan="2"><p class="description">' . esc_html__('Reminders are delivered as webhook events (chapter_reminder, chapter_release_warning, chapter_auto_released). Each payload includes participant_phone and a read_url to the specific chapter, so you can route it to WhatsApp via your automation.', 'tehillim-campaign-manager') . '</p></td></tr>';
+            $this->checkbox_row('reminders_enabled', __('Enable reminders', 'tehillim-campaign-manager'), $o);
+            $this->int_row('reminder_hours', __('Remind after (hours)', 'tehillim-campaign-manager'), $o, 1);
+            $this->int_row('reminder_max', __('Maximum reminders', 'tehillim-campaign-manager'), $o, 0);
+            $this->int_row('release_warning_hours', __('Release warning after (hours)', 'tehillim-campaign-manager'), $o, 1);
+            $this->int_row('release_after_hours', __('Auto-release after (hours)', 'tehillim-campaign-manager'), $o, 1);
         } elseif ('webhooks' === $tab) {
             $this->url_row('webhook_url', __('Webhook URL', 'tehillim-campaign-manager'), $o);
             $this->secret_row('webhook_secret', __('Webhook secret (HMAC)', 'tehillim-campaign-manager'), $o);
@@ -253,6 +268,26 @@ final class SettingsPage implements Registerable {
             $label,
             '<textarea rows="8" class="large-text code" name="tcm_options[' . esc_attr($key) . ']">' . esc_textarea($o[$key] ?? '') . '</textarea>',
             $help
+        );
+    }
+
+    /**
+     * @param string $key   Key.
+     * @param string $label Label.
+     * @param array  $o     Options.
+     * @return void
+     */
+    /**
+     * @param string $key   Key.
+     * @param string $label Label.
+     * @param array  $o     Options.
+     * @param int    $min   Minimum value.
+     * @return void
+     */
+    private function int_row($key, $label, $o, $min = 0) {
+        $this->row(
+            $label,
+            '<input type="number" min="' . esc_attr($min) . '" name="tcm_options[' . esc_attr($key) . ']" value="' . esc_attr($o[$key] ?? '') . '" style="width:100px">'
         );
     }
 

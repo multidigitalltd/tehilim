@@ -11,6 +11,7 @@ use TCM\Contracts\Registerable;
 use TCM\Support\Hebrew;
 use TCM\Support\Logger;
 use TCM\Support\Options;
+use TCM\Support\Urls;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -35,6 +36,56 @@ final class WebhookService implements Registerable {
         add_action('tcm_chapter_released', array($this, 'on_released'), 20, 1);
         add_action('tcm_book_completed', array($this, 'on_book_completed'), 20, 3);
         add_action('tcm_campaign_completed', array($this, 'on_campaign_completed'), 20, 2);
+        add_action('tcm_chapter_reminder', array($this, 'on_reminder'), 20, 1);
+        add_action('tcm_chapter_release_warning', array($this, 'on_release_warning'), 20, 1);
+        add_action('tcm_chapter_auto_released', array($this, 'on_auto_released'), 20, 1);
+    }
+
+    /**
+     * Reminder due — sent as a webhook for WhatsApp/automation routing.
+     *
+     * @param object $row Assignment row (carries a token).
+     * @return void
+     */
+    public function on_reminder($row) {
+        $this->dispatch('chapter_reminder', $this->contact_payload($row));
+    }
+
+    /**
+     * Release warning due.
+     *
+     * @param object $row Assignment row.
+     * @return void
+     */
+    public function on_release_warning($row) {
+        $this->dispatch('chapter_release_warning', $this->contact_payload($row));
+    }
+
+    /**
+     * Chapter auto-released after no response.
+     *
+     * @param object $row Assignment row.
+     * @return void
+     */
+    public function on_auto_released($row) {
+        $this->dispatch('chapter_auto_released', $this->contact_payload($row));
+    }
+
+    /**
+     * Payload enriched with contact details and the reader URL, so an external
+     * automation can deliver the message (e.g. via WhatsApp).
+     *
+     * @param object $row Assignment row.
+     * @return array<string,mixed>
+     */
+    private function contact_payload($row) {
+        $payload                       = $this->row_payload($row);
+        $payload['participant_name']   = (string) $row->participant_name;
+        $payload['participant_phone']  = (string) $row->participant_phone;
+        $payload['participant_email']  = (string) $row->participant_email;
+        $payload['reminder_count']     = (int) $row->reminder_count;
+        $payload['read_url']           = Urls::read((int) $row->campaign_id, (int) $row->id, (string) $row->token);
+        return $payload;
     }
 
     /**

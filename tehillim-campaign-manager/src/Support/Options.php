@@ -35,6 +35,11 @@ final class Options {
             'allow_multi_chapters' => '1',
             'multi_chapter_options' => '3,5,10',
             'allow_full_book'      => '1',
+            'reminders_enabled'    => '1',
+            'reminder_hours'       => '6',
+            'reminder_max'         => '2',
+            'release_warning_hours' => '24',
+            'release_after_hours'  => '36',
             'email_subject'        => __('You received a Tehillim chapter to read', 'tehillim-campaign-manager'),
             'email_body'           => "{name},\n\n" . __('You received chapter {chapter} in the campaign: {campaign_title}', 'tehillim-campaign-manager') . "\n\n{read_url}",
         );

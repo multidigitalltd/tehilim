@@ -8,6 +8,10 @@
 namespace TCM;
 
 use TCM\Contracts\Registerable;
+use TCM\Admin\CampaignMetabox;
+use TCM\Admin\ChaptersPage;
+use TCM\Admin\Dashboard;
+use TCM\Admin\SettingsPage;
 use TCM\Frontend\Assets;
 use TCM\Frontend\Shortcodes;
 use TCM\PostTypes\CampaignPostType;
@@ -97,6 +101,18 @@ final class Plugin {
                 new MailService(),
                 new WebhookService(),
             );
+
+            if (is_admin()) {
+                $this->modules = array_merge(
+                    $this->modules,
+                    array(
+                        new Dashboard(),
+                        new SettingsPage(),
+                        new ChaptersPage(),
+                        new CampaignMetabox(),
+                    )
+                );
+            }
         }
         return $this->modules;
     }

@@ -99,6 +99,7 @@ final class Shortcodes implements Registerable {
             return '';
         }
         return '<div class="tcm-wrap" id="tcm">'
+            . $this->notice_html()
             . $this->reader_card($id)
             . $this->progress_card($id)
             . do_shortcode('[tehillim_ad slot="campaign_header"]')
@@ -273,6 +274,31 @@ final class Shortcodes implements Registerable {
                 'token'       => $token,
             )
         );
+    }
+
+    /**
+     * Render a status notice from the tcm_msg query arg, if present.
+     *
+     * @return string
+     */
+    private function notice_html() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only display.
+        if (empty($_GET['tcm_msg'])) {
+            return '';
+        }
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $key      = sanitize_key(wp_unslash($_GET['tcm_msg']));
+        $messages = array(
+            'done'     => __('Thank you! The chapter was marked as completed.', 'tehillim-campaign-manager'),
+            'done_all' => __('Thank you! All your chapters were marked as completed.', 'tehillim-campaign-manager'),
+            'taken'    => __('That chapter was just taken. Please choose another.', 'tehillim-campaign-manager'),
+            'full'     => __('All chapters in the current book are taken. Please check back soon.', 'tehillim-campaign-manager'),
+            'released' => __('The chapter was released and is available again.', 'tehillim-campaign-manager'),
+        );
+        if (empty($messages[$key])) {
+            return '';
+        }
+        return '<div class="tcm-notice" role="status">' . esc_html($messages[$key]) . '</div>';
     }
 
     /**

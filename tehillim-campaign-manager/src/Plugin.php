@@ -17,6 +17,7 @@ use TCM\Frontend\Ambassadors;
 use TCM\Frontend\Assets;
 use TCM\Frontend\Shortcodes;
 use TCM\Frontend\Subscriptions;
+use TCM\Frontend\Widgets;
 use TCM\PostTypes\AdPostType;
 use TCM\PostTypes\CampaignPostType;
 use TCM\PostTypes\PrayerPostType;
@@ -103,6 +104,7 @@ final class Plugin {
                 new AdPostType(),
                 new Assets(),
                 new Shortcodes(),
+                new Widgets(),
                 new Ambassadors(),
                 new Subscriptions(),
                 new Ads(),

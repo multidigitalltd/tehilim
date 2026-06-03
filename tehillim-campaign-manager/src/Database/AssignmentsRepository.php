@@ -149,6 +149,22 @@ final class AssignmentsRepository extends Repository {
     }
 
     /**
+     * Distinct participants in a campaign (by email, else token, else row).
+     *
+     * @param int $campaign_id Campaign.
+     * @return int
+     */
+    public function participant_count($campaign_id) {
+        $sql = $this->db->prepare(
+            "SELECT COUNT(DISTINCT COALESCE(NULLIF(participant_email,''), NULLIF(token,''), id))
+             FROM {$this->table}
+             WHERE campaign_id=%d AND status IN ('taken','done')",
+            $campaign_id
+        );
+        return (int) $this->db->get_var($sql);
+    }
+
+    /**
      * Free chapters in a round.
      *
      * @param int $campaign_id Campaign.

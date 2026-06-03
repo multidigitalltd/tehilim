@@ -12,6 +12,7 @@ use TCM\PostTypes\CampaignPostType;
 use TCM\Services\AssignmentService;
 use TCM\Services\CampaignService;
 use TCM\Services\StatsService;
+use TCM\Services\SubscriptionService;
 use TCM\Support\Logger;
 use TCM\Support\RateLimiter;
 use TCM\Support\Tokens;
@@ -92,6 +93,16 @@ final class RestController implements Registerable {
                 'callback'            => array($this, 'join'),
                 'permission_callback' => '__return_true',
                 'args'                => array('id' => $this->id_arg()),
+            )
+        );
+
+        register_rest_route(
+            self::NS,
+            '/subscribe',
+            array(
+                'methods'             => 'POST',
+                'callback'            => array($this, 'subscribe'),
+                'permission_callback' => '__return_true',
             )
         );
 
@@ -212,6 +223,39 @@ final class RestController implements Registerable {
             ),
             201
         );
+    }
+
+    /**
+     * POST subscribe to a list (e.g. daily chapter).
+     *
+     * @param WP_REST_Request $request Request.
+     * @return WP_REST_Response|WP_Error
+     */
+    public function subscribe(WP_REST_Request $request) {
+        if (RateLimiter::exceeded('subscribe', 10, 60)) {
+            return $this->error('rate_limited', __('Too many attempts. Please try again shortly.', 'tehillim-campaign-manager'), 429);
+        }
+
+        $service = new SubscriptionService();
+        try {
+            $result = $service->subscribe(
+                (string) $request->get_param('list'),
+                array(
+                    'name'    => sanitize_text_field((string) $request->get_param('name')),
+                    'email'   => sanitize_email((string) $request->get_param('email')),
+                    'phone'   => sanitize_text_field((string) $request->get_param('phone')),
+                    'channel' => sanitize_key((string) $request->get_param('channel')),
+                    'consent' => (bool) $request->get_param('consent'),
+                )
+            );
+        } catch (\Throwable $e) {
+            return $this->fail($e, 'subscribe_failed', array('list' => (string) $request->get_param('list')));
+        }
+
+        if (empty($result['ok'])) {
+            return $this->error('subscribe_invalid', __('Please check the form and try again.', 'tehillim-campaign-manager'), 400);
+        }
+        return new WP_REST_Response(array('ok' => true), 201);
     }
 
     /**

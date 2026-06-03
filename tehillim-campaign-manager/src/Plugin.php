@@ -12,8 +12,12 @@ use TCM\Admin\CampaignMetabox;
 use TCM\Admin\ChaptersPage;
 use TCM\Admin\Dashboard;
 use TCM\Admin\SettingsPage;
+use TCM\Frontend\Ads;
+use TCM\Frontend\Ambassadors;
 use TCM\Frontend\Assets;
 use TCM\Frontend\Shortcodes;
+use TCM\Frontend\Subscriptions;
+use TCM\PostTypes\AdPostType;
 use TCM\PostTypes\CampaignPostType;
 use TCM\PostTypes\PrayerPostType;
 use TCM\Rest\RestController;
@@ -96,8 +100,12 @@ final class Plugin {
             $this->modules = array(
                 new CampaignPostType(),
                 new PrayerPostType(),
+                new AdPostType(),
                 new Assets(),
                 new Shortcodes(),
+                new Ambassadors(),
+                new Subscriptions(),
+                new Ads(),
                 new RestController(),
                 new MailService(),
                 new WebhookService(),

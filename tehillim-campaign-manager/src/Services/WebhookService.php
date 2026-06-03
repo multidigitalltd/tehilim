@@ -39,6 +39,22 @@ final class WebhookService implements Registerable {
         add_action('tcm_chapter_reminder', array($this, 'on_reminder'), 20, 1);
         add_action('tcm_chapter_release_warning', array($this, 'on_release_warning'), 20, 1);
         add_action('tcm_chapter_auto_released', array($this, 'on_auto_released'), 20, 1);
+        add_action('tcm_subscription_due', array($this, 'on_subscription_due'), 20, 2);
+    }
+
+    /**
+     * Daily subscription content — sent as a webhook for WhatsApp/automation.
+     *
+     * @param object              $subscriber Subscriber row.
+     * @param array<string,mixed> $payload    Content payload (chapter, etc.).
+     * @return void
+     */
+    public function on_subscription_due($subscriber, $payload) {
+        $payload['channel']           = (string) $subscriber->channel;
+        $payload['subscriber_name']   = (string) $subscriber->name;
+        $payload['subscriber_phone']  = (string) $subscriber->phone;
+        $payload['subscriber_email']  = (string) $subscriber->email;
+        $this->dispatch('subscription_daily', $payload);
     }
 
     /**

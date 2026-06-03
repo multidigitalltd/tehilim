@@ -101,8 +101,11 @@ final class Shortcodes implements Registerable {
         return '<div class="tcm-wrap" id="tcm">'
             . $this->reader_card($id)
             . $this->progress_card($id)
+            . do_shortcode('[tehillim_ad slot="campaign_header"]')
             . $this->join_card($id)
+            . do_shortcode('[tehillim_ad slot="after_join"]')
             . $this->chapters_card($id)
+            . do_shortcode('[tehillim_ambassador_invite id="' . (int) $id . '"]')
             . '</div>';
     }
 
@@ -130,7 +133,8 @@ final class Shortcodes implements Registerable {
                 'stats'     => $this->stats->for_campaign($post->ID),
             );
         }
-        return Templating::render('campaigns-archive', array('campaigns' => $campaigns));
+        return do_shortcode('[tehillim_ad slot="archive_top"]')
+            . Templating::render('campaigns-archive', array('campaigns' => $campaigns));
     }
 
     /**

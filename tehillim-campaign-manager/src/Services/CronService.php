@@ -11,6 +11,7 @@ use TCM\Contracts\Registerable;
 use TCM\Database\AssignmentsRepository;
 use TCM\Database\LogsRepository;
 use TCM\Support\Options;
+use TCM\Services\SubscriptionService;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -56,6 +57,9 @@ final class CronService implements Registerable {
      */
     public function run() {
         ( new LogsRepository() )->purge_older_than(self::LOG_DAYS);
+
+        // Daily subscription content (webhook only) — independent of reminders.
+        ( new SubscriptionService() )->process_daily();
 
         if ('1' !== (string) Options::get('reminders_enabled', '1')) {
             return;

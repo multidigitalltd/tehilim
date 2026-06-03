@@ -123,6 +123,53 @@
 			});
 	});
 
+	// Subscribe form submission.
+	document.addEventListener('submit', function (e) {
+		var form = e.target.closest('form[data-tcm-subscribe]');
+		if (!form) {
+			return;
+		}
+		e.preventDefault();
+		var body = {
+			list: form.getAttribute('data-tcm-list') || 'daily_chapter',
+			name: (form.querySelector('[name="name"]') || {}).value || '',
+			email: (form.querySelector('[name="email"]') || {}).value || '',
+			phone: (form.querySelector('[name="phone"]') || {}).value || '',
+			channel: (form.querySelector('[name="channel"]') || {}).value || 'email',
+			consent: (form.querySelector('[name="consent"]') || {}).checked ? 1 : 0
+		};
+		var submit = form.querySelector('[type="submit"]');
+		var errBox = form.querySelector('.tcm-form-error');
+		var okBox = form.querySelector('.tcm-form-success');
+		if (submit) {
+			submit.setAttribute('disabled', 'disabled');
+		}
+		post('/subscribe', body)
+			.then(function (result) {
+				if (!result.ok || !result.json || result.json.ok !== true) {
+					throw new Error((result.json && result.json.message) || errorText());
+				}
+				form.reset();
+				if (okBox) {
+					okBox.hidden = false;
+				}
+				if (errBox) {
+					errBox.hidden = true;
+				}
+			})
+			.catch(function (err) {
+				if (errBox) {
+					errBox.textContent = err.message || errorText();
+					errBox.hidden = false;
+				}
+			})
+			.then(function () {
+				if (submit) {
+					submit.removeAttribute('disabled');
+				}
+			});
+	});
+
 	// Reader actions.
 	document.addEventListener('click', function (e) {
 		var btn = e.target.closest('[data-tcm-action]');

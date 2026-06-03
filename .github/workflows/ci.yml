@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, "claude/**" ]
+  pull_request:
+
+defaults:
+  run:
+    working-directory: tehillim-campaign-manager
+
+jobs:
+  quality:
+    name: Lint & static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+          tools: composer
+          coverage: none
+
+      - name: Validate composer.json
+        run: composer validate --no-check-publish
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: PHP syntax lint
+        run: |
+          find src tehillim-campaign-manager.php uninstall.php -name '*.php' -print0 \
+            | xargs -0 -n1 -P4 php -l
+
+      - name: PHPCS (coding standards)
+        run: composer lint
+        continue-on-error: true
+
+      - name: PHPStan (static analysis)
+        run: composer analyze
+        continue-on-error: true

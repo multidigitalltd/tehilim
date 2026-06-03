@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<ruleset name="Tehillim Campaign Manager">
+    <description>Coding standards for the Tehillim Campaign Manager plugin.</description>
+
+    <file>src</file>
+    <file>tehillim-campaign-manager.php</file>
+    <file>uninstall.php</file>
+
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+
+    <arg name="extensions" value="php"/>
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg value="sp"/>
+
+    <rule ref="WordPress-Core"/>
+    <rule ref="WordPress-Docs"/>
+
+    <config name="testVersion" value="7.4-"/>
+    <rule ref="PHPCompatibilityWP"/>
+
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="tehillim-campaign-manager"/>
+            </property>
+        </properties>
+    </rule>
+</ruleset>

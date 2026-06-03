@@ -149,6 +149,16 @@ assets/css/  assets/js/  (קבצים אמיתיים, לא inline)
 - **CI** (GitHub Actions): lint + phpcs + phpstan + tests על כל PR. (ראו §7 לגבי הקמת הסביבה לסשנים.)
 - `uninstall.php` + deactivation hook (חסרים כיום).
 
+### 5.6 HTML/CSS רזה — בלי קלאסים כפולים ובלי div מיותרים ‏(P1)
+מטרה: markup מינימלי וסמנטי, וניצול ה‑cascade והירושה במקום שכפול. עקרונות מחייבים בכל קוד חדש ובכל refactor של התצוגה (§5.2):
+
+- **בלי `div` עוטף מיותר (div-itis).** להשתמש באלמנט סמנטי קיים כמיכל (`<section>`, `<article>`, `<form>`, `<ul>`) במקום `div` נוסף סביבו. לדוגמה ב‑`shortcode_campaigns` הקישור עצמו (`<a class="tcm-card">`) הוא כבר המיכל — אין צורך ב‑wrapper נוסף; וב‑`shortcode_stats` יש שרשרת `tcm-wrap > tcm-card > tcm-mini-stats` שאפשר לקצר.
+- **בלי קלאסים כפולים — לרשת מהאב.** מאפיינים שעוברים בירושה (`color`, `font-family`, `direction`, `text-align`, `line-height`) מוגדרים **פעם אחת על האב** (`.tcm-wrap`) ולא חוזרים על כל ילד. כיום למשל `direction:rtl;text-align:right` ו‑`color` מוגדרים שוב ושוב על `.tcm-card`, `.tcm-chapter-text` ועוד — לרכז באב.
+- **לבחור אלמנט דרך ההקשר במקום קלאס נוסף.** במקום להדביק קלאס חדש לכל וריאנט, להשתמש ב‑selector צאצא/מצב: `.tcm-card > h3`, `.tcm-stats .tcm-stat:first-child`, `[data-status="done"]` — פחות קלאסים ב‑HTML.
+- **קלאס יחיד לכל "תפקיד", וריאציה דרך modifier.** מצב הפרק (`free/taken/done`) כ‑modifier אחד (`.tcm-chapter--done`) או `data-status`, במקום בלוקי CSS חוזרים.
+- **בלי inline styles חוזרים.** הסגנונות החוזרים ב‑`style="..."` (למשל `direction:ltr;text-align:left` על שדות שיתוף, או `style="width:NN%"`) — האחרון (אחוז דינמי) יישאר inline; השאר עוברים לקלאס.
+- **בקרה אוטומטית:** הוספת **Stylelint** (כללי `no-duplicate-selectors`, `declaration-block-no-redundant-longhand-properties`) ובדיקת markup רזה כחלק מה‑CI של §7, כדי שהעיקרון ייאכף ולא יישחק.
+
 ---
 
 ## 6. תכנית ביצוע מומלצת לפי שלבים
@@ -158,8 +168,8 @@ assets/css/  assets/js/  (קבצים אמיתיים, לא inline)
 | **שלב 1 (P0)** | אבטחה + נגישות חוקית | §1.1 GET→POST, §1.2 פרטיות בסיסית, §2.1–2.2 צבע+labels | חוקי/PII |
 | **שלב 2 (P1)** | תשתית איכות | §5.1 פירוק, §5.3 i18n, §5.4 גרסה, §7 CI+בדיקות | חוב טכני מצטבר |
 | **שלב 3 (P1)** | ביצועים + אבטחה מתקדמת | §4 caching, §1.3 sanitize/סודות, §2.3–2.4 ARIA/ניגודיות | קנה מידה |
-| **שלב 4 (P1)** | פונקציונליות | §3.1 REST/AJAX, §3.2 מייל אסינכרוני | UX/דליברביליות |
-| **שלב 5 (P2)** | ליטוש | §3.3, §2.5, §5.2 תבניות/נכסים, §5.5 כלים | תחזוקתיות |
+| **שלב 4 (P1)** | פונקציונליות | §8 שדרוג פונקציות, §3.1 REST/AJAX, §3.2 מייל אסינכרוני | UX/דליברביליות |
+| **שלב 5 (P2)** | ליטוש | §3.3, §2.5, §5.2 תבניות/נכסים, §5.6 markup רזה, §5.5 כלים | תחזוקתיות |
 
 **עיקרון מנחה:** כל שלב נשלח כ‑PR נפרד וקטן עם בדיקות, תוך שמירה על תאימות לאחור לשורטקודים, ל‑slugs ולסכמת ה‑DB הקיימים (משתמשים ונתונים קיימים בייצור).
 
@@ -170,6 +180,68 @@ assets/css/  assets/js/  (קבצים אמיתיים, לא inline)
 - הוספת **SessionStart hook** ו‑`composer.json` כדי שסביבת הפיתוח (כולל Claude Code on the web) תוכל להריץ lint/phpcs/בדיקות אוטומטית.
 - הקמת `phpcs.xml`, `phpstan.neon`, ותיקיית `tests/`.
 - workflow ל‑GitHub Actions שמריץ את הבדיקות על כל PR.
+
+## 8. תכנון מפורט לשדרוג הפונקציות (function-by-function)
+
+מיפוי הפונקציות הקיימות בקוד לשדרוג ממוקד — לכל אחת מצוין השדרוג הפונקציונלי והטכני. השמירה על תאימות לאחור (חתימות שורטקוד, slugs, סכמה) מנחה את כולן.
+
+### 8.1 ליבת החלוקה (claim / round / stats)
+| פונקציה נוכחית | בעיה | שדרוג מתוכנן |
+|----------------|------|--------------|
+| `claim_free_chapter` · `claim_multiple_chapters` · `claim_full_book` | שלוש דרכים לתפוס פרקים עם לוגיקת rollback ידנית כמעט זהה (כפילות), ותנאי מרוץ מטופלים ידנית | לאחד ל‑`AssignmentService::claim()` יחיד עם פרמטר כמות/מצב; לעטוף ב‑**טרנזקציית DB** (`START TRANSACTION` / `SELECT ... FOR UPDATE`) במקום rollback ידני; מדיניות הגבלה אופציונלית לכל אימייל/IP |
+| `current_round` · `find_empty_full_book_round` | מספר שאילתות בלולאה לכל סבב; לוגיקה עדינה ולא מכוסה בבדיקות | שאילתה מצרפית יחידה (`GROUP BY round_number HAVING ...`); **בדיקות יחידה** לכל תרחיש קצה; cache לסבב הנוכחי |
+| `stats` · `stats_without_current_round` | ריבוי `COUNT` נפרדים, נקרא בלולאה (N+1) בארכיון ובדאשבורד | שאילתה מצרפית אחת (`SUM(CASE WHEN ...)`); **transient** עם invalidation באירוע כתיבה |
+| `generate_round` | 150 `INSERT` בלולאה | `INSERT` המוני יחיד (multi-row) |
+| `has_round` · `maybe_complete_round` · `maybe_complete_personal_full_book` | לוגיקת השלמה מפוזרת | לרכז ב‑`RoundService`, להפוך ל‑idempotent, ולכסות בבדיקות |
+
+### 8.2 פעולות משתמש (handlers)
+| פונקציה | שדרוג |
+|---------|-------|
+| `handle_done` · `handle_take_more` · `handle_release_chapter` | מעבר מ‑GET ל‑**POST+nonce עם דף אישור** (P0, §1.1); הוצאת לוגיקה משותפת ל‑service; החזרת תגובת JSON כשמגיע דרך REST/AJAX |
+| `handle_join` | ולידציה מוקשחת + **rate limiting** (transient לפי IP); מניעת כפילות אופציונלית; הודעות שגיאה משויכות לשדה (נגישות, §2.2) |
+| `handle_create_campaign` · `handle_owner_update_campaign` · `handle_owner_add_bonus` | שמירת תאימות; הוספת ולידציה אחידה ושכבת הרשאות אחת (`user_can_manage_campaign`) שתעטוף את כולם |
+| `handle_pretty_action` | במקום למלא `$_GET` ולהאציל — לקרוא ישירות ל‑service עם פרמטרים מפורשים |
+
+### 8.3 מיילים והתראות
+| פונקציה | שדרוג |
+|---------|-------|
+| `send_html_email` · `maybe_send_email` · `maybe_send_multi_email` | איחוד ל‑`MailService` עם תבניות; הוספת **חלק plaintext** (multipart) לצד ה‑HTML לדליברביליות |
+| `send_book_completed_notice` · `send_campaign_message_now` | שליחה בלולאה סינכרונית → **Action Scheduler / batches בקרון**; כותרת `List-Unsubscribe`; דיווח התקדמות שליחה |
+| `process_cron_tasks` | מוגבל ל‑`LIMIT 200` לכל ריצה — לא נסקייל; מעבר לתורים, idempotency, ושמירת מצב עיבוד |
+| `send_creator_campaign_created_email` · `send_assignment_notice` | אינטגרציה לאותו `MailService`; לוג שליחה אחיד |
+
+### 8.4 וובהוקים ואינטגרציות
+| פונקציה | שדרוג |
+|---------|-------|
+| `send_webhook` · `send_email_webhook` | **חתימת HMAC** של הגוף + timestamp (נגד replay) במקום סוד סטטי; **retry עם backoff** בכשל; קבועי אירועים (enum) במקום מחרוזות; תור אסינכרוני |
+| `assignment_payload` · `placeholders` | סכמת payload מתועדת וגרסונית (`schema_version`); בדיקות חוזה (contract tests) |
+| **חדש** | **REST API נכנס** (`register_rest_route`): סטטוס קמפיין, סימון הושלם, קח עוד — בסיס ל‑Elementor דינמי/Headless ול‑AJAX של §3.1 |
+
+### 8.5 תצוגה ושורטקודים
+| פונקציה | שדרוג |
+|---------|-------|
+| `render_reader` | מעבר ל‑**AJAX/REST** (סימון והבאת פרק הבא בלי רענון מלא); ניהול פוקוס לנגישות (§2.5) |
+| `get_chapter_content` | שני מקורות (option + קבצי HTML) — לאחד עם cache; אפשרות לטעון את 150 הפרקים מובנים בתוסף |
+| `shortcode_*` (20+ שורטקודים, כולל כפילי-שם כמו `tehillim_join`/`tehillim_remaining`) | **רישום דרך registry** עם aliases מרוכזים במערך אחד במקום 20+ `add_shortcode`; caching לפלט; markup רזה לפי §5.6 |
+| `shortcode_campaigns` · `admin_dashboard` | תיקון N+1 (§4) + markup ללא `div` עוטף מיותר (§5.6) |
+| `css()` · `assets()` | פיצול לנכסים אמיתיים (§5.2) + Stylelint נגד כפילויות (§5.6) |
+
+### 8.6 ניהול, פרטיות ולוגים
+| פונקציה | שדרוג |
+|---------|-------|
+| `log_event` · `logs_page` | מיסוך PII (§1.2); **עימוד וסינון** בעמוד הלוגים; **גריעה אוטומטית** של רשומות ישנות (כיום גדל ללא הגבלה) |
+| `get_pending_messages` · `save_pending_messages` | מ‑option יחיד גדל → טבלה/CPT ייעודי עם עימוד |
+| `settings_page` · `register_settings` | `echo` ענק → תבניות + טאבים; **`sanitize_callback`** מלא (§1.3); שדות סוד כ‑`password` |
+| **חדש — פונקציות פרטיות** | רישום `wp_privacy_personal_data_exporters` / `_erasers`; מדיניות שמירה (§1.2) |
+| **חדש — ייצוא** | `export_participants_csv()` + `export_stats_csv()` (§3.3) |
+
+### 8.7 שגרירים
+| פונקציה | שדרוג |
+|---------|-------|
+| `get_or_create_ambassador` · `record_ambassador_referral` | חשיפת `goal_chapters` בממשק (כיום נשמר ולא בשימוש); הוספת **leaderboard** וברכות יעד |
+| `shortcode_ambassador_dashboard` | תיקון N+1, גרפים, ו‑markup רזה |
+
+**עיקרון רוחבי לשדרוג הפונקציות:** כל פונקציה שעוברת לוגיקה משמעותית — עוברת ל‑service מתאים (§5.1), מקבלת **בדיקת יחידה**, ושומרת על אותה התנהגות חיצונית (תאימות לאחור). שדרוג פונקציונלי (REST, async, CSV, פרטיות) נבנה מעל הבסיס המפורק ולא לפניו.
 
 ---
 

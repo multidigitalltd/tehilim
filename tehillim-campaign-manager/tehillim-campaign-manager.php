@@ -9,16 +9,18 @@
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * License: GPL-2.0-or-later
+ *
+ * @package Tehillim_Campaign_Manager
  */
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-define('TCM_VERSION', '3.0.0');
-define('TCM_PLUGIN_FILE', __FILE__);
-define('TCM_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('TCM_PLUGIN_URL', plugin_dir_url(__FILE__));
+define( 'TCM_VERSION', '3.0.0' );
+define( 'TCM_PLUGIN_FILE', __FILE__ );
+define( 'TCM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'TCM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 /*
  * Autoloading.
@@ -26,28 +28,31 @@ define('TCM_PLUGIN_URL', plugin_dir_url(__FILE__));
  * PSR-4 fallback for the TCM\ namespace so the plugin runs out-of-the-box even
  * without `composer install` (e.g. a plain ZIP install).
  */
-if (file_exists(TCM_PLUGIN_DIR . 'vendor/autoload.php')) {
-    require_once TCM_PLUGIN_DIR . 'vendor/autoload.php';
+if ( file_exists( TCM_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
+	require_once TCM_PLUGIN_DIR . 'vendor/autoload.php';
 } else {
-    spl_autoload_register(
-        static function ($class) {
-            $prefix = 'TCM\\';
-            $len    = strlen($prefix);
-            if (strncmp($class, $prefix, $len) !== 0) {
-                return;
-            }
-            $relative = substr($class, $len);
-            $file     = TCM_PLUGIN_DIR . 'src/' . str_replace('\\', '/', $relative) . '.php';
-            if (file_exists($file)) {
-                require_once $file;
-            }
-        }
-    );
+	spl_autoload_register(
+		static function ( $class ) {
+			$prefix = 'TCM\\';
+			$len    = strlen( $prefix );
+			if ( strncmp( $class, $prefix, $len ) !== 0 ) {
+				return;
+			}
+			$relative = substr( $class, $len );
+			$file     = TCM_PLUGIN_DIR . 'src/' . str_replace( '\\', '/', $relative ) . '.php';
+			if ( file_exists( $file ) ) {
+				require_once $file;
+			}
+		}
+	);
 }
 
-register_activation_hook(__FILE__, array('TCM\\Activator', 'activate'));
-register_deactivation_hook(__FILE__, array('TCM\\Plugin', 'deactivate'));
+register_activation_hook( __FILE__, array( 'TCM\\Activator', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'TCM\\Plugin', 'deactivate' ) );
 
-add_action('plugins_loaded', static function () {
-    TCM\Plugin::instance()->boot();
-});
+add_action(
+	'plugins_loaded',
+	static function () {
+		TCM\Plugin::instance()->boot();
+	}
+);

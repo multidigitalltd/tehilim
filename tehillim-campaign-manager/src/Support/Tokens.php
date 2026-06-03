@@ -7,8 +7,8 @@
 
 namespace TCM\Support;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 /**
@@ -16,28 +16,28 @@ if (!defined('ABSPATH')) {
  */
 final class Tokens {
 
-    const LENGTH = 32;
+	const LENGTH = 32;
 
-    /**
-     * Generate a URL-safe random token.
-     *
-     * @return string
-     */
-    public static function generate() {
-        return wp_generate_password(self::LENGTH, false, false);
-    }
+	/**
+	 * Generate a URL-safe random token.
+	 *
+	 * @return string
+	 */
+	public static function generate() {
+		return wp_generate_password( self::LENGTH, false, false );
+	}
 
-    /**
-     * Constant-time comparison (avoids timing oracles).
-     *
-     * @param string $known    The stored token.
-     * @param string $provided The token from the request.
-     * @return bool
-     */
-    public static function verify($known, $provided) {
-        if (!is_string($known) || !is_string($provided) || '' === $known) {
-            return false;
-        }
-        return hash_equals($known, $provided);
-    }
+	/**
+	 * Constant-time comparison (avoids timing oracles).
+	 *
+	 * @param mixed $known    The stored token.
+	 * @param mixed $provided The token from the request.
+	 * @return bool
+	 */
+	public static function verify( $known, $provided ) {
+		if ( ! is_string( $known ) || ! is_string( $provided ) || '' === $known ) {
+			return false;
+		}
+		return hash_equals( $known, $provided );
+	}
 }

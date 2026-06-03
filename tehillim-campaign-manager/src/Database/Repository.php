@@ -7,8 +7,8 @@
 
 namespace TCM\Database;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 /**
@@ -20,33 +20,33 @@ if (!defined('ABSPATH')) {
  */
 abstract class Repository {
 
-    /**
-     * WordPress database handle.
-     *
-     * @var \wpdb
-     */
-    protected $db;
+	/**
+	 * WordPress database handle.
+	 *
+	 * @var \wpdb
+	 */
+	protected $db;
 
-    /**
-     * Fully-qualified (prefixed) table name.
-     *
-     * @var string
-     */
-    protected $table;
+	/**
+	 * Fully-qualified (prefixed) table name.
+	 *
+	 * @var string
+	 */
+	protected $table;
 
-    /**
-     * @param \wpdb|null $db Optional handle (injected in tests).
-     */
-    public function __construct($db = null) {
-        global $wpdb;
-        $this->db    = $db ? $db : $wpdb;
-        $this->table = $this->db->prefix . $this->table_suffix();
-    }
+	/**
+	 * @param \wpdb|null $db Optional handle (injected in tests).
+	 */
+	public function __construct( $db = null ) {
+		global $wpdb;
+		$this->db    = $db ? $db : $wpdb;
+		$this->table = $this->db->prefix . $this->table_suffix();
+	}
 
-    /**
-     * Table name without prefix (e.g. "tcm_assignments").
-     *
-     * @return string
-     */
-    abstract protected function table_suffix();
+	/**
+	 * Table name without prefix (e.g. "tcm_assignments").
+	 *
+	 * @return string
+	 */
+	abstract protected function table_suffix();
 }

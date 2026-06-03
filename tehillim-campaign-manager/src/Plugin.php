@@ -29,8 +29,8 @@ use TCM\Services\CronService;
 use TCM\Services\MailService;
 use TCM\Services\WebhookService;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 /**
@@ -43,119 +43,119 @@ if (!defined('ABSPATH')) {
  */
 final class Plugin {
 
-    /**
-     * Singleton instance.
-     *
-     * @var Plugin|null
-     */
-    private static $instance = null;
+	/**
+	 * Singleton instance.
+	 *
+	 * @var Plugin|null
+	 */
+	private static $instance = null;
 
-    /**
-     * Whether boot() already ran.
-     *
-     * @var bool
-     */
-    private $booted = false;
+	/**
+	 * Whether boot() already ran.
+	 *
+	 * @var bool
+	 */
+	private $booted = false;
 
-    /**
-     * Registered modules.
-     *
-     * @var Registerable[]
-     */
-    private $modules = array();
+	/**
+	 * Registered modules.
+	 *
+	 * @var Registerable[]
+	 */
+	private $modules = array();
 
-    /**
-     * Get the shared instance.
-     *
-     * @return Plugin
-     */
-    public static function instance() {
-        if (null === self::$instance) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
+	/**
+	 * Get the shared instance.
+	 *
+	 * @return Plugin
+	 */
+	public static function instance() {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
 
-    /**
-     * Wire up the plugin.
-     *
-     * @return void
-     */
-    public function boot() {
-        if ($this->booted) {
-            return;
-        }
-        $this->booted = true;
+	/**
+	 * Wire up the plugin.
+	 *
+	 * @return void
+	 */
+	public function boot() {
+		if ( $this->booted ) {
+			return;
+		}
+		$this->booted = true;
 
-        add_action('init', array($this, 'load_textdomain'));
+		add_action( 'init', array( $this, 'load_textdomain' ) );
 
-        foreach ($this->modules() as $module) {
-            $module->register();
-        }
-    }
+		foreach ( $this->modules() as $module ) {
+			$module->register();
+		}
+	}
 
-    /**
-     * Build the list of feature modules.
-     *
-     * @return Registerable[]
-     */
-    private function modules() {
-        if (empty($this->modules)) {
-            $this->modules = array(
-                new CampaignPostType(),
-                new PrayerPostType(),
-                new AdPostType(),
-                new Assets(),
-                new Shortcodes(),
-                new Widgets(),
-                new Ambassadors(),
-                new Subscriptions(),
-                new Prayers(),
-                new SelfService(),
-                new Ads(),
-                new RestController(),
-                new MailService(),
-                new WebhookService(),
-                new CronService(),
-                new PrivacyModule(),
-            );
+	/**
+	 * Build the list of feature modules.
+	 *
+	 * @return Registerable[]
+	 */
+	private function modules() {
+		if ( empty( $this->modules ) ) {
+			$this->modules = array(
+				new CampaignPostType(),
+				new PrayerPostType(),
+				new AdPostType(),
+				new Assets(),
+				new Shortcodes(),
+				new Widgets(),
+				new Ambassadors(),
+				new Subscriptions(),
+				new Prayers(),
+				new SelfService(),
+				new Ads(),
+				new RestController(),
+				new MailService(),
+				new WebhookService(),
+				new CronService(),
+				new PrivacyModule(),
+			);
 
-            if (is_admin()) {
-                $this->modules = array_merge(
-                    $this->modules,
-                    array(
-                        new Dashboard(),
-                        new SettingsPage(),
-                        new ChaptersPage(),
-                        new CampaignMetabox(),
-                        new \TCM\Admin\Exporter(),
-                    )
-                );
-            }
-        }
-        return $this->modules;
-    }
+			if ( is_admin() ) {
+				$this->modules = array_merge(
+					$this->modules,
+					array(
+						new Dashboard(),
+						new SettingsPage(),
+						new ChaptersPage(),
+						new CampaignMetabox(),
+						new \TCM\Admin\Exporter(),
+					)
+				);
+			}
+		}
+		return $this->modules;
+	}
 
-    /**
-     * Load translations.
-     *
-     * @return void
-     */
-    public function load_textdomain() {
-        load_plugin_textdomain(
-            'tehillim-campaign-manager',
-            false,
-            dirname(plugin_basename(TCM_PLUGIN_FILE)) . '/languages'
-        );
-    }
+	/**
+	 * Load translations.
+	 *
+	 * @return void
+	 */
+	public function load_textdomain() {
+		load_plugin_textdomain(
+			'tehillim-campaign-manager',
+			false,
+			dirname( plugin_basename( TCM_PLUGIN_FILE ) ) . '/languages'
+		);
+	}
 
-    /**
-     * Deactivation cleanup.
-     *
-     * @return void
-     */
-    public static function deactivate() {
-        wp_clear_scheduled_hook('tcm_cron_tasks');
-        flush_rewrite_rules();
-    }
+	/**
+	 * Deactivation cleanup.
+	 *
+	 * @return void
+	 */
+	public static function deactivate() {
+		wp_clear_scheduled_hook( 'tcm_cron_tasks' );
+		flush_rewrite_rules();
+	}
 }

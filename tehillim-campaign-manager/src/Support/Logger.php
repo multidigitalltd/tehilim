@@ -9,8 +9,8 @@ namespace TCM\Support;
 
 use TCM\Database\LogsRepository;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 /**
@@ -23,83 +23,83 @@ if (!defined('ABSPATH')) {
  */
 final class Logger {
 
-    const DEBUG = 'debug';
-    const INFO  = 'info';
-    const WARN  = 'warn';
-    const ERROR = 'error';
-    const FATAL = 'fatal';
+	const DEBUG = 'debug';
+	const INFO  = 'info';
+	const WARN  = 'warn';
+	const ERROR = 'error';
+	const FATAL = 'fatal';
 
-    /**
-     * Keys whose values must be redacted before they reach a log sink.
-     *
-     * @var string[]
-     */
-    private static $sensitive = array(
-        'password',
-        'pass',
-        'token',
-        'secret',
-        'cf-turnstile-response',
-        'participant_email',
-        'participant_phone',
-        'email',
-        'phone',
-    );
+	/**
+	 * Keys whose values must be redacted before they reach a log sink.
+	 *
+	 * @var string[]
+	 */
+	private static $sensitive = array(
+		'password',
+		'pass',
+		'token',
+		'secret',
+		'cf-turnstile-response',
+		'participant_email',
+		'participant_phone',
+		'email',
+		'phone',
+	);
 
-    /**
-     * Log an event.
-     *
-     * @param string               $level   One of the level constants.
-     * @param string               $event   Short machine event key.
-     * @param array<string,mixed>  $context Structured context (auto-redacted).
-     * @return void
-     */
-    public static function log($level, $event, array $context = array()) {
-        $safe = self::redact($context);
+	/**
+	 * Log an event.
+	 *
+	 * @param string              $level   One of the level constants.
+	 * @param string              $event   Short machine event key.
+	 * @param array<string,mixed> $context Structured context (auto-redacted).
+	 * @return void
+	 */
+	public static function log( $level, $event, array $context = array() ) {
+		$safe = self::redact( $context );
 
-        /**
-         * Allow an external sink (e.g. Sentry) to receive the event.
-         *
-         * @param string $level
-         * @param string $event
-         * @param array  $safe
-         */
-        do_action('tcm_log', $level, $event, $safe);
+		/**
+		 * Allow an external sink (e.g. Sentry) to receive the event.
+		 *
+		 * @param string $level
+		 * @param string $event
+		 * @param array  $safe
+		 */
+		do_action( 'tcm_log', $level, $event, $safe );
 
-        if (self::is_alertable($level)) {
+		if ( self::is_alertable( $level ) ) {
             // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-            error_log(sprintf('[TCM][%s] %s %s', strtoupper($level), $event, wp_json_encode($safe)));
-        }
+			error_log( sprintf( '[TCM][%s] %s %s', strtoupper( $level ), $event, wp_json_encode( $safe ) ) );
+		}
 
-        if (in_array($level, array(self::WARN, self::ERROR, self::FATAL), true)) {
-            ( new LogsRepository() )->record($event, $context);
-        }
-    }
+		if ( in_array( $level, array( self::WARN, self::ERROR, self::FATAL ), true ) ) {
+			( new LogsRepository() )->record( $event, $context );
+		}
+	}
 
-    /**
-     * Whether this level should trigger an alert / be written to PHP error log.
-     *
-     * @param string $level Level.
-     * @return bool
-     */
-    private static function is_alertable($level) {
-        return in_array($level, array(self::ERROR, self::FATAL), true);
-    }
+	/**
+	 * Whether this level should trigger an alert / be written to PHP error log.
+	 *
+	 * @param string $level Level.
+	 * @return bool
+	 */
+	private static function is_alertable( $level ) {
+		return in_array( $level, array( self::ERROR, self::FATAL ), true );
+	}
 
-    /**
-     * Redact sensitive keys (shallow + one level deep).
-     *
-     * @param array<string,mixed> $context Context.
-     * @return array<string,mixed>
-     */
-    private static function redact(array $context) {
-        foreach ($context as $key => $value) {
-            if (in_array(strtolower((string) $key), self::$sensitive, true)) {
-                $context[$key] = '[redacted]';
-            } elseif (is_array($value)) {
-                $context[$key] = self::redact($value);
-            }
-        }
-        return $context;
-    }
+	/**
+	 * Redact sensitive keys (shallow + one level deep).
+	 *
+	 * @param array<string,mixed> $context Context.
+	 * @return array<string,mixed>
+	 */
+	private static function redact( array $context ) {
+		foreach ( $context as $key => $value ) {
+			if ( in_array( strtolower( (string) $key ), self::$sensitive, true ) ) {
+				$context[ $key ] = '[redacted]';
+			} elseif ( is_array( $value ) ) {
+				$context[ $key ] = self::redact( $value );
+			}
+		}
+		return $context;
+	}
 }

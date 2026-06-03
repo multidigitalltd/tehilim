@@ -7,8 +7,8 @@
 
 namespace TCM\Contracts;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 /**
@@ -16,10 +16,10 @@ if (!defined('ABSPATH')) {
  */
 interface Registerable {
 
-    /**
-     * Register hooks (actions/filters/shortcodes/etc.).
-     *
-     * @return void
-     */
-    public function register();
+	/**
+	 * Register hooks (actions/filters/shortcodes/etc.).
+	 *
+	 * @return void
+	 */
+	public function register();
 }

@@ -36,11 +36,9 @@ jobs:
 
       - name: PHPCS (coding standards)
         run: composer lint
-        continue-on-error: true
 
       - name: PHPStan (static analysis)
         run: composer analyze
-        continue-on-error: true
 
       - name: Unit tests
         run: composer test

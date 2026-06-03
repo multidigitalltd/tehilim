@@ -7,8 +7,8 @@
 
 namespace TCM\Database;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 /**
@@ -24,40 +24,40 @@ if (!defined('ABSPATH')) {
  */
 final class Schema {
 
-    /**
-     * Install or upgrade all tables.
-     *
-     * @return void
-     */
-    public static function install() {
-        global $wpdb;
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+	/**
+	 * Install or upgrade all tables.
+	 *
+	 * @return void
+	 */
+	public static function install() {
+		global $wpdb;
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-        $charset = $wpdb->get_charset_collate();
-        $prefix  = $wpdb->prefix;
+		$charset = $wpdb->get_charset_collate();
+		$prefix  = $wpdb->prefix;
 
-        foreach (self::table_definitions($prefix, $charset) as $sql) {
-            dbDelta($sql);
-        }
-    }
+		foreach ( self::table_definitions( $prefix, $charset ) as $sql ) {
+			dbDelta( $sql );
+		}
+	}
 
-    /**
-     * The CREATE TABLE statements.
-     *
-     * @param string $prefix  WordPress table prefix.
-     * @param string $charset Charset/collate clause.
-     * @return string[]
-     */
-    private static function table_definitions($prefix, $charset) {
-        $assignments = $prefix . 'tcm_assignments';
-        $ambassadors = $prefix . 'tcm_ambassadors';
-        $referrals   = $prefix . 'tcm_referrals';
-        $logs        = $prefix . 'tcm_logs';
-        $subscribers = $prefix . 'tcm_subscribers';
-        $ad_stats    = $prefix . 'tcm_ad_stats';
+	/**
+	 * The CREATE TABLE statements.
+	 *
+	 * @param string $prefix  WordPress table prefix.
+	 * @param string $charset Charset/collate clause.
+	 * @return string[]
+	 */
+	private static function table_definitions( $prefix, $charset ) {
+		$assignments = $prefix . 'tcm_assignments';
+		$ambassadors = $prefix . 'tcm_ambassadors';
+		$referrals   = $prefix . 'tcm_referrals';
+		$logs        = $prefix . 'tcm_logs';
+		$subscribers = $prefix . 'tcm_subscribers';
+		$ad_stats    = $prefix . 'tcm_ad_stats';
 
-        return array(
-            "CREATE TABLE $assignments (
+		return array(
+			"CREATE TABLE $assignments (
                 id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
                 campaign_id BIGINT UNSIGNED NOT NULL,
                 round_number INT UNSIGNED NOT NULL DEFAULT 1,
@@ -83,7 +83,7 @@ final class Schema {
                 UNIQUE KEY unique_chapter_round (campaign_id, round_number, chapter_number)
             ) $charset;",
 
-            "CREATE TABLE $ambassadors (
+			"CREATE TABLE $ambassadors (
                 id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
                 campaign_id BIGINT UNSIGNED NOT NULL,
                 user_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
@@ -99,7 +99,7 @@ final class Schema {
                 KEY campaign_id (campaign_id)
             ) $charset;",
 
-            "CREATE TABLE $referrals (
+			"CREATE TABLE $referrals (
                 id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
                 campaign_id BIGINT UNSIGNED NOT NULL,
                 ambassador_id BIGINT UNSIGNED NOT NULL,
@@ -111,7 +111,7 @@ final class Schema {
                 KEY campaign_ambassador (campaign_id, ambassador_id)
             ) $charset;",
 
-            "CREATE TABLE $logs (
+			"CREATE TABLE $logs (
                 id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
                 event VARCHAR(80) NOT NULL,
                 campaign_id BIGINT UNSIGNED NULL,
@@ -127,7 +127,7 @@ final class Schema {
                 KEY created_at (created_at)
             ) $charset;",
 
-            "CREATE TABLE $subscribers (
+			"CREATE TABLE $subscribers (
                 id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
                 list_key VARCHAR(60) NOT NULL,
                 name VARCHAR(190) NULL,
@@ -146,7 +146,7 @@ final class Schema {
                 UNIQUE KEY unsubscribe_token (unsubscribe_token)
             ) $charset;",
 
-            "CREATE TABLE $ad_stats (
+			"CREATE TABLE $ad_stats (
                 id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
                 ad_id BIGINT UNSIGNED NOT NULL,
                 zone VARCHAR(60) NOT NULL,
@@ -156,6 +156,6 @@ final class Schema {
                 PRIMARY KEY (id),
                 UNIQUE KEY ad_zone_date (ad_id, zone, stat_date)
             ) $charset;",
-        );
-    }
+		);
+	}
 }

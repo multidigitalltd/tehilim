@@ -216,6 +216,24 @@ final class AssignmentsRepository extends Repository {
     }
 
     /**
+     * Recent activity for a participant email.
+     *
+     * @param string $email Email.
+     * @param int    $limit Max rows.
+     * @return array<int,object>
+     */
+    public function by_participant_email($email, $limit = 50) {
+        $sql = $this->db->prepare(
+            "SELECT * FROM {$this->table}
+             WHERE participant_email=%s
+             ORDER BY updated_at DESC LIMIT %d",
+            $email,
+            max(1, (int) $limit)
+        );
+        return $this->db->get_results($sql);
+    }
+
+    /**
      * Fetch a row by id.
      *
      * @param int $id Row id.

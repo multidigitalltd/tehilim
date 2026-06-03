@@ -16,6 +16,7 @@ use TCM\Frontend\Ads;
 use TCM\Frontend\Ambassadors;
 use TCM\Frontend\Assets;
 use TCM\Frontend\Prayers;
+use TCM\Frontend\SelfService;
 use TCM\Frontend\Shortcodes;
 use TCM\Frontend\Subscriptions;
 use TCM\Frontend\Widgets;
@@ -109,6 +110,7 @@ final class Plugin {
                 new Ambassadors(),
                 new Subscriptions(),
                 new Prayers(),
+                new SelfService(),
                 new Ads(),
                 new RestController(),
                 new MailService(),

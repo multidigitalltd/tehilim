@@ -170,6 +170,92 @@
 			});
 	});
 
+	// Create campaign.
+	document.addEventListener('submit', function (e) {
+		var form = e.target.closest('form[data-tcm-create]');
+		if (!form) {
+			return;
+		}
+		e.preventDefault();
+		var submit = form.querySelector('[type="submit"]');
+		var errBox = form.querySelector('.tcm-form-error');
+		if (submit) {
+			submit.setAttribute('disabled', 'disabled');
+		}
+		post('/campaigns', {
+			title: (form.querySelector('[name="title"]') || {}).value || '',
+			target: (form.querySelector('[name="target"]') || {}).value || 1,
+			content: (form.querySelector('[name="content"]') || {}).value || ''
+		}).then(function (result) {
+			if (!result.ok || !result.json || !result.json.permalink) {
+				throw new Error((result.json && result.json.message) || errorText());
+			}
+			window.location.href = result.json.permalink;
+		}).catch(function (err) {
+			if (submit) {
+				submit.removeAttribute('disabled');
+			}
+			if (errBox) {
+				errBox.textContent = err.message || errorText();
+				errBox.hidden = false;
+			}
+		});
+	});
+
+	// Owner: update campaign.
+	document.addEventListener('submit', function (e) {
+		var form = e.target.closest('form[data-tcm-update]');
+		if (!form) {
+			return;
+		}
+		e.preventDefault();
+		var id = form.getAttribute('data-tcm-id');
+		var okBox = form.querySelector('.tcm-form-success');
+		var errBox = form.querySelector('.tcm-form-error');
+		post('/campaigns/' + encodeURIComponent(id) + '/update', {
+			title: (form.querySelector('[name="title"]') || {}).value || '',
+			content: (form.querySelector('[name="content"]') || {}).value || '',
+			target: (form.querySelector('[name="target"]') || {}).value || 1
+		}).then(function (result) {
+			if (!result.ok || !result.json || result.json.ok !== true) {
+				throw new Error(errorText());
+			}
+			if (okBox) {
+				okBox.hidden = false;
+			}
+			if (errBox) {
+				errBox.hidden = true;
+			}
+		}).catch(function () {
+			if (errBox) {
+				errBox.textContent = errorText();
+				errBox.hidden = false;
+			}
+		});
+	});
+
+	// Owner: add a bonus book.
+	document.addEventListener('click', function (e) {
+		var btn = e.target.closest('[data-tcm-bonus]');
+		if (!btn) {
+			return;
+		}
+		e.preventDefault();
+		var id = btn.getAttribute('data-tcm-id');
+		btn.setAttribute('disabled', 'disabled');
+		post('/campaigns/' + encodeURIComponent(id) + '/bonus', {})
+			.then(function (result) {
+				if (!result.ok) {
+					throw new Error(errorText());
+				}
+				window.location.reload();
+			})
+			.catch(function () {
+				btn.removeAttribute('disabled');
+				announce(errorText());
+			});
+	});
+
 	// Reader actions.
 	document.addEventListener('click', function (e) {
 		var btn = e.target.closest('[data-tcm-action]');

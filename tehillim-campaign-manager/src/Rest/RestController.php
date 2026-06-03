@@ -11,6 +11,7 @@ use TCM\Contracts\Registerable;
 use TCM\PostTypes\CampaignPostType;
 use TCM\Services\AssignmentService;
 use TCM\Services\CampaignService;
+use TCM\Services\OwnerService;
 use TCM\Services\StatsService;
 use TCM\Services\SubscriptionService;
 use TCM\Support\Logger;
@@ -95,6 +96,32 @@ final class RestController implements Registerable {
                 'args'                => array('id' => $this->id_arg()),
             )
         );
+
+        register_rest_route(
+            self::NS,
+            '/campaigns',
+            array(
+                'methods'             => 'POST',
+                'callback'            => array($this, 'create_campaign'),
+                'permission_callback' => 'is_user_logged_in',
+            )
+        );
+
+        foreach (array('update', 'bonus') as $owner_action) {
+            register_rest_route(
+                self::NS,
+                '/campaigns/(?P<id>\d+)/' . $owner_action,
+                array(
+                    'methods'             => 'POST',
+                    'callback'            => array($this, 'owner_action'),
+                    'permission_callback' => 'is_user_logged_in',
+                    'args'                => array(
+                        'id'     => $this->id_arg(),
+                        'action' => array('default' => $owner_action),
+                    ),
+                )
+            );
+        }
 
         register_rest_route(
             self::NS,
@@ -223,6 +250,71 @@ final class RestController implements Registerable {
             ),
             201
         );
+    }
+
+    /**
+     * POST create a campaign (logged-in users).
+     *
+     * @param WP_REST_Request $request Request.
+     * @return WP_REST_Response|WP_Error
+     */
+    public function create_campaign(WP_REST_Request $request) {
+        if (RateLimiter::exceeded('create_campaign', 10, 300)) {
+            return $this->error('rate_limited', __('Too many attempts. Please try again shortly.', 'tehillim-campaign-manager'), 429);
+        }
+        try {
+            $result = ( new OwnerService() )->create(
+                array(
+                    'title'   => (string) $request->get_param('title'),
+                    'content' => (string) $request->get_param('content'),
+                    'target'  => absint($request->get_param('target')),
+                ),
+                get_current_user_id()
+            );
+        } catch (\Throwable $e) {
+            return $this->fail($e, 'create_campaign_failed', array());
+        }
+        if (empty($result['ok'])) {
+            return $this->error('create_invalid', __('Please provide a dedication / title.', 'tehillim-campaign-manager'), 400);
+        }
+        return new WP_REST_Response($result, 201);
+    }
+
+    /**
+     * POST owner update / add-bonus.
+     *
+     * @param WP_REST_Request $request Request.
+     * @return WP_REST_Response|WP_Error
+     */
+    public function owner_action(WP_REST_Request $request) {
+        $id      = (int) $request['id'];
+        $action  = sanitize_key((string) $request->get_param('action'));
+        $service = new OwnerService();
+        $user    = get_current_user_id();
+
+        try {
+            if ('bonus' === $action) {
+                $result = $service->add_bonus($id, $user);
+            } else {
+                $result = $service->update(
+                    $id,
+                    array(
+                        'title'   => (string) $request->get_param('title'),
+                        'content' => (string) $request->get_param('content'),
+                        'target'  => absint($request->get_param('target')),
+                    ),
+                    $user
+                );
+            }
+        } catch (\Throwable $e) {
+            return $this->fail($e, 'owner_action_failed', array('campaign_id' => $id, 'action' => $action));
+        }
+
+        if (empty($result['ok'])) {
+            $code = ($result['code'] ?? '') === 'forbidden' ? 403 : 400;
+            return $this->error('owner_invalid', __('The action could not be completed.', 'tehillim-campaign-manager'), $code);
+        }
+        return new WP_REST_Response($result, 200);
     }
 
     /**

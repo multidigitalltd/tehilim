@@ -1,0 +1,588 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Tehillim Campaign Manager\n"
+"Language: he_IL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "%d free chapters remaining"
+msgstr "נותרו %d פרקים פנויים"
+
+msgid "(saved — leave blank to keep)"
+msgstr "(שמור — השאירו ריק כדי לשמור על הקיים)"
+
+msgid "Action"
+msgstr "פעולה"
+
+msgid "Active"
+msgstr "פעיל"
+
+msgid "Ad"
+msgstr "פרסומת"
+
+msgid "Ad settings"
+msgstr "הגדרות פרסומת"
+
+msgid "Add Tehillim Campaign"
+msgstr "הוספת קמפיין תהילים"
+
+msgid "Add ad"
+msgstr "הוספת פרסומת"
+
+msgid "Add one bonus book"
+msgstr "הוספת ספר בונוס אחד"
+
+msgid "Ads"
+msgstr "פרסומות"
+
+msgid "Ads never appear inside the chapter/prayer reading area."
+msgstr "פרסומות לעולם אינן מופיעות בתוך אזור קריאת הפרק/התפילה."
+
+msgid "All"
+msgstr "הכול"
+
+msgid "All chapters in the current book are taken. Please check back soon."
+msgstr "כל הפרקים בספר הנוכחי נתפסו. אפשר לבדוק שוב בהמשך."
+
+msgid "Allow taking a whole book"
+msgstr "אפשר לקחת ספר שלם"
+
+msgid "Allow taking several chapters"
+msgstr "אפשר לקחת כמה פרקים"
+
+msgid "Ambassador dashboard"
+msgstr "דאשבורד שגרירים"
+
+msgid "Anyone who takes a chapter through this link counts towards your progress."
+msgstr "כל מי שלוקח פרק דרך הקישור הזה נספר בהתקדמות שלך."
+
+msgid "Archive shortcode:"
+msgstr "שורטקוד ארכיון:"
+
+msgid "Auto-pick a free chapter"
+msgstr "בחירה אוטומטית בפרק פנוי"
+
+msgid "Auto-release after (hours)"
+msgstr "שחרור אוטומטי לאחר (שעות)"
+
+msgid "Awaiting completion"
+msgstr "ממתין להשלמה"
+
+msgid "Base goal"
+msgstr "יעד בסיס"
+
+msgid "Base goal (books)"
+msgstr "יעד בסיס (ספרים)"
+
+msgid "Base goal: %1$s of %2$s books"
+msgstr "יעד בסיס: %1$s מתוך %2$s ספרים"
+
+msgid "Base goal: how many books to complete?"
+msgstr "יעד בסיס: כמה ספרים לסיים?"
+
+msgid "Bonus"
+msgstr "בונוס"
+
+msgid "Bonus books"
+msgstr "ספרי בונוס"
+
+msgid "Bonus: %1$s of %2$s books"
+msgstr "בונוס: %1$s מתוך %2$s ספרים"
+
+msgid "Books completed"
+msgstr "ספרים שהושלמו"
+
+msgid "Button text colour"
+msgstr "צבע טקסט בכפתורים"
+
+msgid "CSV"
+msgstr "CSV"
+
+msgid "Campaign"
+msgstr "קמפיין"
+
+msgid "Campaign URL base"
+msgstr "בסיס קישור לקמפיינים"
+
+msgid "Campaign not found."
+msgstr "הקמפיין לא נמצא."
+
+msgid "Campaign progress"
+msgstr "התקדמות הקמפיין"
+
+msgid "Categories"
+msgstr "קטגוריות"
+
+msgid "Category"
+msgstr "קטגוריה"
+
+msgid "Channel"
+msgstr "ערוץ"
+
+msgid "Chapter"
+msgstr "פרק"
+
+msgid "Chapter %1$s of %2$s"
+msgstr "פרק %1$s מתוך %2$s"
+
+msgid "Chapter %1$s — %2$s"
+msgstr "פרק %1$s — %2$s"
+
+msgid "Chapter %s"
+msgstr "פרק %s"
+
+msgid "Chapter status in the current book"
+msgstr "מצב הפרקים בספר הנוכחי"
+
+msgid "Choose a chapter / how many"
+msgstr "בחירת פרק / כמה פרקים"
+
+msgid "Comma separated, e.g. 3,5,10"
+msgstr "מופרד בפסיקים, למשל 3,5,10"
+
+msgid "Completed"
+msgstr "הושלם"
+
+msgid "Copied"
+msgstr "הועתק"
+
+msgid "Copy link"
+msgstr "העתקת קישור"
+
+msgid "Create campaign"
+msgstr "יצירת קמפיין"
+
+msgid "Current book"
+msgstr "ספר נוכחי"
+
+msgid "Current book: %1$s/%2$s chapters"
+msgstr "ספר נוכחי: %1$s/%2$s פרקים"
+
+msgid "Dashboard"
+msgstr "לוח בקרה"
+
+msgid "Dedication / title"
+msgstr "הקדשה / כותרת"
+
+msgid "Description"
+msgstr "תיאור"
+
+msgid "Design"
+msgstr "עיצוב"
+
+msgid "Distribution dashboard"
+msgstr "לוח ניהול חלוקות"
+
+msgid "Done"
+msgstr "הושלם"
+
+msgid "Edit Tehillim Campaign"
+msgstr "עריכת קמפיין תהילים"
+
+msgid "Email"
+msgstr "אימייל"
+
+msgid "Email body"
+msgstr "תוכן האימייל"
+
+msgid "Email subject"
+msgstr "נושא האימייל"
+
+msgid "Enable reminders"
+msgstr "הפעלת תזכורות"
+
+msgid "Enabled"
+msgstr "פעיל"
+
+msgid "End date"
+msgstr "תאריך סיום"
+
+msgid "English letters, digits and dashes. After changing: Settings → Permalinks → Save."
+msgstr "אותיות אנגליות, ספרות ומקפים. לאחר שינוי: הגדרות → קישורים קבועים → שמירה."
+
+msgid "Export"
+msgstr "ייצוא"
+
+msgid "Finished — take another chapter"
+msgstr "סיימתי — לקחת עוד פרק"
+
+msgid "Free"
+msgstr "פנוי"
+
+msgid "Free chapters"
+msgstr "פרקים פנויים"
+
+msgid "Friend"
+msgstr "חבר"
+
+msgid "General"
+msgstr "כללי"
+
+msgid "Help finish now"
+msgstr "עזרו לסיים עכשיו"
+
+msgid "How many books is the base goal?"
+msgstr "כמה ספרים ביעד הבסיס?"
+
+msgid "I agree to receive messages and can unsubscribe at any time."
+msgstr "אני מסכים/ה לקבל הודעות וניתן לבטל את ההרשמה בכל עת."
+
+msgid "I finished this chapter"
+msgstr "סיימתי את הפרק"
+
+msgid "Image URL"
+msgstr "כתובת תמונה"
+
+msgid "Invalid campaign."
+msgstr "קמפיין לא תקין."
+
+msgid "Join button text"
+msgstr "טקסט כפתור הצטרפות"
+
+msgid "Join form heading"
+msgstr "כותרת טופס ההצטרפות"
+
+msgid "Join the reading"
+msgstr "הצטרפות לקריאה"
+
+msgid "List"
+msgstr "רשימה"
+
+msgid "Maximum reminders"
+msgstr "מספר תזכורות מרבי"
+
+msgid "Messaging"
+msgstr "הודעות"
+
+msgid "Multi-chapter options"
+msgstr "אפשרויות כמה פרקים"
+
+msgid "My Tehillim activity"
+msgstr "הפעילות שלי בתהילים"
+
+msgid "My campaigns"
+msgstr "הקמפיינים שלי"
+
+msgid "Name"
+msgstr "שם"
+
+msgid "No activity yet."
+msgstr "אין עדיין פעילות."
+
+msgid "No ambassador links yet."
+msgstr "אין עדיין קישורי שגריר."
+
+msgid "No campaigns yet."
+msgstr "אין עדיין קמפיינים."
+
+msgid "No prayers found."
+msgstr "לא נמצאו תפילות."
+
+msgid "Only %d chapters left to finish!"
+msgstr "נשארו רק %d פרקים לסיום!"
+
+msgid "Open"
+msgstr "כניסה"
+
+msgid "Open a Tehillim campaign"
+msgstr "פתיחת קמפיין תהילים"
+
+msgid "Open campaign"
+msgstr "כניסה לקמפיין"
+
+msgid "Overall progress: %s%%"
+msgstr "התקדמות כוללת: %s%%"
+
+msgid "Participants"
+msgstr "משתתפים"
+
+msgid "Paused"
+msgstr "מושהה"
+
+msgid "Permission denied."
+msgstr "אין הרשאה."
+
+msgid "Phone"
+msgstr "טלפון"
+
+msgid "Phone (for WhatsApp)"
+msgstr "טלפון (לוואטסאפ)"
+
+msgid "Placeholders: {name}, {campaign_title}, {chapter}, {read_url}"
+msgstr "משתנים: {name}, {campaign_title}, {chapter}, {read_url}"
+
+msgid "Please check the form and try again."
+msgstr "אנא בדקו את הטופס ונסו שוב."
+
+msgid "Please log in to view the campaigns you opened."
+msgstr "כדי לראות את הקמפיינים שפתחת יש להתחבר."
+
+msgid "Please log in to view your activity."
+msgstr "כדי לראות את הפעילות שלך יש להתחבר."
+
+msgid "Please log in to view your ambassador dashboard."
+msgstr "כדי לראות את דאשבורד השגרירים יש להתחבר."
+
+msgid "Please provide a dedication / title."
+msgstr "יש להזין הקדשה / כותרת."
+
+msgid "Prayer / Segula"
+msgstr "תפילה / סגולה"
+
+msgid "Prayer categories"
+msgstr "קטגוריות תפילות"
+
+msgid "Prayers & Segulot"
+msgstr "תפילות וסגולות"
+
+msgid "Primary colour"
+msgstr "צבע ראשי"
+
+msgid "Progress"
+msgstr "התקדמות"
+
+msgid "Progress: %s%%"
+msgstr "התקדמות: %s%%"
+
+msgid "Read / finish"
+msgstr "קריאה / סיום"
+
+msgid "Receive via"
+msgstr "קבלה דרך"
+
+msgid "Registered users get a personal sharing link and can track the chapters they brought in."
+msgstr "משתמשים רשומים מקבלים קישור שיתוף אישי ויכולים לעקוב אחר הפרקים שהביאו."
+
+msgid "Release warning after (hours)"
+msgstr "אזהרת שחרור לאחר (שעות)"
+
+msgid "Remind after (hours)"
+msgstr "תזכורת לאחר (שעות)"
+
+msgid "Reminders"
+msgstr "תזכורות"
+
+msgid "Reminders are delivered as webhook events (chapter_reminder, chapter_release_warning, chapter_auto_released). Each payload includes participant_phone and a read_url to the specific chapter, so you can route it to WhatsApp via your automation."
+msgstr "התזכורות נשלחות כאירועי Webhook (chapter_reminder, chapter_release_warning, chapter_auto_released). כל payload כולל את participant_phone וקישור read_url לפרק הספציפי, כך שאפשר לנתב אותו לוואטסאפ דרך האוטומציה שלך."
+
+msgid "Save all chapters"
+msgstr "שמירת כל הפרקים"
+
+msgid "Save changes"
+msgstr "שמירת שינויים"
+
+msgid "Saved."
+msgstr "נשמר."
+
+msgid "Search"
+msgstr "חיפוש"
+
+msgid "Search prayers"
+msgstr "חיפוש תפילות"
+
+msgid "Search prayers…"
+msgstr "חיפוש תפילות…"
+
+msgid "Secondary / progress"
+msgstr "משני / התקדמות"
+
+msgid "Security verification failed. Please try again."
+msgstr "אימות האבטחה נכשל. אנא נסו שוב."
+
+msgid "Settings"
+msgstr "הגדרות"
+
+msgid "Several chapters"
+msgstr "כמה פרקים"
+
+msgid "Share link"
+msgstr "קישור לשיתוף"
+
+msgid "Share on WhatsApp"
+msgstr "שיתוף בוואטסאפ"
+
+msgid "Short description"
+msgstr "תיאור קצר"
+
+msgid "Something went wrong. Please try again."
+msgstr "משהו השתבש. אנא נסו שוב."
+
+msgid "Something went wrong. Reference: %s"
+msgstr "משהו השתבש. מספר אסמכתא: %s"
+
+msgid "Specific chapter"
+msgstr "פרק מסוים"
+
+msgid "Sponsored"
+msgstr "בחסות"
+
+msgid "Start date"
+msgstr "תאריך התחלה"
+
+msgid "Status"
+msgstr "סטטוס"
+
+msgid "Subscribe"
+msgstr "הרשמה"
+
+msgid "Subscribe to a daily Tehillim chapter"
+msgstr "הרשמה לפרק תהילים יומי"
+
+msgid "Subscriptions"
+msgstr "מנויים"
+
+msgid "Take %s chapters"
+msgstr "קחו %s פרקים"
+
+msgid "Take a whole book (150 chapters)"
+msgstr "קחו ספר שלם (150 פרקים)"
+
+msgid "Taken"
+msgstr "נתפס"
+
+msgid "Target URL"
+msgstr "כתובת יעד"
+
+msgid "Tehillim Campaign"
+msgstr "קמפיין תהילים"
+
+msgid "Tehillim Campaign Manager"
+msgstr "מנהל קמפייני תהילים"
+
+msgid "Tehillim Campaign Manager — Settings"
+msgstr "מנהל קמפייני תהילים — הגדרות"
+
+msgid "Tehillim Campaigns"
+msgstr "קמפייני תהילים"
+
+msgid "Tehillim campaign settings"
+msgstr "הגדרות קמפיין תהילים"
+
+msgid "Tehillim chapter %s"
+msgstr "תהילים פרק %s"
+
+msgid "Tehillim chapter records were anonymised (the merit is kept without personal details)."
+msgstr "רשומות פרקי התהילים הפכו אנונימיות (הזכות נשמרת ללא פרטים אישיים)."
+
+msgid "Tehillim chapters"
+msgstr "פרקי תהילים"
+
+msgid "Tehillim distribution"
+msgstr "חלוקת תהילים"
+
+msgid "Tehillim distribution dashboard"
+msgstr "לוח ניהול חלוקות תהילים"
+
+msgid "Text colour"
+msgstr "צבע טקסט"
+
+msgid "Thank you! All your chapters were marked as completed."
+msgstr "תודה! כל הפרקים שלך סומנו כהושלמו."
+
+msgid "Thank you! The chapter was marked as completed."
+msgstr "תודה! הפרק סומן כהושלם."
+
+msgid "Thank you! Your subscription is active."
+msgstr "תודה! ההרשמה שלך פעילה."
+
+msgid "That chapter was just taken. Please choose another."
+msgstr "הפרק הזה נתפס כעת. אנא בחרו אחר."
+
+msgid "The action could not be completed."
+msgstr "לא ניתן היה לבצע את הפעולה."
+
+msgid "The chapter was released and is available again."
+msgstr "הפרק שוחרר וזמין שוב."
+
+msgid "The current book is fully taken"
+msgstr "הספר הנוכחי נתפס במלואו"
+
+msgid "The email address is invalid."
+msgstr "כתובת האימייל אינה תקינה."
+
+msgid "The post title is the main dedication."
+msgstr "כותרת הפוסט היא ההקדשה הראשית."
+
+msgid "This campaign is not currently active."
+msgstr "הקמפיין אינו פעיל כרגע."
+
+msgid "This chapter has no text yet. It can be added from the admin under \"Tehillim chapters\"."
+msgstr "לפרק זה אין עדיין טקסט. אפשר להוסיף אותו בניהול תחת \"פרקי תהילים\"."
+
+msgid "This link is not valid."
+msgstr "הקישור אינו תקין."
+
+msgid "This reading link is not valid."
+msgstr "קישור הקריאה אינו תקין."
+
+msgid "Those chapters are no longer available. Please choose again."
+msgstr "הפרקים האלה כבר אינם זמינים. אנא בחרו שוב."
+
+msgid "Title / dedication"
+msgstr "כותרת / הקדשה"
+
+msgid "Too many attempts. Please try again shortly."
+msgstr "יותר מדי ניסיונות. אנא נסו שוב בעוד רגע."
+
+msgid "Turnstile secret key"
+msgstr "מפתח סודי של Turnstile"
+
+msgid "Turnstile site key"
+msgstr "מפתח אתר של Turnstile"
+
+msgid "View"
+msgstr "צפייה"
+
+msgid "Want to help spread the word?"
+msgstr "רוצים לעזור להפיץ?"
+
+msgid "Webhook URL"
+msgstr "כתובת Webhook"
+
+msgid "Webhook secret (HMAC)"
+msgstr "סוד Webhook (HMAC)"
+
+msgid "Webhooks"
+msgstr "Webhooks"
+
+msgid "WhatsApp"
+msgstr "וואטסאפ"
+
+msgid "Whole book"
+msgstr "ספר שלם"
+
+msgid "You received a Tehillim chapter to read"
+msgstr "קיבלת פרק תהילים לקריאה"
+
+msgid "You received chapter {chapter} in the campaign: {campaign_title}"
+msgstr "קיבלת את פרק {chapter} בקמפיין: {campaign_title}"
+
+msgid "Your chapter: Tehillim %s"
+msgstr "הפרק שלך: תהילים %s"
+
+msgid "Your details are used only to send your chapter and reminders, and are optional."
+msgstr "הפרטים משמשים רק לשליחת הפרק והתזכורות, והם אינם חובה."
+
+msgid "Your personal ambassador link"
+msgstr "קישור השגריר האישי שלך"
+
+msgid "Zone"
+msgstr "אזור"
+
+msgid "books in your merit"
+msgstr "ספרים בזכותך"
+
+msgid "chapters completed"
+msgstr "פרקים שהושלמו"
+
+msgid "chapters taken"
+msgstr "פרקים שנלקחו"
+
+msgid "optional"
+msgstr "רשות"
+
+msgid "○ Free · ◐ Taken · ● Done"
+msgstr "○ פנוי · ◐ נתפס · ● הושלם"
+

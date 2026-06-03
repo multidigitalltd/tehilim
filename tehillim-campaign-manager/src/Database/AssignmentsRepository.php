@@ -227,6 +227,26 @@ final class AssignmentsRepository extends Repository {
     }
 
     /**
+     * The next still-taken chapter in the same claim (same round + token).
+     *
+     * @param int    $campaign_id Campaign.
+     * @param int    $round       Round.
+     * @param string $token       Claim token.
+     * @return object|null
+     */
+    public function next_taken_in_claim($campaign_id, $round, $token) {
+        $sql = $this->db->prepare(
+            "SELECT * FROM {$this->table}
+             WHERE campaign_id=%d AND round_number=%d AND token=%s AND status='taken'
+             ORDER BY chapter_number ASC LIMIT 1",
+            $campaign_id,
+            $round,
+            $token
+        );
+        return $this->db->get_row($sql);
+    }
+
+    /**
      * Atomically claim a single free row. Returns rows affected (1 = success).
      *
      * @param int                  $id          Row id.

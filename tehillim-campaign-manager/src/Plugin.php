@@ -8,8 +8,10 @@
 namespace TCM;
 
 use TCM\Contracts\Registerable;
+use TCM\Frontend\Assets;
 use TCM\PostTypes\CampaignPostType;
 use TCM\PostTypes\PrayerPostType;
+use TCM\Rest\RestController;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -86,6 +88,8 @@ final class Plugin {
             $this->modules = array(
                 new CampaignPostType(),
                 new PrayerPostType(),
+                new Assets(),
+                new RestController(),
             );
         }
         return $this->modules;

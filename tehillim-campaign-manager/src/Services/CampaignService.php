@@ -157,4 +157,41 @@ final class CampaignService {
         );
         return $rows;
     }
+
+    /**
+     * React to a chapter being completed: when a round is fully done, either
+     * mark the campaign complete (goal reached) or open the next round.
+     *
+     * Fires `tcm_book_completed` and `tcm_campaign_completed` so notification
+     * subsystems can subscribe without this service knowing about them.
+     *
+     * @param int $campaign_id Campaign.
+     * @param int $round       Completed round.
+     * @return void
+     */
+    public function after_chapter_done($campaign_id, $round) {
+        $campaign_id = (int) $campaign_id;
+        $round       = (int) $round;
+
+        StatsService::flush($campaign_id);
+
+        if ($this->assignments->count_status($campaign_id, $round, 'done') < self::CHAPTERS_PER_BOOK) {
+            return;
+        }
+
+        $stats = $this->stats->for_campaign($campaign_id);
+
+        /** Fires when a full book (round) is completed. */
+        do_action('tcm_book_completed', $campaign_id, $round, $stats);
+
+        if ($stats['completed_books'] >= $stats['goal_total']) {
+            update_post_meta($campaign_id, '_tcm_status', 'completed');
+            /** Fires when the campaign goal is reached. */
+            do_action('tcm_campaign_completed', $campaign_id, $stats);
+            return;
+        }
+
+        $this->rounds->generate($campaign_id, $round + 1);
+        StatsService::flush($campaign_id);
+    }
 }

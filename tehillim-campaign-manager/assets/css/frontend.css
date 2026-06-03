@@ -1,0 +1,149 @@
+/**
+ * Tehillim Campaign Manager — front-end styles (v3.0).
+ *
+ * Lean by design: inherited properties (color, direction, font, line-height)
+ * are declared once on the .tcm-wrap container and NOT repeated on children;
+ * variants are expressed with state attributes ([data-status]) and context
+ * selectors, not duplicate utility classes. Colours/radii come from the
+ * :root design tokens injected by Assets::token_css().
+ */
+
+.tcm-wrap {
+	direction: rtl;
+	text-align: right;
+	color: var(--tcm-text);
+	font-family: inherit;
+	line-height: 1.6;
+	max-width: var(--tcm-max-width);
+	margin: 20px auto;
+}
+
+.tcm-card {
+	background: var(--tcm-card-bg);
+	border: 1px solid #e7e7e7;
+	border-radius: var(--tcm-radius);
+	padding: 24px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+	margin-bottom: 18px;
+}
+
+.tcm-card > h2,
+.tcm-card > h3 {
+	margin-top: 0;
+}
+
+.tcm-title {
+	font-size: var(--tcm-title-size);
+	font-weight: 800;
+}
+
+.tcm-muted {
+	color: var(--tcm-muted);
+	font-size: 0.9rem;
+}
+
+/* Progress bar — paired with role="progressbar" + aria values in markup. */
+.tcm-progress {
+	height: 18px;
+	background: #eee;
+	border-radius: 100px;
+	overflow: hidden;
+	margin: 14px 0;
+}
+
+.tcm-progress > span {
+	display: block;
+	height: 100%;
+	background: var(--tcm-secondary);
+	border-radius: 100px;
+}
+
+/* Buttons. */
+.tcm-btn {
+	display: inline-block;
+	border: 0;
+	background: var(--tcm-primary);
+	color: var(--tcm-button-text);
+	border-radius: var(--tcm-button-radius);
+	padding: 12px 22px;
+	font-weight: 800;
+	text-decoration: none;
+	cursor: pointer;
+	margin: 6px 4px;
+	min-height: 44px;
+}
+
+.tcm-btn.is-secondary {
+	background: var(--tcm-secondary);
+}
+
+.tcm-btn:hover {
+	opacity: 0.9;
+}
+
+.tcm-btn:focus-visible {
+	outline: 3px solid var(--tcm-secondary);
+	outline-offset: 2px;
+}
+
+/* Forms. */
+.tcm-field label {
+	display: block;
+	font-weight: 700;
+	margin: 12px 0 5px;
+}
+
+.tcm-field input,
+.tcm-field select,
+.tcm-field textarea {
+	width: 100%;
+	padding: 12px;
+	min-height: 52px;
+	border: 1px solid var(--tcm-field-border);
+	border-radius: var(--tcm-field-radius);
+	background: var(--tcm-field-bg);
+	box-sizing: border-box;
+}
+
+/* Chapter grid — status conveyed by colour AND icon + text (WCAG 1.4.1). */
+.tcm-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+	gap: 8px;
+}
+
+.tcm-chapter {
+	border-radius: 12px;
+	padding: 10px;
+	text-align: center;
+	font-weight: 800;
+	background: #f1f1f1;
+	color: #333;
+}
+
+.tcm-chapter[data-status="taken"] {
+	background: #fff3cd;
+}
+
+.tcm-chapter[data-status="done"] {
+	background: #d9f5e5;
+}
+
+.tcm-chapter__icon {
+	display: block;
+	font-size: 0.85rem;
+}
+
+/* Honour reduced-motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+	* {
+		transition: none !important;
+		animation: none !important;
+	}
+}
+
+@media (max-width: 768px) {
+	.tcm-card {
+		padding: 18px;
+	}
+}

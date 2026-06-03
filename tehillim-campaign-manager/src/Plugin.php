@@ -13,6 +13,8 @@ use TCM\Frontend\Shortcodes;
 use TCM\PostTypes\CampaignPostType;
 use TCM\PostTypes\PrayerPostType;
 use TCM\Rest\RestController;
+use TCM\Services\MailService;
+use TCM\Services\WebhookService;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -92,6 +94,8 @@ final class Plugin {
                 new Assets(),
                 new Shortcodes(),
                 new RestController(),
+                new MailService(),
+                new WebhookService(),
             );
         }
         return $this->modules;

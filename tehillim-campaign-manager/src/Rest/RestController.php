@@ -196,6 +196,10 @@ final class RestController implements Registerable {
         }
 
         $first = $rows[0];
+
+        /** Fires after one or more chapters are successfully claimed. */
+        do_action('tcm_chapter_claimed', $campaign_id, $rows, $token, $participant);
+
         return new WP_REST_Response(
             array(
                 'ok'            => true,

@@ -1,0 +1,13 @@
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+
+parameters:
+    level: 5
+    bootstrapFiles:
+        - tools/phpstan-bootstrap.php
+    paths:
+        - src
+        - tehillim-campaign-manager.php
+        - uninstall.php
+    excludePaths:
+        - vendor/*

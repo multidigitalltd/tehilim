@@ -1,0 +1,12 @@
+# Dependencies
+/tehillim-campaign-manager/vendor/
+node_modules/
+
+# Tool caches
+.phpcs.cache
+.phpunit.result.cache
+**/.phpunit.result.cache
+
+# OS / editor
+.DS_Store
+*.log

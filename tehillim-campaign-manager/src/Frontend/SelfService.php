@@ -57,6 +57,7 @@ final class SelfService implements Registerable {
 	 * @return string
 	 */
 	public function create_form() {
+		Assets::ensure();
 		return Templating::render( 'partials/create-campaign', array() );
 	}
 
@@ -66,6 +67,7 @@ final class SelfService implements Registerable {
 	 * @return string
 	 */
 	public function my_campaigns() {
+		Assets::ensure();
 		if ( ! is_user_logged_in() ) {
 			return Templating::render(
 				'partials/my-campaigns',

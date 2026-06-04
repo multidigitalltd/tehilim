@@ -5,9 +5,10 @@
  * @package Tehillim_Campaign_Manager
  */
 
+$tcm_plugin_root = dirname( __DIR__ );
 define('TCM_VERSION', '3.0.0');
-define('TCM_PLUGIN_FILE', __DIR__ . '/tehillim-campaign-manager.php');
-define('TCM_PLUGIN_DIR', __DIR__ . '/');
+define('TCM_PLUGIN_FILE', $tcm_plugin_root . '/tehillim-campaign-manager.php');
+define('TCM_PLUGIN_DIR', $tcm_plugin_root . '/');
 define('TCM_PLUGIN_URL', 'https://example.test/wp-content/plugins/tehillim-campaign-manager/');
 
 if (!defined('COOKIEPATH')) {

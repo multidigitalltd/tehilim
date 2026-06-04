@@ -46,6 +46,7 @@ final class Subscriptions implements Registerable {
 	 * @return string
 	 */
 	public function form( $atts ) {
+		Assets::ensure();
 		$atts = shortcode_atts( array( 'list' => 'daily_chapter' ), $atts );
 		return Templating::render(
 			'partials/subscribe',

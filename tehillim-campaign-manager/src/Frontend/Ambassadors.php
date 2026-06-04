@@ -93,6 +93,7 @@ final class Ambassadors implements Registerable {
 		if ( ! $id ) {
 			return '';
 		}
+		Assets::ensure();
 		if ( ! is_user_logged_in() ) {
 			return Templating::render( 'partials/ambassador-invite', array( 'logged_in' => false ) );
 		}
@@ -117,6 +118,7 @@ final class Ambassadors implements Registerable {
 	 * @return string
 	 */
 	public function dashboard( $atts ) {
+		Assets::ensure();
 		if ( ! is_user_logged_in() ) {
 			return Templating::render(
 				'partials/ambassador-dashboard',

@@ -31,34 +31,36 @@ final class Assets implements Registerable {
 	 * {@inheritDoc}
 	 */
 	public function register() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'on_enqueue_scripts' ) );
 	}
 
 	/**
-	 * Enqueue assets when relevant.
+	 * Register the handles, then enqueue them on pages that always need them.
 	 *
 	 * @return void
 	 */
-	public function enqueue() {
-		if ( ! $this->should_load() ) {
+	public function on_enqueue_scripts() {
+		self::register_handles();
+		if ( $this->should_load() ) {
+			self::ensure();
+		}
+	}
+
+	/**
+	 * Register the style/script handles (idempotent). Safe to call during
+	 * shortcode rendering, after wp_enqueue_scripts has fired.
+	 *
+	 * @return void
+	 */
+	public static function register_handles() {
+		if ( wp_style_is( self::HANDLE, 'registered' ) ) {
 			return;
 		}
 
-		wp_enqueue_style(
-			self::HANDLE,
-			TCM_PLUGIN_URL . 'assets/css/frontend.css',
-			array(),
-			TCM_VERSION
-		);
-		wp_add_inline_style( self::HANDLE, $this->token_css() );
+		wp_register_style( self::HANDLE, TCM_PLUGIN_URL . 'assets/css/frontend.css', array(), TCM_VERSION );
+		wp_add_inline_style( self::HANDLE, self::token_css() );
 
-		wp_enqueue_script(
-			self::HANDLE,
-			TCM_PLUGIN_URL . 'assets/js/frontend.js',
-			array(),
-			TCM_VERSION,
-			true
-		);
+		wp_register_script( self::HANDLE, TCM_PLUGIN_URL . 'assets/js/frontend.js', array(), TCM_VERSION, true );
 		wp_localize_script(
 			self::HANDLE,
 			'tcmData',
@@ -74,7 +76,20 @@ final class Assets implements Registerable {
 	}
 
 	/**
-	 * Whether the current request should load front-end assets.
+	 * Ensure the assets are enqueued. Called from any shortcode that relies on
+	 * the front-end script (forms, copy buttons, owner/reader actions) so it
+	 * works on arbitrary pages, not only campaign/prayer singulars.
+	 *
+	 * @return void
+	 */
+	public static function ensure() {
+		self::register_handles();
+		wp_enqueue_style( self::HANDLE );
+		wp_enqueue_script( self::HANDLE );
+	}
+
+	/**
+	 * Whether the current request should load front-end assets up-front.
 	 *
 	 * @return bool
 	 */
@@ -98,7 +113,7 @@ final class Assets implements Registerable {
 	 *
 	 * @return string
 	 */
-	private function token_css() {
+	private static function token_css() {
 		$options = get_option( 'tcm_options', array() );
 
 		$hex = static function ( $key, $default ) use ( $options ) {

@@ -98,6 +98,7 @@ final class Shortcodes implements Registerable {
 		if ( ! $id ) {
 			return '';
 		}
+		Assets::ensure();
 		return '<div class="tcm-wrap" id="tcm">'
 			. $this->notice_html()
 			. $this->reader_card( $id )
@@ -117,6 +118,7 @@ final class Shortcodes implements Registerable {
 	 * @return string
 	 */
 	public function campaigns( $atts ) {
+		Assets::ensure();
 		$query     = new \WP_Query(
 			array(
 				'post_type'      => CampaignPostType::POST_TYPE,
@@ -157,7 +159,11 @@ final class Shortcodes implements Registerable {
 	 */
 	public function join_form( $atts ) {
 		$id = $this->resolve_id( $atts );
-		return $id ? '<div class="tcm-wrap">' . $this->join_card( $id ) . '</div>' : '';
+		if ( ! $id ) {
+			return '';
+		}
+		Assets::ensure();
+		return '<div class="tcm-wrap">' . $this->join_card( $id ) . '</div>';
 	}
 
 	/**

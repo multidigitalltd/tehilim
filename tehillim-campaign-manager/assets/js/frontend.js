@@ -11,6 +11,22 @@
 
 	var data = window.tcmData || {};
 
+	// After the join/done redirect lands on #tcm-read, move focus to the reader
+	// so screen-reader and keyboard users get the chapter context immediately.
+	function focusReader() {
+		var reader = document.getElementById('tcm-read');
+		if (reader && window.location.hash === '#tcm-read') {
+			var heading = reader.querySelector('h3') || reader;
+			heading.setAttribute('tabindex', '-1');
+			heading.focus();
+		}
+	}
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', focusReader);
+	} else {
+		focusReader();
+	}
+
 	function announce(message) {
 		var region = document.getElementById('tcm-live');
 		if (!region) {
@@ -99,8 +115,12 @@
 
 		var submit = form.querySelector('[type="submit"]');
 		var errBox = form.querySelector('.tcm-form-error');
+		var select = form.querySelector('[name="choice"]');
 		if (submit) {
 			submit.setAttribute('disabled', 'disabled');
+		}
+		if (select) {
+			select.removeAttribute('aria-invalid');
 		}
 
 		post('/campaigns/' + encodeURIComponent(id) + '/join', body)
@@ -115,9 +135,16 @@
 				if (submit) {
 					submit.removeAttribute('disabled');
 				}
+				if (select && errBox && errBox.id) {
+					select.setAttribute('aria-invalid', 'true');
+					select.setAttribute('aria-describedby', errBox.id);
+				}
 				if (errBox) {
 					errBox.textContent = err.message || errorText();
 					errBox.hidden = false;
+					if (errBox.focus) {
+						errBox.focus();
+					}
 				}
 				announce(err.message || errorText());
 			});

@@ -20,15 +20,15 @@ $labels = array(
     'done'  => array('icon' => '●', 'text' => __('Done', 'tehillim-campaign-manager')),
 );
 ?>
-<div class="tcm-card">
+<section class="tcm-card" aria-label="<?php esc_attr_e('Chapter status in the current book', 'tehillim-campaign-manager'); ?>">
 	<h3><?php esc_html_e('Chapter status in the current book', 'tehillim-campaign-manager'); ?></h3>
-	<div class="tcm-grid">
+	<ul class="tcm-grid">
 		<?php foreach ($rows as $row) : ?>
 			<?php
 			$status = isset($labels[$row->status]) ? $row->status : 'free';
 			$label  = $labels[$status];
 			?>
-			<div class="tcm-chapter" data-status="<?php echo esc_attr($status); ?>">
+			<li class="tcm-chapter" data-status="<?php echo esc_attr($status); ?>">
 				<span aria-hidden="true"><?php echo esc_html(Hebrew::chapter_label($row->chapter_number)); ?></span>
 				<span class="tcm-chapter__icon">
 					<span aria-hidden="true"><?php echo esc_html($label['icon']); ?></span>
@@ -43,10 +43,10 @@ $labels = array(
 						?>
 					</span>
 				</span>
-			</div>
+			</li>
 		<?php endforeach; ?>
-	</div>
+	</ul>
 	<p class="tcm-muted">
 		<?php esc_html_e('○ Free · ◐ Taken · ● Done', 'tehillim-campaign-manager'); ?>
 	</p>
-</div>
+</section>

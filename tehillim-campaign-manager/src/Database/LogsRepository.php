@@ -35,6 +35,10 @@ final class LogsRepository extends Repository {
 		$campaign_id   = isset( $context['campaign_id'] ) ? absint( $context['campaign_id'] ) : 0;
 		$assignment_id = isset( $context['assignment_id'] ) ? absint( $context['assignment_id'] ) : 0;
 
+		// Enforce redaction here too, so there is no uncensored path to the DB
+		// regardless of the caller (PII/secrets never land in tcm_logs).
+		$context = \TCM\Support\Logger::redact( $context );
+
 		$this->db->insert(
 			$this->table,
 			array(

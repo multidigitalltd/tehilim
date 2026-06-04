@@ -214,6 +214,43 @@ final class WebhookService implements Registerable {
 	}
 
 	/**
+	 * Basic SSRF guard: only allow http(s) to a public host. Blocks localhost
+	 * and private/reserved IP ranges (after DNS resolution). Can be overridden
+	 * for trusted internal endpoints via the `tcm_webhook_allow_private_hosts`
+	 * filter.
+	 *
+	 * @param string $url Destination URL.
+	 * @return bool
+	 */
+	public static function is_allowed_url( $url ) {
+		if ( apply_filters( 'tcm_webhook_allow_private_hosts', false, $url ) ) {
+			return true;
+		}
+
+		$scheme = wp_parse_url( $url, PHP_URL_SCHEME );
+		if ( ! in_array( strtolower( (string) $scheme ), array( 'http', 'https' ), true ) ) {
+			return false;
+		}
+
+		$host = wp_parse_url( $url, PHP_URL_HOST );
+		if ( ! $host ) {
+			return false;
+		}
+		$host = strtolower( $host );
+		if ( 'localhost' === $host || '.localhost' === substr( $host, -10 ) ) {
+			return false;
+		}
+
+		$ip = filter_var( $host, FILTER_VALIDATE_IP ) ? $host : gethostbyname( $host );
+		if ( ! filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+			return false; // Unresolvable host — refuse rather than guess.
+		}
+
+		// Reject private and reserved ranges (e.g. 127.0.0.1, 10.x, 192.168.x, ::1).
+		return (bool) filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE );
+	}
+
+	/**
 	 * Send an event to the configured webhook, with bounded retry.
 	 *
 	 * @param string              $event   Event name.
@@ -223,6 +260,10 @@ final class WebhookService implements Registerable {
 	private function dispatch( $event, array $payload ) {
 		$url = (string) Options::get( 'webhook_url' );
 		if ( ! $url ) {
+			return;
+		}
+		if ( ! self::is_allowed_url( $url ) ) {
+			Logger::log( Logger::WARN, 'webhook_blocked_ssrf', array( 'event' => $event ) );
 			return;
 		}
 

@@ -58,19 +58,38 @@ final class Exporter implements Registerable {
 		foreach ( $rows as $row ) {
 			fputcsv(
 				$out,
-				array(
-					$row->participant_name,
-					$row->participant_email,
-					$row->participant_phone,
-					$row->chapter_number,
-					$row->round_number,
-					$row->status,
-					$row->taken_at,
-					$row->completed_at,
+				array_map(
+					array( __CLASS__, 'csv_cell' ),
+					array(
+						$row->participant_name,
+						$row->participant_email,
+						$row->participant_phone,
+						$row->chapter_number,
+						$row->round_number,
+						$row->status,
+						$row->taken_at,
+						$row->completed_at,
+					)
 				)
 			);
 		}
 		fclose( $out );
 		exit;
+	}
+
+	/**
+	 * Neutralise CSV/formula injection: values beginning with =, +, -, @ (or a
+	 * control char) are prefixed with an apostrophe so spreadsheets treat them
+	 * as text rather than formulas.
+	 *
+	 * @param mixed $value Cell value.
+	 * @return string
+	 */
+	public static function csv_cell( $value ) {
+		$value = (string) $value;
+		if ( '' !== $value && in_array( $value[0], array( '=', '+', '-', '@', "\t", "\r" ), true ) ) {
+			$value = "'" . $value;
+		}
+		return $value;
 	}
 }

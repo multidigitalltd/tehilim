@@ -31,8 +31,9 @@ foreach ($siblings as $i => $sibling) {
 }
 $chapter_label = Hebrew::chapter_label($row->chapter_number);
 ?>
-<div class="tcm-card tcm-reader" id="tcm-read"
+<section class="tcm-card tcm-reader" id="tcm-read"
 	tabindex="-1"
+	aria-label="<?php esc_attr_e('Chapter reader', 'tehillim-campaign-manager'); ?>"
 	data-tcm-permalink="<?php echo esc_url($permalink); ?>">
 
 	<h3 tabindex="-1">
@@ -80,4 +81,4 @@ $chapter_label = Hebrew::chapter_label($row->chapter_number);
 			<?php esc_html_e('Finished — take another chapter', 'tehillim-campaign-manager'); ?>
 		</button>
 	</div>
-</div>
+</section>

@@ -72,7 +72,7 @@ final class Logger {
 		}
 
 		if ( in_array( $level, array( self::WARN, self::ERROR, self::FATAL ), true ) ) {
-			( new LogsRepository() )->record( $event, $context );
+			( new LogsRepository() )->record( $event, $safe );
 		}
 	}
 
@@ -87,12 +87,13 @@ final class Logger {
 	}
 
 	/**
-	 * Redact sensitive keys (shallow + one level deep).
+	 * Redact sensitive keys (recursively). Public so the DB log path can enforce
+	 * the same redaction and there is no uncensored write route.
 	 *
 	 * @param array<string,mixed> $context Context.
 	 * @return array<string,mixed>
 	 */
-	private static function redact( array $context ) {
+	public static function redact( array $context ) {
 		foreach ( $context as $key => $value ) {
 			if ( in_array( strtolower( (string) $key ), self::$sensitive, true ) ) {
 				$context[ $key ] = '[redacted]';

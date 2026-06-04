@@ -20,6 +20,23 @@
 	border: 0;
 }
 
+/* Semantic lists used for stats/grids carry no list styling. */
+.tcm-grid,
+.tcm-stats,
+.tcm-mini-stats {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+/* The optional contact-details group is a fieldset; strip the native chrome. */
+.tcm-contact-fields {
+	border: 0;
+	margin: 0;
+	padding: 0;
+	min-inline-size: auto;
+}
+
 .tcm-wrap {
 	direction: rtl;
 	text-align: right;

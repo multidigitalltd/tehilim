@@ -23,9 +23,10 @@ use TCM\Support\Hebrew;
 
 $free_count = is_array($free) ? count($free) : 0;
 $select_id  = 'tcm-chapter-' . (int) $campaign_id;
+$error_id   = 'tcm-join-error-' . (int) $campaign_id;
 ?>
-<div class="tcm-card tcm-join-card">
-	<h3><?php echo esc_html($join_title); ?></h3>
+<section class="tcm-card tcm-join-card" aria-labelledby="tcm-join-heading-<?php echo esc_attr($campaign_id); ?>">
+	<h3 id="tcm-join-heading-<?php echo esc_attr($campaign_id); ?>"><?php echo esc_html($join_title); ?></h3>
 
 	<?php if (!$free) : ?>
 		<p><?php esc_html_e('All chapters in the current book are taken. Please check back soon.', 'tehillim-campaign-manager'); ?></p>
@@ -82,7 +83,8 @@ $select_id  = 'tcm-chapter-' . (int) $campaign_id;
 				</select>
 			</div>
 
-			<div class="tcm-fields-row tcm-contact-fields">
+			<fieldset class="tcm-fields-row tcm-contact-fields">
+				<legend class="screen-reader-text"><?php esc_html_e('Your details (optional)', 'tehillim-campaign-manager'); ?></legend>
 				<div class="tcm-field">
 					<label for="tcm-name-<?php echo esc_attr($campaign_id); ?>">
 						<?php esc_html_e('Name', 'tehillim-campaign-manager'); ?>
@@ -104,7 +106,7 @@ $select_id  = 'tcm-chapter-' . (int) $campaign_id;
 					</label>
 					<input type="tel" id="tcm-phone-<?php echo esc_attr($campaign_id); ?>" name="phone" autocomplete="tel">
 				</div>
-			</div>
+			</fieldset>
 
 			<p class="tcm-muted"><?php esc_html_e('Your details are used only to send your chapter and reminders, and are optional.', 'tehillim-campaign-manager'); ?></p>
 
@@ -113,7 +115,7 @@ $select_id  = 'tcm-chapter-' . (int) $campaign_id;
 			<?php endif; ?>
 
 			<button class="tcm-btn tcm-submit-btn" type="submit"><?php echo esc_html($button_text); ?></button>
-			<p class="tcm-form-error" role="alert" hidden></p>
+			<p class="tcm-form-error" id="<?php echo esc_attr($error_id); ?>" role="alert" aria-live="assertive" tabindex="-1" hidden></p>
 		</form>
 	<?php endif; ?>
-</div>
+</section>

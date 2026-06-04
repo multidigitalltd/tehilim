@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 ?>
-<div class="tcm-card">
+<section class="tcm-card" aria-label="<?php esc_attr_e('Campaign progress', 'tehillim-campaign-manager'); ?>">
 	<h2 class="tcm-title"><?php echo esc_html($title); ?></h2>
 
 	<?php if (!empty($description)) : ?>
@@ -73,4 +73,4 @@ if (!defined('ABSPATH')) {
 			?>
 		</li>
 	</ul>
-</div>
+</section>

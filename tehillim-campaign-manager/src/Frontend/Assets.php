@@ -25,7 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 final class Assets implements Registerable {
 
-	const HANDLE = 'tcm-frontend';
+	const HANDLE       = 'tcm-frontend';
+	const FONTS_HANDLE = 'tcm-fonts';
 
 	/**
 	 * {@inheritDoc}
@@ -57,7 +58,18 @@ final class Assets implements Registerable {
 			return;
 		}
 
-		wp_register_style( self::HANDLE, TCM_PLUGIN_URL . 'assets/css/frontend.css', array(), TCM_VERSION );
+		// Display + body typography (Frank Ruhl Libre + Heebo). Filterable so a
+		// site can self-host or disable the Google Fonts request.
+		$fonts_url = apply_filters(
+			'tcm_fonts_url',
+			'https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;800&family=Heebo:wght@400;500;700;800&display=swap'
+		);
+		if ( $fonts_url ) {
+			wp_register_style( self::FONTS_HANDLE, $fonts_url, array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		}
+
+		$deps = $fonts_url ? array( self::FONTS_HANDLE ) : array();
+		wp_register_style( self::HANDLE, TCM_PLUGIN_URL . 'assets/css/frontend.css', $deps, TCM_VERSION );
 		wp_add_inline_style( self::HANDLE, self::token_css() );
 
 		wp_register_script( self::HANDLE, TCM_PLUGIN_URL . 'assets/js/frontend.js', array(), TCM_VERSION, true );
@@ -125,17 +137,19 @@ final class Assets implements Registerable {
 			return max( $min, min( $max, $value ) );
 		};
 
+		// Defaults follow the "Psalms Unite" skin: deep-indigo primary, soft-gold
+		// accent, warm parchment surfaces. All remain overridable from settings.
 		$vars = array(
-			'--tcm-primary'       => $hex( 'design_primary_color', '#1f2937' ),
-			'--tcm-secondary'     => $hex( 'design_secondary_color', '#1f9d55' ),
+			'--tcm-primary'       => $hex( 'design_primary_color', '#3a3578' ),
+			'--tcm-secondary'     => $hex( 'design_secondary_color', '#c39a45' ),
 			'--tcm-card-bg'       => $hex( 'design_card_bg', '#ffffff' ),
-			'--tcm-text'          => $hex( 'design_text_color', '#111111' ),
-			'--tcm-muted'         => $hex( 'design_muted_color', '#595959' ),
+			'--tcm-text'          => $hex( 'design_text_color', '#23213a' ),
+			'--tcm-muted'         => $hex( 'design_muted_color', '#6b6880' ),
 			'--tcm-field-bg'      => $hex( 'design_field_bg', '#ffffff' ),
-			'--tcm-field-border'  => $hex( 'design_field_border', '#dddddd' ),
+			'--tcm-field-border'  => $hex( 'design_field_border', '#e0dccf' ),
 			'--tcm-button-text'   => $hex( 'design_button_text_color', '#ffffff' ),
 			'--tcm-radius'        => $int( 'design_radius', 18, 0, 60 ) . 'px',
-			'--tcm-button-radius' => $int( 'design_button_radius', 999, 0, 999 ) . 'px',
+			'--tcm-button-radius' => $int( 'design_button_radius', 14, 0, 999 ) . 'px',
 			'--tcm-field-radius'  => $int( 'design_field_radius', 12, 0, 60 ) . 'px',
 			'--tcm-title-size'    => $int( 'design_title_size', 28, 16, 64 ) . 'px',
 			'--tcm-max-width'     => $int( 'design_max_width', 980, 320, 1600 ) . 'px',

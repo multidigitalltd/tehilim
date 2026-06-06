@@ -88,6 +88,24 @@ msgstr "בונוס"
 msgid "Bonus books"
 msgstr "ספרי בונוס"
 
+msgid "Set up site"
+msgstr "הקמת אתר"
+
+msgid "Set up the site pages"
+msgstr "הקמת עמודי האתר"
+
+msgid "Done — pages and menu are ready."
+msgstr "בוצע — העמודים והתפריט מוכנים."
+
+msgid "Create the campaign, personal-area, ambassadors and segulot pages — plus a navigation menu — in one click. Existing pages are kept."
+msgstr "יצירה בקליק של עמודי הקמפיינים, האזור האישי, השגרירים והסגולות — יחד עם תפריט ניווט. עמודים קיימים נשמרים."
+
+msgid "Create pages and menu"
+msgstr "צור עמודים ותפריט"
+
+msgid "Not created yet"
+msgstr "טרם נוצר"
+
 msgid "Bonus: %1$s of %2$s books"
 msgstr "בונוס: %1$s מתוך %2$s ספרים"
 

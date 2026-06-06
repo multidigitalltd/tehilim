@@ -118,6 +118,12 @@ msgstr "פרקי תהילים נאמרו"
 msgid "%1$s / %2$s books"
 msgstr "%1$s / %2$s ספרים"
 
+msgid "Tehillim campaign"
+msgstr "קמפיין תהילים"
+
+msgid "In progress"
+msgstr "בתהליך"
+
 msgid "Bonus: %1$s of %2$s books"
 msgstr "בונוס: %1$s מתוך %2$s ספרים"
 

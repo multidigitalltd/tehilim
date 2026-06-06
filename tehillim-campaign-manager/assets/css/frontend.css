@@ -467,6 +467,79 @@
 		linear-gradient(180deg, var(--tcm-surface), var(--tcm-primary-soft));
 }
 
+/* Single-campaign hero header. */
+.tcm-campaign-hero {
+	padding: 32px 28px;
+	border: 1px solid var(--tcm-border-soft);
+}
+
+.tcm-eyebrow {
+	margin: 0 0 10px;
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	color: var(--tcm-gold);
+}
+
+.tcm-hero-title {
+	font-size: clamp(26px, 4.5vw, 44px);
+	line-height: 1.1;
+}
+
+.tcm-hero-progress {
+	margin-top: 18px;
+}
+
+.tcm-progress-top {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.tcm-pct {
+	font-family: var(--tcm-display-font);
+	font-size: clamp(28px, 5vw, 40px);
+	font-weight: 800;
+	color: var(--tcm-primary);
+	line-height: 1;
+}
+
+.tcm-campaign-hero .tcm-progress {
+	height: 14px;
+}
+
+/* Sheen sweep over the progress fill (disabled under reduced-motion). */
+.tcm-progress > span {
+	position: relative;
+	overflow: hidden;
+}
+
+.tcm-progress > span::after {
+	content: "";
+	position: absolute;
+	inset: 0 0 0 -40%;
+	width: 40%;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+	transform: translateX(-100%);
+	animation: tcm-sheen 2.6s ease-in-out infinite;
+}
+
+@keyframes tcm-sheen {
+	0% { transform: translateX(-120%); }
+	60%, 100% { transform: translateX(420%); }
+}
+
+/* Prayer cards: a calm ornamental header instead of a photo. */
+.tcm-prayer-card__media {
+	display: grid;
+	place-items: center;
+	aspect-ratio: 16 / 7;
+	font-size: 2.4rem;
+	color: var(--tcm-primary);
+	opacity: 0.7;
+	background: linear-gradient(135deg, var(--tcm-primary-soft), var(--tcm-gold-soft));
+}
+
 /* Honour reduced-motion preferences. */
 @media (prefers-reduced-motion: reduce) {
 	* {

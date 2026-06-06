@@ -16,13 +16,18 @@ Text Domain: tehillim-companion
 }
 
 body {
-	font-family: "Assistant", "Heebo", Arial, Helvetica, sans-serif;
+	font-family: "Heebo", "Inter", ui-sans-serif, system-ui, sans-serif;
 	line-height: 1.7;
+}
+
+h1, h2, h3, h4 {
+	font-family: "Frank Ruhl Libre", "Fraunces", ui-serif, Georgia, serif;
+	letter-spacing: -0.01em;
 }
 
 a:focus-visible,
 button:focus-visible {
-	outline: 3px solid #1f9d55;
+	outline: 3px solid #c39a45;
 	outline-offset: 2px;
 }
 

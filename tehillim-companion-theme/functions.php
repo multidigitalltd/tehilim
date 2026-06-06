@@ -23,6 +23,12 @@ add_action(
 add_action(
     'wp_enqueue_scripts',
     static function () {
-        wp_enqueue_style('tehillim-companion', get_stylesheet_uri(), array(), '1.0.0');
+        wp_enqueue_style(
+            'tehillim-companion-fonts',
+            'https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;800&family=Heebo:wght@400;500;700;800&display=swap',
+            array(),
+            null
+        );
+        wp_enqueue_style('tehillim-companion', get_stylesheet_uri(), array('tehillim-companion-fonts'), '1.0.0');
     }
 );

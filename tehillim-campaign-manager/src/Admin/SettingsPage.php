@@ -123,6 +123,17 @@ final class SettingsPage implements Registerable {
 			}
 		}
 
+		// Fonts: family names (strip characters that could break the declaration).
+		foreach ( array( 'design_font_family', 'design_display_font' ) as $key ) {
+			$value         = isset( $input[ $key ] ) ? sanitize_text_field( $input[ $key ] ) : '';
+			$clean[ $key ] = (string) preg_replace( '/[;{}<>]/', '', $value );
+		}
+		$clean['design_disable_google_fonts'] = empty( $input['design_disable_google_fonts'] ) ? '0' : '1';
+
+		// Custom CSS (e.g. self-hosted @font-face). Strip tags to prevent a
+		// </style> break-out; CSS syntax itself is preserved.
+		$clean['design_custom_css'] = isset( $input['design_custom_css'] ) ? wp_strip_all_tags( $input['design_custom_css'] ) : '';
+
 		// Secrets: keep existing when the field is left blank.
 		foreach ( $this->secrets as $key ) {
 			$submitted     = isset( $input[ $key ] ) ? trim( (string) $input[ $key ] ) : '';
@@ -210,6 +221,11 @@ final class SettingsPage implements Registerable {
 			) as $key => $label ) {
 				$this->color_row( $key, $label, $o );
 			}
+			echo '<tr><td colspan="2"><h2>' . esc_html__( 'Fonts', 'tehillim-campaign-manager' ) . '</h2></td></tr>';
+			$this->text_row( 'design_font_family', __( 'Body font family', 'tehillim-campaign-manager' ), $o, __( 'CSS font-family, e.g. "MyAA Pro", Heebo, sans-serif. Leave blank for the default.', 'tehillim-campaign-manager' ) );
+			$this->text_row( 'design_display_font', __( 'Headings font family', 'tehillim-campaign-manager' ), $o );
+			$this->checkbox_row( 'design_disable_google_fonts', __( 'Self-host fonts (do not load Google Fonts)', 'tehillim-campaign-manager' ), $o, '0' );
+			$this->textarea_row( 'design_custom_css', __( 'Custom CSS (e.g. @font-face for a licensed font)', 'tehillim-campaign-manager' ), $o, __( 'Upload your font files (Media or theme) and paste the @font-face here, then set the family name above.', 'tehillim-campaign-manager' ) );
 		}
 	}
 
@@ -298,15 +314,16 @@ final class SettingsPage implements Registerable {
 	}
 
 	/**
-	 * @param string $key   Key.
-	 * @param string $label Label.
-	 * @param array  $o     Options.
+	 * @param string $key     Key.
+	 * @param string $label   Label.
+	 * @param array  $o       Options.
+	 * @param string $default Default state when unset ('1' = checked).
 	 * @return void
 	 */
-	private function checkbox_row( $key, $label, $o ) {
+	private function checkbox_row( $key, $label, $o, $default = '1' ) {
 		$this->row(
 			$label,
-			'<label><input type="checkbox" name="tcm_options[' . esc_attr( $key ) . ']" value="1" ' . checked( ( $o[ $key ] ?? '1' ), '1', false ) . '> ' . esc_html__( 'Enabled', 'tehillim-campaign-manager' ) . '</label>'
+			'<label><input type="checkbox" name="tcm_options[' . esc_attr( $key ) . ']" value="1" ' . checked( ( $o[ $key ] ?? $default ), '1', false ) . '> ' . esc_html__( 'Enabled', 'tehillim-campaign-manager' ) . '</label>'
 		);
 	}
 

@@ -1,12 +1,27 @@
 /**
- * Tehillim Campaign Manager — front-end styles (v3.0).
+ * Tehillim Campaign Manager — front-end styles (v3.0, "Psalms Unite" skin).
  *
- * Lean by design: inherited properties (color, direction, font, line-height)
- * are declared once on the .tcm-wrap container and NOT repeated on children;
- * variants are expressed with state attributes ([data-status]) and context
- * selectors, not duplicate utility classes. Colours/radii come from the
- * :root design tokens injected by Assets::token_css().
+ * Visual language ported from the Lovable design: warm parchment surfaces, a
+ * deep-indigo primary and a soft-gold accent, with Heebo (body) and Frank Ruhl
+ * Libre (display) typography. Admin-overridable values still come from the
+ * :root tokens injected by Assets::token_css(); the extra palette/typography
+ * tokens below provide the skin and remain lean (declared once, inherited).
  */
+
+:root {
+	/* The gold accent IS the admin-configurable "Secondary / progress" colour;
+	   it falls back to the skin's gold when no override is set, so the Design
+	   tab keeps controlling the progress fill, secondary buttons and focus. */
+	--tcm-gold: var(--tcm-secondary, #c39a45);
+	--tcm-gold-soft: #f4e8cd;
+	--tcm-primary-soft: #ebe9f7;
+	--tcm-surface: #faf8f2;
+	--tcm-border-soft: #e8e3d6;
+	--tcm-display-font: "Frank Ruhl Libre", "Fraunces", ui-serif, Georgia, serif;
+	--tcm-body-font: "Heebo", "Inter", ui-sans-serif, system-ui, sans-serif;
+	--tcm-shadow: 0 14px 34px -18px rgba(36, 33, 58, 0.35);
+	--tcm-shadow-sm: 0 6px 18px -10px rgba(36, 33, 58, 0.28);
+}
 
 .screen-reader-text {
 	position: absolute !important;
@@ -41,18 +56,20 @@
 	direction: rtl;
 	text-align: right;
 	color: var(--tcm-text);
-	font-family: inherit;
-	line-height: 1.6;
+	font-family: var(--tcm-body-font);
+	line-height: 1.7;
 	max-width: var(--tcm-max-width);
 	margin: 20px auto;
+	-webkit-font-smoothing: antialiased;
 }
 
+/* Cards: warm surface, soft border, gentle indigo-tinted shadow. */
 .tcm-card {
 	background: var(--tcm-card-bg);
-	border: 1px solid #e7e7e7;
+	border: 1px solid var(--tcm-border-soft);
 	border-radius: var(--tcm-radius);
 	padding: 24px;
-	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+	box-shadow: var(--tcm-shadow);
 	margin-bottom: 18px;
 }
 
@@ -61,9 +78,18 @@
 	margin-top: 0;
 }
 
+.tcm-card h2,
+.tcm-card h3,
+.tcm-title {
+	font-family: var(--tcm-display-font);
+	letter-spacing: -0.01em;
+	color: var(--tcm-text);
+}
+
 .tcm-title {
 	font-size: var(--tcm-title-size);
 	font-weight: 800;
+	margin: 0 0 6px;
 }
 
 .tcm-muted {
@@ -71,10 +97,10 @@
 	font-size: 0.9rem;
 }
 
-/* Progress bar — paired with role="progressbar" + aria values in markup. */
+/* Progress bar — indigo→gold gradient, paired with role="progressbar". */
 .tcm-progress {
-	height: 18px;
-	background: #eee;
+	height: 12px;
+	background: var(--tcm-primary-soft);
 	border-radius: 100px;
 	overflow: hidden;
 	margin: 14px 0;
@@ -83,36 +109,59 @@
 .tcm-progress > span {
 	display: block;
 	height: 100%;
-	background: var(--tcm-secondary);
+	background: linear-gradient(90deg, var(--tcm-primary), var(--tcm-gold));
 	border-radius: 100px;
+	transition: width 1.1s ease-out;
+}
+
+.tcm-progress-label {
+	font-family: var(--tcm-display-font);
+	font-weight: 700;
+	margin-bottom: 6px;
 }
 
 /* Buttons. */
 .tcm-btn {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
 	border: 0;
 	background: var(--tcm-primary);
 	color: var(--tcm-button-text);
 	border-radius: var(--tcm-button-radius);
-	padding: 12px 22px;
-	font-weight: 800;
+	padding: 12px 24px;
+	font-family: var(--tcm-body-font);
+	font-weight: 700;
+	font-size: 1rem;
 	text-decoration: none;
 	cursor: pointer;
 	margin: 6px 4px;
-	min-height: 44px;
-}
-
-.tcm-btn.is-secondary {
-	background: var(--tcm-secondary);
+	min-height: 48px;
+	box-shadow: var(--tcm-shadow-sm);
+	transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
 }
 
 .tcm-btn:hover {
-	opacity: 0.9;
+	transform: translateY(-1px);
+	box-shadow: var(--tcm-shadow);
+}
+
+.tcm-btn.is-secondary {
+	background: var(--tcm-gold);
+	color: #2a2410;
 }
 
 .tcm-btn:focus-visible {
-	outline: 3px solid var(--tcm-secondary);
+	outline: 3px solid var(--tcm-gold);
 	outline-offset: 2px;
+}
+
+.tcm-submit-btn {
+	width: 100%;
+	margin-top: 16px;
+	font-size: 1.05rem;
+	min-height: 56px;
 }
 
 /* Forms. */
@@ -126,12 +175,91 @@
 .tcm-field select,
 .tcm-field textarea {
 	width: 100%;
-	padding: 12px;
+	padding: 12px 14px;
 	min-height: 52px;
 	border: 1px solid var(--tcm-field-border);
 	border-radius: var(--tcm-field-radius);
 	background: var(--tcm-field-bg);
+	color: var(--tcm-text);
+	font-family: var(--tcm-body-font);
+	font-size: 1rem;
 	box-sizing: border-box;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tcm-field input:focus,
+.tcm-field select:focus,
+.tcm-field textarea:focus {
+	outline: none;
+	border-color: var(--tcm-primary);
+	box-shadow: 0 0 0 3px var(--tcm-primary-soft);
+}
+
+.tcm-field input[aria-invalid="true"],
+.tcm-field select[aria-invalid="true"] {
+	border-color: #b3261e;
+	box-shadow: 0 0 0 3px rgba(179, 38, 30, 0.14);
+}
+
+.tcm-form-error {
+	color: #b3261e;
+	font-weight: 600;
+	margin-top: 8px;
+}
+
+/* Stat chips and badges. */
+.tcm-stats {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin: 14px 0;
+}
+
+.tcm-stat {
+	background: var(--tcm-primary-soft);
+	color: var(--tcm-primary);
+	border-radius: 14px;
+	padding: 10px 14px;
+	font-weight: 600;
+}
+
+.tcm-mini-stats {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+	gap: 12px;
+}
+
+.tcm-mini-stat {
+	background: linear-gradient(160deg, var(--tcm-primary-soft), var(--tcm-surface));
+	border: 1px solid var(--tcm-border-soft);
+	border-radius: 16px;
+	padding: 16px 12px;
+	text-align: center;
+}
+
+.tcm-mini-stat strong {
+	display: block;
+	font-family: var(--tcm-display-font);
+	font-size: 1.7rem;
+	font-weight: 800;
+	color: var(--tcm-text);
+}
+
+.tcm-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: var(--tcm-primary-soft);
+	color: var(--tcm-primary);
+	border-radius: 999px;
+	padding: 5px 12px;
+	font-weight: 700;
+	font-size: 0.85rem;
+}
+
+.tcm-badge.tcm-urgent {
+	background: var(--tcm-gold-soft);
+	color: #6b4e16;
 }
 
 /* Chapter grid — status conveyed by colour AND icon + text (WCAG 1.4.1). */
@@ -142,25 +270,93 @@
 }
 
 .tcm-chapter {
-	border-radius: 12px;
+	border-radius: 14px;
 	padding: 10px;
 	text-align: center;
-	font-weight: 800;
-	background: #f1f1f1;
-	color: #333;
+	font-weight: 700;
+	background: var(--tcm-surface);
+	border: 1px solid var(--tcm-border-soft);
+	color: var(--tcm-text);
 }
 
 .tcm-chapter[data-status="taken"] {
-	background: #fff3cd;
+	background: var(--tcm-gold-soft);
+	border-color: #e7d4a3;
 }
 
 .tcm-chapter[data-status="done"] {
-	background: #d9f5e5;
+	background: var(--tcm-primary-soft);
+	border-color: #d6d1ef;
 }
 
 .tcm-chapter__icon {
 	display: block;
 	font-size: 0.85rem;
+	color: var(--tcm-muted);
+}
+
+/* Reader: comfortable long-form typography. */
+.tcm-chapter-text {
+	font-family: var(--tcm-display-font);
+	font-size: 1.25rem;
+	line-height: 2;
+	margin-top: 18px;
+}
+
+.tcm-notice {
+	background: var(--tcm-gold-soft);
+	border: 1px solid #e7d4a3;
+	color: #5f4914;
+	border-radius: 14px;
+	padding: 12px 16px;
+	margin: 12px 0;
+}
+
+/* Campaign / prayer archive grid. */
+.tcm-campaign-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 16px;
+}
+
+.tcm-campaign-link {
+	display: block;
+	text-decoration: none;
+	color: inherit;
+	transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.tcm-campaign-link:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--tcm-shadow);
+}
+
+.tcm-share-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 8px;
+}
+
+/* Sponsored ad units (clearly labelled, never inside the reader). */
+.tcm-ad {
+	margin: 16px 0;
+	text-align: center;
+}
+
+.tcm-ad__label {
+	display: block;
+	font-size: 0.7rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--tcm-muted);
+	margin-bottom: 4px;
+}
+
+.tcm-ad img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 14px;
 }
 
 /* Honour reduced-motion preferences. */

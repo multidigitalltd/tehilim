@@ -25,7 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 final class Assets implements Registerable {
 
-	const HANDLE = 'tcm-frontend';
+	const HANDLE       = 'tcm-frontend';
+	const FONTS_HANDLE = 'tcm-fonts';
 
 	/**
 	 * {@inheritDoc}
@@ -57,8 +58,29 @@ final class Assets implements Registerable {
 			return;
 		}
 
-		wp_register_style( self::HANDLE, TCM_PLUGIN_URL . 'assets/css/frontend.css', array(), TCM_VERSION );
+		$options = get_option( 'tcm_options', array() );
+
+		// Display + body typography (Frank Ruhl Libre + Heebo) from Google Fonts.
+		// Skipped when the site self-hosts a licensed font (Design tab toggle),
+		// and filterable via `tcm_fonts_url` for a custom source.
+		$disabled  = ! empty( $options['design_disable_google_fonts'] ) && '1' === $options['design_disable_google_fonts'];
+		$fonts_url = $disabled ? '' : apply_filters(
+			'tcm_fonts_url',
+			'https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;800&family=Heebo:wght@400;500;700;800&display=swap'
+		);
+		if ( $fonts_url ) {
+			wp_register_style( self::FONTS_HANDLE, $fonts_url, array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		}
+
+		$deps = $fonts_url ? array( self::FONTS_HANDLE ) : array();
+		wp_register_style( self::HANDLE, TCM_PLUGIN_URL . 'assets/css/frontend.css', $deps, TCM_VERSION );
 		wp_add_inline_style( self::HANDLE, self::token_css() );
+
+		// Admin-provided custom CSS (e.g. @font-face for a self-hosted font).
+		$custom = isset( $options['design_custom_css'] ) ? wp_strip_all_tags( (string) $options['design_custom_css'] ) : '';
+		if ( '' !== trim( $custom ) ) {
+			wp_add_inline_style( self::HANDLE, $custom );
+		}
 
 		wp_register_script( self::HANDLE, TCM_PLUGIN_URL . 'assets/js/frontend.js', array(), TCM_VERSION, true );
 		wp_localize_script(
@@ -116,29 +138,38 @@ final class Assets implements Registerable {
 	private static function token_css() {
 		$options = get_option( 'tcm_options', array() );
 
-		$hex = static function ( $key, $default ) use ( $options ) {
+		$hex  = static function ( $key, $default ) use ( $options ) {
 			$value = isset( $options[ $key ] ) ? sanitize_hex_color( $options[ $key ] ) : '';
 			return $value ? $value : $default;
 		};
-		$int = static function ( $key, $default, $min, $max ) use ( $options ) {
+		$int  = static function ( $key, $default, $min, $max ) use ( $options ) {
 			$value = isset( $options[ $key ] ) ? absint( $options[ $key ] ) : $default;
 			return max( $min, min( $max, $value ) );
 		};
+		$font = static function ( $key, $default ) use ( $options ) {
+			$value = isset( $options[ $key ] ) ? trim( (string) $options[ $key ] ) : '';
+			$value = (string) preg_replace( '/[;{}<>]/', '', $value );
+			return '' !== $value ? $value : $default;
+		};
 
+		// Defaults follow the "Psalms Unite" skin: deep-indigo primary, soft-gold
+		// accent, warm parchment surfaces. All remain overridable from settings.
 		$vars = array(
-			'--tcm-primary'       => $hex( 'design_primary_color', '#1f2937' ),
-			'--tcm-secondary'     => $hex( 'design_secondary_color', '#1f9d55' ),
+			'--tcm-primary'       => $hex( 'design_primary_color', '#3a3578' ),
+			'--tcm-secondary'     => $hex( 'design_secondary_color', '#c39a45' ),
 			'--tcm-card-bg'       => $hex( 'design_card_bg', '#ffffff' ),
-			'--tcm-text'          => $hex( 'design_text_color', '#111111' ),
-			'--tcm-muted'         => $hex( 'design_muted_color', '#595959' ),
+			'--tcm-text'          => $hex( 'design_text_color', '#23213a' ),
+			'--tcm-muted'         => $hex( 'design_muted_color', '#6b6880' ),
 			'--tcm-field-bg'      => $hex( 'design_field_bg', '#ffffff' ),
-			'--tcm-field-border'  => $hex( 'design_field_border', '#dddddd' ),
+			'--tcm-field-border'  => $hex( 'design_field_border', '#e0dccf' ),
 			'--tcm-button-text'   => $hex( 'design_button_text_color', '#ffffff' ),
 			'--tcm-radius'        => $int( 'design_radius', 18, 0, 60 ) . 'px',
-			'--tcm-button-radius' => $int( 'design_button_radius', 999, 0, 999 ) . 'px',
+			'--tcm-button-radius' => $int( 'design_button_radius', 14, 0, 999 ) . 'px',
 			'--tcm-field-radius'  => $int( 'design_field_radius', 12, 0, 60 ) . 'px',
 			'--tcm-title-size'    => $int( 'design_title_size', 28, 16, 64 ) . 'px',
 			'--tcm-max-width'     => $int( 'design_max_width', 980, 320, 1600 ) . 'px',
+			'--tcm-body-font'     => $font( 'design_font_family', '"Heebo", "Inter", ui-sans-serif, system-ui, sans-serif' ),
+			'--tcm-display-font'  => $font( 'design_display_font', '"Frank Ruhl Libre", "Fraunces", ui-serif, Georgia, serif' ),
 		);
 
 		$declarations = '';

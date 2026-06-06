@@ -106,6 +106,18 @@ msgstr "צור עמודים ותפריט"
 msgid "Not created yet"
 msgstr "טרם נוצר"
 
+msgid "The community — in real time"
+msgstr "הקהילה ביחד — בזמן אמת"
+
+msgid "Active campaigns"
+msgstr "קמפיינים פעילים"
+
+msgid "Chapters of Tehillim said"
+msgstr "פרקי תהילים נאמרו"
+
+msgid "%1$s / %2$s books"
+msgstr "%1$s / %2$s ספרים"
+
 msgid "Bonus: %1$s of %2$s books"
 msgstr "בונוס: %1$s מתוך %2$s ספרים"
 

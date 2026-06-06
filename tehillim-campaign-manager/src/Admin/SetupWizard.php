@@ -26,38 +26,45 @@ final class SetupWizard implements Registerable {
 	const MENU   = 'תפריט תהילים';
 
 	/**
-	 * The pages to create: key => [title, shortcode].
+	 * The pages to create: key => [title, slug, shortcode].
 	 *
-	 * @return array<string,array{title:string,shortcode:string}>
+	 * @return array<string,array{title:string,slug:string,shortcode:string}>
 	 */
 	private function definitions() {
 		return array(
 			'home'        => array(
 				'title'     => 'קמפיינים',
+				'slug'      => 'campaigns',
 				'shortcode' => '[tehillim_campaigns]',
 			),
 			'segulot'     => array(
 				'title'     => 'סגולות ותפילות',
+				'slug'      => 'prayers',
 				'shortcode' => '[tehillim_segulot]',
 			),
 			'create'      => array(
 				'title'     => 'פתיחת קמפיין',
+				'slug'      => 'create-campaign',
 				'shortcode' => '[tehillim_create_campaign_form]',
 			),
 			'my'          => array(
 				'title'     => 'האזור האישי שלי',
+				'slug'      => 'my-campaigns',
 				'shortcode' => '[tehillim_my_campaigns]',
 			),
 			'activity'    => array(
 				'title'     => 'הפעילות שלי',
+				'slug'      => 'my-activity',
 				'shortcode' => '[tehillim_my_activity]',
 			),
 			'ambassadors' => array(
 				'title'     => 'שגרירים',
+				'slug'      => 'ambassadors',
 				'shortcode' => '[tehillim_ambassador_dashboard]',
 			),
 			'subscribe'   => array(
 				'title'     => 'תהילים יומי',
+				'slug'      => 'daily-tehillim',
 				'shortcode' => '[tehillim_subscribe]',
 			),
 		);
@@ -150,6 +157,15 @@ final class SetupWizard implements Registerable {
 		foreach ( $this->definitions() as $key => $def ) {
 			$existing = isset( $pages[ $key ] ) ? (int) $pages[ $key ] : 0;
 			if ( $existing && get_post( $existing ) && 'trash' !== get_post_status( $existing ) ) {
+				// Fix the slug of a page created before (English, not Hebrew).
+				if ( get_post_field( 'post_name', $existing ) !== $def['slug'] ) {
+					wp_update_post(
+						array(
+							'ID'        => $existing,
+							'post_name' => $def['slug'],
+						)
+					);
+				}
 				continue;
 			}
 			$id = wp_insert_post(
@@ -157,6 +173,7 @@ final class SetupWizard implements Registerable {
 					'post_type'    => 'page',
 					'post_status'  => 'publish',
 					'post_title'   => $def['title'],
+					'post_name'    => $def['slug'],
 					'post_content' => $def['shortcode'],
 				),
 				true

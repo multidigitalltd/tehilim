@@ -133,6 +133,8 @@ final class Shortcodes implements Registerable {
 				'id'        => $post->ID,
 				'title'     => get_the_title( $post ),
 				'permalink' => get_permalink( $post ),
+				'excerpt'   => wp_trim_words( wp_strip_all_tags( (string) get_post_field( 'post_content', $post ) ), 22 ),
+				'thumb'     => get_the_post_thumbnail_url( $post, 'large' ),
 				'stats'     => $this->stats->for_campaign( $post->ID ),
 			);
 		}

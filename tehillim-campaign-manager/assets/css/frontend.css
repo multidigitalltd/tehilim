@@ -359,6 +359,114 @@
 	border-radius: 14px;
 }
 
+/* Campaign cards (archive) — media header, title, excerpt, progress, CTA. */
+.tcm-campaign-card {
+	padding: 0;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.tcm-campaign-card__media {
+	display: block;
+	aspect-ratio: 16 / 9;
+	background: linear-gradient(135deg, var(--tcm-primary-soft), var(--tcm-gold-soft));
+	background-size: cover;
+	background-position: center;
+}
+
+.tcm-campaign-card__body {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 18px 20px 20px;
+}
+
+.tcm-campaign-card__title {
+	font-family: var(--tcm-display-font);
+	font-size: 1.2rem;
+	font-weight: 700;
+	line-height: 1.3;
+	color: var(--tcm-text);
+}
+
+.tcm-campaign-card__excerpt {
+	color: var(--tcm-muted);
+	font-size: 0.92rem;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.tcm-progress-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin-top: 4px;
+	font-size: 0.82rem;
+	color: var(--tcm-muted);
+}
+
+.tcm-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	background: var(--tcm-primary-soft);
+	color: var(--tcm-primary);
+	border-radius: 999px;
+	padding: 3px 10px;
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.tcm-pill.is-done {
+	background: var(--tcm-gold-soft);
+	color: #6b4e16;
+}
+
+.tcm-btn.is-block {
+	width: 100%;
+	margin: 10px 0 0;
+}
+
+/* Decorative section eyebrow (gold dividers + tracked label). */
+.tcm-section-eyebrow {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	margin: 0 0 14px;
+	font-size: 0.78rem;
+	font-weight: 600;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--tcm-muted);
+}
+
+.tcm-section-eyebrow::before,
+.tcm-section-eyebrow::after {
+	content: "";
+	width: 34px;
+	height: 1px;
+	background: var(--tcm-gold);
+	opacity: 0.6;
+}
+
+.tcm-global-stats .tcm-mini-stat {
+	background: linear-gradient(160deg, var(--tcm-primary-soft), var(--tcm-surface));
+}
+
+/* Warm hero gradient utility (used by the companion theme / page builders). */
+.tcm-gradient-warm {
+	background-image:
+		radial-gradient(80% 60% at 50% 0%, var(--tcm-gold-soft), transparent 70%),
+		linear-gradient(180deg, var(--tcm-surface), var(--tcm-primary-soft));
+}
+
 /* Honour reduced-motion preferences. */
 @media (prefers-reduced-motion: reduce) {
 	* {

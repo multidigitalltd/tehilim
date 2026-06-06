@@ -149,6 +149,23 @@ final class AssignmentsRepository extends Repository {
 	}
 
 	/**
+	 * Site-wide totals across all campaigns (for the homepage stats strip).
+	 *
+	 * @return array{done:int,participants:int}
+	 */
+	public function global_totals() {
+		$done         = (int) $this->db->get_var( "SELECT COUNT(*) FROM {$this->table} WHERE status='done'" );
+		$participants = (int) $this->db->get_var(
+			"SELECT COUNT(DISTINCT COALESCE(NULLIF(participant_email,''), NULLIF(token,''), id))
+			 FROM {$this->table} WHERE status IN ('taken','done')"
+		);
+		return array(
+			'done'         => $done,
+			'participants' => $participants,
+		);
+	}
+
+	/**
 	 * Distinct participants in a campaign (by email, else token, else row).
 	 *
 	 * @param int $campaign_id Campaign.

@@ -58,10 +58,46 @@ final class Widgets implements Registerable {
 			'tehillim_urgency'            => 'urgency',
 			'tehillim_progress_bar'       => 'progress_bar',
 			'tehillim_data'               => 'data',
+			'tehillim_global_stats'       => 'global_stats',
 		);
 		foreach ( $map as $tag => $method ) {
 			add_shortcode( $tag, array( $this, $method ) );
 		}
+	}
+
+	/**
+	 * Site-wide "live community" stats strip (across all campaigns).
+	 *
+	 * @param array $atts Attributes.
+	 * @return string
+	 */
+	public function global_stats( $atts ) {
+		Assets::ensure();
+		$totals = $this->assignments->global_totals();
+		$query  = new \WP_Query(
+			array(
+				'post_type'      => CampaignPostType::POST_TYPE,
+				'post_status'    => 'publish',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+			)
+		);
+		$active = (int) $query->found_posts;
+
+		$items = array(
+			array( number_format_i18n( $active ), __( 'Active campaigns', 'tehillim-campaign-manager' ) ),
+			array( number_format_i18n( $totals['done'] ), __( 'Chapters of Tehillim said', 'tehillim-campaign-manager' ) ),
+			array( number_format_i18n( intdiv( $totals['done'], 150 ) ), __( 'Books completed', 'tehillim-campaign-manager' ) ),
+			array( number_format_i18n( $totals['participants'] ), __( 'Participants', 'tehillim-campaign-manager' ) ),
+		);
+
+		$out = '<div class="tcm-wrap tcm-global-stats"><p class="tcm-section-eyebrow">'
+			. esc_html__( 'The community — in real time', 'tehillim-campaign-manager' )
+			. '</p><ul class="tcm-mini-stats">';
+		foreach ( $items as $item ) {
+			$out .= '<li class="tcm-mini-stat"><strong>' . esc_html( $item[0] ) . '</strong>' . esc_html( $item[1] ) . '</li>';
+		}
+		return $out . '</ul></div>';
 	}
 
 	/**

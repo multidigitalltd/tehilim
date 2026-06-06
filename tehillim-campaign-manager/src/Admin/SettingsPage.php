@@ -38,6 +38,21 @@ final class SettingsPage implements Registerable {
 	public function register() {
 		add_action( 'admin_init', array( $this, 'register_setting' ) );
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+	}
+
+	/**
+	 * Load the media library + font picker on the settings screen only.
+	 *
+	 * @param string $hook Current admin page hook.
+	 * @return void
+	 */
+	public function enqueue_assets( $hook ) {
+		if ( false === strpos( (string) $hook, 'tcm-settings' ) ) {
+			return;
+		}
+		wp_enqueue_media();
+		wp_enqueue_script( 'tcm-admin-fonts', TCM_PLUGIN_URL . 'assets/js/admin-fonts.js', array(), TCM_VERSION, true );
 	}
 
 	/**
@@ -123,11 +138,13 @@ final class SettingsPage implements Registerable {
 			}
 		}
 
-		// Fonts: family names (strip characters that could break the declaration).
-		foreach ( array( 'design_font_family', 'design_display_font' ) as $key ) {
+		// Fonts: family / name values (strip characters that could break the
+		// declaration); the custom font URL is a normal URL.
+		foreach ( array( 'design_font_family', 'design_display_font', 'design_custom_font_name' ) as $key ) {
 			$value         = isset( $input[ $key ] ) ? sanitize_text_field( $input[ $key ] ) : '';
-			$clean[ $key ] = (string) preg_replace( '/[;{}<>]/', '', $value );
+			$clean[ $key ] = (string) preg_replace( '/[;{}<>"]/', '', $value );
 		}
+		$clean['design_custom_font_url']      = isset( $input['design_custom_font_url'] ) ? esc_url_raw( $input['design_custom_font_url'] ) : '';
 		$clean['design_disable_google_fonts'] = empty( $input['design_disable_google_fonts'] ) ? '0' : '1';
 
 		// Custom CSS (e.g. self-hosted @font-face). Strip tags to prevent a
@@ -221,11 +238,16 @@ final class SettingsPage implements Registerable {
 			) as $key => $label ) {
 				$this->color_row( $key, $label, $o );
 			}
-			echo '<tr><td colspan="2"><h2>' . esc_html__( 'Fonts', 'tehillim-campaign-manager' ) . '</h2></td></tr>';
-			$this->text_row( 'design_font_family', __( 'Body font family', 'tehillim-campaign-manager' ), $o, __( 'CSS font-family, e.g. "MyAA Pro", Heebo, sans-serif. Leave blank for the default.', 'tehillim-campaign-manager' ) );
+			echo '<tr><td colspan="2"><h2>' . esc_html__( 'Your own font (easy)', 'tehillim-campaign-manager' ) . '</h2>';
+			echo '<p class="description">' . esc_html__( 'Upload your licensed font file, choose it here and give it a name — the plugin builds the @font-face and applies it everywhere. No code needed.', 'tehillim-campaign-manager' ) . '</p></td></tr>';
+			$this->text_row( 'design_custom_font_name', __( 'Font name', 'tehillim-campaign-manager' ), $o, __( 'Any name, e.g. AA Pro.', 'tehillim-campaign-manager' ) );
+			$this->font_file_row( 'design_custom_font_url', __( 'Font file', 'tehillim-campaign-manager' ), $o );
+
+			echo '<tr><td colspan="2"><h2>' . esc_html__( 'Advanced fonts', 'tehillim-campaign-manager' ) . '</h2></td></tr>';
+			$this->text_row( 'design_font_family', __( 'Body font family', 'tehillim-campaign-manager' ), $o, __( 'Overrides the body font stack, e.g. "AA Pro", Heebo, sans-serif.', 'tehillim-campaign-manager' ) );
 			$this->text_row( 'design_display_font', __( 'Headings font family', 'tehillim-campaign-manager' ), $o );
-			$this->checkbox_row( 'design_disable_google_fonts', __( 'Self-host fonts (do not load Google Fonts)', 'tehillim-campaign-manager' ), $o, '0' );
-			$this->textarea_row( 'design_custom_css', __( 'Custom CSS (e.g. @font-face for a licensed font)', 'tehillim-campaign-manager' ), $o, __( 'Upload your font files (Media or theme) and paste the @font-face here, then set the family name above.', 'tehillim-campaign-manager' ) );
+			$this->checkbox_row( 'design_disable_google_fonts', __( 'Do not load Google Fonts (Heebo / Frank Ruhl Libre)', 'tehillim-campaign-manager' ), $o, '0' );
+			$this->textarea_row( 'design_custom_css', __( 'Custom CSS', 'tehillim-campaign-manager' ), $o, __( 'For advanced cases (extra @font-face weights, tweaks).', 'tehillim-campaign-manager' ) );
 		}
 	}
 
@@ -252,6 +274,24 @@ final class SettingsPage implements Registerable {
 	 */
 	private function url_row( $key, $label, $o ) {
 		$this->row( $label, '<input type="url" class="regular-text" placeholder="https://..." name="tcm_options[' . esc_attr( $key ) . ']" value="' . esc_attr( $o[ $key ] ?? '' ) . '">' );
+	}
+
+	/**
+	 * A URL field with a "Choose file" media-library button.
+	 *
+	 * @param string $key   Key.
+	 * @param string $label Label.
+	 * @param array  $o     Options.
+	 * @return void
+	 */
+	private function font_file_row( $key, $label, $o ) {
+		$id = 'tcm-field-' . $key;
+		$this->row(
+			$label,
+			'<input type="url" id="' . esc_attr( $id ) . '" class="regular-text" placeholder="https://...woff2" name="tcm_options[' . esc_attr( $key ) . ']" value="' . esc_attr( $o[ $key ] ?? '' ) . '"> '
+			. '<button type="button" class="button tcm-font-pick" data-target="' . esc_attr( $id ) . '" data-title="' . esc_attr__( 'Choose font file', 'tehillim-campaign-manager' ) . '" data-button="' . esc_attr__( 'Use this file', 'tehillim-campaign-manager' ) . '">' . esc_html__( 'Choose file', 'tehillim-campaign-manager' ) . '</button>',
+			__( 'Supported: woff2, woff, ttf, otf.', 'tehillim-campaign-manager' )
+		);
 	}
 
 	/**

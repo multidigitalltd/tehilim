@@ -9,7 +9,10 @@
  */
 
 :root {
-	--tcm-gold: #c39a45;
+	/* The gold accent IS the admin-configurable "Secondary / progress" colour;
+	   it falls back to the skin's gold when no override is set, so the Design
+	   tab keeps controlling the progress fill, secondary buttons and focus. */
+	--tcm-gold: var(--tcm-secondary, #c39a45);
 	--tcm-gold-soft: #f4e8cd;
 	--tcm-primary-soft: #ebe9f7;
 	--tcm-surface: #faf8f2;

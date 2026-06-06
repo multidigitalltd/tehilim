@@ -36,11 +36,14 @@ if (!defined('ABSPATH')) {
 	<?php else : ?>
 		<div class="tcm-campaign-list">
 			<?php foreach ($prayers as $prayer) : ?>
-				<a class="tcm-card" href="<?php echo esc_url($prayer['permalink']); ?>">
-					<h3><?php echo esc_html($prayer['title']); ?></h3>
-					<?php if ($prayer['excerpt']) : ?>
-						<p class="tcm-muted"><?php echo esc_html(wp_trim_words($prayer['excerpt'], 24)); ?></p>
-					<?php endif; ?>
+				<a class="tcm-card tcm-campaign-card tcm-prayer-card" href="<?php echo esc_url($prayer['permalink']); ?>">
+					<span class="tcm-campaign-card__media tcm-prayer-card__media" aria-hidden="true">۞</span>
+					<span class="tcm-campaign-card__body">
+						<span class="tcm-campaign-card__title"><?php echo esc_html($prayer['title']); ?></span>
+						<?php if ($prayer['excerpt']) : ?>
+							<span class="tcm-campaign-card__excerpt"><?php echo esc_html(wp_trim_words($prayer['excerpt'], 22)); ?></span>
+						<?php endif; ?>
+					</span>
 				</a>
 			<?php endforeach; ?>
 		</div>

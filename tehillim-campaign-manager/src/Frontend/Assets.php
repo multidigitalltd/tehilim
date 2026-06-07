@@ -203,18 +203,18 @@ final class Assets implements Registerable {
 		// accent, warm parchment surfaces. All remain overridable from settings.
 		$vars = array(
 			'--tcm-primary'       => $hex( 'design_primary_color', '#3a3578' ),
-			'--tcm-secondary'     => $hex( 'design_secondary_color', '#c39a45' ),
+			'--tcm-secondary'     => $hex( 'design_secondary_color', '#d4a23f' ),
 			'--tcm-card-bg'       => $hex( 'design_card_bg', '#ffffff' ),
 			'--tcm-text'          => $hex( 'design_text_color', '#23213a' ),
 			'--tcm-muted'         => $hex( 'design_muted_color', '#6b6880' ),
 			'--tcm-field-bg'      => $hex( 'design_field_bg', '#ffffff' ),
-			'--tcm-field-border'  => $hex( 'design_field_border', '#e0dccf' ),
+			'--tcm-field-border'  => $hex( 'design_field_border', '#e6e1d4' ),
 			'--tcm-button-text'   => $hex( 'design_button_text_color', '#ffffff' ),
-			'--tcm-radius'        => $int( 'design_radius', 18, 0, 60 ) . 'px',
+			'--tcm-radius'        => $int( 'design_radius', 20, 0, 60 ) . 'px',
 			'--tcm-button-radius' => $int( 'design_button_radius', 14, 0, 999 ) . 'px',
 			'--tcm-field-radius'  => $int( 'design_field_radius', 12, 0, 60 ) . 'px',
 			'--tcm-title-size'    => $int( 'design_title_size', 28, 16, 64 ) . 'px',
-			'--tcm-max-width'     => $int( 'design_max_width', 980, 320, 1600 ) . 'px',
+			'--tcm-max-width'     => $int( 'design_max_width', 1152, 320, 1600 ) . 'px',
 			'--tcm-body-font'     => $font( 'design_font_family', $body_default ),
 			'--tcm-display-font'  => $font( 'design_display_font', $title_default ),
 		);

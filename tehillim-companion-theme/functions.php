@@ -29,7 +29,7 @@ add_action(
             array(),
             null
         );
-        wp_enqueue_style('tehillim-companion', get_stylesheet_uri(), array('tehillim-companion-fonts'), '1.3.0');
+        wp_enqueue_style('tehillim-companion', get_stylesheet_uri(), array('tehillim-companion-fonts'), '1.4.0');
     }
 );
 

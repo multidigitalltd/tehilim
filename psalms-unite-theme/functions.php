@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'PSALMS_UNITE_THEME_VERSION', '1.9.0' );
+define( 'PSALMS_UNITE_THEME_VERSION', '1.10.0' );
 
 add_action(
 	'after_setup_theme',
@@ -138,7 +138,10 @@ add_action(
 	'after_switch_theme',
 	static function () {
 		$pages = array(
-			'home'      => array( 'title' => 'קמפייני תהילים', 'front' => true ),
+			'home'      => array(
+				'title' => 'קמפייני תהילים',
+				'front' => true,
+			),
 			'about'     => array( 'title' => 'אודות' ),
 			'campaigns' => array( 'title' => 'קמפיינים' ),
 			'create'    => array( 'title' => 'יצירת קמפיין' ),
@@ -251,169 +254,514 @@ function psalms_unite_font_css(): string {
  */
 function psalms_unite_text_config() {
 	return array(
-		'psalms_hero' => array(
-			'title' => 'תכנים — באנר ראשי (דף הבית)',
+		'psalms_hero'         => array(
+			'title'  => 'תכנים — באנר ראשי (דף הבית)',
 			'fields' => array(
-				'hero_eyebrow' => array( 'default' => 'קהילה אחת, ספר תהילים אחד', 'type' => 'text' ),
-				'hero_title' => array( 'default' => 'מאחדים אנשים סביב יעד תהילים משותף', 'type' => 'textarea' ),
-				'hero_sub' => array( 'default' => 'צרו קמפיין, הזמינו משתתפים, חלקו פרקים ועקבו אחרי ההתקדמות בזמן אמת.', 'type' => 'textarea' ),
-				'hero_cta_primary' => array( 'default' => 'יצירת קמפיין', 'type' => 'text' ),
-				'hero_cta_secondary' => array( 'default' => 'צפייה בקמפיינים', 'type' => 'text' ),
-				'hero_ribbon' => array( 'default' => 'חינם לקהילה', 'type' => 'text' ),
+				'hero_eyebrow'       => array(
+					'default' => 'קהילה אחת, ספר תהילים אחד',
+					'type'    => 'text',
+				),
+				'hero_title'         => array(
+					'default' => 'מאחדים אנשים סביב יעד תהילים משותף',
+					'type'    => 'textarea',
+				),
+				'hero_sub'           => array(
+					'default' => 'צרו קמפיין, הזמינו משתתפים, חלקו פרקים ועקבו אחרי ההתקדמות בזמן אמת.',
+					'type'    => 'textarea',
+				),
+				'hero_cta_primary'   => array(
+					'default' => 'יצירת קמפיין',
+					'type'    => 'text',
+				),
+				'hero_cta_secondary' => array(
+					'default' => 'צפייה בקמפיינים',
+					'type'    => 'text',
+				),
+				'hero_ribbon'        => array(
+					'default' => 'חינם לקהילה',
+					'type'    => 'text',
+				),
 			),
 		),
-		'psalms_how' => array(
-			'title' => 'תכנים — איך זה עובד',
+		'psalms_how'          => array(
+			'title'  => 'תכנים — איך זה עובד',
 			'fields' => array(
-				'how_title' => array( 'default' => 'איך זה עובד', 'type' => 'text' ),
-				'how_sub' => array( 'default' => 'שלושה צעדים פשוטים לקריאה משותפת.', 'type' => 'text' ),
-				'how_s1_title' => array( 'default' => 'פותחים קמפיין', 'type' => 'text' ),
-				'how_s1_text' => array( 'default' => 'מגדירים מטרה, הקדשה ותיאור קצר.', 'type' => 'textarea' ),
-				'how_s2_title' => array( 'default' => 'משתפים קישור', 'type' => 'text' ),
-				'how_s2_text' => array( 'default' => 'מזמינים משפחה, חברים ושגרירים.', 'type' => 'textarea' ),
-				'how_s3_title' => array( 'default' => 'עוקבים יחד', 'type' => 'text' ),
-				'how_s3_text' => array( 'default' => 'רואים התקדמות והשלמות בצורה ברורה.', 'type' => 'textarea' ),
+				'how_title'    => array(
+					'default' => 'איך זה עובד',
+					'type'    => 'text',
+				),
+				'how_sub'      => array(
+					'default' => 'שלושה צעדים פשוטים לקריאה משותפת.',
+					'type'    => 'text',
+				),
+				'how_s1_title' => array(
+					'default' => 'פותחים קמפיין',
+					'type'    => 'text',
+				),
+				'how_s1_text'  => array(
+					'default' => 'מגדירים מטרה, הקדשה ותיאור קצר.',
+					'type'    => 'textarea',
+				),
+				'how_s2_title' => array(
+					'default' => 'משתפים קישור',
+					'type'    => 'text',
+				),
+				'how_s2_text'  => array(
+					'default' => 'מזמינים משפחה, חברים ושגרירים.',
+					'type'    => 'textarea',
+				),
+				'how_s3_title' => array(
+					'default' => 'עוקבים יחד',
+					'type'    => 'text',
+				),
+				'how_s3_text'  => array(
+					'default' => 'רואים התקדמות והשלמות בצורה ברורה.',
+					'type'    => 'textarea',
+				),
 			),
 		),
-		'psalms_recent' => array(
-			'title' => 'תכנים — קמפיינים אחרונים',
+		'psalms_recent'       => array(
+			'title'  => 'תכנים — קמפיינים אחרונים',
 			'fields' => array(
-				'recent_title' => array( 'default' => 'קמפיינים אחרונים', 'type' => 'text' ),
-				'recent_sub' => array( 'default' => 'נמשך מתוך התוסף כאשר הוא מחובר.', 'type' => 'text' ),
-				'recent_viewall' => array( 'default' => 'לכל הקמפיינים', 'type' => 'text' ),
+				'recent_title'   => array(
+					'default' => 'קמפיינים אחרונים',
+					'type'    => 'text',
+				),
+				'recent_sub'     => array(
+					'default' => 'נמשך מתוך התוסף כאשר הוא מחובר.',
+					'type'    => 'text',
+				),
+				'recent_viewall' => array(
+					'default' => 'לכל הקמפיינים',
+					'type'    => 'text',
+				),
 			),
 		),
-		'psalms_features' => array(
-			'title' => 'תכנים — יתרונות',
+		'psalms_features'     => array(
+			'title'  => 'תכנים — יתרונות',
 			'fields' => array(
-				'features_title' => array( 'default' => 'כל מה שצריך לקמפיין מנצח', 'type' => 'text' ),
-				'feat_1_title' => array( 'default' => 'יצירת קמפיין במגוון מטרות', 'type' => 'text' ),
-				'feat_1_text' => array( 'default' => 'רפואה, ישועה, זיווג, הצלחה, לעילוי נשמה ועוד.', 'type' => 'textarea' ),
-				'feat_2_title' => array( 'default' => 'מערכת שגרירים', 'type' => 'text' ),
-				'feat_2_text' => array( 'default' => 'כל שגריר עם לינק ייעודי ולוח התקדמות אישי.', 'type' => 'textarea' ),
-				'feat_3_title' => array( 'default' => 'מעקב אישי', 'type' => 'text' ),
-				'feat_3_text' => array( 'default' => 'כל משתתף רואה את התרומה שלו ליעד.', 'type' => 'textarea' ),
-				'feat_4_title' => array( 'default' => 'התקדמות בזמן אמת', 'type' => 'text' ),
-				'feat_4_text' => array( 'default' => 'מד גדול, ספירת פרקים וספרים מתעדכנת מיד.', 'type' => 'textarea' ),
-				'feat_5_title' => array( 'default' => 'שיתוף בוואטסאפ', 'type' => 'text' ),
-				'feat_5_text' => array( 'default' => 'כפתור אחד והקמפיין מגיע לכל קבוצה.', 'type' => 'textarea' ),
-				'feat_6_title' => array( 'default' => 'השתתפות קבוצתית', 'type' => 'text' ),
-				'feat_6_text' => array( 'default' => 'משפחות, כיתות, קהילות — כולם תורמים יחד.', 'type' => 'textarea' ),
-				'feat_7_title' => array( 'default' => 'תגי הישג', 'type' => 'text' ),
-				'feat_7_text' => array( 'default' => 'ספר ראשון, 10 ספרים, שגריר מצטיין ועוד.', 'type' => 'textarea' ),
-				'feat_8_title' => array( 'default' => 'סטטיסטיקות חיות', 'type' => 'text' ),
-				'feat_8_text' => array( 'default' => 'מי תרם, מתי, וכמה — הכל שקוף.', 'type' => 'textarea' ),
+				'features_title' => array(
+					'default' => 'כל מה שצריך לקמפיין מנצח',
+					'type'    => 'text',
+				),
+				'feat_1_title'   => array(
+					'default' => 'יצירת קמפיין במגוון מטרות',
+					'type'    => 'text',
+				),
+				'feat_1_text'    => array(
+					'default' => 'רפואה, ישועה, זיווג, הצלחה, לעילוי נשמה ועוד.',
+					'type'    => 'textarea',
+				),
+				'feat_2_title'   => array(
+					'default' => 'מערכת שגרירים',
+					'type'    => 'text',
+				),
+				'feat_2_text'    => array(
+					'default' => 'כל שגריר עם לינק ייעודי ולוח התקדמות אישי.',
+					'type'    => 'textarea',
+				),
+				'feat_3_title'   => array(
+					'default' => 'מעקב אישי',
+					'type'    => 'text',
+				),
+				'feat_3_text'    => array(
+					'default' => 'כל משתתף רואה את התרומה שלו ליעד.',
+					'type'    => 'textarea',
+				),
+				'feat_4_title'   => array(
+					'default' => 'התקדמות בזמן אמת',
+					'type'    => 'text',
+				),
+				'feat_4_text'    => array(
+					'default' => 'מד גדול, ספירת פרקים וספרים מתעדכנת מיד.',
+					'type'    => 'textarea',
+				),
+				'feat_5_title'   => array(
+					'default' => 'שיתוף בוואטסאפ',
+					'type'    => 'text',
+				),
+				'feat_5_text'    => array(
+					'default' => 'כפתור אחד והקמפיין מגיע לכל קבוצה.',
+					'type'    => 'textarea',
+				),
+				'feat_6_title'   => array(
+					'default' => 'השתתפות קבוצתית',
+					'type'    => 'text',
+				),
+				'feat_6_text'    => array(
+					'default' => 'משפחות, כיתות, קהילות — כולם תורמים יחד.',
+					'type'    => 'textarea',
+				),
+				'feat_7_title'   => array(
+					'default' => 'תגי הישג',
+					'type'    => 'text',
+				),
+				'feat_7_text'    => array(
+					'default' => 'ספר ראשון, 10 ספרים, שגריר מצטיין ועוד.',
+					'type'    => 'textarea',
+				),
+				'feat_8_title'   => array(
+					'default' => 'סטטיסטיקות חיות',
+					'type'    => 'text',
+				),
+				'feat_8_text'    => array(
+					'default' => 'מי תרם, מתי, וכמה — הכל שקוף.',
+					'type'    => 'textarea',
+				),
 			),
 		),
 		'psalms_testimonials' => array(
-			'title' => 'תכנים — המלצות',
+			'title'  => 'תכנים — המלצות',
 			'fields' => array(
-				'tst_title' => array( 'default' => 'סיפורים מקהילות שהתאחדו סביב תהילים', 'type' => 'text' ),
-				'tst_1_name' => array( 'default' => 'משפחת לוי', 'type' => 'text' ),
-				'tst_1_role' => array( 'default' => 'תל אביב', 'type' => 'text' ),
-				'tst_1_text' => array( 'default' => 'תוך שבוע השלמנו 100 ספרי תהילים לרפואת אבא. לא האמנו כמה אנשים הצטרפו.', 'type' => 'textarea' ),
-				'tst_2_name' => array( 'default' => 'ביה״כ ׳אור החיים׳', 'type' => 'text' ),
-				'tst_2_role' => array( 'default' => 'ירושלים', 'type' => 'text' ),
-				'tst_2_text' => array( 'default' => 'הקמפיין איחד את הקהילה כמו שלא ראינו שנים. הילדים והנכדים השתתפו ביחד.', 'type' => 'textarea' ),
-				'tst_3_name' => array( 'default' => 'שרה מ.', 'type' => 'text' ),
-				'tst_3_role' => array( 'default' => 'בני ברק', 'type' => 'text' ),
-				'tst_3_text' => array( 'default' => 'פתחתי קמפיין לישועה והקהל הגיב מעבר לכל דמיון. כלי פשוט שמשנה הכל.', 'type' => 'textarea' ),
-				'tst_4_name' => array( 'default' => 'משפחת כהן', 'type' => 'text' ),
-				'tst_4_role' => array( 'default' => 'פתח תקווה', 'type' => 'text' ),
-				'tst_4_text' => array( 'default' => 'ביום אחד גייסנו 80 משתתפים. הצפיה במד מתמלא היתה מרגשת עד דמעות.', 'type' => 'textarea' ),
-				'tst_5_name' => array( 'default' => 'קהילת ׳נר תמיד׳', 'type' => 'text' ),
-				'tst_5_role' => array( 'default' => 'חיפה', 'type' => 'text' ),
-				'tst_5_text' => array( 'default' => 'פתחנו קמפיין לעילוי נשמה והצלחנו לאחד דורות שלמים במשפחה סביב מטרה אחת.', 'type' => 'textarea' ),
-				'tst_6_name' => array( 'default' => 'רחל ב.', 'type' => 'text' ),
-				'tst_6_role' => array( 'default' => 'אשדוד', 'type' => 'text' ),
-				'tst_6_text' => array( 'default' => 'השגרירים הניעו את הקמפיין יותר מכל דבר שדמיינתי. כל אחת הביאה עוד חברות.', 'type' => 'textarea' ),
+				'tst_title'  => array(
+					'default' => 'סיפורים מקהילות שהתאחדו סביב תהילים',
+					'type'    => 'text',
+				),
+				'tst_1_name' => array(
+					'default' => 'משפחת לוי',
+					'type'    => 'text',
+				),
+				'tst_1_role' => array(
+					'default' => 'תל אביב',
+					'type'    => 'text',
+				),
+				'tst_1_text' => array(
+					'default' => 'תוך שבוע השלמנו 100 ספרי תהילים לרפואת אבא. לא האמנו כמה אנשים הצטרפו.',
+					'type'    => 'textarea',
+				),
+				'tst_2_name' => array(
+					'default' => 'ביה״כ ׳אור החיים׳',
+					'type'    => 'text',
+				),
+				'tst_2_role' => array(
+					'default' => 'ירושלים',
+					'type'    => 'text',
+				),
+				'tst_2_text' => array(
+					'default' => 'הקמפיין איחד את הקהילה כמו שלא ראינו שנים. הילדים והנכדים השתתפו ביחד.',
+					'type'    => 'textarea',
+				),
+				'tst_3_name' => array(
+					'default' => 'שרה מ.',
+					'type'    => 'text',
+				),
+				'tst_3_role' => array(
+					'default' => 'בני ברק',
+					'type'    => 'text',
+				),
+				'tst_3_text' => array(
+					'default' => 'פתחתי קמפיין לישועה והקהל הגיב מעבר לכל דמיון. כלי פשוט שמשנה הכל.',
+					'type'    => 'textarea',
+				),
+				'tst_4_name' => array(
+					'default' => 'משפחת כהן',
+					'type'    => 'text',
+				),
+				'tst_4_role' => array(
+					'default' => 'פתח תקווה',
+					'type'    => 'text',
+				),
+				'tst_4_text' => array(
+					'default' => 'ביום אחד גייסנו 80 משתתפים. הצפיה במד מתמלא היתה מרגשת עד דמעות.',
+					'type'    => 'textarea',
+				),
+				'tst_5_name' => array(
+					'default' => 'קהילת ׳נר תמיד׳',
+					'type'    => 'text',
+				),
+				'tst_5_role' => array(
+					'default' => 'חיפה',
+					'type'    => 'text',
+				),
+				'tst_5_text' => array(
+					'default' => 'פתחנו קמפיין לעילוי נשמה והצלחנו לאחד דורות שלמים במשפחה סביב מטרה אחת.',
+					'type'    => 'textarea',
+				),
+				'tst_6_name' => array(
+					'default' => 'רחל ב.',
+					'type'    => 'text',
+				),
+				'tst_6_role' => array(
+					'default' => 'אשדוד',
+					'type'    => 'text',
+				),
+				'tst_6_text' => array(
+					'default' => 'השגרירים הניעו את הקמפיין יותר מכל דבר שדמיינתי. כל אחת הביאה עוד חברות.',
+					'type'    => 'textarea',
+				),
 			),
 		),
-		'psalms_faq' => array(
-			'title' => 'תכנים — שאלות נפוצות',
+		'psalms_faq'          => array(
+			'title'  => 'תכנים — שאלות נפוצות',
 			'fields' => array(
-				'faq_eyebrow' => array( 'default' => 'שאלות ותשובות', 'type' => 'text' ),
-				'faq_title' => array( 'default' => 'שאלות נפוצות', 'type' => 'text' ),
-				'faq_sub' => array( 'default' => 'כל מה שצריך לדעת לפני שפותחים קמפיין. עוד שאלה? אנחנו כאן.', 'type' => 'textarea' ),
-				'faq_1_q' => array( 'default' => 'האם השימוש בפלטפורמה כרוך בתשלום?', 'type' => 'text' ),
-				'faq_1_a' => array( 'default' => 'לא. השימוש חינמי לחלוטין. בלי הגבלות, בלי כרטיס אשראי.', 'type' => 'textarea' ),
-				'faq_2_q' => array( 'default' => 'האם זה אתר לקריאת תהילים?', 'type' => 'text' ),
-				'faq_2_a' => array( 'default' => 'לא. זו פלטפורמת קמפיינים — מסביב למטרה משותפת. את התהילים אומרים בכל ספר או אפליקציה שתבחרו, וכאן מסמנים את הפרקים שאמרתם.', 'type' => 'textarea' ),
-				'faq_3_q' => array( 'default' => 'איך נספרים הפרקים?', 'type' => 'text' ),
-				'faq_3_a' => array( 'default' => 'כל משתתף מסמן בלחיצה אחת איזה פרק או ספר השלים. הספירה מתעדכנת מיידית בקמפיין.', 'type' => 'textarea' ),
-				'faq_4_q' => array( 'default' => 'מהו תפקיד השגריר?', 'type' => 'text' ),
-				'faq_4_a' => array( 'default' => 'שגריר מקבל לינק אישי, מגייס משתתפים מהקהילה שלו, ומופיע בלוח השגרירים של הקמפיין.', 'type' => 'textarea' ),
-				'faq_5_q' => array( 'default' => 'האם ניתן לשתף את הקמפיין?', 'type' => 'text' ),
-				'faq_5_a' => array( 'default' => 'בוודאי — וואטסאפ, פייסבוק, מייל, או העתקת לינק. ככל שמשתפים יותר, מגיעים ליעד מהר יותר.', 'type' => 'textarea' ),
-				'faq_6_q' => array( 'default' => 'כמה זמן לוקח לפתוח קמפיין?', 'type' => 'text' ),
-				'faq_6_a' => array( 'default' => 'בערך שתי דקות. שם, מטרה, יעד — והקמפיין באוויר.', 'type' => 'textarea' ),
-				'faq_7_q' => array( 'default' => 'האם הנתונים שלי מאובטחים?', 'type' => 'text' ),
-				'faq_7_a' => array( 'default' => 'כן. אנחנו אוספים רק את המינימום הדרוש להפעלת הקמפיין, ולא משתפים אותו עם אף גורם.', 'type' => 'textarea' ),
+				'faq_eyebrow' => array(
+					'default' => 'שאלות ותשובות',
+					'type'    => 'text',
+				),
+				'faq_title'   => array(
+					'default' => 'שאלות נפוצות',
+					'type'    => 'text',
+				),
+				'faq_sub'     => array(
+					'default' => 'כל מה שצריך לדעת לפני שפותחים קמפיין. עוד שאלה? אנחנו כאן.',
+					'type'    => 'textarea',
+				),
+				'faq_1_q'     => array(
+					'default' => 'האם השימוש בפלטפורמה כרוך בתשלום?',
+					'type'    => 'text',
+				),
+				'faq_1_a'     => array(
+					'default' => 'לא. השימוש חינמי לחלוטין. בלי הגבלות, בלי כרטיס אשראי.',
+					'type'    => 'textarea',
+				),
+				'faq_2_q'     => array(
+					'default' => 'האם זה אתר לקריאת תהילים?',
+					'type'    => 'text',
+				),
+				'faq_2_a'     => array(
+					'default' => 'לא. זו פלטפורמת קמפיינים — מסביב למטרה משותפת. את התהילים אומרים בכל ספר או אפליקציה שתבחרו, וכאן מסמנים את הפרקים שאמרתם.',
+					'type'    => 'textarea',
+				),
+				'faq_3_q'     => array(
+					'default' => 'איך נספרים הפרקים?',
+					'type'    => 'text',
+				),
+				'faq_3_a'     => array(
+					'default' => 'כל משתתף מסמן בלחיצה אחת איזה פרק או ספר השלים. הספירה מתעדכנת מיידית בקמפיין.',
+					'type'    => 'textarea',
+				),
+				'faq_4_q'     => array(
+					'default' => 'מהו תפקיד השגריר?',
+					'type'    => 'text',
+				),
+				'faq_4_a'     => array(
+					'default' => 'שגריר מקבל לינק אישי, מגייס משתתפים מהקהילה שלו, ומופיע בלוח השגרירים של הקמפיין.',
+					'type'    => 'textarea',
+				),
+				'faq_5_q'     => array(
+					'default' => 'האם ניתן לשתף את הקמפיין?',
+					'type'    => 'text',
+				),
+				'faq_5_a'     => array(
+					'default' => 'בוודאי — וואטסאפ, פייסבוק, מייל, או העתקת לינק. ככל שמשתפים יותר, מגיעים ליעד מהר יותר.',
+					'type'    => 'textarea',
+				),
+				'faq_6_q'     => array(
+					'default' => 'כמה זמן לוקח לפתוח קמפיין?',
+					'type'    => 'text',
+				),
+				'faq_6_a'     => array(
+					'default' => 'בערך שתי דקות. שם, מטרה, יעד — והקמפיין באוויר.',
+					'type'    => 'textarea',
+				),
+				'faq_7_q'     => array(
+					'default' => 'האם הנתונים שלי מאובטחים?',
+					'type'    => 'text',
+				),
+				'faq_7_a'     => array(
+					'default' => 'כן. אנחנו אוספים רק את המינימום הדרוש להפעלת הקמפיין, ולא משתפים אותו עם אף גורם.',
+					'type'    => 'textarea',
+				),
 			),
 		),
-		'psalms_cta' => array(
-			'title' => 'תכנים — קריאה לפעולה',
+		'psalms_cta'          => array(
+			'title'  => 'תכנים — קריאה לפעולה',
 			'fields' => array(
-				'cta_title' => array( 'default' => 'מוכנים לפתוח קמפיין?', 'type' => 'text' ),
-				'cta_sub' => array( 'default' => 'צרו קמפיין, הזמינו משתתפים, חלקו פרקים ועקבו אחרי ההתקדמות בזמן אמת.', 'type' => 'textarea' ),
-				'cta_button' => array( 'default' => 'יצירת קמפיין', 'type' => 'text' ),
+				'cta_title'  => array(
+					'default' => 'מוכנים לפתוח קמפיין?',
+					'type'    => 'text',
+				),
+				'cta_sub'    => array(
+					'default' => 'צרו קמפיין, הזמינו משתתפים, חלקו פרקים ועקבו אחרי ההתקדמות בזמן אמת.',
+					'type'    => 'textarea',
+				),
+				'cta_button' => array(
+					'default' => 'יצירת קמפיין',
+					'type'    => 'text',
+				),
 			),
 		),
-		'psalms_about' => array(
-			'title' => 'תכנים — אודות',
+		'psalms_about'        => array(
+			'title'  => 'תכנים — אודות',
 			'fields' => array(
-				'about_eyebrow' => array( 'default' => 'אודות', 'type' => 'text' ),
-				'about_title' => array( 'default' => 'אודות הפלטפורמה', 'type' => 'text' ),
-				'about_sub' => array( 'default' => 'כלי קהילתי חינמי לאיחוד אנשים סביב אמירת תהילים.', 'type' => 'textarea' ),
-				'about_mission_title' => array( 'default' => 'המשימה שלנו', 'type' => 'text' ),
-				'about_mission_text' => array( 'default' => 'האמנו שאמירת תהילים משותפת היא רגע של איחוד יוצא דופן — בין משפחה לחבר, בין קהילה לקהל רחב. בנינו פלטפורמה פשוטה שמאפשרת לכל אחד לפתוח קמפיין תוך דקות, להזמין שגרירים, ולעקוב יחד אחרי ההתקדמות עד היעד.', 'type' => 'textarea' ),
-				'about_story_title' => array( 'default' => 'הסיפור שלנו', 'type' => 'text' ),
-				'about_story_text' => array( 'default' => 'הפלטפורמה נולדה מתוך צורך אמיתי — קמפיין לרפואת קרוב משפחה הצריך טבלאות אקסל, הודעות וואטסאפ מבולגנות וספירה ידנית. הבנו שזה צריך להיות פשוט. בנינו את הכלי שחיפשנו, ופתחנו אותו לכולם — חינם.', 'type' => 'textarea' ),
-				'about_values_title' => array( 'default' => 'מה מנחה אותנו', 'type' => 'text' ),
-				'val_1_title' => array( 'default' => 'פשטות לפני הכל', 'type' => 'text' ),
-				'val_1_text' => array( 'default' => 'שתי דקות לפתיחת קמפיין, לחיצה אחת לסימון פרק.', 'type' => 'textarea' ),
-				'val_2_title' => array( 'default' => 'חינמי תמיד', 'type' => 'text' ),
-				'val_2_text' => array( 'default' => 'בלי כרטיס אשראי, בלי הגבלות, בלי פרסומות.', 'type' => 'textarea' ),
-				'val_3_title' => array( 'default' => 'קהילה אמיתית', 'type' => 'text' ),
-				'val_3_text' => array( 'default' => 'כלים ששמים את המשתתפים והשגרירים במרכז.', 'type' => 'textarea' ),
-				'val_4_title' => array( 'default' => 'שקיפות מלאה', 'type' => 'text' ),
-				'val_4_text' => array( 'default' => 'כל פרק, כל ספר, כל תרומה — גלויים לעין כל.', 'type' => 'textarea' ),
-				'about_cta_title' => array( 'default' => 'מוכנים לפתוח קמפיין?', 'type' => 'text' ),
-				'about_cta_sub' => array( 'default' => 'שתי דקות והקמפיין שלכם באוויר. בלי עלות, בלי הגבלה.', 'type' => 'textarea' ),
-				'about_cta_button' => array( 'default' => 'צרו קמפיין', 'type' => 'text' ),
+				'about_eyebrow'       => array(
+					'default' => 'אודות',
+					'type'    => 'text',
+				),
+				'about_title'         => array(
+					'default' => 'אודות הפלטפורמה',
+					'type'    => 'text',
+				),
+				'about_sub'           => array(
+					'default' => 'כלי קהילתי חינמי לאיחוד אנשים סביב אמירת תהילים.',
+					'type'    => 'textarea',
+				),
+				'about_mission_title' => array(
+					'default' => 'המשימה שלנו',
+					'type'    => 'text',
+				),
+				'about_mission_text'  => array(
+					'default' => 'האמנו שאמירת תהילים משותפת היא רגע של איחוד יוצא דופן — בין משפחה לחבר, בין קהילה לקהל רחב. בנינו פלטפורמה פשוטה שמאפשרת לכל אחד לפתוח קמפיין תוך דקות, להזמין שגרירים, ולעקוב יחד אחרי ההתקדמות עד היעד.',
+					'type'    => 'textarea',
+				),
+				'about_story_title'   => array(
+					'default' => 'הסיפור שלנו',
+					'type'    => 'text',
+				),
+				'about_story_text'    => array(
+					'default' => 'הפלטפורמה נולדה מתוך צורך אמיתי — קמפיין לרפואת קרוב משפחה הצריך טבלאות אקסל, הודעות וואטסאפ מבולגנות וספירה ידנית. הבנו שזה צריך להיות פשוט. בנינו את הכלי שחיפשנו, ופתחנו אותו לכולם — חינם.',
+					'type'    => 'textarea',
+				),
+				'about_values_title'  => array(
+					'default' => 'מה מנחה אותנו',
+					'type'    => 'text',
+				),
+				'val_1_title'         => array(
+					'default' => 'פשטות לפני הכל',
+					'type'    => 'text',
+				),
+				'val_1_text'          => array(
+					'default' => 'שתי דקות לפתיחת קמפיין, לחיצה אחת לסימון פרק.',
+					'type'    => 'textarea',
+				),
+				'val_2_title'         => array(
+					'default' => 'חינמי תמיד',
+					'type'    => 'text',
+				),
+				'val_2_text'          => array(
+					'default' => 'בלי כרטיס אשראי, בלי הגבלות, בלי פרסומות.',
+					'type'    => 'textarea',
+				),
+				'val_3_title'         => array(
+					'default' => 'קהילה אמיתית',
+					'type'    => 'text',
+				),
+				'val_3_text'          => array(
+					'default' => 'כלים ששמים את המשתתפים והשגרירים במרכז.',
+					'type'    => 'textarea',
+				),
+				'val_4_title'         => array(
+					'default' => 'שקיפות מלאה',
+					'type'    => 'text',
+				),
+				'val_4_text'          => array(
+					'default' => 'כל פרק, כל ספר, כל תרומה — גלויים לעין כל.',
+					'type'    => 'textarea',
+				),
+				'about_cta_title'     => array(
+					'default' => 'מוכנים לפתוח קמפיין?',
+					'type'    => 'text',
+				),
+				'about_cta_sub'       => array(
+					'default' => 'שתי דקות והקמפיין שלכם באוויר. בלי עלות, בלי הגבלה.',
+					'type'    => 'textarea',
+				),
+				'about_cta_button'    => array(
+					'default' => 'צרו קמפיין',
+					'type'    => 'text',
+				),
 			),
 		),
-		'psalms_pages' => array(
+		'psalms_pages'        => array(
 			'title'  => 'תכנים — כותרות עמודים',
 			'fields' => array(
-				'campaigns_title' => array( 'default' => 'קמפיינים', 'type' => 'text' ),
-				'campaigns_sub' => array( 'default' => 'כל הקמפיינים הפעילים במקום אחד.', 'type' => 'textarea' ),
-				'create_title' => array( 'default' => 'יצירת קמפיין', 'type' => 'text' ),
-				'create_sub' => array( 'default' => 'פתחו קמפיין תהילים בשתי דקות, בחרו מטרה ויעד, והזמינו את הקהילה.', 'type' => 'textarea' ),
-				'dashboard_title' => array( 'default' => 'אזור אישי', 'type' => 'text' ),
-				'dashboard_sub' => array( 'default' => 'הקמפיינים שלכם, הפעילות וההתקדמות — במקום אחד.', 'type' => 'textarea' ),
-				'subscribe_title' => array( 'default' => 'תהילים יומי', 'type' => 'text' ),
-				'subscribe_sub' => array( 'default' => 'הרשמה לקבלת פרק יומי ותזכורות חכמות ישירות לוואטסאפ.', 'type' => 'textarea' ),
-				'auth_title' => array( 'default' => 'התחברות', 'type' => 'text' ),
-				'auth_sub' => array( 'default' => 'כדי לפתוח ולנהל קמפיין.', 'type' => 'text' ),
+				'campaigns_title' => array(
+					'default' => 'קמפיינים',
+					'type'    => 'text',
+				),
+				'campaigns_sub'   => array(
+					'default' => 'כל הקמפיינים הפעילים במקום אחד.',
+					'type'    => 'textarea',
+				),
+				'create_title'    => array(
+					'default' => 'יצירת קמפיין',
+					'type'    => 'text',
+				),
+				'create_sub'      => array(
+					'default' => 'פתחו קמפיין תהילים בשתי דקות, בחרו מטרה ויעד, והזמינו את הקהילה.',
+					'type'    => 'textarea',
+				),
+				'dashboard_title' => array(
+					'default' => 'אזור אישי',
+					'type'    => 'text',
+				),
+				'dashboard_sub'   => array(
+					'default' => 'הקמפיינים שלכם, הפעילות וההתקדמות — במקום אחד.',
+					'type'    => 'textarea',
+				),
+				'subscribe_title' => array(
+					'default' => 'תהילים יומי',
+					'type'    => 'text',
+				),
+				'subscribe_sub'   => array(
+					'default' => 'הרשמה לקבלת פרק יומי ותזכורות חכמות ישירות לוואטסאפ.',
+					'type'    => 'textarea',
+				),
+				'auth_title'      => array(
+					'default' => 'התחברות',
+					'type'    => 'text',
+				),
+				'auth_sub'        => array(
+					'default' => 'כדי לפתוח ולנהל קמפיין.',
+					'type'    => 'text',
+				),
 			),
 		),
-		'psalms_footer' => array(
+		'psalms_footer'       => array(
 			'title'  => 'תכנים — מותג ופוטר',
 			'fields' => array(
-				'brand' => array( 'default' => 'קמפייני תהילים', 'type' => 'text' ),
-				'footer_tagline' => array( 'default' => 'פלטפורמה חינמית לאיחוד קהילות סביב אמירת תהילים — כי יחד מגיעים רחוק יותר.', 'type' => 'textarea' ),
-				'footer_made' => array( 'default' => 'נבנה באהבה לעם ישראל', 'type' => 'text' ),
-				'footer_rights' => array( 'default' => 'כל הזכויות שמורות.', 'type' => 'text' ),
-				'footer_free' => array( 'default' => 'חינמי לחלוטין', 'type' => 'text' ),
-				'footer_product' => array( 'default' => 'המוצר', 'type' => 'text' ),
-				'footer_company' => array( 'default' => 'אודות', 'type' => 'text' ),
-				'footer_resources' => array( 'default' => 'משאבים', 'type' => 'text' ),
-				'footer_link_explore' => array( 'default' => 'גלו קמפיינים', 'type' => 'text' ),
-				'footer_link_create' => array( 'default' => 'פתחו קמפיין', 'type' => 'text' ),
-				'footer_link_dashboard' => array( 'default' => 'האזור שלי', 'type' => 'text' ),
-				'footer_link_about' => array( 'default' => 'אודות הפלטפורמה', 'type' => 'text' ),
-				'footer_link_faq' => array( 'default' => 'שאלות נפוצות', 'type' => 'text' ),
+				'brand'                 => array(
+					'default' => 'קמפייני תהילים',
+					'type'    => 'text',
+				),
+				'footer_tagline'        => array(
+					'default' => 'פלטפורמה חינמית לאיחוד קהילות סביב אמירת תהילים — כי יחד מגיעים רחוק יותר.',
+					'type'    => 'textarea',
+				),
+				'footer_made'           => array(
+					'default' => 'נבנה באהבה לעם ישראל',
+					'type'    => 'text',
+				),
+				'footer_rights'         => array(
+					'default' => 'כל הזכויות שמורות.',
+					'type'    => 'text',
+				),
+				'footer_free'           => array(
+					'default' => 'חינמי לחלוטין',
+					'type'    => 'text',
+				),
+				'footer_product'        => array(
+					'default' => 'המוצר',
+					'type'    => 'text',
+				),
+				'footer_company'        => array(
+					'default' => 'אודות',
+					'type'    => 'text',
+				),
+				'footer_resources'      => array(
+					'default' => 'משאבים',
+					'type'    => 'text',
+				),
+				'footer_link_explore'   => array(
+					'default' => 'גלו קמפיינים',
+					'type'    => 'text',
+				),
+				'footer_link_create'    => array(
+					'default' => 'פתחו קמפיין',
+					'type'    => 'text',
+				),
+				'footer_link_dashboard' => array(
+					'default' => 'האזור שלי',
+					'type'    => 'text',
+				),
+				'footer_link_about'     => array(
+					'default' => 'אודות הפלטפורמה',
+					'type'    => 'text',
+				),
+				'footer_link_faq'       => array(
+					'default' => 'שאלות נפוצות',
+					'type'    => 'text',
+				),
 			),
 		),
 	);
@@ -445,10 +793,16 @@ add_action(
 			)
 		);
 		foreach ( psalms_unite_text_config() as $section_id => $section ) {
-			$wp_customize->add_section( $section_id, array( 'title' => $section['title'], 'panel' => 'psalms_unite_texts' ) );
+			$wp_customize->add_section(
+				$section_id,
+				array(
+					'title' => $section['title'],
+					'panel' => 'psalms_unite_texts',
+				)
+			);
 			foreach ( $section['fields'] as $key => $field ) {
-				$setting  = 'psalms_txt_' . $key;
-				$is_area  = 'textarea' === $field['type'];
+				$setting = 'psalms_txt_' . $key;
+				$is_area = 'textarea' === $field['type'];
 				$wp_customize->add_setting(
 					$setting,
 					array(
@@ -457,7 +811,14 @@ add_action(
 						'transport'         => 'refresh',
 					)
 				);
-				$wp_customize->add_control( $setting, array( 'label' => $key, 'section' => $section_id, 'type' => $is_area ? 'textarea' : 'text' ) );
+				$wp_customize->add_control(
+					$setting,
+					array(
+						'label'   => $key,
+						'section' => $section_id,
+						'type'    => $is_area ? 'textarea' : 'text',
+					)
+				);
 			}
 		}
 	}

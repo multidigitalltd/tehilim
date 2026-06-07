@@ -540,6 +540,136 @@
 	background: linear-gradient(135deg, var(--tcm-primary-soft), var(--tcm-gold-soft));
 }
 
+/* Hero glow orbs + featured image + dedication line. */
+.tcm-campaign-hero {
+	position: relative;
+	overflow: hidden;
+}
+
+.tcm-orb {
+	position: absolute;
+	border-radius: 50%;
+	filter: blur(60px);
+	opacity: 0.5;
+	pointer-events: none;
+	z-index: 0;
+}
+
+.tcm-orb--gold {
+	inset-block-start: -90px;
+	inset-inline-start: 18%;
+	width: 220px;
+	height: 220px;
+	background: var(--tcm-gold);
+}
+
+.tcm-orb--indigo {
+	inset-block-end: -110px;
+	inset-inline-end: 16%;
+	width: 240px;
+	height: 240px;
+	background: var(--tcm-primary);
+	opacity: 0.35;
+}
+
+.tcm-campaign-hero > * {
+	position: relative;
+	z-index: 1;
+}
+
+.tcm-hero-image {
+	width: 100%;
+	max-height: 280px;
+	object-fit: cover;
+	border-radius: 16px;
+	margin-bottom: 16px;
+}
+
+.tcm-dedicated {
+	margin: 6px 0 0;
+	color: var(--tcm-muted);
+	font-size: 1.05rem;
+}
+
+/* Two-column area (leaderboard + activity), like the Lovable campaign sidebar. */
+.tcm-two-col {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 18px;
+}
+
+@media (max-width: 768px) {
+	.tcm-two-col {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Leaderboard. */
+.tcm-leaderboard-list {
+	list-style: none;
+	margin: 12px 0 0;
+	padding: 0;
+}
+
+.tcm-leaderboard-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 0;
+	border-bottom: 1px solid var(--tcm-border-soft);
+}
+
+.tcm-leaderboard-row:last-child {
+	border-bottom: 0;
+}
+
+.tcm-rank {
+	display: grid;
+	place-items: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 999px;
+	background: var(--tcm-primary-soft);
+	color: var(--tcm-primary);
+	font-weight: 800;
+	font-size: 0.85rem;
+	flex: 0 0 auto;
+}
+
+.tcm-rank--1 { background: var(--tcm-gold); color: #2a2410; }
+.tcm-rank--2 { background: #d9d6e8; }
+.tcm-rank--3 { background: var(--tcm-gold-soft); color: #6b4e16; }
+
+.tcm-leaderboard-name { font-weight: 700; flex: 1; }
+.tcm-leaderboard-score { color: var(--tcm-muted); font-size: 0.85rem; }
+
+/* Activity feed. */
+.tcm-activity-list {
+	list-style: none;
+	margin: 12px 0 0;
+	padding: 0;
+}
+
+.tcm-activity-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 8px 0;
+	font-size: 0.92rem;
+}
+
+.tcm-activity-dot {
+	width: 9px;
+	height: 9px;
+	border-radius: 999px;
+	background: var(--tcm-gold);
+	flex: 0 0 auto;
+}
+
+.tcm-activity-dot.is-done { background: var(--tcm-primary); }
+.tcm-activity-text { flex: 1; }
+.tcm-activity-ago { color: var(--tcm-muted); font-size: 0.8rem; }
+
 /* Honour reduced-motion preferences. */
 @media (prefers-reduced-motion: reduce) {
 	* {

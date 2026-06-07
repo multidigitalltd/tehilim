@@ -4,20 +4,41 @@
  *
  * @package Tehillim_Campaign_Manager
  *
- * @var string $title       Campaign title (dedication).
- * @var string $description Campaign description HTML (already sanitised).
- * @var array  $stats       Stats array from StatsService.
+ * @var string $title        Campaign title (dedication).
+ * @var string $dedicated_to Optional "dedicated to" line.
+ * @var string $image        Optional featured image URL.
+ * @var string $description  Campaign description HTML (already sanitised).
+ * @var array  $stats        Stats array from StatsService.
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-$completed = $stats['percent'] >= 100;
+$completed    = $stats['percent'] >= 100;
+$dedicated_to = isset($dedicated_to) ? $dedicated_to : '';
+$image        = isset($image) ? $image : '';
 ?>
 <section class="tcm-card tcm-campaign-hero tcm-gradient-warm" aria-label="<?php esc_attr_e('Campaign progress', 'tehillim-campaign-manager'); ?>">
+	<span class="tcm-orb tcm-orb--gold" aria-hidden="true"></span>
+	<span class="tcm-orb tcm-orb--indigo" aria-hidden="true"></span>
+
+	<?php if ($image) : ?>
+		<img class="tcm-hero-image" src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($title); ?>" loading="lazy">
+	<?php endif; ?>
+
 	<p class="tcm-eyebrow">✦ <?php esc_html_e('Tehillim campaign', 'tehillim-campaign-manager'); ?></p>
 	<h2 class="tcm-title tcm-hero-title"><?php echo esc_html($title); ?></h2>
+
+	<?php if ($dedicated_to) : ?>
+		<p class="tcm-dedicated">♥ <?php
+			printf(
+				/* translators: %s: who the campaign is dedicated to. */
+				esc_html__('Dedicated to %s', 'tehillim-campaign-manager'),
+				'<strong>' . esc_html($dedicated_to) . '</strong>'
+			);
+		?></p>
+	<?php endif; ?>
 
 	<?php if (!empty($description)) : ?>
 		<div class="tcm-description"><?php echo wp_kses_post($description); ?></div>

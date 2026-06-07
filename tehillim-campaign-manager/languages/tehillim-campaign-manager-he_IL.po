@@ -124,6 +124,39 @@ msgstr "קמפיין תהילים"
 msgid "In progress"
 msgstr "בתהליך"
 
+msgid "Ambassador leaderboard"
+msgstr "לוח שגרירים"
+
+msgid "Ambassador"
+msgstr "שגריר"
+
+msgid "No ambassadors yet — be the first to share."
+msgstr "עדיין אין שגרירים — היו הראשונים לשתף."
+
+msgid "%1$s done · %2$s taken"
+msgstr "%1$s הושלמו · %2$s נלקחו"
+
+msgid "Recent activity"
+msgstr "פעילות אחרונה"
+
+msgid "A participant"
+msgstr "משתתף"
+
+msgid "%1$s completed chapter %2$s"
+msgstr "%1$s השלים/ה פרק %2$s"
+
+msgid "%1$s took chapter %2$s"
+msgstr "%1$s לקח/ה פרק %2$s"
+
+msgid "%s ago"
+msgstr "לפני %s"
+
+msgid "Dedicated to %s"
+msgstr "מוקדש ל־%s"
+
+msgid "Dedicated to (optional)"
+msgstr "מוקדש ל (רשות)"
+
 msgid "Bonus: %1$s of %2$s books"
 msgstr "בונוס: %1$s מתוך %2$s ספרים"
 

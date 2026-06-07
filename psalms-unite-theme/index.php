@@ -101,8 +101,8 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 	<?php elseif ( 'campaigns' === $slug ) : ?>
 		<section class="mx-auto max-w-6xl px-4 py-12">
 			<div class="mx-auto max-w-2xl text-center">
-				<h1 class="font-display text-4xl font-bold">קמפיינים</h1>
-				<p class="mt-2 text-muted-foreground">כל הקמפיינים הפעילים במקום אחד.</p>
+				<h1 class="font-display text-4xl font-bold"><?php echo esc_html( psalms_unite_text( 'campaigns_title' ) ); ?></h1>
+				<p class="mt-2 text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'campaigns_sub' ) ); ?></p>
 			</div>
 			<div class="psalms-unite-shortcode mt-10">
 				<?php
@@ -116,8 +116,8 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 	<?php elseif ( 'create' === $slug ) : ?>
 		<section class="mx-auto max-w-3xl px-4 py-12">
 			<div class="mb-8 text-center">
-				<h1 class="font-display text-4xl font-bold">יצירת קמפיין</h1>
-				<p class="mt-2 text-muted-foreground">טופס יצירה מחובר לתוסף הפונקציות.</p>
+				<h1 class="font-display text-4xl font-bold"><?php echo esc_html( psalms_unite_text( 'create_title' ) ); ?></h1>
+				<p class="mt-2 text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'create_sub' ) ); ?></p>
 			</div>
 			<div class="psalms-unite-shortcode">
 				<?php
@@ -130,8 +130,8 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 		</section>
 	<?php elseif ( 'dashboard' === $slug ) : ?>
 		<section class="mx-auto max-w-5xl px-4 py-12">
-			<h1 class="font-display text-4xl font-bold">אזור אישי</h1>
-			<div class="psalms-unite-shortcode mt-8 grid gap-8">
+			<div class="mb-8 text-center"><h1 class="font-display text-4xl font-bold"><?php echo esc_html( psalms_unite_text( 'dashboard_title' ) ); ?></h1><p class="mt-2 text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'dashboard_sub' ) ); ?></p></div>
+			<div class="psalms-unite-shortcode grid gap-8">
 				<?php
 				echo psalms_unite_shortcode_slot( 'my_campaigns' );
 				echo psalms_unite_shortcode_slot( 'my_activity' );
@@ -142,7 +142,8 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 	<?php elseif ( 'auth' === $slug ) : ?>
 		<section class="mx-auto max-w-md px-4 py-16">
 			<div class="rounded-xl border border-border/60 bg-card p-8 shadow-sm">
-				<h1 class="font-display text-3xl font-bold">התחברות</h1>
+				<h1 class="font-display text-3xl font-bold"><?php echo esc_html( psalms_unite_text( 'auth_title' ) ); ?></h1>
+				<p class="mt-1 text-sm text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'auth_sub' ) ); ?></p>
 				<div class="psalms-unite-shortcode mt-6">
 					<?php wp_login_form( array( 'redirect' => home_url( '/dashboard/' ) ) ); ?>
 				</div>
@@ -151,8 +152,8 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 	<?php elseif ( 'subscribe' === $slug ) : ?>
 		<section class="mx-auto max-w-3xl px-4 py-12">
 			<div class="mb-8 text-center">
-				<h1 class="font-display text-4xl font-bold">תהילים יומי</h1>
-				<p class="mt-2 text-muted-foreground">הרשמה לעדכונים ותזכורות מהתוסף.</p>
+				<h1 class="font-display text-4xl font-bold"><?php echo esc_html( psalms_unite_text( 'subscribe_title' ) ); ?></h1>
+				<p class="mt-2 text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'subscribe_sub' ) ); ?></p>
 			</div>
 			<div class="psalms-unite-shortcode">
 				<?php echo psalms_unite_shortcode_slot( 'subscribe', '<div class="rounded-xl border border-dashed border-border/60 bg-card p-12 text-center text-muted-foreground">יש להפעיל את רכיב ההרשמה בתוסף.</div>' ); ?>

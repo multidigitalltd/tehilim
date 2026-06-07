@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'PSALMS_UNITE_THEME_VERSION', '1.7.0' );
+define( 'PSALMS_UNITE_THEME_VERSION', '1.8.0' );
 
 add_action(
 	'after_setup_theme',
@@ -381,6 +381,21 @@ function psalms_unite_text_config() {
 				'about_cta_title' => array( 'default' => 'מוכנים לפתוח קמפיין?', 'type' => 'text' ),
 				'about_cta_sub' => array( 'default' => 'שתי דקות והקמפיין שלכם באוויר. בלי עלות, בלי הגבלה.', 'type' => 'textarea' ),
 				'about_cta_button' => array( 'default' => 'צרו קמפיין', 'type' => 'text' ),
+			),
+		),
+		'psalms_pages' => array(
+			'title'  => 'תכנים — כותרות עמודים',
+			'fields' => array(
+				'campaigns_title' => array( 'default' => 'קמפיינים', 'type' => 'text' ),
+				'campaigns_sub' => array( 'default' => 'כל הקמפיינים הפעילים במקום אחד.', 'type' => 'textarea' ),
+				'create_title' => array( 'default' => 'יצירת קמפיין', 'type' => 'text' ),
+				'create_sub' => array( 'default' => 'פתחו קמפיין תהילים בשתי דקות, בחרו מטרה ויעד, והזמינו את הקהילה.', 'type' => 'textarea' ),
+				'dashboard_title' => array( 'default' => 'אזור אישי', 'type' => 'text' ),
+				'dashboard_sub' => array( 'default' => 'הקמפיינים שלכם, הפעילות וההתקדמות — במקום אחד.', 'type' => 'textarea' ),
+				'subscribe_title' => array( 'default' => 'תהילים יומי', 'type' => 'text' ),
+				'subscribe_sub' => array( 'default' => 'הרשמה לקבלת פרק יומי ותזכורות חכמות ישירות לוואטסאפ.', 'type' => 'textarea' ),
+				'auth_title' => array( 'default' => 'התחברות', 'type' => 'text' ),
+				'auth_sub' => array( 'default' => 'כדי לפתוח ולנהל קמפיין.', 'type' => 'text' ),
 			),
 		),
 	);

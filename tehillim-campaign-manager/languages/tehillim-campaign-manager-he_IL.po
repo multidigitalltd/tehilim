@@ -28,6 +28,36 @@ msgstr "הגדרות פרסומת"
 msgid "Add Tehillim Campaign"
 msgstr "הוספת קמפיין תהילים"
 
+msgid "After you publish, you will get a shareable link and can invite ambassadors — each gets a personal link and a place on the campaign leaderboard."
+msgstr "אחרי הפרסום תקבלו קישור לשיתוף ותוכלו להזמין שגרירים — כל אחד מקבל לינק אישי ומקום בלוח השגרירים של הקמפיין."
+
+msgid "All set? Publish your campaign."
+msgstr "הכל מוכן? פרסמו את הקמפיין."
+
+msgid "Back"
+msgstr "חזרה"
+
+msgid "Campaign details"
+msgstr "פרטי הקמפיין"
+
+msgid "Continue"
+msgstr "המשך"
+
+msgid "Dedicated to"
+msgstr "מוקדש ל"
+
+msgid "Goal"
+msgstr "יעד"
+
+msgid "Publish campaign"
+msgstr "פרסום קמפיין"
+
+msgid "Review"
+msgstr "סיכום"
+
+msgid "Step"
+msgstr "שלב"
+
 msgid "Add ad"
 msgstr "הוספת פרסומת"
 

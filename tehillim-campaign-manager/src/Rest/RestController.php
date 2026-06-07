@@ -369,9 +369,11 @@ final class RestController implements Registerable {
 		try {
 			$result = ( new OwnerService() )->create(
 				array(
-					'title'   => (string) $request->get_param( 'title' ),
-					'content' => (string) $request->get_param( 'content' ),
-					'target'  => absint( $request->get_param( 'target' ) ),
+					'title'        => (string) $request->get_param( 'title' ),
+					'content'      => (string) $request->get_param( 'content' ),
+					'target'       => absint( $request->get_param( 'target' ) ),
+					'bonus'        => absint( $request->get_param( 'bonus' ) ),
+					'dedicated_to' => (string) $request->get_param( 'dedicated_to' ),
 				),
 				get_current_user_id()
 			);

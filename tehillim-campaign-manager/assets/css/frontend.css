@@ -756,3 +756,26 @@
 }
 .tcm-share-actions--stack { display: grid; gap: 10px; }
 .tcm-btn.is-block { width: 100%; text-align: center; box-sizing: border-box; }
+
+/* Create-campaign wizard. */
+.tcm-wizard-steplabel { color: var(--tcm-muted); font-size: 0.85rem; margin: 0 0 12px; }
+.tcm-wizard-bars { display: flex; gap: 8px; margin-bottom: 24px; }
+.tcm-wizard-bars span {
+	height: 6px;
+	flex: 1;
+	border-radius: 999px;
+	background: var(--tcm-primary-soft);
+	transition: background 0.2s ease;
+}
+.tcm-wizard-bars span.is-active { background: var(--tcm-primary); }
+.tcm-wizard-pane h3 { margin-top: 0; font-family: var(--tcm-display-font); }
+.tcm-wizard-pane h3:focus { outline: none; }
+.tcm-wizard-nav { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+.tcm-wizard-nav .tcm-btn { margin: 0; }
+.tcm-wizard-review { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 8px; }
+.tcm-wizard-review li {
+	padding: 10px 14px;
+	border: 1px solid color-mix(in oklab, var(--tcm-primary) 12%, transparent);
+	border-radius: 12px;
+	background: color-mix(in oklab, var(--tcm-surface) 60%, transparent);
+}

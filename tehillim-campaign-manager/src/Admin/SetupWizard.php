@@ -116,10 +116,25 @@ final class SetupWizard implements Registerable {
 	 * {@inheritDoc}
 	 */
 	public function register() {
+		// The page/demo/site builder targets the block companion theme. With any
+		// other theme (e.g. the Psalms Unite design theme, which builds its own
+		// pages), it is irrelevant, so the screen stays hidden for a clean admin.
+		if ( ! $this->is_block_companion() ) {
+			return;
+		}
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
 		add_action( 'admin_post_' . self::ACTION, array( $this, 'handle' ) );
 		add_action( 'admin_post_' . self::ACTION_DEMO, array( $this, 'handle_demo' ) );
 		add_action( 'admin_post_' . self::ACTION_BUILD, array( $this, 'handle_build' ) );
+	}
+
+	/**
+	 * Whether the block companion theme is the active theme.
+	 *
+	 * @return bool
+	 */
+	private function is_block_companion() {
+		return in_array( 'tehillim-companion', array( get_template(), get_stylesheet() ), true );
 	}
 
 	/**

@@ -148,8 +148,14 @@
 }
 
 .tcm-btn.is-secondary {
-	background: var(--tcm-gold);
-	color: #2a2410;
+	background: color-mix(in oklab, var(--tcm-surface) 70%, transparent);
+	color: var(--tcm-primary);
+	border: 1px solid color-mix(in oklab, var(--tcm-primary) 22%, transparent);
+	box-shadow: none;
+}
+
+.tcm-btn.is-secondary:hover {
+	background: var(--tcm-primary-soft);
 }
 
 .tcm-btn:focus-visible {

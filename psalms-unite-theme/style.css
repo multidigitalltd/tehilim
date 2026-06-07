@@ -1,0 +1,100 @@
+/*
+Theme Name: Psalms Unite
+Theme URI: https://github.com/multidigitalltd/psalms-unite
+Author: Multi Digital
+Description: WordPress theme bridge for the Psalms Unite / Tehillim Campaigns design and plugin shortcodes.
+Version: 1.5.0
+Requires at least: 6.3
+Requires PHP: 7.4
+Text Domain: psalms-unite
+*/
+
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--background, #fbf8ed); }
+.admin-bar .sticky { top: 32px; }
+.psalms-unite-shortcode:empty { display: none; }
+.psalms-unite-shortcode > * { margin-block-start: 0; }
+
+.tcm-wrap {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.tcm-card {
+  border-radius: 16px;
+  border-color: color-mix(in oklab, var(--border, #e8e3d6) 88%, transparent);
+}
+
+.tcm-campaign-list {
+  gap: 20px;
+}
+
+.tcm-campaign-card {
+  background: var(--card, #fff);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.tcm-campaign-card:hover {
+  transform: translateY(-2px);
+}
+
+.tcm-btn,
+.tcm-submit-btn {
+  border-radius: 999px;
+}
+
+.tcm-field input,
+.tcm-field textarea,
+.tcm-field select {
+  border-radius: 12px;
+}
+
+.tcm-two-col {
+  align-items: start;
+}
+
+.tcm-wrap + .tcm-wrap {
+  margin-top: 28px;
+}
+
+.psalms-unite-shortcode .tcm-wrap {
+  width: 100%;
+}
+
+.psalms-unite-shortcode .tcm-card:first-child {
+  margin-top: 0;
+}
+
+.psalms-unite-admin-note {
+  border: 1px solid var(--border, #e8e3d6);
+  border-radius: 14px;
+  background: var(--card, #fff);
+  color: var(--muted-foreground, #6b6880);
+  margin: 16px auto 0;
+  max-width: 1152px;
+  padding: 14px 18px;
+}
+
+.psalms-unite-admin-note a {
+  color: var(--primary, #3a3578);
+  font-weight: 700;
+}
+
+@media (max-width: 782px) {
+  .admin-bar .sticky { top: 46px; }
+}
+
+/* Static FAQ accordion (details/summary, no JS) */
+.psalms-faq > summary { cursor: pointer; list-style: none; }
+.psalms-faq > summary::-webkit-details-marker { display: none; }
+.psalms-faq > summary::after {
+  content: "+";
+  margin-inline-start: auto;
+  font-weight: 700;
+  color: var(--primary, #3a3578);
+}
+.psalms-faq[open] > summary::after { content: "\2013"; }
+.psalms-faq[open] {
+  box-shadow: 0 12px 30px -18px color-mix(in oklab, var(--primary, #3a3578) 40%, transparent);
+}

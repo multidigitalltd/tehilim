@@ -58,11 +58,17 @@ final class Prayers implements Registerable {
 	public function archive( $atts ) {
 		$atts = shortcode_atts(
 			array(
-				'category' => '',
-				'per_page' => 24,
+				'post_type' => PrayerPostType::POST_TYPE,
+				'taxonomy'  => '',
+				'category'  => '',
+				'per_page'  => 24,
 			),
 			$atts
 		);
+
+		$post_type     = sanitize_key( $atts['post_type'] );
+		$is_prayer_cpt = ( PrayerPostType::POST_TYPE === $post_type );
+		$taxonomy      = $atts['taxonomy'] ? sanitize_key( $atts['taxonomy'] ) : ( $is_prayer_cpt ? PrayerPostType::TAXONOMY : 'category' );
 
         // phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only browsing.
 		$category = $atts['category'] ? sanitize_title( $atts['category'] ) : ( isset( $_GET['tcm_cat'] ) ? sanitize_title( wp_unslash( $_GET['tcm_cat'] ) ) : '' );
@@ -70,7 +76,7 @@ final class Prayers implements Registerable {
         // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		$args = array(
-			'post_type'      => PrayerPostType::POST_TYPE,
+			'post_type'      => $post_type,
 			'post_status'    => 'publish',
 			'posts_per_page' => max( 1, (int) $atts['per_page'] ),
 			'no_found_rows'  => true,
@@ -79,10 +85,10 @@ final class Prayers implements Registerable {
 		if ( $category ) {
 			$args['tax_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 				array(
-			'taxonomy' => PrayerPostType::TAXONOMY,
-			'field'    => 'slug',
-			'terms'    => $category,
-			),
+					'taxonomy' => $taxonomy,
+					'field'    => 'slug',
+					'terms'    => $category,
+				),
 			);
 		}
 
@@ -93,17 +99,22 @@ final class Prayers implements Registerable {
 				'title'     => get_the_title( $post ),
 				'permalink' => get_permalink( $post ),
 				'excerpt'   => wp_strip_all_tags( get_the_excerpt( $post ) ),
+				'thumb'     => get_the_post_thumbnail_url( $post, 'large' ),
 			);
 		}
 
 		$terms = get_terms(
 			array(
-				'taxonomy'   => PrayerPostType::TAXONOMY,
+				'taxonomy'   => $taxonomy,
 				'hide_empty' => true,
 			)
 		);
 
-		$archive_url = get_post_type_archive_link( PrayerPostType::POST_TYPE );
+		if ( $is_prayer_cpt ) {
+			$archive_url = get_post_type_archive_link( PrayerPostType::POST_TYPE );
+		} else {
+			$archive_url = get_permalink();
+		}
 		$archive_url = $archive_url ? $archive_url : home_url( '/' );
 
 		return do_shortcode( '[tehillim_ad slot="archive_top"]' )

@@ -37,7 +37,11 @@ if (!defined('ABSPATH')) {
 		<div class="tcm-campaign-list">
 			<?php foreach ($prayers as $prayer) : ?>
 				<a class="tcm-card tcm-campaign-card tcm-prayer-card" href="<?php echo esc_url($prayer['permalink']); ?>">
-					<span class="tcm-campaign-card__media tcm-prayer-card__media" aria-hidden="true">۞</span>
+					<?php if (!empty($prayer['thumb'])) : ?>
+						<span class="tcm-campaign-card__media" style="background-image:url(<?php echo esc_url($prayer['thumb']); ?>)" aria-hidden="true"></span>
+					<?php else : ?>
+						<span class="tcm-campaign-card__media tcm-prayer-card__media" aria-hidden="true">۞</span>
+					<?php endif; ?>
 					<span class="tcm-campaign-card__body">
 						<span class="tcm-campaign-card__title"><?php echo esc_html($prayer['title']); ?></span>
 						<?php if ($prayer['excerpt']) : ?>

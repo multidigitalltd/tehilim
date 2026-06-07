@@ -296,6 +296,10 @@ final class DemoContent {
 			update_post_meta( $id, '_tcm_ad_image', esc_url_raw( $banner ) );
 			update_post_meta( $id, '_tcm_ad_url', 'https://example.com/' );
 			update_post_meta( $id, '_tcm_ad_active', '1' );
+			// AdService::pick() keys its schedule clauses on these meta rows, so
+			// they must exist (empty = "no schedule limit") for the ad to match.
+			update_post_meta( $id, '_tcm_ad_start', '' );
+			update_post_meta( $id, '_tcm_ad_end', '' );
 			update_post_meta( $id, self::DEMO_META, 1 );
 			$ids[] = $id;
 		}

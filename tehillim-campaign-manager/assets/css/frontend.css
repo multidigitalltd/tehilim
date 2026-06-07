@@ -618,15 +618,35 @@
 }
 
 .tcm-leaderboard-row {
-	display: flex;
-	align-items: center;
-	gap: 12px;
-	padding: 10px 0;
+	padding: 12px 0;
 	border-bottom: 1px solid var(--tcm-border-soft);
 }
 
 .tcm-leaderboard-row:last-child {
 	border-bottom: 0;
+}
+
+.tcm-leaderboard-top {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.tcm-leaderboard-bar {
+	display: block;
+	height: 6px;
+	margin-top: 8px;
+	background: var(--tcm-primary-soft);
+	border-radius: 999px;
+	overflow: hidden;
+}
+
+.tcm-leaderboard-bar > span {
+	display: block;
+	height: 100%;
+	border-radius: 999px;
+	background: linear-gradient(90deg, var(--tcm-primary), var(--tcm-gold));
+	transition: width 1s ease-out;
 }
 
 .tcm-rank {

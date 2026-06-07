@@ -724,3 +724,29 @@
 }
 .tcm-stat-tile__label { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--tcm-muted); }
 .tcm-stat-tile__value { display: block; margin-top: 4px; font-family: var(--tcm-display-font); font-size: 1.6rem; font-weight: 800; }
+
+/* Campaign page: two-column layout with a right rail (Psalms Unite). */
+.tcm-campaign-layout {
+	display: grid;
+	gap: 24px;
+	grid-template-columns: 1fr;
+	align-items: start;
+	margin-top: 24px;
+}
+@media (min-width: 900px) {
+	.tcm-campaign-layout { grid-template-columns: 2fr 1fr; }
+}
+.tcm-campaign-main,
+.tcm-campaign-rail {
+	display: grid;
+	gap: 20px;
+	align-content: start;
+	min-width: 0;
+}
+.tcm-share-card h3 {
+	margin: 0 0 14px;
+	font-family: var(--tcm-display-font);
+	font-size: 1.1rem;
+}
+.tcm-share-actions--stack { display: grid; gap: 10px; }
+.tcm-btn.is-block { width: 100%; text-align: center; box-sizing: border-box; }

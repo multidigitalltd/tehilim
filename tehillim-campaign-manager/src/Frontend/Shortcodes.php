@@ -107,16 +107,21 @@ final class Shortcodes implements Registerable {
 		Assets::ensure();
 		return '<div class="tcm-wrap" id="tcm">'
 			. $this->notice_html()
-			. $this->reader_card( $id )
 			. $this->progress_card( $id )
+			. '<div class="tcm-campaign-layout">'
+			. '<div class="tcm-campaign-main">'
+			. $this->reader_card( $id )
 			. do_shortcode( '[tehillim_ad slot="campaign_header"]' )
 			. $this->join_card( $id )
 			. do_shortcode( '[tehillim_ad slot="after_join"]' )
 			. $this->chapters_card( $id )
 			. do_shortcode( '[tehillim_ambassador_invite id="' . (int) $id . '"]' )
-			. '<div class="tcm-two-col">'
-			. do_shortcode( '[tehillim_leaderboard id="' . (int) $id . '"]' )
 			. do_shortcode( '[tehillim_activity id="' . (int) $id . '"]' )
+			. '</div>'
+			. '<aside class="tcm-campaign-rail">'
+			. $this->share_card( $id )
+			. do_shortcode( '[tehillim_leaderboard id="' . (int) $id . '"]' )
+			. '</aside>'
 			. '</div>'
 			. '</div>';
 	}
@@ -207,6 +212,22 @@ final class Shortcodes implements Registerable {
 				'stats'        => $stats,
 				'participants' => $this->assignments->participant_count( $id ),
 				'ambassadors'  => ( new \TCM\Database\AmbassadorsRepository() )->count_for_campaign( $id ),
+			)
+		);
+	}
+
+	/**
+	 * Share card for the right rail (WhatsApp + copy link).
+	 *
+	 * @param int $id Campaign id.
+	 * @return string
+	 */
+	private function share_card( $id ) {
+		return Templating::render(
+			'partials/share',
+			array(
+				'permalink' => (string) get_permalink( $id ),
+				'title'     => get_the_title( $id ),
 			)
 		);
 	}

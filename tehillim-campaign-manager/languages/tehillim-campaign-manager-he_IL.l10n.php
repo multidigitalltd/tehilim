@@ -161,6 +161,7 @@ return array (
     'Security verification failed. Please try again.' => 'אימות האבטחה נכשל. אנא נסו שוב.',
     'Settings' => 'הגדרות',
     'Several chapters' => 'כמה פרקים',
+    'Share' => 'שיתוף',
     'Share link' => 'קישור לשיתוף',
     'Share on WhatsApp' => 'שיתוף בוואטסאפ',
     'Short description' => 'תיאור קצר',

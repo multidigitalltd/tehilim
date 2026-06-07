@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wp="http://wordpress.org/export/1.2/">
+	<channel>
+		<title>Psalms Unite Demo Content</title>
+		<link>https://example.com</link>
+		<description>Demo pages for the Psalms Unite WordPress theme.</description>
+		<wp:wxr_version>1.2</wp:wxr_version>
+		<wp:base_site_url>https://example.com</wp:base_site_url>
+		<wp:base_blog_url>https://example.com</wp:base_blog_url>
+
+		<item>
+			<title>קמפייני תהילים</title>
+			<link>https://example.com/home/</link>
+			<content:encoded><![CDATA[]]></content:encoded>
+			<wp:post_id>101</wp:post_id>
+			<wp:post_date>2026-06-07 00:00:00</wp:post_date>
+			<wp:post_name>home</wp:post_name>
+			<wp:status>publish</wp:status>
+			<wp:post_type>page</wp:post_type>
+		</item>
+
+		<item>
+			<title>אודות</title>
+			<link>https://example.com/about/</link>
+			<content:encoded><![CDATA[]]></content:encoded>
+			<wp:post_id>102</wp:post_id>
+			<wp:post_date>2026-06-07 00:00:00</wp:post_date>
+			<wp:post_name>about</wp:post_name>
+			<wp:status>publish</wp:status>
+			<wp:post_type>page</wp:post_type>
+		</item>
+
+		<item>
+			<title>קמפיינים</title>
+			<link>https://example.com/campaigns/</link>
+			<content:encoded><![CDATA[]]></content:encoded>
+			<wp:post_id>103</wp:post_id>
+			<wp:post_date>2026-06-07 00:00:00</wp:post_date>
+			<wp:post_name>campaigns</wp:post_name>
+			<wp:status>publish</wp:status>
+			<wp:post_type>page</wp:post_type>
+		</item>
+
+		<item>
+			<title>יצירת קמפיין</title>
+			<link>https://example.com/create/</link>
+			<content:encoded><![CDATA[]]></content:encoded>
+			<wp:post_id>104</wp:post_id>
+			<wp:post_date>2026-06-07 00:00:00</wp:post_date>
+			<wp:post_name>create</wp:post_name>
+			<wp:status>publish</wp:status>
+			<wp:post_type>page</wp:post_type>
+		</item>
+
+		<item>
+			<title>אזור אישי</title>
+			<link>https://example.com/dashboard/</link>
+			<content:encoded><![CDATA[]]></content:encoded>
+			<wp:post_id>105</wp:post_id>
+			<wp:post_date>2026-06-07 00:00:00</wp:post_date>
+			<wp:post_name>dashboard</wp:post_name>
+			<wp:status>publish</wp:status>
+			<wp:post_type>page</wp:post_type>
+		</item>
+
+		<item>
+			<title>התחברות</title>
+			<link>https://example.com/auth/</link>
+			<content:encoded><![CDATA[]]></content:encoded>
+			<wp:post_id>106</wp:post_id>
+			<wp:post_date>2026-06-07 00:00:00</wp:post_date>
+			<wp:post_name>auth</wp:post_name>
+			<wp:status>publish</wp:status>
+			<wp:post_type>page</wp:post_type>
+		</item>
+	</channel>
+</rss>

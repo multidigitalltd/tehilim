@@ -13,6 +13,7 @@ use TCM\Admin\ChaptersPage;
 use TCM\Admin\Dashboard;
 use TCM\Admin\SettingsPage;
 use TCM\Admin\SetupWizard;
+use TCM\Blocks\BlocksModule;
 use TCM\Frontend\Ads;
 use TCM\Frontend\Ambassadors;
 use TCM\Frontend\Assets;
@@ -116,6 +117,7 @@ final class Plugin {
 				new Prayers(),
 				new SelfService(),
 				new Ads(),
+				new BlocksModule(),
 				new RestController(),
 				new MailService(),
 				new WebhookService(),

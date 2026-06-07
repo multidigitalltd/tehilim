@@ -29,6 +29,22 @@ add_action(
             array(),
             null
         );
-        wp_enqueue_style('tehillim-companion', get_stylesheet_uri(), array('tehillim-companion-fonts'), '1.1.0');
+        wp_enqueue_style('tehillim-companion', get_stylesheet_uri(), array('tehillim-companion-fonts'), '1.4.0');
+    }
+);
+
+/**
+ * Register the "Tehillim" block-pattern category. Individual patterns live as
+ * auto-loaded files under /patterns and reference it.
+ */
+add_action(
+    'init',
+    static function () {
+        if (function_exists('register_block_pattern_category')) {
+            register_block_pattern_category(
+                'tehillim',
+                array('label' => __('Tehillim', 'tehillim-companion'))
+            );
+        }
     }
 );

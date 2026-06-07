@@ -101,6 +101,17 @@ final class AmbassadorsRepository extends Repository {
 	}
 
 	/**
+	 * Number of ambassadors registered for a campaign.
+	 *
+	 * @param int $campaign_id Campaign.
+	 * @return int
+	 */
+	public function count_for_campaign( $campaign_id ) {
+		$sql = $this->db->prepare( "SELECT COUNT(*) FROM {$this->table} WHERE campaign_id=%d", (int) $campaign_id );
+		return (int) $this->db->get_var( $sql );
+	}
+
+	/**
 	 * Insert an ambassador and return the new row.
 	 *
 	 * @param array<string,mixed> $data Row data.

@@ -1,9 +1,10 @@
-# Dependencies
-/tehillim-campaign-manager/vendor/
-node_modules/
+# Build artifacts (distribution ZIPs are generated, not committed)
+*.zip
 
-# Tool caches
-.phpcs.cache
+# Composer dependencies (installed via composer install)
+vendor/
+
+# Tooling caches
 .phpunit.result.cache
 **/.phpunit.result.cache
 

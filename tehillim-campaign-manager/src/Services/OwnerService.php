@@ -66,6 +66,7 @@ final class OwnerService {
 			);
 		}
 		$target = max( 1, absint( $data['target'] ?? 1 ) );
+		$bonus  = max( 0, absint( $data['bonus'] ?? 0 ) );
 
 		$post_id = wp_insert_post(
 			array(
@@ -85,8 +86,12 @@ final class OwnerService {
 		}
 
 		update_post_meta( $post_id, '_tcm_target_books', $target );
-		update_post_meta( $post_id, '_tcm_bonus_books', 0 );
+		update_post_meta( $post_id, '_tcm_bonus_books', $bonus );
 		update_post_meta( $post_id, '_tcm_status', 'active' );
+		$dedicated = sanitize_text_field( $data['dedicated_to'] ?? '' );
+		if ( '' !== $dedicated ) {
+			update_post_meta( $post_id, '_tcm_dedicated_to', $dedicated );
+		}
 		$this->rounds->generate( $post_id, 1 );
 
 		Logger::log( Logger::INFO, 'campaign_created', array( 'campaign_id' => $post_id ) );

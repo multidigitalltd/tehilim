@@ -84,6 +84,12 @@ final class Shortcodes implements Registerable {
 		if ( ! is_singular( CampaignPostType::POST_TYPE ) || ! in_the_loop() || ! is_main_query() ) {
 			return $content;
 		}
+		// If the author built a custom layout with Tehillim blocks/shortcodes,
+		// respect it instead of replacing the page with the default campaign view.
+		$raw = (string) get_post_field( 'post_content', get_the_ID() );
+		if ( false !== strpos( $raw, 'wp:tehillim/' ) || false !== strpos( $raw, '[tehillim_' ) ) {
+			return $content;
+		}
 		return $this->campaign( array( 'id' => get_the_ID() ) );
 	}
 
@@ -101,16 +107,21 @@ final class Shortcodes implements Registerable {
 		Assets::ensure();
 		return '<div class="tcm-wrap" id="tcm">'
 			. $this->notice_html()
-			. $this->reader_card( $id )
 			. $this->progress_card( $id )
+			. '<div class="tcm-campaign-layout">'
+			. '<div class="tcm-campaign-main">'
+			. $this->reader_card( $id )
 			. do_shortcode( '[tehillim_ad slot="campaign_header"]' )
 			. $this->join_card( $id )
 			. do_shortcode( '[tehillim_ad slot="after_join"]' )
 			. $this->chapters_card( $id )
 			. do_shortcode( '[tehillim_ambassador_invite id="' . (int) $id . '"]' )
-			. '<div class="tcm-two-col">'
-			. do_shortcode( '[tehillim_leaderboard id="' . (int) $id . '"]' )
 			. do_shortcode( '[tehillim_activity id="' . (int) $id . '"]' )
+			. '</div>'
+			. '<aside class="tcm-campaign-rail">'
+			. $this->share_card( $id )
+			. do_shortcode( '[tehillim_leaderboard id="' . (int) $id . '"]' )
+			. '</aside>'
 			. '</div>'
 			. '</div>';
 	}
@@ -190,6 +201,7 @@ final class Shortcodes implements Registerable {
 	 * @return string
 	 */
 	private function progress_card( $id ) {
+		$stats = $this->stats->for_campaign( $id );
 		return Templating::render(
 			'partials/progress',
 			array(
@@ -197,7 +209,25 @@ final class Shortcodes implements Registerable {
 				'dedicated_to' => (string) get_post_meta( $id, '_tcm_dedicated_to', true ),
 				'image'        => (string) get_the_post_thumbnail_url( $id, 'large' ),
 				'description'  => wpautop( get_post_field( 'post_content', $id ) ),
-				'stats'        => $this->stats->for_campaign( $id ),
+				'stats'        => $stats,
+				'participants' => $this->assignments->participant_count( $id ),
+				'ambassadors'  => ( new \TCM\Database\AmbassadorsRepository() )->count_for_campaign( $id ),
+			)
+		);
+	}
+
+	/**
+	 * Share card for the right rail (WhatsApp + copy link).
+	 *
+	 * @param int $id Campaign id.
+	 * @return string
+	 */
+	private function share_card( $id ) {
+		return Templating::render(
+			'partials/share',
+			array(
+				'permalink' => (string) get_permalink( $id ),
+				'title'     => get_the_title( $id ),
 			)
 		);
 	}

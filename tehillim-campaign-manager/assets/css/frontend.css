@@ -148,8 +148,14 @@
 }
 
 .tcm-btn.is-secondary {
-	background: var(--tcm-gold);
-	color: #2a2410;
+	background: color-mix(in oklab, var(--tcm-surface) 70%, transparent);
+	color: var(--tcm-primary);
+	border: 1px solid color-mix(in oklab, var(--tcm-primary) 22%, transparent);
+	box-shadow: none;
+}
+
+.tcm-btn.is-secondary:hover {
+	background: var(--tcm-primary-soft);
 }
 
 .tcm-btn:focus-visible {
@@ -612,15 +618,35 @@
 }
 
 .tcm-leaderboard-row {
-	display: flex;
-	align-items: center;
-	gap: 12px;
-	padding: 10px 0;
+	padding: 12px 0;
 	border-bottom: 1px solid var(--tcm-border-soft);
 }
 
 .tcm-leaderboard-row:last-child {
 	border-bottom: 0;
+}
+
+.tcm-leaderboard-top {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.tcm-leaderboard-bar {
+	display: block;
+	height: 6px;
+	margin-top: 8px;
+	background: var(--tcm-primary-soft);
+	border-radius: 999px;
+	overflow: hidden;
+}
+
+.tcm-leaderboard-bar > span {
+	display: block;
+	height: 100%;
+	border-radius: 999px;
+	background: linear-gradient(90deg, var(--tcm-primary), var(--tcm-gold));
+	transition: width 1s ease-out;
 }
 
 .tcm-rank {
@@ -682,4 +708,94 @@
 	.tcm-card {
 		padding: 18px;
 	}
+}
+
+/* Campaign hero: two-column (text + image card) — Psalms Unite layout. */
+.tcm-hero-grid {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	gap: 28px;
+	grid-template-columns: 1fr;
+	align-items: center;
+}
+@media (min-width: 760px) {
+	.tcm-hero-grid { grid-template-columns: 3fr 2fr; }
+}
+.tcm-hero-media {
+	border-radius: 20px;
+	overflow: hidden;
+	border: 1px solid color-mix(in oklab, var(--tcm-primary) 12%, transparent);
+	background: linear-gradient(135deg, var(--tcm-primary-soft), var(--tcm-gold-soft));
+	aspect-ratio: 4 / 3;
+	display: grid;
+	place-items: center;
+}
+.tcm-hero-media img { width: 100%; height: 100%; object-fit: cover; }
+.tcm-hero-media__placeholder { font-size: 3.5rem; color: var(--tcm-primary); opacity: 0.5; }
+
+/* Progress card: header + %, bar, meta, four-stat grid. */
+.tcm-progress-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.tcm-progress-head h3 { margin: 0; font-family: var(--tcm-display-font); font-size: 1.2rem; }
+.tcm-progress-card .tcm-pct { font-family: var(--tcm-display-font); font-size: clamp(26px, 4vw, 34px); font-weight: 800; color: var(--tcm-primary); line-height: 1; }
+.tcm-progress-card .tcm-progress { height: 16px; margin-top: 14px; }
+.tcm-progress-meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; color: var(--tcm-muted); font-size: 0.9rem; }
+.tcm-stat-grid { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 560px) { .tcm-stat-grid { grid-template-columns: repeat(4, 1fr); } }
+.tcm-stat-tile {
+	border: 1px solid color-mix(in oklab, var(--tcm-primary) 12%, transparent);
+	border-radius: 14px;
+	background: color-mix(in oklab, var(--tcm-surface) 60%, transparent);
+	padding: 12px;
+}
+.tcm-stat-tile__label { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--tcm-muted); }
+.tcm-stat-tile__value { display: block; margin-top: 4px; font-family: var(--tcm-display-font); font-size: 1.6rem; font-weight: 800; }
+
+/* Campaign page: two-column layout with a right rail (Psalms Unite). */
+.tcm-campaign-layout {
+	display: grid;
+	gap: 24px;
+	grid-template-columns: 1fr;
+	align-items: start;
+	margin-top: 24px;
+}
+@media (min-width: 900px) {
+	.tcm-campaign-layout { grid-template-columns: 2fr 1fr; }
+}
+.tcm-campaign-main,
+.tcm-campaign-rail {
+	display: grid;
+	gap: 20px;
+	align-content: start;
+	min-width: 0;
+}
+.tcm-share-card h3 {
+	margin: 0 0 14px;
+	font-family: var(--tcm-display-font);
+	font-size: 1.1rem;
+}
+.tcm-share-actions--stack { display: grid; gap: 10px; }
+.tcm-btn.is-block { width: 100%; text-align: center; box-sizing: border-box; }
+
+/* Create-campaign wizard. */
+.tcm-wizard-steplabel { color: var(--tcm-muted); font-size: 0.85rem; margin: 0 0 12px; }
+.tcm-wizard-bars { display: flex; gap: 8px; margin-bottom: 24px; }
+.tcm-wizard-bars span {
+	height: 6px;
+	flex: 1;
+	border-radius: 999px;
+	background: var(--tcm-primary-soft);
+	transition: background 0.2s ease;
+}
+.tcm-wizard-bars span.is-active { background: var(--tcm-primary); }
+.tcm-wizard-pane h3 { margin-top: 0; font-family: var(--tcm-display-font); }
+.tcm-wizard-pane h3:focus { outline: none; }
+.tcm-wizard-nav { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+.tcm-wizard-nav .tcm-btn { margin: 0; }
+.tcm-wizard-review { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 8px; }
+.tcm-wizard-review li {
+	padding: 10px 14px;
+	border: 1px solid color-mix(in oklab, var(--tcm-primary) 12%, transparent);
+	border-radius: 12px;
+	background: color-mix(in oklab, var(--tcm-surface) 60%, transparent);
 }

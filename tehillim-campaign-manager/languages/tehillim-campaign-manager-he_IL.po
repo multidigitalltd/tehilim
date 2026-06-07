@@ -163,11 +163,20 @@ msgstr "בונוס: %1$s מתוך %2$s ספרים"
 msgid "Books completed"
 msgstr "ספרים שהושלמו"
 
+msgid "Ambassadors"
+msgstr "שגרירים"
+
+msgid "Books"
+msgstr "ספרים"
+
 msgid "Button text colour"
 msgstr "צבע טקסט בכפתורים"
 
 msgid "CSV"
 msgstr "CSV"
+
+msgid "Chapters"
+msgstr "פרקים"
 
 msgid "Campaign"
 msgstr "קמפיין"

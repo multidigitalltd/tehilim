@@ -196,6 +196,7 @@ final class Shortcodes implements Registerable {
 	 * @return string
 	 */
 	private function progress_card( $id ) {
+		$stats = $this->stats->for_campaign( $id );
 		return Templating::render(
 			'partials/progress',
 			array(
@@ -203,7 +204,9 @@ final class Shortcodes implements Registerable {
 				'dedicated_to' => (string) get_post_meta( $id, '_tcm_dedicated_to', true ),
 				'image'        => (string) get_the_post_thumbnail_url( $id, 'large' ),
 				'description'  => wpautop( get_post_field( 'post_content', $id ) ),
-				'stats'        => $this->stats->for_campaign( $id ),
+				'stats'        => $stats,
+				'participants' => $this->assignments->participant_count( $id ),
+				'ambassadors'  => ( new \TCM\Database\AmbassadorsRepository() )->count_for_campaign( $id ),
 			)
 		);
 	}

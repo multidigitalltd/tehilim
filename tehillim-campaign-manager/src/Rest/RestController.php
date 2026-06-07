@@ -8,6 +8,7 @@
 namespace TCM\Rest;
 
 use TCM\Contracts\Registerable;
+use TCM\Database\AssignmentsRepository;
 use TCM\PostTypes\CampaignPostType;
 use TCM\Services\AssignmentService;
 use TCM\Services\CampaignService;
@@ -75,6 +76,27 @@ final class RestController implements Registerable {
 	 * @return void
 	 */
 	public function register_routes() {
+		register_rest_route(
+			self::NS,
+			'/campaigns',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'list_campaigns' ),
+				'permission_callback' => '__return_true',
+			)
+		);
+
+		register_rest_route(
+			self::NS,
+			'/campaigns/(?P<id>\d+)',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_campaign' ),
+				'permission_callback' => '__return_true',
+				'args'                => array( 'id' => $this->id_arg() ),
+			)
+		);
+
 		register_rest_route(
 			self::NS,
 			'/campaigns/(?P<id>\d+)/status',
@@ -152,6 +174,76 @@ final class RestController implements Registerable {
 				)
 			);
 		}
+	}
+
+	/**
+	 * GET a list of published campaigns (headless/JSON, no PII).
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return WP_REST_Response
+	 */
+	public function list_campaigns( WP_REST_Request $request ) {
+		$per_page = $request->get_param( 'per_page' ) ? min( 100, absint( $request->get_param( 'per_page' ) ) ) : 50;
+		$query    = new \WP_Query(
+			array(
+				'post_type'      => CampaignPostType::POST_TYPE,
+				'post_status'    => 'publish',
+				'posts_per_page' => max( 1, $per_page ),
+				'no_found_rows'  => true,
+			)
+		);
+		$items    = array();
+		foreach ( $query->posts as $post ) {
+			$items[] = $this->shape_campaign( $post );
+		}
+		return new WP_REST_Response( $items, 200 );
+	}
+
+	/**
+	 * GET a single campaign (headless/JSON, no PII).
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function get_campaign( WP_REST_Request $request ) {
+		$id   = (int) $request['id'];
+		$post = get_post( $id );
+		if ( ! $post || CampaignPostType::POST_TYPE !== get_post_type( $post ) || 'publish' !== get_post_status( $post ) ) {
+			return $this->error( 'not_found', __( 'Campaign not found.', 'tehillim-campaign-manager' ), 404 );
+		}
+		return new WP_REST_Response( $this->shape_campaign( $post ), 200 );
+	}
+
+	/**
+	 * Shape a campaign post into the public JSON contract consumed by a headless
+	 * front-end (matches the Lovable client's campaign shape).
+	 *
+	 * @param \WP_Post $post Campaign post.
+	 * @return array<string,mixed>
+	 */
+	private function shape_campaign( $post ) {
+		$id    = (int) $post->ID;
+		$stats = $this->stats->for_campaign( $id );
+		$image = get_the_post_thumbnail_url( $post, 'large' );
+
+		return array(
+			'id'            => $id,
+			'slug'          => $post->post_name,
+			'title'         => get_the_title( $post ),
+			'dedicated_to'  => get_the_title( $post ),
+			'purpose'       => wp_strip_all_tags( (string) get_the_excerpt( $post ) ),
+			'description'   => wp_strip_all_tags( (string) get_post_field( 'post_content', $post ) ),
+			'goal_books'    => (int) $stats['goal_total'],
+			'goal_chapters' => (int) $stats['goal_total'] * 150,
+			'image_url'     => $image ? $image : null,
+			'permalink'     => get_permalink( $post ),
+			'status'        => get_post_meta( $id, '_tcm_status', true ) ? get_post_meta( $id, '_tcm_status', true ) : 'active',
+			'stats'         => array(
+				'books'        => (int) $stats['completed_books'],
+				'chapters'     => (int) $stats['total_done'],
+				'participants' => ( new AssignmentsRepository() )->participant_count( $id ),
+			),
+		);
 	}
 
 	/**

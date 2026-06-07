@@ -24,18 +24,20 @@
 	 *  - kind: 'number' (RangeControl/number) or 'text'
 	 */
 	var CATALOGUE = [
-		{ name: 'global-stats', title: __( 'Tehillim — Live stats', 'tehillim-campaign-manager' ), icon: 'chart-bar', fields: [] },
-		{ name: 'campaigns', title: __( 'Tehillim — Campaigns grid', 'tehillim-campaign-manager' ), icon: 'grid-view', fields: [] },
+		{ name: 'global-stats', title: __( 'Tehillim — Live stats', 'tehillim-campaign-manager' ), icon: 'chart-bar', attributes: {}, fields: [] },
+		{ name: 'campaigns', title: __( 'Tehillim — Campaigns grid', 'tehillim-campaign-manager' ), icon: 'grid-view', attributes: {}, fields: [] },
 		{
 			name: 'campaign',
 			title: __( 'Tehillim — Single campaign', 'tehillim-campaign-manager' ),
 			icon: 'book-alt',
+			attributes: { id: { type: 'number', default: 0 } },
 			fields: [ { key: 'id', kind: 'number', label: __( 'Campaign ID (0 = current)', 'tehillim-campaign-manager' ) } ]
 		},
 		{
 			name: 'leaderboard',
 			title: __( 'Tehillim — Leaderboard', 'tehillim-campaign-manager' ),
 			icon: 'awards',
+			attributes: { id: { type: 'number', default: 0 }, limit: { type: 'number', default: 10 } },
 			fields: [
 				{ key: 'id', kind: 'number', label: __( 'Campaign ID (0 = current)', 'tehillim-campaign-manager' ) },
 				{ key: 'limit', kind: 'range', label: __( 'How many', 'tehillim-campaign-manager' ), min: 3, max: 25 }
@@ -45,6 +47,7 @@
 			name: 'activity',
 			title: __( 'Tehillim — Activity feed', 'tehillim-campaign-manager' ),
 			icon: 'list-view',
+			attributes: { id: { type: 'number', default: 0 }, limit: { type: 'number', default: 12 } },
 			fields: [
 				{ key: 'id', kind: 'number', label: __( 'Campaign ID (0 = current)', 'tehillim-campaign-manager' ) },
 				{ key: 'limit', kind: 'range', label: __( 'How many', 'tehillim-campaign-manager' ), min: 3, max: 30 }
@@ -54,10 +57,11 @@
 			name: 'segulot',
 			title: __( 'Tehillim — Prayers / Segulot', 'tehillim-campaign-manager' ),
 			icon: 'heart',
+			attributes: { category: { type: 'string', default: '' } },
 			fields: [ { key: 'category', kind: 'text', label: __( 'Category slug (optional)', 'tehillim-campaign-manager' ) } ]
 		},
-		{ name: 'subscribe', title: __( 'Tehillim — Daily subscribe', 'tehillim-campaign-manager' ), icon: 'email', fields: [] },
-		{ name: 'create-campaign', title: __( 'Tehillim — Create campaign form', 'tehillim-campaign-manager' ), icon: 'plus-alt', fields: [] }
+		{ name: 'subscribe', title: __( 'Tehillim — Daily subscribe', 'tehillim-campaign-manager' ), icon: 'email', attributes: {}, fields: [] },
+		{ name: 'create-campaign', title: __( 'Tehillim — Create campaign form', 'tehillim-campaign-manager' ), icon: 'plus-alt', attributes: {}, fields: [] }
 	];
 
 	function buildControl( field, props ) {
@@ -103,6 +107,7 @@
 			category: 'tehillim',
 			icon: block.icon,
 			supports: { html: false },
+			attributes: block.attributes,
 			edit: function ( props ) {
 				var children = [];
 				if ( block.fields.length ) {

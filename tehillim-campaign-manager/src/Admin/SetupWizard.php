@@ -21,9 +21,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 final class SetupWizard implements Registerable {
 
-	const ACTION = 'tcm_setup_pages';
-	const OPTION = 'tcm_pages';
-	const MENU   = 'תפריט תהילים';
+	const ACTION      = 'tcm_setup_pages';
+	const ACTION_DEMO = 'tcm_import_demo';
+	const OPTION      = 'tcm_pages';
+	const MENU        = 'תפריט תהילים';
 
 	/**
 	 * The pages to create: key => [title, slug, shortcode].
@@ -76,6 +77,7 @@ final class SetupWizard implements Registerable {
 	public function register() {
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
 		add_action( 'admin_post_' . self::ACTION, array( $this, 'handle' ) );
+		add_action( 'admin_post_' . self::ACTION_DEMO, array( $this, 'handle_demo' ) );
 	}
 
 	/**
@@ -105,13 +107,19 @@ final class SetupWizard implements Registerable {
 		}
 		$pages = get_option( self::OPTION, array() );
 		$pages = is_array( $pages ) ? $pages : array();
+		$demo  = new DemoContent();
 		?>
 		<div class="wrap" dir="rtl">
-			<h1><?php esc_html_e( 'Set up the site pages', 'tehillim-campaign-manager' ); ?></h1>
+			<h1><?php esc_html_e( 'Set up the site', 'tehillim-campaign-manager' ); ?></h1>
 			<?php if ( ! empty( $_GET['tcm_setup'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
 				<div class="notice notice-success"><p><?php esc_html_e( 'Done — pages and menu are ready.', 'tehillim-campaign-manager' ); ?></p></div>
 			<?php endif; ?>
-			<p><?php esc_html_e( 'Create the campaign, personal-area, ambassadors and segulot pages — plus a navigation menu — in one click. Existing pages are kept.', 'tehillim-campaign-manager' ); ?></p>
+			<?php if ( ! empty( $_GET['tcm_demo'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
+				<div class="notice notice-success"><p><?php esc_html_e( 'Demo content imported — sample campaigns, prayers and ad banners are live.', 'tehillim-campaign-manager' ); ?></p></div>
+			<?php endif; ?>
+
+			<h2><?php esc_html_e( 'Step 1 — Pages & menu', 'tehillim-campaign-manager' ); ?></h2>
+			<p><?php esc_html_e( 'Create the campaign, personal-area, ambassadors and segulot pages — plus a navigation menu and home page — in one click. Existing pages are kept.', 'tehillim-campaign-manager' ); ?></p>
 			<table class="widefat striped" style="max-width:640px">
 				<tbody>
 					<?php foreach ( $this->definitions() as $key => $def ) : ?>
@@ -137,6 +145,20 @@ final class SetupWizard implements Registerable {
 				<?php wp_nonce_field( self::ACTION ); ?>
 				<button type="submit" class="button button-primary button-hero"><?php esc_html_e( 'Create pages and menu', 'tehillim-campaign-manager' ); ?></button>
 			</form>
+
+			<hr style="margin:28px 0">
+
+			<h2><?php esc_html_e( 'Step 2 — Demo content', 'tehillim-campaign-manager' ); ?></h2>
+			<p><?php esc_html_e( 'Fill the site with sample content so it looks exactly like the design preview: two live campaigns (with chapters, activity and a leaderboard), four prayers/segulot and demo ad banners. Use this on a fresh site only — it adds example data you can later delete.', 'tehillim-campaign-manager' ); ?></p>
+			<?php if ( $demo->imported() ) : ?>
+				<p><span class="dashicons dashicons-yes-alt" style="color:#46b450"></span> <?php esc_html_e( 'Demo content has already been imported.', 'tehillim-campaign-manager' ); ?></p>
+			<?php else : ?>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top:8px">
+					<input type="hidden" name="action" value="<?php echo esc_attr( self::ACTION_DEMO ); ?>">
+					<?php wp_nonce_field( self::ACTION_DEMO ); ?>
+					<button type="submit" class="button button-primary button-hero"><?php esc_html_e( 'Import demo content', 'tehillim-campaign-manager' ); ?></button>
+				</form>
+			<?php endif; ?>
 		</div>
 		<?php
 	}
@@ -195,6 +217,28 @@ final class SetupWizard implements Registerable {
 		wp_safe_redirect(
 			add_query_arg(
 				'tcm_setup',
+				'1',
+				admin_url( 'edit.php?post_type=' . CampaignPostType::POST_TYPE . '&page=tcm-setup' )
+			)
+		);
+		exit;
+	}
+
+	/**
+	 * Import the demo content (sample campaigns, prayers and ads).
+	 *
+	 * @return void
+	 */
+	public function handle_demo() {
+		if ( ! current_user_can( 'manage_options' ) || ! check_admin_referer( self::ACTION_DEMO ) ) {
+			wp_die( esc_html__( 'Permission denied.', 'tehillim-campaign-manager' ) );
+		}
+
+		( new DemoContent() )->import();
+
+		wp_safe_redirect(
+			add_query_arg(
+				'tcm_demo',
 				'1',
 				admin_url( 'edit.php?post_type=' . CampaignPostType::POST_TYPE . '&page=tcm-setup' )
 			)

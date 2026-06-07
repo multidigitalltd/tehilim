@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'PSALMS_UNITE_THEME_VERSION', '1.8.0' );
+define( 'PSALMS_UNITE_THEME_VERSION', '1.9.0' );
 
 add_action(
 	'after_setup_theme',
@@ -396,6 +396,24 @@ function psalms_unite_text_config() {
 				'subscribe_sub' => array( 'default' => 'הרשמה לקבלת פרק יומי ותזכורות חכמות ישירות לוואטסאפ.', 'type' => 'textarea' ),
 				'auth_title' => array( 'default' => 'התחברות', 'type' => 'text' ),
 				'auth_sub' => array( 'default' => 'כדי לפתוח ולנהל קמפיין.', 'type' => 'text' ),
+			),
+		),
+		'psalms_footer' => array(
+			'title'  => 'תכנים — מותג ופוטר',
+			'fields' => array(
+				'brand' => array( 'default' => 'קמפייני תהילים', 'type' => 'text' ),
+				'footer_tagline' => array( 'default' => 'פלטפורמה חינמית לאיחוד קהילות סביב אמירת תהילים — כי יחד מגיעים רחוק יותר.', 'type' => 'textarea' ),
+				'footer_made' => array( 'default' => 'נבנה באהבה לעם ישראל', 'type' => 'text' ),
+				'footer_rights' => array( 'default' => 'כל הזכויות שמורות.', 'type' => 'text' ),
+				'footer_free' => array( 'default' => 'חינמי לחלוטין', 'type' => 'text' ),
+				'footer_product' => array( 'default' => 'המוצר', 'type' => 'text' ),
+				'footer_company' => array( 'default' => 'אודות', 'type' => 'text' ),
+				'footer_resources' => array( 'default' => 'משאבים', 'type' => 'text' ),
+				'footer_link_explore' => array( 'default' => 'גלו קמפיינים', 'type' => 'text' ),
+				'footer_link_create' => array( 'default' => 'פתחו קמפיין', 'type' => 'text' ),
+				'footer_link_dashboard' => array( 'default' => 'האזור שלי', 'type' => 'text' ),
+				'footer_link_about' => array( 'default' => 'אודות הפלטפורמה', 'type' => 'text' ),
+				'footer_link_faq' => array( 'default' => 'שאלות נפוצות', 'type' => 'text' ),
 			),
 		),
 	);

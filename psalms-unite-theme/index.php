@@ -57,8 +57,8 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 <header class="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
 	<div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="flex items-center gap-2 font-display text-xl font-bold">
-			<span class="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground">ת</span>
-			<span>קמפייני תהילים</span>
+			<span class="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground">♥</span>
+			<span><?php echo esc_html( psalms_unite_text( 'brand' ) ); ?></span>
 		</a>
 		<nav class="hidden items-center gap-6 text-sm font-medium text-muted-foreground md:flex" aria-label="ניווט ראשי">
 			<?php foreach ( $nav_items as $item_slug => $item ) : ?>
@@ -354,10 +354,57 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 	<?php endif; ?>
 </main>
 
-<footer class="border-t border-border/60 bg-card/40">
-	<div class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
-		<p>קמפייני תהילים</p>
-		<a class="hover:text-foreground" href="<?php echo esc_url( home_url( '/about/' ) ); ?>">אודות הפרויקט</a>
+<footer class="relative overflow-hidden border-t border-border/60 bg-gradient-to-b from-card/40 via-card/60 to-card">
+	<div aria-hidden="true" class="pointer-events-none absolute inset-0">
+		<div class="absolute -top-24 start-1/4 h-64 w-64 rounded-full bg-gold/10 blur-3xl"></div>
+		<div class="absolute -bottom-32 end-1/4 h-80 w-80 rounded-full bg-primary/10 blur-3xl"></div>
+	</div>
+	<div class="relative mx-auto max-w-6xl px-4 pt-16 pb-8">
+		<div class="grid gap-10 md:grid-cols-12">
+			<div class="md:col-span-5">
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-flex items-center gap-2 font-display text-lg font-semibold">
+					<span class="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">♥</span>
+					<span><?php echo esc_html( psalms_unite_text( 'brand' ) ); ?></span>
+				</a>
+				<p class="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'footer_tagline' ) ); ?></p>
+				<div class="mt-5 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-foreground/80">
+					<span aria-hidden="true" class="text-gold">♥</span>
+					<?php echo esc_html( psalms_unite_text( 'footer_made' ) ); ?>
+				</div>
+			</div>
+			<div class="md:col-span-7 grid grid-cols-2 gap-8 sm:grid-cols-3">
+				<div>
+					<h4 class="text-xs font-semibold uppercase tracking-widest text-foreground/70"><?php echo esc_html( psalms_unite_text( 'footer_product' ) ); ?></h4>
+					<ul class="mt-4 space-y-2.5 text-sm">
+						<li><a href="<?php echo esc_url( home_url( '/campaigns/' ) ); ?>" class="text-muted-foreground transition-colors hover:text-foreground"><?php echo esc_html( psalms_unite_text( 'footer_link_explore' ) ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="text-muted-foreground transition-colors hover:text-foreground"><?php echo esc_html( psalms_unite_text( 'footer_link_create' ) ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/dashboard/' ) ); ?>" class="text-muted-foreground transition-colors hover:text-foreground"><?php echo esc_html( psalms_unite_text( 'footer_link_dashboard' ) ); ?></a></li>
+					</ul>
+				</div>
+				<div>
+					<h4 class="text-xs font-semibold uppercase tracking-widest text-foreground/70"><?php echo esc_html( psalms_unite_text( 'footer_company' ) ); ?></h4>
+					<ul class="mt-4 space-y-2.5 text-sm">
+						<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="text-muted-foreground transition-colors hover:text-foreground"><?php echo esc_html( psalms_unite_text( 'footer_link_about' ) ); ?></a></li>
+					</ul>
+				</div>
+				<div>
+					<h4 class="text-xs font-semibold uppercase tracking-widest text-foreground/70"><?php echo esc_html( psalms_unite_text( 'footer_resources' ) ); ?></h4>
+					<ul class="mt-4 space-y-2.5 text-sm">
+						<li><a href="<?php echo esc_url( home_url( '/#faq' ) ); ?>" class="text-muted-foreground transition-colors hover:text-foreground"><?php echo esc_html( psalms_unite_text( 'footer_link_faq' ) ); ?></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="relative mt-12 h-px overflow-hidden">
+			<div class="absolute inset-0 bg-gradient-to-r from-transparent via-gold/40 to-transparent"></div>
+		</div>
+		<div class="mt-6 flex flex-col items-center justify-between gap-3 text-xs text-muted-foreground sm:flex-row">
+			<div>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( psalms_unite_text( 'brand' ) ); ?> &middot; <?php echo esc_html( psalms_unite_text( 'footer_rights' ) ); ?></div>
+			<div class="flex items-center gap-1.5">
+				<span class="inline-block h-1.5 w-1.5 rounded-full bg-gold animate-pulse"></span>
+				<span><?php echo esc_html( psalms_unite_text( 'footer_free' ) ); ?></span>
+			</div>
+		</div>
 	</div>
 </footer>
 

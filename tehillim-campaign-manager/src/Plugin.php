@@ -16,6 +16,7 @@ use TCM\Admin\SetupWizard;
 use TCM\Frontend\Ads;
 use TCM\Frontend\Ambassadors;
 use TCM\Frontend\Assets;
+use TCM\Frontend\Community;
 use TCM\Frontend\Prayers;
 use TCM\Frontend\SelfService;
 use TCM\Frontend\Shortcodes;
@@ -109,6 +110,7 @@ final class Plugin {
 				new Assets(),
 				new Shortcodes(),
 				new Widgets(),
+				new Community(),
 				new Ambassadors(),
 				new Subscriptions(),
 				new Prayers(),

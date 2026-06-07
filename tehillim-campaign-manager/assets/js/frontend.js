@@ -27,6 +27,55 @@
 		focusReader();
 	}
 
+	// Count-up animation for [data-tcm-count] when it scrolls into view.
+	function initCountUp() {
+		var els = document.querySelectorAll('[data-tcm-count]');
+		if (!els.length) {
+			return;
+		}
+		var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		var run = function (el) {
+			var target = parseInt(el.getAttribute('data-tcm-count'), 10) || 0;
+			if (reduce || target <= 0) {
+				return;
+			}
+			var start = null;
+			var dur = 1300;
+			var step = function (now) {
+				if (!start) {
+					start = now;
+				}
+				var p = Math.min(1, (now - start) / dur);
+				var eased = 1 - Math.pow(1 - p, 3);
+				el.textContent = Math.round(target * eased).toLocaleString();
+				if (p < 1) {
+					requestAnimationFrame(step);
+				}
+			};
+			requestAnimationFrame(step);
+		};
+		if (!('IntersectionObserver' in window)) {
+			Array.prototype.forEach.call(els, run);
+			return;
+		}
+		var io = new IntersectionObserver(function (entries) {
+			entries.forEach(function (e) {
+				if (e.isIntersecting) {
+					run(e.target);
+					io.unobserve(e.target);
+				}
+			});
+		}, { threshold: 0.3 });
+		Array.prototype.forEach.call(els, function (el) {
+			io.observe(el);
+		});
+	}
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initCountUp);
+	} else {
+		initCountUp();
+	}
+
 	function announce(message) {
 		var region = document.getElementById('tcm-live');
 		if (!region) {

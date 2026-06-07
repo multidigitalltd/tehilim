@@ -77,4 +77,32 @@ final class ReferralsRepository extends Repository {
 		);
 		return (int) $this->db->get_var( $sql );
 	}
+
+	/**
+	 * Top ambassadors of a campaign by completed (then total) referrals.
+	 *
+	 * @param int $campaign_id Campaign.
+	 * @param int $limit       Max rows.
+	 * @return array<int,\stdClass>
+	 */
+	public function leaderboard( $campaign_id, $limit = 10 ) {
+		$ambassadors = $this->db->prefix . 'tcm_ambassadors';
+		$assignments = $this->db->prefix . 'tcm_assignments';
+		$sql         = $this->db->prepare(
+			"SELECT amb.id, amb.ambassador_name AS name,
+			        COUNT(r.id) AS total,
+			        SUM(CASE WHEN a.status='done' THEN 1 ELSE 0 END) AS done
+			 FROM {$ambassadors} amb
+			 LEFT JOIN {$this->table} r ON r.ambassador_id = amb.id
+			 LEFT JOIN {$assignments} a ON a.id = r.assignment_id
+			 WHERE amb.campaign_id=%d
+			 GROUP BY amb.id, amb.ambassador_name
+			 HAVING total > 0
+			 ORDER BY done DESC, total DESC
+			 LIMIT %d",
+			$campaign_id,
+			max( 1, (int) $limit )
+		);
+		return $this->db->get_results( $sql );
+	}
 }

@@ -149,6 +149,26 @@ final class AssignmentsRepository extends Repository {
 	}
 
 	/**
+	 * Recent activity in a campaign (taken/done), newest first. No emails.
+	 *
+	 * @param int $campaign_id Campaign.
+	 * @param int $limit       Max rows.
+	 * @return array<int,\stdClass>
+	 */
+	public function recent_activity( $campaign_id, $limit = 12 ) {
+		$sql = $this->db->prepare(
+			"SELECT participant_name, chapter_number, status, taken_at, completed_at, updated_at
+			 FROM {$this->table}
+			 WHERE campaign_id=%d AND status IN ('taken','done')
+			 ORDER BY updated_at DESC
+			 LIMIT %d",
+			$campaign_id,
+			max( 1, (int) $limit )
+		);
+		return $this->db->get_results( $sql );
+	}
+
+	/**
 	 * Site-wide totals across all campaigns (for the homepage stats strip).
 	 *
 	 * @return array{done:int,participants:int}

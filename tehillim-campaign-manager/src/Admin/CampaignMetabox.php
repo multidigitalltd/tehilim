@@ -57,12 +57,17 @@ final class CampaignMetabox implements Registerable {
 	 */
 	public function render( $post ) {
 		wp_nonce_field( self::NONCE_ACTION, self::NONCE_FIELD );
-		$target = max( 1, (int) get_post_meta( $post->ID, '_tcm_target_books', true ) );
-		$bonus  = max( 0, (int) get_post_meta( $post->ID, '_tcm_bonus_books', true ) );
-		$status = get_post_meta( $post->ID, '_tcm_status', true );
-		$status = $status ? $status : 'active';
+		$target    = max( 1, (int) get_post_meta( $post->ID, '_tcm_target_books', true ) );
+		$bonus     = max( 0, (int) get_post_meta( $post->ID, '_tcm_bonus_books', true ) );
+		$status    = get_post_meta( $post->ID, '_tcm_status', true );
+		$status    = $status ? $status : 'active';
+		$dedicated = (string) get_post_meta( $post->ID, '_tcm_dedicated_to', true );
 		?>
 		<p><strong><?php esc_html_e( 'The post title is the main dedication.', 'tehillim-campaign-manager' ); ?></strong></p>
+		<p>
+			<label for="tcm_dedicated_to"><strong><?php esc_html_e( 'Dedicated to (optional)', 'tehillim-campaign-manager' ); ?></strong></label><br>
+			<input type="text" id="tcm_dedicated_to" name="tcm_dedicated_to" class="widefat" value="<?php echo esc_attr( $dedicated ); ?>">
+		</p>
 		<p>
 			<label for="tcm_target_books"><strong><?php esc_html_e( 'Base goal: how many books to complete?', 'tehillim-campaign-manager' ); ?></strong></label><br>
 			<input type="number" id="tcm_target_books" name="tcm_target_books" min="1" value="<?php echo esc_attr( (string) $target ); ?>" style="width:120px">
@@ -102,6 +107,7 @@ final class CampaignMetabox implements Registerable {
 
 		update_post_meta( $post_id, '_tcm_target_books', max( 1, absint( $_POST['tcm_target_books'] ?? 1 ) ) );
 		update_post_meta( $post_id, '_tcm_bonus_books', max( 0, absint( $_POST['tcm_bonus_books'] ?? 0 ) ) );
+		update_post_meta( $post_id, '_tcm_dedicated_to', sanitize_text_field( wp_unslash( $_POST['tcm_dedicated_to'] ?? '' ) ) );
 
 		$status = sanitize_key( $_POST['tcm_status'] ?? 'active' );
 		update_post_meta( $post_id, '_tcm_status', in_array( $status, array( 'active', 'paused', 'completed' ), true ) ? $status : 'active' );

@@ -108,6 +108,10 @@ final class Shortcodes implements Registerable {
 			. do_shortcode( '[tehillim_ad slot="after_join"]' )
 			. $this->chapters_card( $id )
 			. do_shortcode( '[tehillim_ambassador_invite id="' . (int) $id . '"]' )
+			. '<div class="tcm-two-col">'
+			. do_shortcode( '[tehillim_leaderboard id="' . (int) $id . '"]' )
+			. do_shortcode( '[tehillim_activity id="' . (int) $id . '"]' )
+			. '</div>'
 			. '</div>';
 	}
 
@@ -189,9 +193,11 @@ final class Shortcodes implements Registerable {
 		return Templating::render(
 			'partials/progress',
 			array(
-				'title'       => get_the_title( $id ),
-				'description' => wpautop( get_post_field( 'post_content', $id ) ),
-				'stats'       => $this->stats->for_campaign( $id ),
+				'title'        => get_the_title( $id ),
+				'dedicated_to' => (string) get_post_meta( $id, '_tcm_dedicated_to', true ),
+				'image'        => (string) get_the_post_thumbnail_url( $id, 'large' ),
+				'description'  => wpautop( get_post_field( 'post_content', $id ) ),
+				'stats'        => $this->stats->for_campaign( $id ),
 			)
 		);
 	}

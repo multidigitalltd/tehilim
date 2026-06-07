@@ -230,7 +230,7 @@ final class RestController implements Registerable {
 			'id'            => $id,
 			'slug'          => $post->post_name,
 			'title'         => get_the_title( $post ),
-			'dedicated_to'  => get_the_title( $post ),
+			'dedicated_to'  => get_post_meta( $id, '_tcm_dedicated_to', true ) ? (string) get_post_meta( $id, '_tcm_dedicated_to', true ) : get_the_title( $post ),
 			'purpose'       => wp_strip_all_tags( (string) get_the_excerpt( $post ) ),
 			'description'   => wp_strip_all_tags( (string) get_post_field( 'post_content', $post ) ),
 			'goal_books'    => (int) $stats['goal_total'],

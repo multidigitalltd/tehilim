@@ -95,6 +95,54 @@ final class BlocksModule implements Registerable {
 				'shortcode'  => 'tehillim_create_campaign_form',
 				'attributes' => array(),
 			),
+			'my-campaigns'    => array(
+				'shortcode'  => 'tehillim_my_campaigns',
+				'attributes' => array(),
+			),
+			'my-activity'     => array(
+				'shortcode'  => 'tehillim_my_activity',
+				'attributes' => array(),
+			),
+			'ambassadors'     => array(
+				'shortcode'  => 'tehillim_ambassador_dashboard',
+				'attributes' => array(),
+			),
+			'progress'        => array(
+				'shortcode'  => 'tehillim_progress',
+				'attributes' => array(
+					'id' => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
+				),
+			),
+			'join'            => array(
+				'shortcode'  => 'tehillim_join_form',
+				'attributes' => array(
+					'id' => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
+				),
+			),
+			'chapters'        => array(
+				'shortcode'  => 'tehillim_chapters',
+				'attributes' => array(
+					'id' => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
+				),
+			),
+			'invite'          => array(
+				'shortcode'  => 'tehillim_ambassador_invite',
+				'attributes' => array(
+					'id' => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
+				),
+			),
 		);
 	}
 

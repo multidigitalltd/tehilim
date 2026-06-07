@@ -84,6 +84,12 @@ final class Shortcodes implements Registerable {
 		if ( ! is_singular( CampaignPostType::POST_TYPE ) || ! in_the_loop() || ! is_main_query() ) {
 			return $content;
 		}
+		// If the author built a custom layout with Tehillim blocks/shortcodes,
+		// respect it instead of replacing the page with the default campaign view.
+		$raw = (string) get_post_field( 'post_content', get_the_ID() );
+		if ( false !== strpos( $raw, 'wp:tehillim/' ) || false !== strpos( $raw, '[tehillim_' ) ) {
+			return $content;
+		}
 		return $this->campaign( array( 'id' => get_the_ID() ) );
 	}
 

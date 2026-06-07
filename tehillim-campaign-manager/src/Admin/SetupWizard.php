@@ -27,48 +27,82 @@ final class SetupWizard implements Registerable {
 	const MENU        = 'תפריט תהילים';
 
 	/**
-	 * The pages to create: key => [title, slug, shortcode].
+	 * The pages to create. Each page is built from *editable blocks* — a heading,
+	 * an intro paragraph and the matching dynamic block — so the whole site is
+	 * editable in the block editor rather than a single opaque shortcode. The
+	 * legacy `shortcode` is kept only to detect and upgrade pages created by an
+	 * earlier version.
 	 *
-	 * @return array<string,array{title:string,slug:string,shortcode:string}>
+	 * @return array<string,array{title:string,slug:string,block:string,intro:string,shortcode:string}>
 	 */
 	private function definitions() {
 		return array(
 			'home'        => array(
 				'title'     => 'קמפיינים',
 				'slug'      => 'campaigns',
+				'block'     => 'campaigns',
+				'intro'     => 'בחרו קמפיין והצטרפו לאמירת תהילים משותפת.',
 				'shortcode' => '[tehillim_campaigns]',
 			),
 			'segulot'     => array(
 				'title'     => 'סגולות ותפילות',
 				'slug'      => 'prayers',
+				'block'     => 'segulot',
+				'intro'     => 'אוסף תפילות וסגולות מיוחדות לכל עת.',
 				'shortcode' => '[tehillim_segulot]',
 			),
 			'create'      => array(
 				'title'     => 'פתיחת קמפיין',
 				'slug'      => 'create-campaign',
+				'block'     => 'create-campaign',
+				'intro'     => 'פִתחו קמפיין תהילים בשתי דקות והזמינו את הקהילה.',
 				'shortcode' => '[tehillim_create_campaign_form]',
 			),
 			'my'          => array(
 				'title'     => 'האזור האישי שלי',
 				'slug'      => 'my-campaigns',
+				'block'     => 'my-campaigns',
+				'intro'     => 'הקמפיינים שפתחתם וניהול שלהם במקום אחד.',
 				'shortcode' => '[tehillim_my_campaigns]',
 			),
 			'activity'    => array(
 				'title'     => 'הפעילות שלי',
 				'slug'      => 'my-activity',
+				'block'     => 'my-activity',
+				'intro'     => 'הפרקים שלקחתם והשלמתם בכל הקמפיינים.',
 				'shortcode' => '[tehillim_my_activity]',
 			),
 			'ambassadors' => array(
 				'title'     => 'שגרירים',
 				'slug'      => 'ambassadors',
+				'block'     => 'ambassadors',
+				'intro'     => 'גייסו את הקהילה שלכם וצפו בהתקדמות האישית.',
 				'shortcode' => '[tehillim_ambassador_dashboard]',
 			),
 			'subscribe'   => array(
 				'title'     => 'תהילים יומי',
 				'slug'      => 'daily-tehillim',
+				'block'     => 'subscribe',
+				'intro'     => 'הירשמו לקבלת פרק תהילים יומי ותזכורות.',
 				'shortcode' => '[tehillim_subscribe]',
 			),
 		);
+	}
+
+	/**
+	 * Editable block markup for a page: heading + intro paragraph + dynamic block.
+	 *
+	 * @param array{title:string,block:string,intro:string} $def Page definition.
+	 * @return string
+	 */
+	private function page_content( array $def ) {
+		return '<!-- wp:heading {"textAlign":"center"} -->' . "\n"
+			. '<h2 class="wp-block-heading has-text-align-center">' . esc_html( $def['title'] ) . '</h2>' . "\n"
+			. '<!-- /wp:heading -->' . "\n\n"
+			. '<!-- wp:paragraph {"align":"center"} -->' . "\n"
+			. '<p class="has-text-align-center">' . esc_html( $def['intro'] ) . '</p>' . "\n"
+			. '<!-- /wp:paragraph -->' . "\n\n"
+			. '<!-- wp:tehillim/' . $def['block'] . ' /-->';
 	}
 
 	/**
@@ -119,7 +153,7 @@ final class SetupWizard implements Registerable {
 			<?php endif; ?>
 
 			<h2><?php esc_html_e( 'Step 1 — Pages & menu', 'tehillim-campaign-manager' ); ?></h2>
-			<p><?php esc_html_e( 'Create the campaign, personal-area, ambassadors and segulot pages — plus a navigation menu and home page — in one click. Existing pages are kept.', 'tehillim-campaign-manager' ); ?></p>
+			<p><?php esc_html_e( 'Create the campaign, personal-area, ambassadors and segulot pages — plus a navigation menu and home page — in one click. Each page is built from editable blocks (heading, intro and a dynamic block) so you can edit it freely. Re-running upgrades old single-shortcode pages to the editable block layout, without touching pages you have edited.', 'tehillim-campaign-manager' ); ?></p>
 			<table class="widefat striped" style="max-width:640px">
 				<tbody>
 					<?php foreach ( $this->definitions() as $key => $def ) : ?>
@@ -179,14 +213,18 @@ final class SetupWizard implements Registerable {
 		foreach ( $this->definitions() as $key => $def ) {
 			$existing = isset( $pages[ $key ] ) ? (int) $pages[ $key ] : 0;
 			if ( $existing && get_post( $existing ) && 'trash' !== get_post_status( $existing ) ) {
+				$update = array( 'ID' => $existing );
 				// Fix the slug of a page created before (English, not Hebrew).
 				if ( get_post_field( 'post_name', $existing ) !== $def['slug'] ) {
-					wp_update_post(
-						array(
-							'ID'        => $existing,
-							'post_name' => $def['slug'],
-						)
-					);
+					$update['post_name'] = $def['slug'];
+				}
+				// Upgrade pages still holding the legacy single shortcode to the
+				// new editable block layout, without clobbering manual edits.
+				if ( trim( (string) get_post_field( 'post_content', $existing ) ) === $def['shortcode'] ) {
+					$update['post_content'] = $this->page_content( $def );
+				}
+				if ( count( $update ) > 1 ) {
+					wp_update_post( $update );
 				}
 				continue;
 			}
@@ -196,7 +234,7 @@ final class SetupWizard implements Registerable {
 					'post_status'  => 'publish',
 					'post_title'   => $def['title'],
 					'post_name'    => $def['slug'],
-					'post_content' => $def['shortcode'],
+					'post_content' => $this->page_content( $def ),
 				),
 				true
 			);

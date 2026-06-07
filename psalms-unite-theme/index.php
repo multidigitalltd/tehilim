@@ -165,9 +165,9 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 				<div class="absolute -bottom-32 end-1/4 h-80 w-80 rounded-full bg-primary/20 blur-3xl"></div>
 			</div>
 			<div class="relative mx-auto max-w-3xl px-4 py-24 text-center md:py-28">
-				<span class="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-foreground shadow-sm backdrop-blur-sm">✦ אודות</span>
-				<h1 class="mt-6 font-display text-4xl font-bold text-balance md:text-5xl">אודות הפלטפורמה</h1>
-				<p class="mx-auto mt-4 max-w-xl text-balance text-muted-foreground md:text-lg">כלי קהילתי חינמי לאיחוד אנשים סביב אמירת תהילים.</p>
+				<span class="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-foreground shadow-sm backdrop-blur-sm">&#10022; <?php echo esc_html( psalms_unite_text( 'about_eyebrow' ) ); ?></span>
+				<h1 class="mt-6 font-display text-4xl font-bold text-balance md:text-5xl"><?php echo esc_html( psalms_unite_text( 'about_title' ) ); ?></h1>
+				<p class="mx-auto mt-4 max-w-xl text-balance text-muted-foreground md:text-lg"><?php echo esc_html( psalms_unite_text( 'about_sub' ) ); ?></p>
 			</div>
 		</section>
 
@@ -175,15 +175,15 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 			<div class="grid gap-10 md:grid-cols-2">
 				<article class="relative overflow-hidden rounded-xl border border-border/60 bg-card/80 p-8 backdrop-blur-sm">
 					<div aria-hidden="true" class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent"></div>
-					<div class="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">✦</div>
-					<h2 class="mt-4 font-display text-2xl font-bold">המשימה שלנו</h2>
-					<p class="mt-3 leading-relaxed text-muted-foreground">האמנו שאמירת תהילים משותפת היא רגע של איחוד יוצא דופן — בין משפחה לחבר, בין קהילה לקהל רחב. בנינו פלטפורמה פשוטה שמאפשרת לכל אחד לפתוח קמפיין תוך דקות, להזמין שגרירים, ולעקוב יחד אחרי ההתקדמות עד היעד.</p>
+					<div class="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">&#10022;</div>
+					<h2 class="mt-4 font-display text-2xl font-bold"><?php echo esc_html( psalms_unite_text( 'about_mission_title' ) ); ?></h2>
+					<p class="mt-3 leading-relaxed text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'about_mission_text' ) ); ?></p>
 				</article>
 				<article class="relative overflow-hidden rounded-xl border border-border/60 bg-card/80 p-8 backdrop-blur-sm">
 					<div aria-hidden="true" class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent"></div>
-					<div class="grid h-11 w-11 place-items-center rounded-xl bg-gold/15 text-gold">✦</div>
-					<h2 class="mt-4 font-display text-2xl font-bold">הסיפור שלנו</h2>
-					<p class="mt-3 leading-relaxed text-muted-foreground">הפלטפורמה נולדה מתוך צורך אמיתי — קמפיין לרפואת קרוב משפחה הצריך טבלאות אקסל, הודעות וואטסאפ מבולגנות וספירה ידנית. הבנו שזה צריך להיות פשוט. בנינו את הכלי שחיפשנו, ופתחנו אותו לכולם — חינם.</p>
+					<div class="grid h-11 w-11 place-items-center rounded-xl bg-gold/15 text-gold">&#10022;</div>
+					<h2 class="mt-4 font-display text-2xl font-bold"><?php echo esc_html( psalms_unite_text( 'about_story_title' ) ); ?></h2>
+					<p class="mt-3 leading-relaxed text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'about_story_text' ) ); ?></p>
 				</article>
 			</div>
 		</section>
@@ -191,30 +191,25 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 		<section class="bg-card/40 py-20">
 			<div class="mx-auto max-w-6xl px-4">
 				<div class="mx-auto max-w-2xl text-center">
-					<h2 class="font-display text-3xl font-bold md:text-4xl">מה מנחה אותנו</h2>
+					<h2 class="font-display text-3xl font-bold md:text-4xl"><?php echo esc_html( psalms_unite_text( 'about_values_title' ) ); ?></h2>
 				</div>
 				<div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-					<?php foreach ( array(
-						array( 'פשטות לפני הכל', 'שתי דקות לפתיחת קמפיין, לחיצה אחת לסימון פרק.' ),
-						array( 'חינמי תמיד', 'בלי כרטיס אשראי, בלי הגבלות, בלי פרסומות.' ),
-						array( 'קהילה אמיתית', 'כלים ששמים את המשתתפים והשגרירים במרכז.' ),
-						array( 'שקיפות מלאה', 'כל פרק, כל ספר, כל תרומה — גלויים לעין כל.' ),
-					) as $value ) : ?>
+					<?php for ( $i = 1; $i <= 4; $i++ ) : ?>
 						<article class="rounded-xl border border-border/60 bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-gold/40 hover:shadow-md">
-							<div class="grid h-10 w-10 place-items-center rounded-xl bg-primary-soft text-primary">✦</div>
-							<h3 class="mt-4 font-semibold"><?php echo esc_html( $value[0] ); ?></h3>
-							<p class="mt-1.5 text-sm text-muted-foreground"><?php echo esc_html( $value[1] ); ?></p>
+							<div class="grid h-10 w-10 place-items-center rounded-xl bg-primary-soft text-primary">&#10022;</div>
+							<h3 class="mt-4 font-semibold"><?php echo esc_html( psalms_unite_text( 'val_' . $i . '_title' ) ); ?></h3>
+							<p class="mt-1.5 text-sm text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'val_' . $i . '_text' ) ); ?></p>
 						</article>
-					<?php endforeach; ?>
+					<?php endfor; ?>
 				</div>
 			</div>
 		</section>
 
 		<section class="mx-auto max-w-4xl px-4 py-20 text-center">
 			<div class="rounded-xl border border-primary/20 bg-primary p-12 text-primary-foreground">
-				<h2 class="font-display text-3xl font-bold md:text-4xl">מוכנים לפתוח קמפיין?</h2>
-				<p class="mx-auto mt-3 max-w-xl text-balance opacity-90">שתי דקות והקמפיין שלכם באוויר. בלי עלות, בלי הגבלה.</p>
-				<a class="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-medium text-foreground hover:opacity-90" href="<?php echo esc_url( home_url( '/create/' ) ); ?>">צרו קמפיין</a>
+				<h2 class="font-display text-3xl font-bold md:text-4xl"><?php echo esc_html( psalms_unite_text( 'about_cta_title' ) ); ?></h2>
+				<p class="mx-auto mt-3 max-w-xl text-balance opacity-90"><?php echo esc_html( psalms_unite_text( 'about_cta_sub' ) ); ?></p>
+				<a class="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-medium text-foreground hover:opacity-90" href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php echo esc_html( psalms_unite_text( 'about_cta_button' ) ); ?></a>
 			</div>
 		</section>
 	<?php else : ?>
@@ -227,16 +222,16 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 				<div class="mx-auto max-w-3xl text-center">
 					<span class="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-foreground shadow-sm backdrop-blur-sm">
 						<span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-gold"></span></span>
-						קהילה אחת, ספר תהילים אחד
+						<?php echo esc_html( psalms_unite_text( 'hero_eyebrow' ) ); ?>
 					</span>
-					<h1 class="mt-6 font-display text-4xl font-bold text-balance md:text-6xl">מאחדים אנשים סביב יעד תהילים משותף</h1>
-					<p class="mx-auto mt-5 max-w-2xl text-balance text-base text-muted-foreground md:text-lg">צרו קמפיין, הזמינו משתתפים, חלקו פרקים ועקבו אחרי ההתקדמות בזמן אמת.</p>
+					<h1 class="mt-6 font-display text-4xl font-bold text-balance md:text-6xl"><?php echo esc_html( psalms_unite_text( 'hero_title' ) ); ?></h1>
+					<p class="mx-auto mt-5 max-w-2xl text-balance text-base text-muted-foreground md:text-lg"><?php echo esc_html( psalms_unite_text( 'hero_sub' ) ); ?></p>
 					<div class="mt-8 flex flex-wrap justify-center gap-3">
-						<a class="<?php echo esc_attr( $button_class ); ?>" href="<?php echo esc_url( home_url( '/create/' ) ); ?>">יצירת קמפיין</a>
-						<a class="<?php echo esc_attr( $outline_class ); ?>" href="<?php echo esc_url( home_url( '/campaigns/' ) ); ?>">צפייה בקמפיינים</a>
+						<a class="<?php echo esc_attr( $button_class ); ?>" href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php echo esc_html( psalms_unite_text( 'hero_cta_primary' ) ); ?></a>
+						<a class="<?php echo esc_attr( $outline_class ); ?>" href="<?php echo esc_url( home_url( '/campaigns/' ) ); ?>"><?php echo esc_html( psalms_unite_text( 'hero_cta_secondary' ) ); ?></a>
 					</div>
 					<div class="mt-8 inline-flex items-center gap-3 rounded-full border border-border/60 bg-background/60 px-4 py-2 text-xs text-muted-foreground shadow-sm backdrop-blur-sm">
-						<span class="font-medium text-foreground">חינם לקהילה</span>
+						<span class="font-medium text-foreground"><?php echo esc_html( psalms_unite_text( 'hero_ribbon' ) ); ?></span>
 					</div>
 				</div>
 			</div>
@@ -248,11 +243,17 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 
 		<section class="mx-auto max-w-6xl px-4 py-20">
 			<div class="mx-auto max-w-2xl text-center">
-				<h2 class="font-display text-3xl font-bold md:text-4xl">איך זה עובד</h2>
-				<p class="mt-3 text-muted-foreground">שלושה צעדים פשוטים לקריאה משותפת.</p>
+				<h2 class="font-display text-3xl font-bold md:text-4xl"><?php echo esc_html( psalms_unite_text( 'how_title' ) ); ?></h2>
+				<p class="mt-3 text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'how_sub' ) ); ?></p>
 			</div>
 			<div class="mt-12 grid gap-6 md:grid-cols-3">
-				<?php foreach ( array( array( '01', 'פותחים קמפיין', 'מגדירים מטרה, הקדשה ותיאור קצר.' ), array( '02', 'משתפים קישור', 'מזמינים משפחה, חברים ושגרירים.' ), array( '03', 'עוקבים יחד', 'רואים התקדמות והשלמות בצורה ברורה.' ) ) as $step ) : ?>
+				<?php
+				$psalms_steps = array(
+					array( '01', psalms_unite_text( 'how_s1_title' ), psalms_unite_text( 'how_s1_text' ) ),
+					array( '02', psalms_unite_text( 'how_s2_title' ), psalms_unite_text( 'how_s2_text' ) ),
+					array( '03', psalms_unite_text( 'how_s3_title' ), psalms_unite_text( 'how_s3_text' ) ),
+				);
+				foreach ( $psalms_steps as $step ) : ?>
 					<article class="rounded-xl border border-border/60 bg-card p-7">
 						<div class="font-display text-3xl font-bold text-primary/40"><?php echo esc_html( $step[0] ); ?></div>
 						<h3 class="mt-3 text-lg font-semibold"><?php echo esc_html( $step[1] ); ?></h3>
@@ -265,10 +266,10 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 		<section class="mx-auto max-w-6xl px-4 pb-20">
 			<div class="flex flex-wrap items-end justify-between gap-4">
 				<div>
-					<h2 class="font-display text-3xl font-bold md:text-4xl">קמפיינים אחרונים</h2>
-					<p class="mt-2 text-muted-foreground">נמשך מתוך התוסף כאשר הוא מחובר.</p>
+					<h2 class="font-display text-3xl font-bold md:text-4xl"><?php echo esc_html( psalms_unite_text( 'recent_title' ) ); ?></h2>
+					<p class="mt-2 text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'recent_sub' ) ); ?></p>
 				</div>
-				<a class="rounded-full px-4 py-2 text-sm font-medium hover:bg-accent" href="<?php echo esc_url( home_url( '/campaigns/' ) ); ?>">לכל הקמפיינים</a>
+				<a class="rounded-full px-4 py-2 text-sm font-medium hover:bg-accent" href="<?php echo esc_url( home_url( '/campaigns/' ) ); ?>"><?php echo esc_html( psalms_unite_text( 'recent_viewall' ) ); ?></a>
 			</div>
 			<div class="psalms-unite-shortcode mt-10">
 				<?php echo psalms_unite_shortcode_slot( 'campaigns', '<div class="rounded-xl border border-dashed border-border/60 bg-card p-12 text-center text-muted-foreground">חבר את shortcode הקמפיינים של התוסף כדי להציג כאן נתונים חיים.</div>' ); ?>
@@ -277,24 +278,15 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 
 		<section class="bg-card/40 py-20">
 			<div class="mx-auto max-w-6xl px-4">
-				<h2 class="text-center font-display text-3xl font-bold md:text-4xl">כל מה שצריך לקמפיין מנצח</h2>
+				<h2 class="text-center font-display text-3xl font-bold md:text-4xl"><?php echo esc_html( psalms_unite_text( 'features_title' ) ); ?></h2>
 				<div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-					<?php foreach ( array(
-						array( 'יצירת קמפיין במגוון מטרות', 'רפואה, ישועה, זיווג, הצלחה, לעילוי נשמה ועוד.' ),
-						array( 'מערכת שגרירים', 'כל שגריר עם לינק ייעודי ולוח התקדמות אישי.' ),
-						array( 'מעקב אישי', 'כל משתתף רואה את התרומה שלו ליעד.' ),
-						array( 'התקדמות בזמן אמת', 'מד גדול, ספירת פרקים וספרים מתעדכנת מיד.' ),
-						array( 'שיתוף בוואטסאפ', 'כפתור אחד והקמפיין מגיע לכל קבוצה.' ),
-						array( 'השתתפות קבוצתית', 'משפחות, כיתות, קהילות — כולם תורמים יחד.' ),
-						array( 'תגי הישג', 'ספר ראשון, 10 ספרים, שגריר מצטיין ועוד.' ),
-						array( 'סטטיסטיקות חיות', 'מי תרם, מתי, וכמה — הכל שקוף.' ),
-					) as $feature ) : ?>
+					<?php for ( $i = 1; $i <= 8; $i++ ) : ?>
 						<article class="rounded-xl border border-border/60 bg-card p-6 transition-all hover:shadow-md">
-							<div class="grid h-10 w-10 place-items-center rounded-xl bg-primary-soft text-primary">✦</div>
-							<h3 class="mt-4 font-semibold"><?php echo esc_html( $feature[0] ); ?></h3>
-							<p class="mt-1.5 text-sm text-muted-foreground"><?php echo esc_html( $feature[1] ); ?></p>
+							<div class="grid h-10 w-10 place-items-center rounded-xl bg-primary-soft text-primary">&#10022;</div>
+							<h3 class="mt-4 font-semibold"><?php echo esc_html( psalms_unite_text( 'feat_' . $i . '_title' ) ); ?></h3>
+							<p class="mt-1.5 text-sm text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'feat_' . $i . '_text' ) ); ?></p>
 						</article>
-					<?php endforeach; ?>
+					<?php endfor; ?>
 				</div>
 			</div>
 		</section>
@@ -306,29 +298,22 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 			</div>
 			<div class="relative mx-auto max-w-6xl px-4">
 				<div class="mx-auto max-w-2xl text-center">
-					<h2 class="font-display text-3xl font-bold text-balance md:text-4xl">סיפורים מקהילות שהתאחדו סביב תהילים</h2>
+					<h2 class="font-display text-3xl font-bold text-balance md:text-4xl"><?php echo esc_html( psalms_unite_text( 'tst_title' ) ); ?></h2>
 				</div>
 				<div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-					<?php foreach ( array(
-						array( 'name' => 'משפחת לוי', 'role' => 'תל אביב', 'text' => 'תוך שבוע השלמנו 100 ספרי תהילים לרפואת אבא. לא האמנו כמה אנשים הצטרפו.' ),
-						array( 'name' => 'ביה״כ ׳אור החיים׳', 'role' => 'ירושלים', 'text' => 'הקמפיין איחד את הקהילה כמו שלא ראינו שנים. הילדים והנכדים השתתפו ביחד.' ),
-						array( 'name' => 'שרה מ.', 'role' => 'בני ברק', 'text' => 'פתחתי קמפיין לישועה והקהל הגיב מעבר לכל דמיון. כלי פשוט שמשנה הכל.' ),
-						array( 'name' => 'משפחת כהן', 'role' => 'פתח תקווה', 'text' => 'ביום אחד גייסנו 80 משתתפים. הצפיה במד מתמלא היתה מרגשת עד דמעות.' ),
-						array( 'name' => 'קהילת ׳נר תמיד׳', 'role' => 'חיפה', 'text' => 'פתחנו קמפיין לעילוי נשמה והצלחנו לאחד דורות שלמים במשפחה סביב מטרה אחת.' ),
-						array( 'name' => 'רחל ב.', 'role' => 'אשדוד', 'text' => 'השגרירים הניעו את הקמפיין יותר מכל דבר שדמיינתי. כל אחת הביאה עוד חברות.' ),
-					) as $tm ) : ?>
+					<?php for ( $i = 1; $i <= 6; $i++ ) : $psalms_name = psalms_unite_text( 'tst_' . $i . '_name' ); ?>
 						<article class="relative h-full overflow-hidden rounded-xl border border-border/60 bg-card/80 p-8 backdrop-blur-sm">
 							<div aria-hidden="true" class="absolute -top-2 start-5 font-display text-7xl leading-none text-gold/30 select-none">&rdquo;</div>
-							<p class="relative font-display text-lg leading-relaxed text-balance text-foreground/90"><?php echo esc_html( $tm['text'] ); ?></p>
+							<p class="relative font-display text-lg leading-relaxed text-balance text-foreground/90"><?php echo esc_html( psalms_unite_text( 'tst_' . $i . '_text' ) ); ?></p>
 							<div class="mt-6 flex items-center gap-3">
-								<div class="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-primary to-primary/60 font-display text-sm font-bold text-primary-foreground"><?php echo esc_html( mb_substr( $tm['name'], 0, 1 ) ); ?></div>
+								<div class="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-primary to-primary/60 font-display text-sm font-bold text-primary-foreground"><?php echo esc_html( mb_substr( $psalms_name, 0, 1 ) ); ?></div>
 								<div>
-									<div class="text-sm font-semibold text-foreground"><?php echo esc_html( $tm['name'] ); ?></div>
-									<div class="text-xs text-muted-foreground"><?php echo esc_html( $tm['role'] ); ?></div>
+									<div class="text-sm font-semibold text-foreground"><?php echo esc_html( $psalms_name ); ?></div>
+									<div class="text-xs text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'tst_' . $i . '_role' ) ); ?></div>
 								</div>
 							</div>
 						</article>
-					<?php endforeach; ?>
+					<?php endfor; ?>
 				</div>
 			</div>
 		</section>
@@ -337,33 +322,22 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 			<div class="mx-auto grid max-w-6xl gap-12 px-4 md:grid-cols-12">
 				<aside class="md:col-span-5 lg:col-span-4">
 					<div class="md:sticky md:top-24">
-						<div class="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-foreground/80">שאלות ותשובות</div>
-						<h2 class="mt-4 font-display text-3xl font-bold text-balance md:text-4xl">שאלות נפוצות</h2>
-						<p class="mt-3 text-muted-foreground">כל מה שצריך לדעת לפני שפותחים קמפיין. עוד שאלה? אנחנו כאן.</p>
+						<div class="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-foreground/80"><?php echo esc_html( psalms_unite_text( 'faq_eyebrow' ) ); ?></div>
+						<h2 class="mt-4 font-display text-3xl font-bold text-balance md:text-4xl"><?php echo esc_html( psalms_unite_text( 'faq_title' ) ); ?></h2>
+						<p class="mt-3 text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'faq_sub' ) ); ?></p>
 					</div>
 				</aside>
 				<div class="md:col-span-7 lg:col-span-8">
 					<div class="space-y-3">
-						<?php
-						$faqs = array(
-							array( 'האם השימוש בפלטפורמה כרוך בתשלום?', 'לא. השימוש חינמי לחלוטין. בלי הגבלות, בלי כרטיס אשראי.' ),
-							array( 'האם זה אתר לקריאת תהילים?', 'לא. זו פלטפורמת קמפיינים — מסביב למטרה משותפת. את התהילים אומרים בכל ספר או אפליקציה שתבחרו, וכאן מסמנים את הפרקים שאמרתם.' ),
-							array( 'איך נספרים הפרקים?', 'כל משתתף מסמן בלחיצה אחת איזה פרק או ספר השלים. הספירה מתעדכנת מיידית בקמפיין.' ),
-							array( 'מהו תפקיד השגריר?', 'שגריר מקבל לינק אישי, מגייס משתתפים מהקהילה שלו, ומופיע בלוח השגרירים של הקמפיין.' ),
-							array( 'האם ניתן לשתף את הקמפיין?', 'בוודאי — וואטסאפ, פייסבוק, מייל, או העתקת לינק. ככל שמשתפים יותר, מגיעים ליעד מהר יותר.' ),
-							array( 'כמה זמן לוקח לפתוח קמפיין?', 'בערך שתי דקות. שם, מטרה, יעד — והקמפיין באוויר.' ),
-							array( 'האם הנתונים שלי מאובטחים?', 'כן. אנחנו אוספים רק את המינימום הדרוש להפעלת הקמפיין, ולא משתפים אותו עם אף גורם.' ),
-						);
-						foreach ( $faqs as $i => $faq ) :
-							?>
+						<?php for ( $i = 1; $i <= 7; $i++ ) : ?>
 							<details class="psalms-faq rounded-xl border border-border/60 bg-background px-5">
 								<summary class="flex items-start gap-3 py-4 font-medium">
-									<span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary-soft text-xs font-bold text-primary tabular-nums"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
-									<span><?php echo esc_html( $faq[0] ); ?></span>
+									<span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary-soft text-xs font-bold text-primary tabular-nums"><?php echo esc_html( str_pad( (string) $i, 2, '0', STR_PAD_LEFT ) ); ?></span>
+									<span><?php echo esc_html( psalms_unite_text( 'faq_' . $i . '_q' ) ); ?></span>
 								</summary>
-								<div class="ps-9 pb-4 text-muted-foreground"><?php echo esc_html( $faq[1] ); ?></div>
+								<div class="ps-9 pb-4 text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'faq_' . $i . '_a' ) ); ?></div>
 							</details>
-						<?php endforeach; ?>
+						<?php endfor; ?>
 					</div>
 				</div>
 			</div>
@@ -371,9 +345,9 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 
 		<section class="mx-auto max-w-4xl px-4 py-20 text-center">
 			<div class="rounded-xl border border-primary/20 bg-primary p-12 text-primary-foreground">
-				<h2 class="font-display text-3xl font-bold md:text-4xl">מוכנים לפתוח קמפיין?</h2>
-				<p class="mx-auto mt-3 max-w-xl text-balance opacity-90">צרו קמפיין, הזמינו משתתפים, חלקו פרקים ועקבו אחרי ההתקדמות בזמן אמת.</p>
-				<a class="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-medium text-foreground hover:opacity-90" href="<?php echo esc_url( home_url( '/create/' ) ); ?>">יצירת קמפיין</a>
+				<h2 class="font-display text-3xl font-bold md:text-4xl"><?php echo esc_html( psalms_unite_text( 'cta_title' ) ); ?></h2>
+				<p class="mx-auto mt-3 max-w-xl text-balance opacity-90"><?php echo esc_html( psalms_unite_text( 'cta_sub' ) ); ?></p>
+				<a class="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-medium text-foreground hover:opacity-90" href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php echo esc_html( psalms_unite_text( 'cta_button' ) ); ?></a>
 			</div>
 		</section>
 	<?php endif; ?>

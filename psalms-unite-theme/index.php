@@ -159,14 +159,62 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 			</div>
 		</section>
 	<?php elseif ( 'about' === $slug ) : ?>
-		<section class="mx-auto grid max-w-6xl gap-10 px-4 py-20 md:grid-cols-12">
-			<div class="md:col-span-5">
-				<span class="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-foreground">אודות</span>
-				<h1 class="mt-4 font-display text-4xl font-bold md:text-5xl">פלטפורמה קהילתית לקריאת תהילים משותפת.</h1>
+		<section class="gradient-warm relative overflow-hidden">
+			<div aria-hidden="true" class="pointer-events-none absolute inset-0">
+				<div class="absolute -top-24 start-1/4 h-72 w-72 rounded-full bg-gold/25 blur-3xl"></div>
+				<div class="absolute -bottom-32 end-1/4 h-80 w-80 rounded-full bg-primary/20 blur-3xl"></div>
 			</div>
-			<div class="space-y-5 text-muted-foreground md:col-span-7">
-				<p>האתר מאפשר לפתוח קמפיין, לחלק פרקים, להזמין משתתפים ולעקוב אחרי ההתקדמות.</p>
-				<p>התבנית הזו שומרת על שפת העיצוב המקורית ומיועדת להתחבר לתוסף WordPress שמטפל בפונקציות.</p>
+			<div class="relative mx-auto max-w-3xl px-4 py-24 text-center md:py-28">
+				<span class="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-foreground shadow-sm backdrop-blur-sm">✦ אודות</span>
+				<h1 class="mt-6 font-display text-4xl font-bold text-balance md:text-5xl">אודות הפלטפורמה</h1>
+				<p class="mx-auto mt-4 max-w-xl text-balance text-muted-foreground md:text-lg">כלי קהילתי חינמי לאיחוד אנשים סביב אמירת תהילים.</p>
+			</div>
+		</section>
+
+		<section class="mx-auto max-w-5xl px-4 py-20">
+			<div class="grid gap-10 md:grid-cols-2">
+				<article class="relative overflow-hidden rounded-xl border border-border/60 bg-card/80 p-8 backdrop-blur-sm">
+					<div aria-hidden="true" class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent"></div>
+					<div class="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">✦</div>
+					<h2 class="mt-4 font-display text-2xl font-bold">המשימה שלנו</h2>
+					<p class="mt-3 leading-relaxed text-muted-foreground">האמנו שאמירת תהילים משותפת היא רגע של איחוד יוצא דופן — בין משפחה לחבר, בין קהילה לקהל רחב. בנינו פלטפורמה פשוטה שמאפשרת לכל אחד לפתוח קמפיין תוך דקות, להזמין שגרירים, ולעקוב יחד אחרי ההתקדמות עד היעד.</p>
+				</article>
+				<article class="relative overflow-hidden rounded-xl border border-border/60 bg-card/80 p-8 backdrop-blur-sm">
+					<div aria-hidden="true" class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent"></div>
+					<div class="grid h-11 w-11 place-items-center rounded-xl bg-gold/15 text-gold">✦</div>
+					<h2 class="mt-4 font-display text-2xl font-bold">הסיפור שלנו</h2>
+					<p class="mt-3 leading-relaxed text-muted-foreground">הפלטפורמה נולדה מתוך צורך אמיתי — קמפיין לרפואת קרוב משפחה הצריך טבלאות אקסל, הודעות וואטסאפ מבולגנות וספירה ידנית. הבנו שזה צריך להיות פשוט. בנינו את הכלי שחיפשנו, ופתחנו אותו לכולם — חינם.</p>
+				</article>
+			</div>
+		</section>
+
+		<section class="bg-card/40 py-20">
+			<div class="mx-auto max-w-6xl px-4">
+				<div class="mx-auto max-w-2xl text-center">
+					<h2 class="font-display text-3xl font-bold md:text-4xl">מה מנחה אותנו</h2>
+				</div>
+				<div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+					<?php foreach ( array(
+						array( 'פשטות לפני הכל', 'שתי דקות לפתיחת קמפיין, לחיצה אחת לסימון פרק.' ),
+						array( 'חינמי תמיד', 'בלי כרטיס אשראי, בלי הגבלות, בלי פרסומות.' ),
+						array( 'קהילה אמיתית', 'כלים ששמים את המשתתפים והשגרירים במרכז.' ),
+						array( 'שקיפות מלאה', 'כל פרק, כל ספר, כל תרומה — גלויים לעין כל.' ),
+					) as $value ) : ?>
+						<article class="rounded-xl border border-border/60 bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-gold/40 hover:shadow-md">
+							<div class="grid h-10 w-10 place-items-center rounded-xl bg-primary-soft text-primary">✦</div>
+							<h3 class="mt-4 font-semibold"><?php echo esc_html( $value[0] ); ?></h3>
+							<p class="mt-1.5 text-sm text-muted-foreground"><?php echo esc_html( $value[1] ); ?></p>
+						</article>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+
+		<section class="mx-auto max-w-4xl px-4 py-20 text-center">
+			<div class="rounded-xl border border-primary/20 bg-primary p-12 text-primary-foreground">
+				<h2 class="font-display text-3xl font-bold md:text-4xl">מוכנים לפתוח קמפיין?</h2>
+				<p class="mx-auto mt-3 max-w-xl text-balance opacity-90">שתי דקות והקמפיין שלכם באוויר. בלי עלות, בלי הגבלה.</p>
+				<a class="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-medium text-foreground hover:opacity-90" href="<?php echo esc_url( home_url( '/create/' ) ); ?>">צרו קמפיין</a>
 			</div>
 		</section>
 	<?php else : ?>

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'PSALMS_UNITE_THEME_VERSION', '1.5.0' );
+define( 'PSALMS_UNITE_THEME_VERSION', '1.6.0' );
 
 add_action(
 	'after_setup_theme',

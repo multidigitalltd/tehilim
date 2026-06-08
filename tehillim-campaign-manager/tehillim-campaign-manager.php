@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Tehillim Campaign Manager
  * Description: מערכת קמפיינים לחלוקת ספרי תהילים: ארכיון, עמודי קמפיין דינמיים, יעדים, בונוסים, שגרירים, וובהוקים, רשימות תפוצה, פרסום והודעות מותאמות.
- * Version: 3.17.2
+ * Version: 3.18.0
  * Author: Multi Digital
  * Text Domain: tehillim-campaign-manager
  * Domain Path: /languages
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TCM_VERSION', '3.17.2' );
+define( 'TCM_VERSION', '3.18.0' );
 define( 'TCM_PLUGIN_FILE', __FILE__ );
 define( 'TCM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'TCM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

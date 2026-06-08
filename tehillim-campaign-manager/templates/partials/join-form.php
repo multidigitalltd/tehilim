@@ -25,7 +25,7 @@ $free_count = is_array( $free ) ? count( $free ) : 0;
 $select_id  = 'tcm-chapter-' . (int) $campaign_id;
 $error_id   = 'tcm-join-error-' . (int) $campaign_id;
 ?>
-<section class="tcm-card tcm-join-card" aria-labelledby="tcm-join-heading-<?php echo esc_attr( $campaign_id ); ?>">
+<section class="tcm-card tcm-join-card" id="tcm-join" aria-labelledby="tcm-join-heading-<?php echo esc_attr( $campaign_id ); ?>">
 	<h3 id="tcm-join-heading-<?php echo esc_attr( $campaign_id ); ?>"><?php echo esc_html( $join_title ); ?></h3>
 
 	<?php if ( ! $free ) : ?>

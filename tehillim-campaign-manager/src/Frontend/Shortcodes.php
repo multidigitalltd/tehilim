@@ -297,7 +297,7 @@ final class Shortcodes implements Registerable {
 	private function reader_card( $id ) {
         // phpcs:disable WordPress.Security.NonceVerification.Recommended -- token-authorised read, not a state change.
 		if ( empty( $_GET['tcm_read'] ) || empty( $_GET['token'] ) ) {
-			return '';
+			return $this->default_reader_card( $id );
 		}
 		$assignment_id = absint( $_GET['tcm_read'] );
 		$token         = sanitize_text_field( wp_unslash( $_GET['token'] ) );
@@ -317,6 +317,32 @@ final class Shortcodes implements Registerable {
 				'siblings'    => $this->assignments->claim_siblings( $id, (int) $row->round_number, $token ),
 				'text'        => $this->chapter_text->get( (int) $row->chapter_number ),
 				'token'       => $token,
+			)
+		);
+	}
+
+	/**
+	 * Read-only preview of the next free chapter, shown by default (when the
+	 * visitor has not opened a personal reading link) so the campaign page
+	 * always presents a Tehillim chapter to read.
+	 *
+	 * @param int $id Campaign id.
+	 * @return string
+	 */
+	private function default_reader_card( $id ) {
+		$stats = $this->stats->for_campaign( $id );
+		$free  = $this->assignments->free_chapters( $id, (int) $stats['round'], 1 );
+		$row   = is_array( $free ) && ! empty( $free ) ? $free[0] : null;
+		if ( ! $row ) {
+			return '';
+		}
+		$chapter = (int) $row->chapter_number;
+		return Templating::render(
+			'partials/chapter-preview',
+			array(
+				'campaign_id' => (int) $id,
+				'chapter'     => $chapter,
+				'text'        => $this->chapter_text->get( $chapter ),
 			)
 		);
 	}

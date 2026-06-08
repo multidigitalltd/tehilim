@@ -82,6 +82,7 @@ final class Dashboard implements Registerable {
 		<div class="wrap" dir="rtl">
 			<h1><?php esc_html_e( 'Tehillim distribution dashboard', 'tehillim-campaign-manager' ); ?></h1>
 			<?php $this->render_kpis(); ?>
+			<?php $this->render_trend(); ?>
 			<p><?php esc_html_e( 'Archive shortcode:', 'tehillim-campaign-manager' ); ?> <code>[tehillim_campaigns]</code></p>
 			<table class="widefat striped">
 				<thead>
@@ -187,6 +188,62 @@ final class Dashboard implements Registerable {
 			.tcm-kpi-value{font-size:1.8rem;font-weight:800;line-height:1.1;color:#1d2327}
 			.tcm-kpi-label{font-size:.82rem;font-weight:600;color:#50575e}
 			.tcm-kpi-hint{font-size:.74rem;color:#787c82}
+		</style>
+		<?php
+	}
+
+	/**
+	 * Render a dependency-free inline-SVG bar chart of chapters completed per
+	 * day over the last 30 days.
+	 *
+	 * @return void
+	 */
+	private function render_trend() {
+		$series = $this->analytics->daily_trend( 30 );
+		$max    = 0;
+		$sum    = 0;
+		foreach ( $series as $point ) {
+			$max  = max( $max, $point['count'] );
+			$sum += $point['count'];
+		}
+		if ( $sum <= 0 ) {
+			return;
+		}
+
+		$count    = count( $series );
+		$width    = 720;
+		$height   = 140;
+		$gap      = 3;
+		$bar_w    = ( $width - ( $gap * ( $count - 1 ) ) ) / $count;
+		$date_fmt = get_option( 'date_format' );
+		?>
+		<div class="tcm-trend">
+			<h2><?php esc_html_e( 'Chapters completed — last 30 days', 'tehillim-campaign-manager' ); ?></h2>
+			<svg class="tcm-trend-svg" viewBox="0 0 <?php echo esc_attr( (string) $width ); ?> <?php echo esc_attr( (string) $height ); ?>" preserveAspectRatio="none" role="img" aria-label="<?php esc_attr_e( 'Daily completed chapters, last 30 days', 'tehillim-campaign-manager' ); ?>">
+				<?php
+				foreach ( $series as $i => $point ) {
+					$h = $max > 0 ? ( $point['count'] / $max ) * ( $height - 4 ) : 0;
+					$x = $i * ( $bar_w + $gap );
+					$y = $height - $h;
+					/* translators: 1: date, 2: chapter count. */
+					$title = sprintf( __( '%1$s: %2$s', 'tehillim-campaign-manager' ), mysql2date( $date_fmt, $point['date'] ), number_format_i18n( $point['count'] ) );
+					printf(
+						'<rect x="%1$s" y="%2$s" width="%3$s" height="%4$s" rx="2" fill="%5$s"><title>%6$s</title></rect>',
+						esc_attr( (string) round( $x, 2 ) ),
+						esc_attr( (string) round( $y, 2 ) ),
+						esc_attr( (string) round( $bar_w, 2 ) ),
+						esc_attr( (string) round( $h, 2 ) ),
+						esc_attr( $point['count'] > 0 ? '#c39a45' : '#e7e2d6' ),
+						esc_html( $title )
+					);
+				}
+				?>
+			</svg>
+		</div>
+		<style>
+			.tcm-trend{margin:0 0 24px}
+			.tcm-trend h2{font-size:1rem;margin:0 0 8px}
+			.tcm-trend-svg{width:100%;height:140px;background:#fff;border:1px solid #dcdcde;border-radius:10px;padding:6px;box-sizing:border-box}
 		</style>
 		<?php
 	}

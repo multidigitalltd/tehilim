@@ -13,6 +13,8 @@ use TCM\Admin\ChaptersPage;
 use TCM\Admin\Dashboard;
 use TCM\Admin\SettingsPage;
 use TCM\Admin\SetupWizard;
+use TCM\Admin\SubscribersPage;
+use TCM\Services\CampaignAlertService;
 use TCM\Blocks\BlocksModule;
 use TCM\Frontend\Ads;
 use TCM\Frontend\Ambassadors;
@@ -122,6 +124,7 @@ final class Plugin {
 				new MailService(),
 				new WebhookService(),
 				new CronService(),
+				new CampaignAlertService(),
 				new PrivacyModule(),
 			);
 
@@ -130,6 +133,7 @@ final class Plugin {
 					$this->modules,
 					array(
 						new Dashboard(),
+						new SubscribersPage(),
 						new SettingsPage(),
 						new ChaptersPage(),
 						new CampaignMetabox(),

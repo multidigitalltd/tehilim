@@ -38,6 +38,7 @@ final class Subscriptions implements Registerable {
 		add_shortcode( 'tehillim_subscribe', array( $this, 'form' ) );
 		add_action( 'template_redirect', array( $this, 'handle_unsubscribe' ) );
 		add_action( 'tcm_campaign_announced', array( $this, 'on_campaign_announced' ) );
+		add_action( 'tcm_campaign_nearly_done', array( $this, 'on_campaign_nearly_done' ), 10, 3 );
 	}
 
 	/**
@@ -48,6 +49,18 @@ final class Subscriptions implements Registerable {
 	 */
 	public function on_campaign_announced( $campaign_id ) {
 		$this->service->notify_campaign( (int) $campaign_id );
+	}
+
+	/**
+	 * Nudge "campaign alerts" subscribers when a campaign is almost finished.
+	 *
+	 * @param int $campaign_id Campaign post id.
+	 * @param int $round       Current round (unused; kept for signature parity).
+	 * @param int $remaining   Chapters left in the current book.
+	 * @return void
+	 */
+	public function on_campaign_nearly_done( $campaign_id, $round, $remaining ) {
+		$this->service->notify_campaign_nearly_done( (int) $campaign_id, (int) $remaining );
 	}
 
 	/**

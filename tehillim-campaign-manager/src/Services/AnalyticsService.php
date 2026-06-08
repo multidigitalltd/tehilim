@@ -74,6 +74,35 @@ final class AnalyticsService {
 	}
 
 	/**
+	 * Completed-chapters series for the last N days, gap-filled with zeros and
+	 * ordered oldest → newest. Powers the dashboard trend chart.
+	 *
+	 * @param int $days Number of days.
+	 * @return array<int,array{date:string,count:int}>
+	 */
+	public function daily_trend( $days = 30 ) {
+		$days      = max( 1, (int) $days );
+		$now_local = strtotime( current_time( 'mysql' ) );
+		$since     = gmdate( 'Y-m-d H:i:s', $now_local - ( $days * DAY_IN_SECONDS ) );
+
+		$by_day = array();
+		foreach ( $this->assignments->done_by_day( $since ) as $r ) {
+			$by_day[ (string) $r->day ] = (int) $r->c;
+		}
+
+		$today_ts = strtotime( gmdate( 'Y-m-d', $now_local ) );
+		$series   = array();
+		for ( $i = $days - 1; $i >= 0; $i-- ) {
+			$date     = gmdate( 'Y-m-d', $today_ts - ( $i * DAY_IN_SECONDS ) );
+			$series[] = array(
+				'date'  => $date,
+				'count' => isset( $by_day[ $date ] ) ? (int) $by_day[ $date ] : 0,
+			);
+		}
+		return $series;
+	}
+
+	/**
 	 * Site-wide analytics summary.
 	 *
 	 * @return array<string,int|float>

@@ -47,4 +47,20 @@ final class AdStatsRepository extends Repository {
 		);
 		$this->db->query( $sql );
 	}
+
+	/**
+	 * Site-wide ad totals (impressions, clicks) for admin analytics.
+	 *
+	 * @return array{impressions:int,clicks:int}
+	 */
+	public function totals() {
+		$row = $this->db->get_row(
+			"SELECT COALESCE(SUM(impressions),0) AS impressions, COALESCE(SUM(clicks),0) AS clicks
+             FROM {$this->table}"
+		);
+		return array(
+			'impressions' => $row ? (int) $row->impressions : 0,
+			'clicks'      => $row ? (int) $row->clicks : 0,
+		);
+	}
 }

@@ -11,41 +11,41 @@
  * @var string $base_url Archive base URL.
  */
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 ?>
 <div class="tcm-wrap tcm-segulot">
-	<form class="tcm-segulot-filter" method="get" action="<?php echo esc_url($base_url); ?>" role="search">
-		<label class="screen-reader-text" for="tcm-segulot-q"><?php esc_html_e('Search prayers', 'tehillim-campaign-manager'); ?></label>
-		<input type="search" id="tcm-segulot-q" name="tcm_q" value="<?php echo esc_attr($search); ?>" placeholder="<?php esc_attr_e('Search prayers…', 'tehillim-campaign-manager'); ?>">
-		<button class="tcm-btn" type="submit"><?php esc_html_e('Search', 'tehillim-campaign-manager'); ?></button>
+	<form class="tcm-segulot-filter" method="get" action="<?php echo esc_url( $base_url ); ?>" role="search">
+		<label class="screen-reader-text" for="tcm-segulot-q"><?php esc_html_e( 'Search prayers', 'tehillim-campaign-manager' ); ?></label>
+		<input type="search" id="tcm-segulot-q" name="tcm_q" value="<?php echo esc_attr( $search ); ?>" placeholder="<?php esc_attr_e( 'Search prayers…', 'tehillim-campaign-manager' ); ?>">
+		<button class="tcm-btn" type="submit"><?php esc_html_e( 'Search', 'tehillim-campaign-manager' ); ?></button>
 	</form>
 
-	<?php if ($terms) : ?>
-		<nav class="tcm-segulot-cats" aria-label="<?php esc_attr_e('Prayer categories', 'tehillim-campaign-manager'); ?>">
-			<a class="tcm-badge <?php echo '' === $current ? 'is-active' : ''; ?>" href="<?php echo esc_url($base_url); ?>"><?php esc_html_e('All', 'tehillim-campaign-manager'); ?></a>
-			<?php foreach ($terms as $term) : ?>
-				<a class="tcm-badge <?php echo $current === $term->slug ? 'is-active' : ''; ?>" href="<?php echo esc_url(add_query_arg('tcm_cat', $term->slug, $base_url)); ?>"><?php echo esc_html($term->name); ?></a>
+	<?php if ( $terms ) : ?>
+		<nav class="tcm-segulot-cats" aria-label="<?php esc_attr_e( 'Prayer categories', 'tehillim-campaign-manager' ); ?>">
+			<a class="tcm-badge <?php echo '' === $current ? 'is-active' : ''; ?>" href="<?php echo esc_url( $base_url ); ?>"><?php esc_html_e( 'All', 'tehillim-campaign-manager' ); ?></a>
+			<?php foreach ( $terms as $term ) : ?>
+				<a class="tcm-badge <?php echo $current === $term->slug ? 'is-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'tcm_cat', $term->slug, $base_url ) ); ?>"><?php echo esc_html( $term->name ); ?></a>
 			<?php endforeach; ?>
 		</nav>
 	<?php endif; ?>
 
-	<?php if (!$prayers) : ?>
-		<div class="tcm-card"><?php esc_html_e('No prayers found.', 'tehillim-campaign-manager'); ?></div>
+	<?php if ( ! $prayers ) : ?>
+		<div class="tcm-card"><?php esc_html_e( 'No prayers found.', 'tehillim-campaign-manager' ); ?></div>
 	<?php else : ?>
 		<div class="tcm-campaign-list">
-			<?php foreach ($prayers as $prayer) : ?>
-				<a class="tcm-card tcm-campaign-card tcm-prayer-card" href="<?php echo esc_url($prayer['permalink']); ?>">
-					<?php if (!empty($prayer['thumb'])) : ?>
-						<span class="tcm-campaign-card__media" style="background-image:url(<?php echo esc_url($prayer['thumb']); ?>)" aria-hidden="true"></span>
+			<?php foreach ( $prayers as $prayer ) : ?>
+				<a class="tcm-card tcm-campaign-card tcm-prayer-card" href="<?php echo esc_url( $prayer['permalink'] ); ?>">
+					<?php if ( ! empty( $prayer['thumb'] ) ) : ?>
+						<span class="tcm-campaign-card__media" style="background-image:url(<?php echo esc_url( $prayer['thumb'] ); ?>)" aria-hidden="true"></span>
 					<?php else : ?>
 						<span class="tcm-campaign-card__media tcm-prayer-card__media" aria-hidden="true">۞</span>
 					<?php endif; ?>
 					<span class="tcm-campaign-card__body">
-						<span class="tcm-campaign-card__title"><?php echo esc_html($prayer['title']); ?></span>
-						<?php if ($prayer['excerpt']) : ?>
-							<span class="tcm-campaign-card__excerpt"><?php echo esc_html(wp_trim_words($prayer['excerpt'], 22)); ?></span>
+						<span class="tcm-campaign-card__title"><?php echo esc_html( $prayer['title'] ); ?></span>
+						<?php if ( $prayer['excerpt'] ) : ?>
+							<span class="tcm-campaign-card__excerpt"><?php echo esc_html( wp_trim_words( $prayer['excerpt'], 22 ) ); ?></span>
 						<?php endif; ?>
 					</span>
 				</a>

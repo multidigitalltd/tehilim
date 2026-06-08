@@ -10,6 +10,7 @@ namespace TCM\Frontend;
 use TCM\Contracts\Registerable;
 use TCM\Database\AssignmentsRepository;
 use TCM\PostTypes\CampaignPostType;
+use TCM\Services\BadgeService;
 use TCM\Services\StatsService;
 use TCM\Support\Hebrew;
 use TCM\Support\Urls;
@@ -120,8 +121,11 @@ final class SelfService implements Registerable {
 				)
 			);
 		}
-		$user = wp_get_current_user();
-		$rows = array();
+		$user      = wp_get_current_user();
+		$rows      = array();
+		$done      = 0;
+		$badge     = null;
+		$next_tier = null;
 		if ( is_email( $user->user_email ) ) {
 			foreach ( $this->assignments->by_participant_email( $user->user_email, 50 ) as $row ) {
 				$rows[] = array(
@@ -132,12 +136,18 @@ final class SelfService implements Registerable {
 					'permalink'      => get_permalink( (int) $row->campaign_id ),
 				);
 			}
+			$done      = $this->assignments->count_done_by_participant_email( $user->user_email );
+			$badge     = BadgeService::for_participant( $done );
+			$next_tier = BadgeService::next_tier( BadgeService::participant_tiers(), $done );
 		}
 		return Templating::render(
 			'partials/my-activity',
 			array(
 				'logged_in' => true,
 				'rows'      => $rows,
+				'done'      => $done,
+				'badge'     => $badge,
+				'next_tier' => $next_tier,
 			)
 		);
 	}

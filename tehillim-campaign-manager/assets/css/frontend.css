@@ -815,3 +815,27 @@
 	vertical-align: middle;
 	white-space: nowrap;
 }
+
+.tcm-badge-chip.is-lg {
+	padding: 5px 14px;
+	font-size: 0.9rem;
+	margin-inline-start: 0;
+}
+
+.tcm-my-badge {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	margin: 4px 0 18px;
+}
+
+.tcm-my-badge-count {
+	font-weight: 700;
+	color: var(--tcm-text);
+}
+
+.tcm-my-badge-next {
+	font-size: 0.82rem;
+	color: color-mix(in oklab, var(--tcm-text) 60%, transparent);
+}

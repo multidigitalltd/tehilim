@@ -108,6 +108,31 @@ final class BadgeService {
 	}
 
 	/**
+	 * The next tier above the current count (to show progress toward it), or
+	 * null when the top tier is already reached.
+	 *
+	 * @param array<int,array{min:int,slug:string,label:string,icon:string}> $tiers Tier list (highest first).
+	 * @param int                                                            $count Completed count.
+	 * @return array{min:int,slug:string,label:string,icon:string,remaining:int}|null
+	 */
+	public static function next_tier( array $tiers, $count ) {
+		$count = (int) $count;
+		$next  = null;
+		foreach ( $tiers as $tier ) {
+			if ( (int) $tier['min'] > $count ) {
+				$next = array(
+					'min'       => (int) $tier['min'],
+					'slug'      => $tier['slug'],
+					'label'     => $tier['label'],
+					'icon'      => $tier['icon'],
+					'remaining' => (int) $tier['min'] - $count,
+				);
+			}
+		}
+		return $next;
+	}
+
+	/**
 	 * Badge for an ambassador with the given completed count.
 	 *
 	 * @param int $done Completed referrals.

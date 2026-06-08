@@ -62,4 +62,19 @@ final class BadgeServiceTest extends TestCase {
 		$this->assertArrayHasKey( 'label', $badge );
 		$this->assertArrayHasKey( 'icon', $badge );
 	}
+
+	public function test_next_tier_is_the_immediate_one_above() {
+		$next = BadgeService::next_tier( $this->tiers(), 0 );
+		$this->assertSame( 'rookie', $next['slug'] );
+		$this->assertSame( 1, $next['remaining'] );
+
+		$next = BadgeService::next_tier( $this->tiers(), 5 );
+		$this->assertSame( 'star', $next['slug'] );
+		$this->assertSame( 5, $next['remaining'] );
+	}
+
+	public function test_next_tier_is_null_at_the_top() {
+		$this->assertNull( BadgeService::next_tier( $this->tiers(), 25 ) );
+		$this->assertNull( BadgeService::next_tier( $this->tiers(), 99 ) );
+	}
 }

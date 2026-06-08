@@ -244,6 +244,7 @@
 				form.reset();
 				if (okBox) {
 					okBox.hidden = false;
+					if (okBox.focus) { okBox.focus(); }
 				}
 				if (errBox) {
 					errBox.hidden = true;
@@ -253,6 +254,7 @@
 				if (errBox) {
 					errBox.textContent = err.message || errorText();
 					errBox.hidden = false;
+					if (errBox.focus) { errBox.focus(); }
 				}
 			})
 			.then(function () {
@@ -366,6 +368,7 @@
 			}
 			if (okBox) {
 				okBox.hidden = false;
+				if (okBox.focus) { okBox.focus(); }
 			}
 			if (errBox) {
 				errBox.hidden = true;
@@ -374,6 +377,7 @@
 			if (errBox) {
 				errBox.textContent = errorText();
 				errBox.hidden = false;
+				if (errBox.focus) { errBox.focus(); }
 			}
 		});
 	});

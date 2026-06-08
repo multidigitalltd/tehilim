@@ -3,7 +3,7 @@ Theme Name: Psalms Unite
 Theme URI: https://github.com/multidigitalltd/psalms-unite
 Author: Multi Digital
 Description: WordPress theme bridge for the Psalms Unite / Tehillim Campaigns design and plugin shortcodes.
-Version: 1.11.0
+Version: 1.12.0
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: psalms-unite
@@ -152,4 +152,23 @@ body { margin: 0; background: var(--background, #fbf8ed); }
   width: auto;
   max-width: 200px;
   object-fit: contain;
+}
+
+/* ============================================================
+   Livelier palette. Boosts saturation/vibrancy of the royal
+   blue + gold identity while keeping the cream background and
+   dark-navy text for readability. Loaded after the compiled
+   app CSS, so these win.
+   ============================================================ */
+:root {
+  --primary: #2e40c0;            /* was #203270 — vivid royal indigo */
+  --primary-foreground: #ffffff;
+  --primary-soft: #dfe5ff;       /* brighter soft blue */
+  --ring: #5a6ae6;
+  --gold: #f4a521;               /* was #e1a447 — vivid amber-gold */
+  --gold-foreground: #1a1205;
+  --accent: #ffe6bd;             /* warmer, brighter accent */
+  --accent-foreground: #6a2e00;
+  --secondary: #f9f2e2;
+  --destructive: #ef3b3b;
 }

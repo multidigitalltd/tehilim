@@ -42,6 +42,29 @@ final class WebhookService implements Registerable {
 		add_action( 'tcm_chapter_auto_released', array( $this, 'on_auto_released' ), 20, 1 );
 		add_action( 'tcm_subscription_due', array( $this, 'on_subscription_due' ), 20, 2 );
 		add_action( 'transition_post_status', array( $this, 'maybe_announce_campaign' ), 10, 3 );
+		add_action( 'tcm_campaign_nearly_done', array( $this, 'on_campaign_nearly_done' ), 20, 3 );
+	}
+
+	/**
+	 * Broadcast a `campaign_nearly_done` event so an automation can rally the
+	 * group to finish the last few chapters.
+	 *
+	 * @param int $campaign_id Campaign post id.
+	 * @param int $round       Current round.
+	 * @param int $remaining   Chapters left in the current book.
+	 * @return void
+	 */
+	public function on_campaign_nearly_done( $campaign_id, $round, $remaining ) {
+		$this->dispatch(
+			'campaign_nearly_done',
+			array(
+				'campaign_id'    => (int) $campaign_id,
+				'campaign_title' => get_the_title( (int) $campaign_id ),
+				'round'          => (int) $round,
+				'remaining'      => (int) $remaining,
+				'permalink'      => (string) get_permalink( (int) $campaign_id ),
+			)
+		);
 	}
 
 	/**

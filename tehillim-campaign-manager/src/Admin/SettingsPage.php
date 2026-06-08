@@ -229,6 +229,7 @@ final class SettingsPage implements Registerable {
 			$this->secret_row( 'webhook_secret', __( 'Webhook secret (HMAC)', 'tehillim-campaign-manager' ), $o );
 			$this->text_row( 'turnstile_site_key', __( 'Turnstile site key', 'tehillim-campaign-manager' ), $o );
 			$this->secret_row( 'turnstile_secret_key', __( 'Turnstile secret key', 'tehillim-campaign-manager' ), $o );
+			$this->webhook_events_help();
 		} else {
 			foreach ( array(
 				'design_primary_color'     => __( 'Primary colour', 'tehillim-campaign-manager' ),
@@ -264,6 +265,38 @@ final class SettingsPage implements Registerable {
 			'<input type="text" class="regular-text" name="tcm_options[' . esc_attr( $key ) . ']" value="' . esc_attr( $o[ $key ] ?? '' ) . '">',
 			$help
 		);
+	}
+
+	/**
+	 * Print a reference table of every webhook event the plugin dispatches, so
+	 * whoever wires the automation knows what to route. The signed payload of
+	 * each event always includes its fields plus an `event` name.
+	 *
+	 * @return void
+	 */
+	private function webhook_events_help() {
+		$events = array(
+			'campaign_new'            => __( 'A new campaign was published — broadcast it to the group.', 'tehillim-campaign-manager' ),
+			'campaign_nearly_done'    => __( 'A campaign is almost finished — rally people to close it.', 'tehillim-campaign-manager' ),
+			'campaign_completed'      => __( 'A campaign reached its goal.', 'tehillim-campaign-manager' ),
+			'subscription_campaign'   => __( 'Personal campaign alert for a Tehillim Corps subscriber (kind: new / nearly_done).', 'tehillim-campaign-manager' ),
+			'subscription_daily'      => __( 'Daily chapter for a subscriber.', 'tehillim-campaign-manager' ),
+			'chapter_claimed'         => __( 'Someone took a chapter.', 'tehillim-campaign-manager' ),
+			'chapter_done'            => __( 'A chapter was completed.', 'tehillim-campaign-manager' ),
+			'chapter_released'        => __( 'A chapter was released back to the pool.', 'tehillim-campaign-manager' ),
+			'book_completed'          => __( 'A book (150 chapters) was completed.', 'tehillim-campaign-manager' ),
+			'chapter_reminder'        => __( 'Reminder to a participant to finish their chapter.', 'tehillim-campaign-manager' ),
+			'chapter_release_warning' => __( 'Warning that a chapter is about to be auto-released.', 'tehillim-campaign-manager' ),
+			'chapter_auto_released'   => __( 'A chapter was automatically released after timeout.', 'tehillim-campaign-manager' ),
+		);
+
+		echo '<tr><td colspan="2"><h2>' . esc_html__( 'Webhook events', 'tehillim-campaign-manager' ) . '</h2>';
+		echo '<p class="description">' . esc_html__( 'Every event is POSTed to your Webhook URL, signed with the HMAC secret. Route them in your automation (e.g. to a WhatsApp group or personal messages).', 'tehillim-campaign-manager' ) . '</p>';
+		echo '<table class="widefat striped" style="max-width:760px;margin-top:8px"><thead><tr><th>' . esc_html__( 'Event', 'tehillim-campaign-manager' ) . '</th><th>' . esc_html__( 'Fires when', 'tehillim-campaign-manager' ) . '</th></tr></thead><tbody>';
+		foreach ( $events as $name => $desc ) {
+			echo '<tr><td><code>' . esc_html( $name ) . '</code></td><td>' . esc_html( $desc ) . '</td></tr>';
+		}
+		echo '</tbody></table></td></tr>';
 	}
 
 	/**

@@ -143,6 +143,60 @@ final class SubscribersRepository extends Repository {
 	}
 
 	/**
+	 * Filtered, paginated subscriber rows for the admin list.
+	 *
+	 * @param string $list   List key, or '' for all lists.
+	 * @param string $status Status, or '' for any status.
+	 * @param int    $limit  Page size.
+	 * @param int    $offset Offset.
+	 * @return array<int,object>
+	 */
+	public function paged( $list = '', $status = '', $limit = 50, $offset = 0 ) {
+		$where  = array( '1=1' );
+		$params = array();
+		if ( '' !== $list ) {
+			$where[]  = 'list_key=%s';
+			$params[] = $list;
+		}
+		if ( '' !== $status ) {
+			$where[]  = 'status=%s';
+			$params[] = $status;
+		}
+		$params[] = max( 1, (int) $limit );
+		$params[] = max( 0, (int) $offset );
+
+		$sql = "SELECT * FROM {$this->table} WHERE " . implode( ' AND ', $where )
+			. ' ORDER BY created_at DESC LIMIT %d OFFSET %d';
+
+		return $this->db->get_results( $this->db->prepare( $sql, $params ) );
+	}
+
+	/**
+	 * Count subscribers matching the admin-list filter.
+	 *
+	 * @param string $list   List key, or '' for all lists.
+	 * @param string $status Status, or '' for any status.
+	 * @return int
+	 */
+	public function count_filtered( $list = '', $status = '' ) {
+		$where  = array( '1=1' );
+		$params = array();
+		if ( '' !== $list ) {
+			$where[]  = 'list_key=%s';
+			$params[] = $list;
+		}
+		if ( '' !== $status ) {
+			$where[]  = 'status=%s';
+			$params[] = $status;
+		}
+		$sql = "SELECT COUNT(*) FROM {$this->table} WHERE " . implode( ' AND ', $where );
+		if ( $params ) {
+			return (int) $this->db->get_var( $this->db->prepare( $sql, $params ) );
+		}
+		return (int) $this->db->get_var( $sql );
+	}
+
+	/**
 	 * All subscribers for an email (privacy export).
 	 *
 	 * @param string $email Email.

@@ -135,6 +135,25 @@ final class AssignmentsRepository extends Repository {
 	}
 
 	/**
+	 * Completed-chapter counts grouped by day since a datetime, oldest first.
+	 * Powers the admin reading-trend chart.
+	 *
+	 * @param string $since Datetime in MySQL `Y-m-d H:i:s` format.
+	 * @return array<int,object> Rows of { day, c }.
+	 */
+	public function done_by_day( $since ) {
+		$sql = $this->db->prepare(
+			"SELECT DATE(completed_at) AS day, COUNT(*) AS c
+             FROM {$this->table}
+             WHERE status='done' AND completed_at >= %s
+             GROUP BY DATE(completed_at)
+             ORDER BY day ASC",
+			$since
+		);
+		return $this->db->get_results( $sql );
+	}
+
+	/**
 	 * Total completed chapters across all rounds.
 	 *
 	 * @param int $campaign_id Campaign.

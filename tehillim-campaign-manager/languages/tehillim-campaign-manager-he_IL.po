@@ -754,3 +754,63 @@ msgstr "הצטרפו לחיל התהילים"
 
 msgid "Get an alert whenever a new campaign launches, and help finish it."
 msgstr "קבלו התראה בכל פעם שעולה קמפיין חדש, ועזרו לסיים אותו."
+
+msgid "Subscribers"
+msgstr "נרשמים"
+
+msgid "Daily chapter"
+msgstr "פרק יומי"
+
+msgid "Tehillim Corps"
+msgstr "חיל התהילים"
+
+msgid "Unsubscribed"
+msgstr "בוטל"
+
+msgid "Pending"
+msgstr "ממתין"
+
+msgid "All lists"
+msgstr "כל הרשימות"
+
+msgid "Any status"
+msgstr "כל הסטטוסים"
+
+msgid "Filter"
+msgstr "סינון"
+
+msgid "Export CSV"
+msgstr "ייצוא CSV"
+
+msgid "%s subscribers"
+msgstr "%s נרשמים"
+
+msgid "Contact"
+msgstr "פרטי קשר"
+
+msgid "Joined"
+msgstr "תאריך הצטרפות"
+
+msgid "No subscribers found."
+msgstr "לא נמצאו נרשמים."
+
+msgid "Unsubscribe"
+msgstr "ביטול הרשמה"
+
+msgid "Reactivate"
+msgstr "הפעלה מחדש"
+
+msgid "Webhook events"
+msgstr "אירועי Webhook"
+
+msgid "Event"
+msgstr "אירוע"
+
+msgid "Fires when"
+msgstr "מתי נשלח"
+
+msgid "Chapters completed — last 30 days"
+msgstr "פרקים שהושלמו — 30 הימים האחרונים"
+
+msgid "Daily completed chapters, last 30 days"
+msgstr "פרקים שהושלמו ליום, 30 הימים האחרונים"

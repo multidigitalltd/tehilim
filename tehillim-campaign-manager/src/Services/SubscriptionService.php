@@ -163,14 +163,52 @@ final class SubscriptionService {
 			return;
 		}
 
-		$base = array(
-			'list'           => 'campaign_alerts',
-			'campaign_id'    => $campaign_id,
-			'campaign_title' => get_the_title( $campaign_id ),
-			'dedicated_to'   => (string) get_post_meta( $campaign_id, '_tcm_dedicated_to', true ),
-			'permalink'      => (string) get_permalink( $campaign_id ),
+		$this->dispatch_to_alerts(
+			array(
+				'list'           => 'campaign_alerts',
+				'kind'           => 'new',
+				'campaign_id'    => $campaign_id,
+				'campaign_title' => get_the_title( $campaign_id ),
+				'dedicated_to'   => (string) get_post_meta( $campaign_id, '_tcm_dedicated_to', true ),
+				'permalink'      => (string) get_permalink( $campaign_id ),
+			)
 		);
+	}
 
+	/**
+	 * Nudge "campaign_alerts" subscribers that a campaign is almost finished, so
+	 * they come and close out the remaining chapters.
+	 *
+	 * @param int $campaign_id Campaign post id.
+	 * @param int $remaining   Chapters left in the current book.
+	 * @return void
+	 */
+	public function notify_campaign_nearly_done( $campaign_id, $remaining ) {
+		$campaign_id = (int) $campaign_id;
+		if ( $campaign_id <= 0 ) {
+			return;
+		}
+
+		$this->dispatch_to_alerts(
+			array(
+				'list'           => 'campaign_alerts',
+				'kind'           => 'nearly_done',
+				'campaign_id'    => $campaign_id,
+				'campaign_title' => get_the_title( $campaign_id ),
+				'remaining'      => max( 0, (int) $remaining ),
+				'permalink'      => (string) get_permalink( $campaign_id ),
+			)
+		);
+	}
+
+	/**
+	 * Send a payload to each active "campaign_alerts" subscriber as a
+	 * per-subscriber webhook event (adds their personal unsubscribe link).
+	 *
+	 * @param array<string,mixed> $base Shared payload.
+	 * @return void
+	 */
+	private function dispatch_to_alerts( array $base ) {
 		foreach ( $this->subscribers->active_by_list( 'campaign_alerts' ) as $subscriber ) {
 			$payload                    = $base;
 			$payload['unsubscribe_url'] = add_query_arg( 'tcm_unsub', $subscriber->unsubscribe_token, home_url( '/' ) );

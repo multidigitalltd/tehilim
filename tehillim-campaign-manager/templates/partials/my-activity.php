@@ -39,7 +39,7 @@ $labels = array(
 					echo esc_html(
 						sprintf(
 							/* translators: %d: number of chapters completed. */
-							_n( '%d chapter completed', '%d chapters completed', $done, 'tehillim-campaign-manager' ),
+							__( '%d chapters completed', 'tehillim-campaign-manager' ),
 							$done
 						)
 					);
@@ -51,7 +51,7 @@ $labels = array(
 						echo esc_html(
 							sprintf(
 								/* translators: 1: chapters remaining, 2: next badge icon, 3: next badge label. */
-								_n( '%1$d more to earn %2$s %3$s', '%1$d more to earn %2$s %3$s', $next_tier['remaining'], 'tehillim-campaign-manager' ),
+								__( '%1$d more to earn %2$s %3$s', 'tehillim-campaign-manager' ),
 								(int) $next_tier['remaining'],
 								$next_tier['icon'],
 								$next_tier['label']

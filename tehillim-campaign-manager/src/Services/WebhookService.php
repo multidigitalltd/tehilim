@@ -76,6 +76,9 @@ final class WebhookService implements Registerable {
 				'permalink'      => (string) get_permalink( $post ),
 			)
 		);
+
+		/** Fires once when a campaign is first published (after the broadcast). */
+		do_action( 'tcm_campaign_announced', (int) $post->ID );
 	}
 
 	/**
@@ -90,7 +93,8 @@ final class WebhookService implements Registerable {
 		$payload['subscriber_name']  = (string) $subscriber->name;
 		$payload['subscriber_phone'] = (string) $subscriber->phone;
 		$payload['subscriber_email'] = (string) $subscriber->email;
-		$this->dispatch( 'subscription_daily', $payload );
+		$event                       = ( 'campaign_alerts' === ( $payload['list'] ?? '' ) ) ? 'subscription_campaign' : 'subscription_daily';
+		$this->dispatch( $event, $payload );
 	}
 
 	/**

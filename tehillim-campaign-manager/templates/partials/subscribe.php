@@ -10,10 +10,21 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+if ( 'campaign_alerts' === $list ) {
+	$heading = __( 'Join the Tehillim Corps', 'tehillim-campaign-manager' );
+	$intro   = __( 'Get an alert whenever a new campaign launches, and help finish it.', 'tehillim-campaign-manager' );
+} else {
+	$heading = __( 'Subscribe to a daily Tehillim chapter', 'tehillim-campaign-manager' );
+	$intro   = '';
+}
 ?>
 <div class="tcm-wrap">
 	<div class="tcm-card">
-		<h3><?php esc_html_e( 'Subscribe to a daily Tehillim chapter', 'tehillim-campaign-manager' ); ?></h3>
+		<h3><?php echo esc_html( $heading ); ?></h3>
+		<?php if ( '' !== $intro ) : ?>
+			<p class="tcm-form-intro"><?php echo esc_html( $intro ); ?></p>
+		<?php endif; ?>
 		<form class="tcm-form tcm-subscribe-form" data-tcm-subscribe data-tcm-list="<?php echo esc_attr( $list ); ?>">
 			<div class="tcm-field">
 				<label for="tcm-sub-channel"><?php esc_html_e( 'Receive via', 'tehillim-campaign-manager' ); ?></label>

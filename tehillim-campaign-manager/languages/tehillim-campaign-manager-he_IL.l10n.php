@@ -11,6 +11,8 @@ return array (
     'Active' => 'פעיל',
     'Active ambassador' => 'שגריר פעיל',
     'Active subscribers' => 'נרשמים פעילים',
+    'Join the Tehillim Corps' => 'הצטרפו לחיל התהילים',
+    'Get an alert whenever a new campaign launches, and help finish it.' => 'קבלו התראה בכל פעם שעולה קמפיין חדש, ועזרו לסיים אותו.',
     'Ad clicks' => 'קליקים על פרסומות',
     'Chapters completed' => 'פרקים שהושלמו',
     '%d chapters completed' => 'השלמת %d פרקים',

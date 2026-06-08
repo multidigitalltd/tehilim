@@ -146,7 +146,7 @@ final class RestController implements Registerable {
 						'type'              => 'string',
 						'sanitize_callback' => 'wp_kses_post',
 						'validate_callback' => static function ( $value ) {
-							return is_scalar( $value ) && mb_strlen( (string) $value ) <= 5000;
+							return is_scalar( $value ) && self::len( $value ) <= 5000;
 						},
 					),
 					'target'       => $this->int_arg( 1, 1000 ),
@@ -155,7 +155,7 @@ final class RestController implements Registerable {
 						'type'              => 'string',
 						'sanitize_callback' => 'esc_url_raw',
 						'validate_callback' => static function ( $value ) {
-							return is_scalar( $value ) && mb_strlen( (string) $value ) <= 600;
+							return is_scalar( $value ) && self::len( $value ) <= 600;
 						},
 					),
 				),
@@ -572,6 +572,18 @@ final class RestController implements Registerable {
 	}
 
 	/**
+	 * Character length that is safe when the optional mbstring extension is
+	 * unavailable (falls back to byte length).
+	 *
+	 * @param mixed $value Value.
+	 * @return int
+	 */
+	private static function len( $value ) {
+		$value = (string) $value;
+		return function_exists( 'mb_strlen' ) ? mb_strlen( $value ) : strlen( $value );
+	}
+
+	/**
 	 * A bounded plain-text argument (sanitised + max length).
 	 *
 	 * @param int  $max      Maximum length (characters).
@@ -584,7 +596,7 @@ final class RestController implements Registerable {
 			'type'              => 'string',
 			'sanitize_callback' => 'sanitize_text_field',
 			'validate_callback' => static function ( $value ) use ( $max ) {
-				return is_scalar( $value ) && mb_strlen( (string) $value ) <= (int) $max;
+				return is_scalar( $value ) && self::len( $value ) <= (int) $max;
 			},
 		);
 	}
@@ -635,7 +647,7 @@ final class RestController implements Registerable {
 			'sanitize_callback' => 'sanitize_email',
 			'validate_callback' => static function ( $value ) {
 				$value = (string) $value;
-				return '' === $value || ( mb_strlen( $value ) <= 190 && is_email( $value ) );
+				return '' === $value || ( self::len( $value ) <= 190 && is_email( $value ) );
 			},
 		);
 	}

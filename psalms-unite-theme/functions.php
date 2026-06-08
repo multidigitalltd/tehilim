@@ -257,10 +257,6 @@ function psalms_unite_text_config() {
 		'psalms_hero'         => array(
 			'title'  => 'תכנים - באנר ראשי (דף הבית)',
 			'fields' => array(
-				'hero_eyebrow'       => array(
-					'default' => 'קהילה אחת, ספר תהילים אחד',
-					'type'    => 'text',
-				),
 				'hero_title'         => array(
 					'default' => 'מאחדים אנשים סביב יעד תהילים משותף',
 					'type'    => 'textarea',
@@ -275,10 +271,6 @@ function psalms_unite_text_config() {
 				),
 				'hero_cta_secondary' => array(
 					'default' => 'צפייה בקמפיינים',
-					'type'    => 'text',
-				),
-				'hero_ribbon'        => array(
-					'default' => 'חינם לקהילה',
 					'type'    => 'text',
 				),
 			),

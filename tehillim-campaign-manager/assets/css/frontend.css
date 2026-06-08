@@ -309,6 +309,66 @@
 	margin-top: 18px;
 }
 
+/* Campaign chapter reader — Lovable centrepiece. */
+.tcm-reader-bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	margin-bottom: 6px;
+}
+
+.tcm-chapter-select {
+	border-radius: 999px;
+	border: 1px solid var(--tcm-field-border, #e3ddd1);
+	background: var(--tcm-field-bg, #fff);
+	padding: 8px 14px;
+	font-weight: 600;
+	font-size: 0.95rem;
+	color: var(--tcm-text);
+	cursor: pointer;
+}
+
+.tcm-reader-next {
+	border-radius: 999px;
+	border: 1px solid color-mix(in oklab, var(--tcm-primary) 25%, transparent);
+	padding: 8px 14px;
+	font-weight: 700;
+	text-decoration: none;
+	white-space: nowrap;
+	color: var(--tcm-primary);
+}
+
+.tcm-reader-next:hover {
+	background: var(--tcm-primary-soft, color-mix(in oklab, var(--tcm-primary) 12%, transparent));
+}
+
+.tcm-chapter-preview .tcm-reader-eyebrow,
+.tcm-chapter-preview .tcm-reader-title {
+	text-align: center;
+}
+
+.tcm-reader-title {
+	font-size: 1.9rem;
+	margin: 2px 0 6px;
+}
+
+.tcm-chapter-preview .tcm-chapter-text,
+.tcm-reader .tcm-chapter-text {
+	text-align: center;
+	color: var(--tcm-primary);
+}
+
+.tcm-chapter-preview .tcm-chapter-text p {
+	margin: 0.35em 0;
+}
+
+.tcm-chapter-preview .tcm-actions {
+	justify-content: center;
+	margin-top: 18px;
+}
+
 .tcm-notice {
 	background: var(--tcm-gold-soft);
 	border: 1px solid #e7d4a3;

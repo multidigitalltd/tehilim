@@ -330,18 +330,22 @@ final class Shortcodes implements Registerable {
 	 * @return string
 	 */
 	private function default_reader_card( $id ) {
-		$stats = $this->stats->for_campaign( $id );
-		$free  = $this->assignments->free_chapters( $id, (int) $stats['round'], 1 );
-		$row   = is_array( $free ) && ! empty( $free ) ? $free[0] : null;
-		if ( ! $row ) {
-			return '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only chapter selection.
+		$chosen = isset( $_GET['tcm_ch'] ) ? absint( $_GET['tcm_ch'] ) : 0;
+		if ( $chosen >= 1 && $chosen <= 150 ) {
+			$chapter = $chosen;
+		} else {
+			$stats   = $this->stats->for_campaign( $id );
+			$free    = $this->assignments->free_chapters( $id, (int) $stats['round'], 1 );
+			$row     = is_array( $free ) && ! empty( $free ) ? $free[0] : null;
+			$chapter = $row ? (int) $row->chapter_number : 1;
 		}
-		$chapter = (int) $row->chapter_number;
 		return Templating::render(
 			'partials/chapter-preview',
 			array(
 				'campaign_id' => (int) $id,
 				'chapter'     => $chapter,
+				'next'        => $chapter >= 150 ? 1 : $chapter + 1,
 				'text'        => $this->chapter_text->get( $chapter ),
 			)
 		);

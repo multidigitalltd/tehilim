@@ -843,3 +843,9 @@ msgstr "תהילים %s"
 
 msgid "Take this chapter"
 msgstr "קחו את הפרק הזה"
+
+msgid "Choose chapter"
+msgstr "בחר פרק"
+
+msgid "Next chapter"
+msgstr "הפרק הבא"

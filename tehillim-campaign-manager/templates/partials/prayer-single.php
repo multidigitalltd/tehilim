@@ -1,6 +1,6 @@
 <?php
 /**
- * Single prayer / segula (sacred space — no ads on the text).
+ * Single prayer / segula (sacred space - no ads on the text).
  *
  * @package Tehillim_Campaign_Manager
  *

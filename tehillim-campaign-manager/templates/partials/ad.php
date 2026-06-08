@@ -1,6 +1,6 @@
 <?php
 /**
- * A single advertisement (commercial zones only — never in the reader).
+ * A single advertisement (commercial zones only - never in the reader).
  *
  * @package Tehillim_Campaign_Manager
  *

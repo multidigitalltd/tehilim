@@ -92,7 +92,7 @@ final class Widgets implements Registerable {
 		);
 
 		$out = '<div class="tcm-wrap tcm-global-stats"><p class="tcm-section-eyebrow">'
-			. esc_html__( 'The community — in real time', 'tehillim-campaign-manager' )
+			. esc_html__( 'The community - in real time', 'tehillim-campaign-manager' )
 			. '</p><ul class="tcm-mini-stats">';
 		foreach ( $items as $item ) {
 			$out .= '<li class="tcm-mini-stat"><strong data-tcm-count="' . esc_attr( (string) (int) $item[0] ) . '">'

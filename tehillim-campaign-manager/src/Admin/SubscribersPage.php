@@ -173,7 +173,7 @@ final class SubscribersPage implements Registerable {
 					<?php endif; ?>
 					<?php foreach ( $rows as $row ) : ?>
 						<tr>
-							<td><?php echo esc_html( $row->name ? $row->name : '—' ); ?></td>
+							<td><?php echo esc_html( $row->name ? $row->name : '-' ); ?></td>
 							<td><?php echo esc_html( 'whatsapp' === $row->channel ? $row->phone : $row->email ); ?></td>
 							<td><?php echo esc_html( 'whatsapp' === $row->channel ? __( 'WhatsApp', 'tehillim-campaign-manager' ) : __( 'Email', 'tehillim-campaign-manager' ) ); ?></td>
 							<td><?php echo esc_html( $list_labels[ $row->list_key ] ?? $row->list_key ); ?></td>

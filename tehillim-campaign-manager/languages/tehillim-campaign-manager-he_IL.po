@@ -10,8 +10,8 @@ msgstr ""
 msgid "%d free chapters remaining"
 msgstr "נותרו %d פרקים פנויים"
 
-msgid "(saved — leave blank to keep)"
-msgstr "(שמור — השאירו ריק כדי לשמור על הקיים)"
+msgid "(saved - leave blank to keep)"
+msgstr "(שמור - השאירו ריק כדי לשמור על הקיים)"
 
 msgid "Action"
 msgstr "פעולה"
@@ -21,6 +21,168 @@ msgstr "פעיל"
 
 msgid "Active ambassador"
 msgstr "שגריר פעיל"
+
+msgid "Active subscribers"
+msgstr "נרשמים פעילים"
+
+msgid "Join the Tehillim Corps"
+msgstr "הצטרפו לחיל התהילים"
+
+msgid "Get an alert whenever a new campaign launches, and help finish it."
+msgstr "קבלו התראה בכל פעם שעולה קמפיין חדש, ועזרו לסיים אותו."
+
+msgid "Subscribers"
+msgstr "נרשמים"
+
+msgid "Daily chapter"
+msgstr "פרק יומי"
+
+msgid "Tehillim Corps"
+msgstr "חיל התהילים"
+
+msgid "Unsubscribed"
+msgstr "בוטל"
+
+msgid "Pending"
+msgstr "ממתין"
+
+msgid "All lists"
+msgstr "כל הרשימות"
+
+msgid "Any status"
+msgstr "כל הסטטוסים"
+
+msgid "Filter"
+msgstr "סינון"
+
+msgid "Export CSV"
+msgstr "ייצוא CSV"
+
+msgid "%s subscribers"
+msgstr "%s נרשמים"
+
+msgid "Contact"
+msgstr "פרטי קשר"
+
+msgid "Joined"
+msgstr "תאריך הצטרפות"
+
+msgid "No subscribers found."
+msgstr "לא נמצאו נרשמים."
+
+msgid "Unsubscribe"
+msgstr "ביטול הרשמה"
+
+msgid "Reactivate"
+msgstr "הפעלה מחדש"
+
+msgid "Webhook events"
+msgstr "אירועי Webhook"
+
+msgid "Every event is POSTed to your Webhook URL, signed with the HMAC secret. Route them in your automation (e.g. to a WhatsApp group or personal messages)."
+msgstr "כל אירוע נשלח בבקשת POST לכתובת ה‑Webhook שלך, חתום במפתח ה‑HMAC. נתבו אותם באוטומציה (למשל לקבוצת וואטסאפ או להודעות אישיות)."
+
+msgid "Event"
+msgstr "אירוע"
+
+msgid "Fires when"
+msgstr "מתי נשלח"
+
+msgid "A new campaign was published - broadcast it to the group."
+msgstr "קמפיין חדש פורסם - שדרו אותו לקבוצה."
+
+msgid "A campaign is almost finished - rally people to close it."
+msgstr "קמפיין כמעט הושלם - גייסו אנשים לסגור אותו."
+
+msgid "A campaign reached its goal."
+msgstr "קמפיין הגיע ליעד."
+
+msgid "Personal campaign alert for a Tehillim Corps subscriber (kind: new / nearly_done)."
+msgstr "התראת קמפיין אישית לנרשם בחיל התהילים (kind: new / nearly_done)."
+
+msgid "Daily chapter for a subscriber."
+msgstr "פרק יומי לנרשם."
+
+msgid "Someone took a chapter."
+msgstr "מישהו לקח פרק."
+
+msgid "A chapter was completed."
+msgstr "פרק הושלם."
+
+msgid "A chapter was released back to the pool."
+msgstr "פרק שוחרר חזרה למאגר."
+
+msgid "A book (150 chapters) was completed."
+msgstr "ספר (150 פרקים) הושלם."
+
+msgid "Reminder to a participant to finish their chapter."
+msgstr "תזכורת למשתתף לסיים את הפרק שלו."
+
+msgid "Warning that a chapter is about to be auto-released."
+msgstr "אזהרה שפרק עומד להשתחרר אוטומטית."
+
+msgid "A chapter was automatically released after timeout."
+msgstr "פרק שוחרר אוטומטית לאחר פסק זמן."
+
+msgid "Chapters completed - last 30 days"
+msgstr "פרקים שהושלמו - 30 הימים האחרונים"
+
+msgid "Daily completed chapters, last 30 days"
+msgstr "פרקים שהושלמו ליום, 30 הימים האחרונים"
+
+msgid "Please log in or create an account to publish your campaign."
+msgstr "יש להתחבר או לפתוח חשבון כדי לפרסם את הקמפיין."
+
+msgid "To publish your campaign, please log in or create an account. Your details are saved and you will return here automatically."
+msgstr "כדי לפרסם את הקמפיין יש להתחבר או לפתוח חשבון. הפרטים שלך נשמרים ותחזרו לכאן אוטומטית."
+
+msgid "Log in & publish"
+msgstr "התחברות ופרסום"
+
+msgid "Create an account"
+msgstr "פתיחת חשבון"
+
+msgid "Please fill in the required fields."
+msgstr "נא למלא את שדות החובה."
+
+msgid "Chapter to say now"
+msgstr "פרק לאמירה עכשיו"
+
+msgid "Tehillim %s"
+msgstr "תהילים %s"
+
+msgid "Take this chapter"
+msgstr "קחו את הפרק הזה"
+
+msgid "Choose chapter"
+msgstr "בחר פרק"
+
+msgid "Next chapter"
+msgstr "הפרק הבא"
+
+msgid "Your campaign was submitted and is awaiting approval. You will be notified once it is published."
+msgstr "הקמפיין נשלח וממתין לאישור. תקבלו הודעה כשיתפרסם."
+
+msgid "Publish user-created campaigns immediately (otherwise they await admin approval)"
+msgstr "פרסום מיידי של קמפיינים שנוצרים על ידי משתמשים (אחרת הם ממתינים לאישור מנהל)"
+
+msgid "Ad clicks"
+msgstr "קליקים על פרסומות"
+
+msgid "Chapters completed"
+msgstr "פרקים שהושלמו"
+
+msgid "%d chapters completed"
+msgstr "השלמת %d פרקים"
+
+msgid "%1$d more to earn %2$s %3$s"
+msgstr "עוד %1$d לדרגת %2$s %3$s"
+
+msgid "%s in the last 30 days"
+msgstr "%s ב‑30 הימים האחרונים"
+
+msgid "%1$s impressions · %2$s%% CTR"
+msgstr "%1$s חשיפות · %2$s%% הקלקה"
 
 msgid "Completed a book"
 msgstr "צדיק יסוד עולם"
@@ -49,8 +211,8 @@ msgstr "הגדרות פרסומת"
 msgid "Add Tehillim Campaign"
 msgstr "הוספת קמפיין תהילים"
 
-msgid "After you publish, you will get a shareable link and can invite ambassadors — each gets a personal link and a place on the campaign leaderboard."
-msgstr "אחרי הפרסום תקבלו קישור לשיתוף ותוכלו להזמין שגרירים — כל אחד מקבל לינק אישי ומקום בלוח השגרירים של הקמפיין."
+msgid "After you publish, you will get a shareable link and can invite ambassadors - each gets a personal link and a place on the campaign leaderboard."
+msgstr "אחרי הפרסום תקבלו קישור לשיתוף ותוכלו להזמין שגרירים - כל אחד מקבל לינק אישי ומקום בלוח השגרירים של הקמפיין."
 
 msgid "All set? Publish your campaign."
 msgstr "הכל מוכן? פרסמו את הקמפיין."
@@ -145,11 +307,11 @@ msgstr "הקמת אתר"
 msgid "Set up the site pages"
 msgstr "הקמת עמודי האתר"
 
-msgid "Done — pages and menu are ready."
-msgstr "בוצע — העמודים והתפריט מוכנים."
+msgid "Done - pages and menu are ready."
+msgstr "בוצע - העמודים והתפריט מוכנים."
 
-msgid "Create the campaign, personal-area, ambassadors and segulot pages — plus a navigation menu — in one click. Existing pages are kept."
-msgstr "יצירה בקליק של עמודי הקמפיינים, האזור האישי, השגרירים והסגולות — יחד עם תפריט ניווט. עמודים קיימים נשמרים."
+msgid "Create the campaign, personal-area, ambassadors and segulot pages - plus a navigation menu - in one click. Existing pages are kept."
+msgstr "יצירה בקליק של עמודי הקמפיינים, האזור האישי, השגרירים והסגולות - יחד עם תפריט ניווט. עמודים קיימים נשמרים."
 
 msgid "Create pages and menu"
 msgstr "צור עמודים ותפריט"
@@ -157,8 +319,8 @@ msgstr "צור עמודים ותפריט"
 msgid "Not created yet"
 msgstr "טרם נוצר"
 
-msgid "The community — in real time"
-msgstr "הקהילה ביחד — בזמן אמת"
+msgid "The community - in real time"
+msgstr "הקהילה ביחד - בזמן אמת"
 
 msgid "Active campaigns"
 msgstr "קמפיינים פעילים"
@@ -181,8 +343,8 @@ msgstr "לוח שגרירים"
 msgid "Ambassador"
 msgstr "שגריר"
 
-msgid "No ambassadors yet — be the first to share."
-msgstr "עדיין אין שגרירים — היו הראשונים לשתף."
+msgid "No ambassadors yet - be the first to share."
+msgstr "עדיין אין שגרירים - היו הראשונים לשתף."
 
 msgid "%1$s done · %2$s taken"
 msgstr "%1$s הושלמו · %2$s נלקחו"
@@ -256,8 +418,8 @@ msgstr "פרק"
 msgid "Chapter %1$s of %2$s"
 msgstr "פרק %1$s מתוך %2$s"
 
-msgid "Chapter %1$s — %2$s"
-msgstr "פרק %1$s — %2$s"
+msgid "Chapter %1$s - %2$s"
+msgstr "פרק %1$s - %2$s"
 
 msgid "Chapter %s"
 msgstr "פרק %s"
@@ -328,14 +490,14 @@ msgstr "פעיל"
 msgid "End date"
 msgstr "תאריך סיום"
 
-msgid "English letters, digits and dashes. After changing: Settings → Permalinks → Save."
-msgstr "אותיות אנגליות, ספרות ומקפים. לאחר שינוי: הגדרות → קישורים קבועים → שמירה."
+msgid "English letters, digits and dashes. After changing: Settings - Permalinks - Save."
+msgstr "אותיות אנגליות, ספרות ומקפים. לאחר שינוי: הגדרות - קישורים קבועים - שמירה."
 
 msgid "Export"
 msgstr "ייצוא"
 
-msgid "Finished — take another chapter"
-msgstr "סיימתי — לקחת עוד פרק"
+msgid "Finished - take another chapter"
+msgstr "סיימתי - לקחת עוד פרק"
 
 msgid "Free"
 msgstr "פנוי"
@@ -583,8 +745,8 @@ msgstr "קמפיין תהילים"
 msgid "Tehillim Campaign Manager"
 msgstr "מנהל קמפייני תהילים"
 
-msgid "Tehillim Campaign Manager — Settings"
-msgstr "מנהל קמפייני תהילים — הגדרות"
+msgid "Tehillim Campaign Manager - Settings"
+msgstr "מנהל קמפייני תהילים - הגדרות"
 
 msgid "Tehillim Campaigns"
 msgstr "קמפייני תהילים"
@@ -718,134 +880,3 @@ msgstr "רשות"
 msgid "○ Free · ◐ Taken · ● Done"
 msgstr "○ פנוי · ◐ נתפס · ● הושלם"
 
-
-msgid "Active campaigns"
-msgstr "קמפיינים פעילים"
-
-msgid "Active subscribers"
-msgstr "נרשמים פעילים"
-
-msgid "Ad clicks"
-msgstr "קליקים על פרסומות"
-
-msgid "Ambassadors"
-msgstr "שגרירים"
-
-msgid "Chapters completed"
-msgstr "פרקים שהושלמו"
-
-msgid "Participants"
-msgstr "משתתפים"
-
-msgid "%d chapters completed"
-msgstr "השלמת %d פרקים"
-
-msgid "%1$d more to earn %2$s %3$s"
-msgstr "עוד %1$d לדרגת %2$s %3$s"
-
-msgid "%s in the last 30 days"
-msgstr "%s ב‑30 הימים האחרונים"
-
-msgid "%1$s impressions · %2$s%% CTR"
-msgstr "%1$s חשיפות · %2$s%% הקלקה"
-
-msgid "Join the Tehillim Corps"
-msgstr "הצטרפו לחיל התהילים"
-
-msgid "Get an alert whenever a new campaign launches, and help finish it."
-msgstr "קבלו התראה בכל פעם שעולה קמפיין חדש, ועזרו לסיים אותו."
-
-msgid "Subscribers"
-msgstr "נרשמים"
-
-msgid "Daily chapter"
-msgstr "פרק יומי"
-
-msgid "Tehillim Corps"
-msgstr "חיל התהילים"
-
-msgid "Unsubscribed"
-msgstr "בוטל"
-
-msgid "Pending"
-msgstr "ממתין"
-
-msgid "All lists"
-msgstr "כל הרשימות"
-
-msgid "Any status"
-msgstr "כל הסטטוסים"
-
-msgid "Filter"
-msgstr "סינון"
-
-msgid "Export CSV"
-msgstr "ייצוא CSV"
-
-msgid "%s subscribers"
-msgstr "%s נרשמים"
-
-msgid "Contact"
-msgstr "פרטי קשר"
-
-msgid "Joined"
-msgstr "תאריך הצטרפות"
-
-msgid "No subscribers found."
-msgstr "לא נמצאו נרשמים."
-
-msgid "Unsubscribe"
-msgstr "ביטול הרשמה"
-
-msgid "Reactivate"
-msgstr "הפעלה מחדש"
-
-msgid "Webhook events"
-msgstr "אירועי Webhook"
-
-msgid "Event"
-msgstr "אירוע"
-
-msgid "Fires when"
-msgstr "מתי נשלח"
-
-msgid "Chapters completed — last 30 days"
-msgstr "פרקים שהושלמו — 30 הימים האחרונים"
-
-msgid "Daily completed chapters, last 30 days"
-msgstr "פרקים שהושלמו ליום, 30 הימים האחרונים"
-msgid "Please log in or create an account to publish your campaign."
-msgstr "יש להתחבר או לפתוח חשבון כדי לפרסם את הקמפיין."
-
-msgid "To publish your campaign, please log in or create an account. Your details are saved and you will return here automatically."
-msgstr "כדי לפרסם את הקמפיין יש להתחבר או לפתוח חשבון. הפרטים שלך נשמרים ותחזרו לכאן אוטומטית."
-
-msgid "Log in & publish"
-msgstr "התחברות ופרסום"
-
-msgid "Create an account"
-msgstr "פתיחת חשבון"
-
-msgid "Please fill in the required fields."
-msgstr "נא למלא את שדות החובה."
-
-msgid "Publish user-created campaigns immediately (otherwise they await admin approval)"
-msgstr "פרסום מיידי של קמפיינים שנוצרים על ידי משתמשים (אחרת הם ממתינים לאישור מנהל)"
-
-msgid "Your campaign was submitted and is awaiting approval. You will be notified once it is published."
-msgstr "הקמפיין נשלח וממתין לאישור. תקבלו הודעה כשיתפרסם."
-
-msgid "Chapter to say now"
-msgstr "פרק לאמירה עכשיו"
-
-msgid "Tehillim %s"
-msgstr "תהילים %s"
-
-msgid "Take this chapter"
-msgstr "קחו את הפרק הזה"
-
-msgid "Choose chapter"
-msgstr "בחר פרק"
-
-msgid "Next chapter"
-msgstr "הפרק הבא"

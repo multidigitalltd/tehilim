@@ -1,8 +1,8 @@
 /**
- * Tehillim Campaign Manager — admin font picker.
+ * Tehillim Campaign Manager - admin font picker.
  *
  * Opens the WordPress media library so an admin can choose an uploaded font
- * file (woff2/woff/ttf/otf) and have its URL filled into the settings field —
+ * file (woff2/woff/ttf/otf) and have its URL filled into the settings field -
  * no need to copy URLs or hand-write @font-face.
  */
 (function () {

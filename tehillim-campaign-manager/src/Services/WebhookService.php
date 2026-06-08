@@ -71,7 +71,7 @@ final class WebhookService implements Registerable {
 	 * Broadcast a `campaign_new` event the first time a campaign is published,
 	 * so an automation can post every new campaign to a WhatsApp group/channel.
 	 * Fires once per campaign (guarded by a meta flag) and only on the
-	 * not-published → published transition.
+	 * not-published - published transition.
 	 *
 	 * @param string   $new_status New status.
 	 * @param string   $old_status Old status.
@@ -105,7 +105,7 @@ final class WebhookService implements Registerable {
 	}
 
 	/**
-	 * Daily subscription content — sent as a webhook for WhatsApp/automation.
+	 * Daily subscription content - sent as a webhook for WhatsApp/automation.
 	 *
 	 * @param object              $subscriber Subscriber row.
 	 * @param array<string,mixed> $payload    Content payload (chapter, etc.).
@@ -121,7 +121,7 @@ final class WebhookService implements Registerable {
 	}
 
 	/**
-	 * Reminder due — sent as a webhook for WhatsApp/automation routing.
+	 * Reminder due - sent as a webhook for WhatsApp/automation routing.
 	 *
 	 * @param object $row Assignment row (carries a token).
 	 * @return void
@@ -306,7 +306,7 @@ final class WebhookService implements Registerable {
 
 		$ip = filter_var( $host, FILTER_VALIDATE_IP ) ? $host : gethostbyname( $host );
 		if ( ! filter_var( $ip, FILTER_VALIDATE_IP ) ) {
-			return false; // Unresolvable host — refuse rather than guess.
+			return false; // Unresolvable host - refuse rather than guess.
 		}
 
 		// Reject private and reserved ranges (e.g. 127.0.0.1, 10.x, 192.168.x, ::1).

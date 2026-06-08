@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Archive + single shortcodes for prayers/segulot. The prayer text itself is a
- * "sacred space" — no ads are injected onto it (only the archive is commercial).
+ * "sacred space" - no ads are injected onto it (only the archive is commercial).
  */
 final class Prayers implements Registerable {
 
@@ -131,7 +131,7 @@ final class Prayers implements Registerable {
 	}
 
 	/**
-	 * A single prayer (sacred space — no ads).
+	 * A single prayer (sacred space - no ads).
 	 *
 	 * @param array $atts Attributes.
 	 * @return string

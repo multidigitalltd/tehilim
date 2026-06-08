@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Enqueues the front-end stylesheet and script — only on pages that need them
+ * Enqueues the front-end stylesheet and script - only on pages that need them
  * (campaign/prayer singulars and archives) to keep every other page lean.
  *
  * Design tokens are emitted as CSS custom properties so the admin theming still

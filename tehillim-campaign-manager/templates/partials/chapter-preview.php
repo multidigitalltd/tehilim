@@ -1,6 +1,6 @@
 <?php
 /**
- * Default chapter reader — the campaign-page centrepiece (Lovable layout):
+ * Default chapter reader - the campaign-page centrepiece (Lovable layout):
  * a chapter selector, the chapter title, and the verse text shown read-only
  * so a Tehillim chapter is always presented. "Take this chapter" joins.
  *

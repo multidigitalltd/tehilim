@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Hourly task that nudges participants and frees abandoned chapters.
  *
  * Notifications are delivered ONLY as webhook events (chapter_reminder,
- * chapter_release_warning, chapter_auto_released) — the site routes those to
+ * chapter_release_warning, chapter_auto_released) - the site routes those to
  * WhatsApp (or anything else) via its own automation. This service never sends
  * email or talks to a messaging API directly.
  */
@@ -58,7 +58,7 @@ final class CronService implements Registerable {
 	public function run() {
 		( new LogsRepository() )->purge_older_than( self::LOG_DAYS );
 
-		// Daily subscription content (webhook only) — independent of reminders.
+		// Daily subscription content (webhook only) - independent of reminders.
 		( new SubscriptionService() )->process_daily();
 
 		if ( '1' !== (string) Options::get( 'reminders_enabled', '1' ) ) {

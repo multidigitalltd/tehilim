@@ -1,5 +1,5 @@
 /**
- * Tehillim Campaign Manager — front-end script (v3.0).
+ * Tehillim Campaign Manager - front-end script (v3.0).
  *
  * Progressive enhancement: accessible copy-to-clipboard, join submission and
  * reader actions (done / take-more / release) via the REST API, so nothing
@@ -323,7 +323,7 @@
 			// Created: the draft is no longer needed.
 			try { sessionStorage.removeItem('tcmCampaignDraft'); } catch (ignore) {}
 			if (json.pending) {
-				// Awaiting approval — don't send them to a not-yet-public page.
+				// Awaiting approval - don't send them to a not-yet-public page.
 				var wizard = form.closest('[data-tcm-wizard]');
 				var pendingMsg = wizard ? wizard.querySelector('[data-tcm-pending]') : null;
 				form.hidden = true;

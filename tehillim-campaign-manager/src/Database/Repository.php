@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * table name so concrete repositories only express queries.
  *
  * All queries MUST use $this->db->prepare() for any value that originates from
- * a request (see docs/ENGINEERING-STANDARDS.md — "never trust input").
+ * a request (see docs/ENGINEERING-STANDARDS.md - "never trust input").
  */
 abstract class Repository {
 

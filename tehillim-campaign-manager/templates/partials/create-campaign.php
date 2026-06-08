@@ -57,7 +57,7 @@ $register_url = isset( $register_url ) ? (string) $register_url : '';
 
 			<div class="tcm-wizard-pane" data-tcm-pane="3" hidden>
 				<h3 tabindex="-1"><?php esc_html_e( 'Ambassadors', 'tehillim-campaign-manager' ); ?></h3>
-				<p class="tcm-muted"><?php esc_html_e( 'After you publish, you will get a shareable link and can invite ambassadors — each gets a personal link and a place on the campaign leaderboard.', 'tehillim-campaign-manager' ); ?></p>
+				<p class="tcm-muted"><?php esc_html_e( 'After you publish, you will get a shareable link and can invite ambassadors - each gets a personal link and a place on the campaign leaderboard.', 'tehillim-campaign-manager' ); ?></p>
 			</div>
 
 			<div class="tcm-wizard-pane" data-tcm-pane="4" hidden>

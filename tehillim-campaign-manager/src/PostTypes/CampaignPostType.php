@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Registers the `tcm_campaign` post type — a single Tehillim distribution
+ * Registers the `tcm_campaign` post type - a single Tehillim distribution
  * campaign (a dedication, a goal in books, and its chapter assignments).
  */
 final class CampaignPostType implements Registerable {

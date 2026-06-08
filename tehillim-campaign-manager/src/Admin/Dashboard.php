@@ -218,7 +218,7 @@ final class Dashboard implements Registerable {
 		$date_fmt = get_option( 'date_format' );
 		?>
 		<div class="tcm-trend">
-			<h2><?php esc_html_e( 'Chapters completed — last 30 days', 'tehillim-campaign-manager' ); ?></h2>
+			<h2><?php esc_html_e( 'Chapters completed - last 30 days', 'tehillim-campaign-manager' ); ?></h2>
 			<svg class="tcm-trend-svg" viewBox="0 0 <?php echo esc_attr( (string) $width ); ?> <?php echo esc_attr( (string) $height ); ?>" preserveAspectRatio="none" role="img" aria-label="<?php esc_attr_e( 'Daily completed chapters, last 30 days', 'tehillim-campaign-manager' ); ?>">
 				<?php
 				foreach ( $series as $i => $point ) {

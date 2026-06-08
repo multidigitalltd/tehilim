@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <section class="tcm-card tcm-leaderboard" aria-label="<?php esc_attr_e( 'Ambassador leaderboard', 'tehillim-campaign-manager' ); ?>">
 	<h3>🏆 <?php esc_html_e( 'Ambassador leaderboard', 'tehillim-campaign-manager' ); ?></h3>
 	<?php if ( ! $entries ) : ?>
-		<p class="tcm-muted"><?php esc_html_e( 'No ambassadors yet — be the first to share.', 'tehillim-campaign-manager' ); ?></p>
+		<p class="tcm-muted"><?php esc_html_e( 'No ambassadors yet - be the first to share.', 'tehillim-campaign-manager' ); ?></p>
 	<?php else : ?>
 		<ol class="tcm-leaderboard-list">
 			<?php foreach ( $entries as $i => $entry ) : ?>

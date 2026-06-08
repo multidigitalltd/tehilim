@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Data access for tcm_assignments — one row per (campaign, round, chapter).
+ * Data access for tcm_assignments - one row per (campaign, round, chapter).
  *
  * Every method that accepts request-derived values uses prepared statements.
  */

@@ -26,7 +26,7 @@ $tcm_tables = array(
 	$wpdb->prefix . 'tcm_ad_stats',
 );
 foreach ( $tcm_tables as $tcm_table ) {
-	// Table name is built from $wpdb->prefix and a constant — safe to interpolate.
+	// Table name is built from $wpdb->prefix and a constant - safe to interpolate.
 	$wpdb->query( "DROP TABLE IF EXISTS `{$tcm_table}`" ); // phpcs:ignore WordPress.DB
 }
 

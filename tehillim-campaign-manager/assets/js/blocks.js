@@ -1,5 +1,5 @@
 /**
- * Tehillim dynamic blocks — editor registration.
+ * Tehillim dynamic blocks - editor registration.
  *
  * No build step: written against the global wp.* packages. Each block is
  * server-rendered (ServerSideRender) and mirrors a plugin shortcode, with
@@ -24,18 +24,18 @@
 	 *  - kind: 'number' (RangeControl/number) or 'text'
 	 */
 	var CATALOGUE = [
-		{ name: 'global-stats', title: __( 'Tehillim — Live stats', 'tehillim-campaign-manager' ), icon: 'chart-bar', attributes: {}, fields: [] },
-		{ name: 'campaigns', title: __( 'Tehillim — Campaigns grid', 'tehillim-campaign-manager' ), icon: 'grid-view', attributes: {}, fields: [] },
+		{ name: 'global-stats', title: __( 'Tehillim - Live stats', 'tehillim-campaign-manager' ), icon: 'chart-bar', attributes: {}, fields: [] },
+		{ name: 'campaigns', title: __( 'Tehillim - Campaigns grid', 'tehillim-campaign-manager' ), icon: 'grid-view', attributes: {}, fields: [] },
 		{
 			name: 'campaign',
-			title: __( 'Tehillim — Single campaign', 'tehillim-campaign-manager' ),
+			title: __( 'Tehillim - Single campaign', 'tehillim-campaign-manager' ),
 			icon: 'book-alt',
 			attributes: { id: { type: 'number', default: 0 } },
 			fields: [ { key: 'id', kind: 'number', label: __( 'Campaign ID (0 = current)', 'tehillim-campaign-manager' ) } ]
 		},
 		{
 			name: 'leaderboard',
-			title: __( 'Tehillim — Leaderboard', 'tehillim-campaign-manager' ),
+			title: __( 'Tehillim - Leaderboard', 'tehillim-campaign-manager' ),
 			icon: 'awards',
 			attributes: { id: { type: 'number', default: 0 }, limit: { type: 'number', default: 10 } },
 			fields: [
@@ -45,7 +45,7 @@
 		},
 		{
 			name: 'activity',
-			title: __( 'Tehillim — Activity feed', 'tehillim-campaign-manager' ),
+			title: __( 'Tehillim - Activity feed', 'tehillim-campaign-manager' ),
 			icon: 'list-view',
 			attributes: { id: { type: 'number', default: 0 }, limit: { type: 'number', default: 12 } },
 			fields: [
@@ -55,40 +55,40 @@
 		},
 		{
 			name: 'segulot',
-			title: __( 'Tehillim — Prayers / Segulot', 'tehillim-campaign-manager' ),
+			title: __( 'Tehillim - Prayers / Segulot', 'tehillim-campaign-manager' ),
 			icon: 'heart',
 			attributes: { category: { type: 'string', default: '' } },
 			fields: [ { key: 'category', kind: 'text', label: __( 'Category slug (optional)', 'tehillim-campaign-manager' ) } ]
 		},
-		{ name: 'subscribe', title: __( 'Tehillim — Daily subscribe', 'tehillim-campaign-manager' ), icon: 'email', attributes: {}, fields: [] },
-		{ name: 'create-campaign', title: __( 'Tehillim — Create campaign form', 'tehillim-campaign-manager' ), icon: 'plus-alt', attributes: {}, fields: [] },
-		{ name: 'my-campaigns', title: __( 'Tehillim — My campaigns', 'tehillim-campaign-manager' ), icon: 'id', attributes: {}, fields: [] },
-		{ name: 'my-activity', title: __( 'Tehillim — My activity', 'tehillim-campaign-manager' ), icon: 'backup', attributes: {}, fields: [] },
-		{ name: 'ambassadors', title: __( 'Tehillim — Ambassador dashboard', 'tehillim-campaign-manager' ), icon: 'groups', attributes: {}, fields: [] },
+		{ name: 'subscribe', title: __( 'Tehillim - Daily subscribe', 'tehillim-campaign-manager' ), icon: 'email', attributes: {}, fields: [] },
+		{ name: 'create-campaign', title: __( 'Tehillim - Create campaign form', 'tehillim-campaign-manager' ), icon: 'plus-alt', attributes: {}, fields: [] },
+		{ name: 'my-campaigns', title: __( 'Tehillim - My campaigns', 'tehillim-campaign-manager' ), icon: 'id', attributes: {}, fields: [] },
+		{ name: 'my-activity', title: __( 'Tehillim - My activity', 'tehillim-campaign-manager' ), icon: 'backup', attributes: {}, fields: [] },
+		{ name: 'ambassadors', title: __( 'Tehillim - Ambassador dashboard', 'tehillim-campaign-manager' ), icon: 'groups', attributes: {}, fields: [] },
 		{
 			name: 'progress',
-			title: __( 'Tehillim — Campaign progress', 'tehillim-campaign-manager' ),
+			title: __( 'Tehillim - Campaign progress', 'tehillim-campaign-manager' ),
 			icon: 'chart-area',
 			attributes: { id: { type: 'number', default: 0 } },
 			fields: [ { key: 'id', kind: 'number', label: __( 'Campaign ID (0 = current)', 'tehillim-campaign-manager' ) } ]
 		},
 		{
 			name: 'join',
-			title: __( 'Tehillim — Join form', 'tehillim-campaign-manager' ),
+			title: __( 'Tehillim - Join form', 'tehillim-campaign-manager' ),
 			icon: 'edit',
 			attributes: { id: { type: 'number', default: 0 } },
 			fields: [ { key: 'id', kind: 'number', label: __( 'Campaign ID (0 = current)', 'tehillim-campaign-manager' ) } ]
 		},
 		{
 			name: 'chapters',
-			title: __( 'Tehillim — Chapters grid', 'tehillim-campaign-manager' ),
+			title: __( 'Tehillim - Chapters grid', 'tehillim-campaign-manager' ),
 			icon: 'grid-view',
 			attributes: { id: { type: 'number', default: 0 } },
 			fields: [ { key: 'id', kind: 'number', label: __( 'Campaign ID (0 = current)', 'tehillim-campaign-manager' ) } ]
 		},
 		{
 			name: 'invite',
-			title: __( 'Tehillim — Ambassador invite', 'tehillim-campaign-manager' ),
+			title: __( 'Tehillim - Ambassador invite', 'tehillim-campaign-manager' ),
 			icon: 'share',
 			attributes: { id: { type: 'number', default: 0 } },
 			fields: [ { key: 'id', kind: 'number', label: __( 'Campaign ID (0 = current)', 'tehillim-campaign-manager' ) } ]

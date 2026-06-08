@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Registers the `tcm_prayer` post type — special prayers and segulot, browsable
+ * Registers the `tcm_prayer` post type - special prayers and segulot, browsable
  * by category and connectable to campaigns and subscription lists.
  */
 final class PrayerPostType implements Registerable {

@@ -255,20 +255,36 @@
 		e.preventDefault();
 		var submit = form.querySelector('[type="submit"]');
 		var errBox = form.querySelector('.tcm-form-error');
-		if (submit) {
-			submit.setAttribute('disabled', 'disabled');
-		}
-		post('/campaigns', {
+		var fields = {
 			title: (form.querySelector('[name="title"]') || {}).value || '',
 			target: (form.querySelector('[name="target"]') || {}).value || 1,
 			bonus: (form.querySelector('[name="bonus"]') || {}).value || 0,
 			dedicated_to: (form.querySelector('[name="dedicated_to"]') || {}).value || '',
 			content: (form.querySelector('[name="content"]') || {}).value || ''
-		}).then(function (result) {
-			if (!result.ok || !result.json || !result.json.permalink) {
-				throw new Error((result.json && result.json.message) || errorText());
+		};
+		// Persist the draft so it survives a login/register round-trip.
+		try { sessionStorage.setItem('tcmCampaignDraft', JSON.stringify(fields)); } catch (ignore) {}
+		if (submit) {
+			submit.setAttribute('disabled', 'disabled');
+		}
+		var body = {};
+		Object.keys(fields).forEach(function (k) { body[k] = fields[k]; });
+		body.redirect = window.location.href;
+		post('/campaigns', body).then(function (result) {
+			var json = result.json || {};
+			if (!result.ok) {
+				// Not logged in: keep the draft and send them to log in / register.
+				if (json.code === 'tcm_auth_required' && json.data && json.data.login_url) {
+					window.location.href = json.data.login_url;
+					return;
+				}
+				throw new Error(json.message || errorText());
 			}
-			window.location.href = result.json.permalink;
+			if (!json.permalink) {
+				throw new Error(json.message || errorText());
+			}
+			try { sessionStorage.removeItem('tcmCampaignDraft'); } catch (ignore) {}
+			window.location.href = json.permalink;
 		}).catch(function (err) {
 			if (submit) {
 				submit.removeAttribute('disabled');
@@ -276,6 +292,7 @@
 			if (errBox) {
 				errBox.textContent = err.message || errorText();
 				errBox.hidden = false;
+				if (errBox.focus) { errBox.focus(); }
 			}
 		});
 	});
@@ -385,19 +402,57 @@
 		return step;
 	}
 
+	function setError(wizard, msg) {
+		var box = wizard.querySelector('.tcm-form-error');
+		if (!box) { return; }
+		if (msg) {
+			box.textContent = msg;
+			box.hidden = false;
+		} else {
+			box.textContent = '';
+			box.hidden = true;
+		}
+	}
+
 	function validate(wizard, step) {
 		var pane = wizard.querySelector('[data-tcm-pane="' + step + '"]');
 		if (!pane) { return true; }
+		var data = window.tcmData || {};
+		var msg = (data.i18n && data.i18n.fillRequired) || 'Please fill in the required fields.';
 		var required = pane.querySelectorAll('[required]');
 		for (var i = 0; i < required.length; i++) {
 			if (!String(required[i].value).trim()) {
 				required[i].setAttribute('aria-invalid', 'true');
+				setError(wizard, msg);
 				required[i].focus();
 				return false;
 			}
 			required[i].removeAttribute('aria-invalid');
 		}
+		setError(wizard, '');
 		return true;
+	}
+
+	/* After a login round-trip, restore the saved draft and jump to review. */
+	function restoreDraft() {
+		var wizard = document.querySelector('[data-tcm-wizard][data-tcm-logged-in]');
+		if (!wizard) { return; }
+		var raw;
+		try { raw = sessionStorage.getItem('tcmCampaignDraft'); } catch (ignore) { return; }
+		if (!raw) { return; }
+		var draft;
+		try { draft = JSON.parse(raw); } catch (ignore) { return; }
+		var any = false;
+		each(['title', 'dedicated_to', 'content', 'target', 'bonus'], function (name) {
+			var input = wizard.querySelector('[name="' + name + '"]');
+			if (input && draft[name] != null && String(draft[name]) !== '') {
+				input.value = draft[name];
+				any = true;
+			}
+		});
+		if (any) {
+			show(wizard, wizard.querySelectorAll('[data-tcm-pane]').length);
+		}
 	}
 
 	function buildReview(wizard) {
@@ -455,4 +510,6 @@
 			show(wizard, step - 1);
 		}
 	});
+
+	restoreDraft();
 })();

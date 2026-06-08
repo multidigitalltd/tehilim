@@ -125,7 +125,9 @@ final class RestController implements Registerable {
 			array(
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'create_campaign' ),
-				'permission_callback' => 'is_user_logged_in',
+				// Open the route so we can return a structured auth_required
+				// response (with login/register URLs) instead of a bare 401.
+				'permission_callback' => '__return_true',
 			)
 		);
 
@@ -363,6 +365,19 @@ final class RestController implements Registerable {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function create_campaign( WP_REST_Request $request ) {
+		if ( ! is_user_logged_in() ) {
+			$redirect = esc_url_raw( (string) $request->get_param( 'redirect' ) );
+			$redirect = $redirect ? wp_validate_redirect( $redirect, home_url( '/' ) ) : home_url( '/' );
+			return new WP_Error(
+				'tcm_auth_required',
+				__( 'Please log in or create an account to publish your campaign.', 'tehillim-campaign-manager' ),
+				array(
+					'status'       => 401,
+					'login_url'    => wp_login_url( $redirect ),
+					'register_url' => get_option( 'users_can_register' ) ? wp_registration_url() : '',
+				)
+			);
+		}
 		if ( RateLimiter::exceeded( 'create_campaign', 10, 300 ) ) {
 			return $this->error( 'rate_limited', __( 'Too many attempts. Please try again shortly.', 'tehillim-campaign-manager' ), 429 );
 		}

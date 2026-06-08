@@ -9,6 +9,7 @@ namespace TCM\Services;
 
 use TCM\PostTypes\CampaignPostType;
 use TCM\Support\Logger;
+use TCM\Support\Options;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -68,10 +69,14 @@ final class OwnerService {
 		$target = max( 1, absint( $data['target'] ?? 1 ) );
 		$bonus  = max( 0, absint( $data['bonus'] ?? 0 ) );
 
+		// New campaigns await admin approval unless auto-publish is enabled.
+		$auto_publish = '1' === (string) Options::get( 'auto_publish_campaigns' );
+		$status       = $auto_publish ? 'publish' : 'pending';
+
 		$post_id = wp_insert_post(
 			array(
 				'post_type'    => CampaignPostType::POST_TYPE,
-				'post_status'  => 'publish',
+				'post_status'  => $status,
 				'post_title'   => $title,
 				'post_content' => wp_kses_post( $data['content'] ?? '' ),
 				'post_author'  => (int) $user_id,
@@ -102,6 +107,7 @@ final class OwnerService {
 			'ok'          => true,
 			'campaign_id' => (int) $post_id,
 			'permalink'   => get_permalink( $post_id ),
+			'pending'     => ! $auto_publish,
 		);
 	}
 

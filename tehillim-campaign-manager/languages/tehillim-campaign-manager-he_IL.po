@@ -814,3 +814,20 @@ msgstr "פרקים שהושלמו — 30 הימים האחרונים"
 
 msgid "Daily completed chapters, last 30 days"
 msgstr "פרקים שהושלמו ליום, 30 הימים האחרונים"
+msgid "Please log in or create an account to publish your campaign."
+msgstr "יש להתחבר או לפתוח חשבון כדי לפרסם את הקמפיין."
+
+msgid "To publish your campaign, please log in or create an account. Your details are saved and you will return here automatically."
+msgstr "כדי לפרסם את הקמפיין יש להתחבר או לפתוח חשבון. הפרטים שלך נשמרים ותחזרו לכאן אוטומטית."
+
+msgid "Log in & publish"
+msgstr "התחברות ופרסום"
+
+msgid "Create an account"
+msgstr "פתיחת חשבון"
+
+msgid "Please fill in the required fields."
+msgstr "נא למלא את שדות החובה."
+
+msgid "Publish user-created campaigns immediately (otherwise they await admin approval)"
+msgstr "פרסום מיידי של קמפיינים שנוצרים על ידי משתמשים (אחרת הם ממתינים לאישור מנהל)"

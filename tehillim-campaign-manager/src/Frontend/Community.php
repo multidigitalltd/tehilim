@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * [tehillim_leaderboard] and [tehillim_activity] — the "live community" pieces
+ * [tehillim_leaderboard] and [tehillim_activity] - the "live community" pieces
  * from the Lovable design, rendered server-side from the plugin's own data.
  */
 final class Community implements Registerable {

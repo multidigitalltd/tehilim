@@ -64,7 +64,7 @@ final class PrivacyModule implements Registerable {
 	 * Export a person's data.
 	 *
 	 * @param string $email Email address.
-	 * @param int    $page  Page (unused — single page).
+	 * @param int    $page  Page (unused - single page).
 	 * @return array{data:array,done:bool}
 	 */
 	public function export( $email, $page = 1 ) {

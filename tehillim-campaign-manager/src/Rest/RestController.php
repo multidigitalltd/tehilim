@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Action endpoints are authorised by the per-assignment token (validated in the
  * service in constant time). The join endpoint is gated by rate limiting and
  * Cloudflare Turnstile. All input is validated/sanitised on the way in, and
- * failures return a safe message + reference id — never an internal trace.
+ * failures return a safe message + reference id - never an internal trace.
  */
 final class RestController implements Registerable {
 
@@ -273,7 +273,7 @@ final class RestController implements Registerable {
 	}
 
 	/**
-	 * POST join — claim chapter(s) or a full book.
+	 * POST join - claim chapter(s) or a full book.
 	 *
 	 * @param WP_REST_Request $request Request.
 	 * @return WP_REST_Response|WP_Error

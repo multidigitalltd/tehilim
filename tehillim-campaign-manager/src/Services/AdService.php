@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Selects and renders ads for a placement zone, recording impressions/clicks.
  *
- * The chapter/prayer reading area is intentionally NOT a zone — ads attach
+ * The chapter/prayer reading area is intentionally NOT a zone - ads attach
  * around the experience, never inside it (see docs/UPGRADE-PLAN.md §9.0).
  */
 final class AdService {

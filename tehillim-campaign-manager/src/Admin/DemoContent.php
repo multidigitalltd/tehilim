@@ -21,9 +21,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Seeds a complete, lifelike sample site — sample campaigns (with chapters,
+ * Seeds a complete, lifelike sample site - sample campaigns (with chapters,
  * taken/completed activity, ambassadors and a leaderboard), segulot/prayers and
- * demo ad banners — so a fresh install looks exactly like the design preview,
+ * demo ad banners - so a fresh install looks exactly like the design preview,
  * the way a premium theme's "demo import" does. Idempotent: every created post
  * is tagged with a `_tcm_demo` meta and tracked in an option, so a second run
  * does nothing and removal is clean.
@@ -102,10 +102,10 @@ final class DemoContent {
 		$specs = array(
 			array(
 				'title'     => 'לרפואת רבקה בת לאה',
-				'dedicated' => 'רבקה בת לאה — לרפואה שלמה',
+				'dedicated' => 'רבקה בת לאה - לרפואה שלמה',
 				'target'    => 3,
 				'bonus'     => 1,
-				'content'   => '<p>מתאחדים יחד באמירת ספר תהילים שלם לרפואתה השלמה של רבקה בת לאה. כל פרק שתבחרו מצטרף למאמץ המשותף — בחרו פרק, אִמרו אותו, וסַמנו שהושלם.</p>',
+				'content'   => '<p>מתאחדים יחד באמירת ספר תהילים שלם לרפואתה השלמה של רבקה בת לאה. כל פרק שתבחרו מצטרף למאמץ המשותף - בחרו פרק, אִמרו אותו, וסַמנו שהושלם.</p>',
 				'taken'     => 11,
 				'done'      => 28,
 			),
@@ -222,14 +222,14 @@ final class DemoContent {
 				'content'  => '<p>יהי רצון מלפניך ה׳ אלוקינו ואלוקי אבותינו שתוליכנו לשלום ותצעידנו לשלום ותדריכנו לשלום…</p>',
 			),
 			array(
-				'title'    => 'סגולה לרפואה — פרק כ׳ בתהילים',
+				'title'    => 'סגולה לרפואה - פרק כ׳ בתהילים',
 				'category' => 'רפואה',
 				'content'  => '<p>נהגו לומר פרק כ׳ (יענך ה׳ ביום צרה) כסגולה לרפואה ולישועה. מומלץ לאומרו בכוונה מיוחדת.</p>',
 			),
 			array(
 				'title'    => 'סגולה לפרנסה טובה',
 				'category' => 'פרנסה',
-				'content'  => '<p>פרשת המן וסגולות חז״ל לפרנסה — אמירה יומית בכוונה לפתיחת שערי שפע.</p>',
+				'content'  => '<p>פרשת המן וסגולות חז״ל לפרנסה - אמירה יומית בכוונה לפתיחת שערי שפע.</p>',
 			),
 			array(
 				'title'    => 'תיקון הכללי',
@@ -269,11 +269,11 @@ final class DemoContent {
 		$banner = TCM_PLUGIN_URL . 'assets/img/demo-banner.svg';
 		$specs  = array(
 			array(
-				'title' => 'באנר לדוגמה — ראש הארכיון',
+				'title' => 'באנר לדוגמה - ראש הארכיון',
 				'zone'  => 'archive_top',
 			),
 			array(
-				'title' => 'באנר לדוגמה — סרגל צד',
+				'title' => 'באנר לדוגמה - סרגל צד',
 				'zone'  => 'sidebar',
 			),
 		);

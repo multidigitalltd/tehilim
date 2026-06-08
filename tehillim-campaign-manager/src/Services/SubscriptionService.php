@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Opt-in lists with webhook-only daily delivery. Like reminders, the daily
- * content is emitted as a webhook event for WhatsApp/automation routing — this
+ * content is emitted as a webhook event for WhatsApp/automation routing - this
  * service never sends messages itself.
  */
 final class SubscriptionService {

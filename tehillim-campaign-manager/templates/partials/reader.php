@@ -1,6 +1,6 @@
 <?php
 /**
- * In-page chapter reader (the "sacred space" — no ads here).
+ * In-page chapter reader (the "sacred space" - no ads here).
  *
  * @package Tehillim_Campaign_Manager
  *
@@ -78,7 +78,7 @@ $chapter_label = Hebrew::chapter_label( $row->chapter_number );
 			data-tcm-id="<?php echo esc_attr( $row->id ); ?>"
 			data-tcm-token="<?php echo esc_attr( $token ); ?>"
 			data-tcm-permalink="<?php echo esc_url( $permalink ); ?>">
-			<?php esc_html_e( 'Finished — take another chapter', 'tehillim-campaign-manager' ); ?>
+			<?php esc_html_e( 'Finished - take another chapter', 'tehillim-campaign-manager' ); ?>
 		</button>
 	</div>
 </section>

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Registers and renders the settings page (tabbed) and — crucially — a strict
+ * Registers and renders the settings page (tabbed) and - crucially - a strict
  * sanitize callback that allowlists and sanitises every field on the way in.
  * Secret values are write-only: rendered as empty password fields and kept
  * unchanged when submitted blank, so they are never echoed back to the browser.
@@ -182,7 +182,7 @@ final class SettingsPage implements Registerable {
 		$base = admin_url( 'edit.php?post_type=' . CampaignPostType::POST_TYPE . '&page=tcm-settings' );
 		?>
 		<div class="wrap" dir="rtl">
-			<h1><?php esc_html_e( 'Tehillim Campaign Manager — Settings', 'tehillim-campaign-manager' ); ?></h1>
+			<h1><?php esc_html_e( 'Tehillim Campaign Manager - Settings', 'tehillim-campaign-manager' ); ?></h1>
 			<h2 class="nav-tab-wrapper">
 				<?php foreach ( $tabs as $key => $label ) : ?>
 					<a class="nav-tab <?php echo $tab === $key ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'tab', $key, $base ) ); ?>"><?php echo esc_html( $label ); ?></a>
@@ -209,7 +209,7 @@ final class SettingsPage implements Registerable {
 	 */
 	private function fields( $tab, array $o ) {
 		if ( 'general' === $tab ) {
-			$this->text_row( 'link_base', __( 'Campaign URL base', 'tehillim-campaign-manager' ), $o, __( 'English letters, digits and dashes. After changing: Settings → Permalinks → Save.', 'tehillim-campaign-manager' ) );
+			$this->text_row( 'link_base', __( 'Campaign URL base', 'tehillim-campaign-manager' ), $o, __( 'English letters, digits and dashes. After changing: Settings - Permalinks - Save.', 'tehillim-campaign-manager' ) );
 			$this->text_row( 'join_title', __( 'Join form heading', 'tehillim-campaign-manager' ), $o );
 			$this->text_row( 'join_button_text', __( 'Join button text', 'tehillim-campaign-manager' ), $o );
 			$this->checkbox_row( 'allow_multi_chapters', __( 'Allow taking several chapters', 'tehillim-campaign-manager' ), $o );
@@ -242,7 +242,7 @@ final class SettingsPage implements Registerable {
 				$this->color_row( $key, $label, $o );
 			}
 			echo '<tr><td colspan="2"><h2>' . esc_html__( 'Your own font (easy)', 'tehillim-campaign-manager' ) . '</h2>';
-			echo '<p class="description">' . esc_html__( 'Upload your licensed font file, choose it here and give it a name — the plugin builds the @font-face and applies it everywhere. No code needed.', 'tehillim-campaign-manager' ) . '</p></td></tr>';
+			echo '<p class="description">' . esc_html__( 'Upload your licensed font file, choose it here and give it a name - the plugin builds the @font-face and applies it everywhere. No code needed.', 'tehillim-campaign-manager' ) . '</p></td></tr>';
 			$this->text_row( 'design_custom_font_name', __( 'Font name', 'tehillim-campaign-manager' ), $o, __( 'Any name, e.g. AA Pro.', 'tehillim-campaign-manager' ) );
 			$this->font_file_row( 'design_custom_font_url', __( 'Font file', 'tehillim-campaign-manager' ), $o );
 
@@ -278,8 +278,8 @@ final class SettingsPage implements Registerable {
 	 */
 	private function webhook_events_help() {
 		$events = array(
-			'campaign_new'            => __( 'A new campaign was published — broadcast it to the group.', 'tehillim-campaign-manager' ),
-			'campaign_nearly_done'    => __( 'A campaign is almost finished — rally people to close it.', 'tehillim-campaign-manager' ),
+			'campaign_new'            => __( 'A new campaign was published - broadcast it to the group.', 'tehillim-campaign-manager' ),
+			'campaign_nearly_done'    => __( 'A campaign is almost finished - rally people to close it.', 'tehillim-campaign-manager' ),
 			'campaign_completed'      => __( 'A campaign reached its goal.', 'tehillim-campaign-manager' ),
 			'subscription_campaign'   => __( 'Personal campaign alert for a Tehillim Corps subscriber (kind: new / nearly_done).', 'tehillim-campaign-manager' ),
 			'subscription_daily'      => __( 'Daily chapter for a subscriber.', 'tehillim-campaign-manager' ),
@@ -339,7 +339,7 @@ final class SettingsPage implements Registerable {
 		$set = ! empty( $o[ $key ] );
 		$this->row(
 			$label,
-			'<input type="password" class="regular-text" autocomplete="new-password" name="tcm_options[' . esc_attr( $key ) . ']" value="" placeholder="' . esc_attr( $set ? '•••••• ' . __( '(saved — leave blank to keep)', 'tehillim-campaign-manager' ) : '' ) . '">'
+			'<input type="password" class="regular-text" autocomplete="new-password" name="tcm_options[' . esc_attr( $key ) . ']" value="" placeholder="' . esc_attr( $set ? '•••••• ' . __( '(saved - leave blank to keep)', 'tehillim-campaign-manager' ) : '' ) . '">'
 		);
 	}
 

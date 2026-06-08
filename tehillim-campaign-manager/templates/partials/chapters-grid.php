@@ -1,7 +1,7 @@
 <?php
 /**
  * Chapter status grid. Status is conveyed by colour AND an icon + text label
- * (WCAG 1.4.1 — colour is never the only signal).
+ * (WCAG 1.4.1 - colour is never the only signal).
  *
  * @package Tehillim_Campaign_Manager
  *
@@ -45,7 +45,7 @@ $labels = array(
 						<?php
 						printf(
 							/* translators: 1: chapter label, 2: status text. */
-							esc_html__( 'Chapter %1$s — %2$s', 'tehillim-campaign-manager' ),
+							esc_html__( 'Chapter %1$s - %2$s', 'tehillim-campaign-manager' ),
 							esc_html( Hebrew::chapter_label( $row->chapter_number ) ),
 							esc_html( $label['text'] )
 						);

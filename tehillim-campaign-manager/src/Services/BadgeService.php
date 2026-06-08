@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Computes earned achievement badges. Pure, data-driven helpers so they can be
- * reused for ambassadors, participants and campaign milestones — and unit
+ * reused for ambassadors, participants and campaign milestones - and unit
  * tested without WordPress.
  */
 final class BadgeService {

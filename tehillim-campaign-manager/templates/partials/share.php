@@ -1,6 +1,6 @@
 <?php
 /**
- * Campaign share card (right rail) — WhatsApp + copy link.
+ * Campaign share card (right rail) - WhatsApp + copy link.
  *
  * @package Tehillim_Campaign_Manager
  *

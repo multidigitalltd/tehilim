@@ -28,8 +28,8 @@ final class SetupWizard implements Registerable {
 	const MENU         = 'תפריט תהילים';
 
 	/**
-	 * The pages to create. Each page is built from *editable blocks* — a heading,
-	 * an intro paragraph and the matching dynamic block — so the whole site is
+	 * The pages to create. Each page is built from *editable blocks* - a heading,
+	 * an intro paragraph and the matching dynamic block - so the whole site is
 	 * editable in the block editor rather than a single opaque shortcode. The
 	 * legacy `shortcode` is kept only to detect and upgrade pages created by an
 	 * earlier version.
@@ -169,15 +169,15 @@ final class SetupWizard implements Registerable {
 		<div class="wrap" dir="rtl">
 			<h1><?php esc_html_e( 'Set up the site', 'tehillim-campaign-manager' ); ?></h1>
 			<?php if ( ! empty( $_GET['tcm_setup'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
-				<div class="notice notice-success"><p><?php esc_html_e( 'Done — pages and menu are ready.', 'tehillim-campaign-manager' ); ?></p></div>
+				<div class="notice notice-success"><p><?php esc_html_e( 'Done - pages and menu are ready.', 'tehillim-campaign-manager' ); ?></p></div>
 			<?php endif; ?>
 			<?php if ( ! empty( $_GET['tcm_demo'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
-				<div class="notice notice-success"><p><?php esc_html_e( 'Demo content imported — sample campaigns, prayers and ad banners are live.', 'tehillim-campaign-manager' ); ?></p></div>
+				<div class="notice notice-success"><p><?php esc_html_e( 'Demo content imported - sample campaigns, prayers and ad banners are live.', 'tehillim-campaign-manager' ); ?></p></div>
 			<?php endif; ?>
 
 			<div style="background:#fff;border:1px solid #dcdcde;border-radius:10px;padding:22px;max-width:680px;margin:18px 0">
 				<h2 style="margin-top:0"><?php esc_html_e( 'Build the whole site in one click', 'tehillim-campaign-manager' ); ?></h2>
-				<p><?php esc_html_e( 'Creates every page with the full ready-made design built right into it (homepage hero, sections, FAQ and more — all editable blocks), sets the home page and menu, and imports sample content. Just like a premium theme demo import. Best on a fresh site.', 'tehillim-campaign-manager' ); ?></p>
+				<p><?php esc_html_e( 'Creates every page with the full ready-made design built right into it (homepage hero, sections, FAQ and more - all editable blocks), sets the home page and menu, and imports sample content. Just like a premium theme demo import. Best on a fresh site.', 'tehillim-campaign-manager' ); ?></p>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 					<input type="hidden" name="action" value="<?php echo esc_attr( self::ACTION_BUILD ); ?>">
 					<?php wp_nonce_field( self::ACTION_BUILD ); ?>
@@ -188,8 +188,8 @@ final class SetupWizard implements Registerable {
 			<hr style="margin:28px 0">
 			<p class="description" style="max-width:680px"><?php esc_html_e( 'Prefer to do it in steps? Use the options below.', 'tehillim-campaign-manager' ); ?></p>
 
-			<h2><?php esc_html_e( 'Step 1 — Pages & menu', 'tehillim-campaign-manager' ); ?></h2>
-			<p><?php esc_html_e( 'Create the campaign, personal-area, ambassadors and segulot pages — plus a navigation menu and home page — in one click. Each page is built from editable blocks (heading, intro and a dynamic block) so you can edit it freely. Re-running upgrades old single-shortcode pages to the editable block layout, without touching pages you have edited.', 'tehillim-campaign-manager' ); ?></p>
+			<h2><?php esc_html_e( 'Step 1 - Pages & menu', 'tehillim-campaign-manager' ); ?></h2>
+			<p><?php esc_html_e( 'Create the campaign, personal-area, ambassadors and segulot pages - plus a navigation menu and home page - in one click. Each page is built from editable blocks (heading, intro and a dynamic block) so you can edit it freely. Re-running upgrades old single-shortcode pages to the editable block layout, without touching pages you have edited.', 'tehillim-campaign-manager' ); ?></p>
 			<table class="widefat striped" style="max-width:640px">
 				<tbody>
 					<?php foreach ( $this->definitions() as $key => $def ) : ?>
@@ -218,8 +218,8 @@ final class SetupWizard implements Registerable {
 
 			<hr style="margin:28px 0">
 
-			<h2><?php esc_html_e( 'Step 2 — Demo content', 'tehillim-campaign-manager' ); ?></h2>
-			<p><?php esc_html_e( 'Fill the site with sample content so it looks exactly like the design preview: two live campaigns (with chapters, activity and a leaderboard), four prayers/segulot and demo ad banners. Use this on a fresh site only — it adds example data you can later delete.', 'tehillim-campaign-manager' ); ?></p>
+			<h2><?php esc_html_e( 'Step 2 - Demo content', 'tehillim-campaign-manager' ); ?></h2>
+			<p><?php esc_html_e( 'Fill the site with sample content so it looks exactly like the design preview: two live campaigns (with chapters, activity and a leaderboard), four prayers/segulot and demo ad banners. Use this on a fresh site only - it adds example data you can later delete.', 'tehillim-campaign-manager' ); ?></p>
 			<?php if ( $demo->imported() ) : ?>
 				<p><span class="dashicons dashicons-yes-alt" style="color:#46b450"></span> <?php esc_html_e( 'Demo content has already been imported.', 'tehillim-campaign-manager' ); ?></p>
 			<?php else : ?>
@@ -248,7 +248,7 @@ final class SetupWizard implements Registerable {
 
 	/**
 	 * One click: build every designed page + menu + front page, then import the
-	 * demo content — a complete, ready-made site like a premium theme demo.
+	 * demo content - a complete, ready-made site like a premium theme demo.
 	 *
 	 * @return void
 	 */
@@ -325,7 +325,7 @@ final class SetupWizard implements Registerable {
 	/**
 	 * Update an existing managed page: always fix the slug, and refresh the
 	 * content only when it is still empty, the legacy shortcode, or our own
-	 * last-written design — so manual edits are never overwritten.
+	 * last-written design - so manual edits are never overwritten.
 	 *
 	 * @param int                                 $id      Page id.
 	 * @param array{slug:string,shortcode:string} $def     Page definition.

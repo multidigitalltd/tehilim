@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Data access for tcm_referrals — attribution of an assignment to an ambassador.
+ * Data access for tcm_referrals - attribution of an assignment to an ambassador.
  */
 final class ReferralsRepository extends Repository {
 

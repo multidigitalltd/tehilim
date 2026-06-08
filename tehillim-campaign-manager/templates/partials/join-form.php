@@ -1,6 +1,6 @@
 <?php
 /**
- * Join form — choose chapter(s) and submit via REST.
+ * Join form - choose chapter(s) and submit via REST.
  *
  * @package Tehillim_Campaign_Manager
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Archive of all campaigns — cards styled after the "Psalms Unite" design.
+ * Archive of all campaigns - cards styled after the "Psalms Unite" design.
  *
  * @package Tehillim_Campaign_Manager
  *

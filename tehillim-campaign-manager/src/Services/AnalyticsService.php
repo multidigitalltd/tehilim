@@ -75,7 +75,7 @@ final class AnalyticsService {
 
 	/**
 	 * Completed-chapters series for the last N days, gap-filled with zeros and
-	 * ordered oldest → newest. Powers the dashboard trend chart.
+	 * ordered oldest - newest. Powers the dashboard trend chart.
 	 *
 	 * @param int $days Number of days.
 	 * @return array<int,array{date:string,count:int}>

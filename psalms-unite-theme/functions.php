@@ -255,7 +255,7 @@ function psalms_unite_font_css(): string {
 function psalms_unite_text_config() {
 	return array(
 		'psalms_hero'         => array(
-			'title'  => 'תכנים — באנר ראשי (דף הבית)',
+			'title'  => 'תכנים - באנר ראשי (דף הבית)',
 			'fields' => array(
 				'hero_eyebrow'       => array(
 					'default' => 'קהילה אחת, ספר תהילים אחד',
@@ -284,7 +284,7 @@ function psalms_unite_text_config() {
 			),
 		),
 		'psalms_how'          => array(
-			'title'  => 'תכנים — איך זה עובד',
+			'title'  => 'תכנים - איך זה עובד',
 			'fields' => array(
 				'how_title'    => array(
 					'default' => 'איך זה עובד',
@@ -321,7 +321,7 @@ function psalms_unite_text_config() {
 			),
 		),
 		'psalms_recent'       => array(
-			'title'  => 'תכנים — קמפיינים אחרונים',
+			'title'  => 'תכנים - קמפיינים אחרונים',
 			'fields' => array(
 				'recent_title'   => array(
 					'default' => 'קמפיינים אחרונים',
@@ -338,7 +338,7 @@ function psalms_unite_text_config() {
 			),
 		),
 		'psalms_features'     => array(
-			'title'  => 'תכנים — יתרונות',
+			'title'  => 'תכנים - יתרונות',
 			'fields' => array(
 				'features_title' => array(
 					'default' => 'כל מה שצריך לקמפיין מנצח',
@@ -389,7 +389,7 @@ function psalms_unite_text_config() {
 					'type'    => 'text',
 				),
 				'feat_6_text'    => array(
-					'default' => 'משפחות, כיתות, קהילות — כולם תורמים יחד.',
+					'default' => 'משפחות, כיתות, קהילות - כולם תורמים יחד.',
 					'type'    => 'textarea',
 				),
 				'feat_7_title'   => array(
@@ -405,13 +405,13 @@ function psalms_unite_text_config() {
 					'type'    => 'text',
 				),
 				'feat_8_text'    => array(
-					'default' => 'מי תרם, מתי, וכמה — הכל שקוף.',
+					'default' => 'מי תרם, מתי, וכמה - הכל שקוף.',
 					'type'    => 'textarea',
 				),
 			),
 		),
 		'psalms_testimonials' => array(
-			'title'  => 'תכנים — המלצות',
+			'title'  => 'תכנים - המלצות',
 			'fields' => array(
 				'tst_title'  => array(
 					'default' => 'סיפורים מקהילות שהתאחדו סביב תהילים',
@@ -492,7 +492,7 @@ function psalms_unite_text_config() {
 			),
 		),
 		'psalms_faq'          => array(
-			'title'  => 'תכנים — שאלות נפוצות',
+			'title'  => 'תכנים - שאלות נפוצות',
 			'fields' => array(
 				'faq_eyebrow' => array(
 					'default' => 'שאלות ותשובות',
@@ -519,7 +519,7 @@ function psalms_unite_text_config() {
 					'type'    => 'text',
 				),
 				'faq_2_a'     => array(
-					'default' => 'לא. זו פלטפורמת קמפיינים — מסביב למטרה משותפת. את התהילים אומרים בכל ספר או אפליקציה שתבחרו, וכאן מסמנים את הפרקים שאמרתם.',
+					'default' => 'לא. זו פלטפורמת קמפיינים - מסביב למטרה משותפת. את התהילים אומרים בכל ספר או אפליקציה שתבחרו, וכאן מסמנים את הפרקים שאמרתם.',
 					'type'    => 'textarea',
 				),
 				'faq_3_q'     => array(
@@ -543,7 +543,7 @@ function psalms_unite_text_config() {
 					'type'    => 'text',
 				),
 				'faq_5_a'     => array(
-					'default' => 'בוודאי — וואטסאפ, פייסבוק, מייל, או העתקת לינק. ככל שמשתפים יותר, מגיעים ליעד מהר יותר.',
+					'default' => 'בוודאי - וואטסאפ, פייסבוק, מייל, או העתקת לינק. ככל שמשתפים יותר, מגיעים ליעד מהר יותר.',
 					'type'    => 'textarea',
 				),
 				'faq_6_q'     => array(
@@ -551,7 +551,7 @@ function psalms_unite_text_config() {
 					'type'    => 'text',
 				),
 				'faq_6_a'     => array(
-					'default' => 'בערך שתי דקות. שם, מטרה, יעד — והקמפיין באוויר.',
+					'default' => 'בערך שתי דקות. שם, מטרה, יעד - והקמפיין באוויר.',
 					'type'    => 'textarea',
 				),
 				'faq_7_q'     => array(
@@ -565,7 +565,7 @@ function psalms_unite_text_config() {
 			),
 		),
 		'psalms_cta'          => array(
-			'title'  => 'תכנים — קריאה לפעולה',
+			'title'  => 'תכנים - קריאה לפעולה',
 			'fields' => array(
 				'cta_title'  => array(
 					'default' => 'מוכנים לפתוח קמפיין?',
@@ -582,7 +582,7 @@ function psalms_unite_text_config() {
 			),
 		),
 		'psalms_about'        => array(
-			'title'  => 'תכנים — אודות',
+			'title'  => 'תכנים - אודות',
 			'fields' => array(
 				'about_eyebrow'       => array(
 					'default' => 'אודות',
@@ -601,7 +601,7 @@ function psalms_unite_text_config() {
 					'type'    => 'text',
 				),
 				'about_mission_text'  => array(
-					'default' => 'האמנו שאמירת תהילים משותפת היא רגע של איחוד יוצא דופן — בין משפחה לחבר, בין קהילה לקהל רחב. בנינו פלטפורמה פשוטה שמאפשרת לכל אחד לפתוח קמפיין תוך דקות, להזמין שגרירים, ולעקוב יחד אחרי ההתקדמות עד היעד.',
+					'default' => 'האמנו שאמירת תהילים משותפת היא רגע של איחוד יוצא דופן - בין משפחה לחבר, בין קהילה לקהל רחב. בנינו פלטפורמה פשוטה שמאפשרת לכל אחד לפתוח קמפיין תוך דקות, להזמין שגרירים, ולעקוב יחד אחרי ההתקדמות עד היעד.',
 					'type'    => 'textarea',
 				),
 				'about_story_title'   => array(
@@ -609,7 +609,7 @@ function psalms_unite_text_config() {
 					'type'    => 'text',
 				),
 				'about_story_text'    => array(
-					'default' => 'הפלטפורמה נולדה מתוך צורך אמיתי — קמפיין לרפואת קרוב משפחה הצריך טבלאות אקסל, הודעות וואטסאפ מבולגנות וספירה ידנית. הבנו שזה צריך להיות פשוט. בנינו את הכלי שחיפשנו, ופתחנו אותו לכולם — חינם.',
+					'default' => 'הפלטפורמה נולדה מתוך צורך אמיתי - קמפיין לרפואת קרוב משפחה הצריך טבלאות אקסל, הודעות וואטסאפ מבולגנות וספירה ידנית. הבנו שזה צריך להיות פשוט. בנינו את הכלי שחיפשנו, ופתחנו אותו לכולם - חינם.',
 					'type'    => 'textarea',
 				),
 				'about_values_title'  => array(
@@ -645,7 +645,7 @@ function psalms_unite_text_config() {
 					'type'    => 'text',
 				),
 				'val_4_text'          => array(
-					'default' => 'כל פרק, כל ספר, כל תרומה — גלויים לעין כל.',
+					'default' => 'כל פרק, כל ספר, כל תרומה - גלויים לעין כל.',
 					'type'    => 'textarea',
 				),
 				'about_cta_title'     => array(
@@ -663,7 +663,7 @@ function psalms_unite_text_config() {
 			),
 		),
 		'psalms_pages'        => array(
-			'title'  => 'תכנים — כותרות עמודים',
+			'title'  => 'תכנים - כותרות עמודים',
 			'fields' => array(
 				'campaigns_title' => array(
 					'default' => 'קמפיינים',
@@ -686,7 +686,7 @@ function psalms_unite_text_config() {
 					'type'    => 'text',
 				),
 				'dashboard_sub'   => array(
-					'default' => 'הקמפיינים שלכם, הפעילות וההתקדמות — במקום אחד.',
+					'default' => 'הקמפיינים שלכם, הפעילות וההתקדמות - במקום אחד.',
 					'type'    => 'textarea',
 				),
 				'subscribe_title' => array(
@@ -708,14 +708,14 @@ function psalms_unite_text_config() {
 			),
 		),
 		'psalms_footer'       => array(
-			'title'  => 'תכנים — מותג ופוטר',
+			'title'  => 'תכנים - מותג ופוטר',
 			'fields' => array(
 				'brand'                 => array(
 					'default' => 'קמפייני תהילים',
 					'type'    => 'text',
 				),
 				'footer_tagline'        => array(
-					'default' => 'פלטפורמה חינמית לאיחוד קהילות סביב אמירת תהילים — כי יחד מגיעים רחוק יותר.',
+					'default' => 'פלטפורמה חינמית לאיחוד קהילות סביב אמירת תהילים - כי יחד מגיעים רחוק יותר.',
 					'type'    => 'textarea',
 				),
 				'footer_made'           => array(
@@ -788,7 +788,7 @@ add_action(
 		$wp_customize->add_panel(
 			'psalms_unite_texts',
 			array(
-				'title'    => __( 'Psalms Unite — תכנים', 'psalms-unite' ),
+				'title'    => __( 'Psalms Unite - תכנים', 'psalms-unite' ),
 				'priority' => 30,
 			)
 		);

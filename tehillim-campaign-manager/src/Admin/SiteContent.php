@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Provides the full, ready-made block layouts that the site builder writes
- * straight into the pages — so the site looks like the design preview out of
+ * straight into the pages - so the site looks like the design preview out of
  * the box, and every section is editable in the block editor (no manual design
  * work). The markup uses the companion theme's section classes for styling.
  */
@@ -38,7 +38,7 @@ final class SiteContent {
 			case 'segulot':
 				return self::section(
 					'סגולות ותפילות',
-					'אוסף תפילות וסגולות מיוחדות לכל עת — לרפואה, לפרנסה, לישועה ולשמירה.',
+					'אוסף תפילות וסגולות מיוחדות לכל עת - לרפואה, לפרנסה, לישועה ולשמירה.',
 					'<!-- wp:tehillim/segulot /-->'
 				);
 			case 'create':
@@ -50,7 +50,7 @@ final class SiteContent {
 			case 'my':
 				return self::section(
 					'האזור האישי שלי',
-					'הקמפיינים שפתחתם, ההתקדמות שלהם והניהול שלהם — במקום אחד.',
+					'הקמפיינים שפתחתם, ההתקדמות שלהם והניהול שלהם - במקום אחד.',
 					'<!-- wp:tehillim/my-campaigns /-->'
 				);
 			case 'activity':
@@ -99,7 +99,7 @@ final class SiteContent {
 
 	/**
 	 * The full homepage layout (hero, live stats, how-it-works, campaigns,
-	 * features, testimonials, FAQ, CTA) — the Lovable design as editable blocks.
+	 * features, testimonials, FAQ, CTA) - the Lovable design as editable blocks.
 	 *
 	 * @return string
 	 */
@@ -108,7 +108,7 @@ final class SiteContent {
 <!-- wp:group {"tagName":"section","className":"tc-hero","layout":{"type":"constrained"}} -->
 <section class="wp-block-group tc-hero">
 	<!-- wp:paragraph {"align":"center","className":"tc-eyebrow"} -->
-	<p class="has-text-align-center tc-eyebrow">✦ פלטפורמת קמפיינים קהילתיים — לא אתר תהילים</p>
+	<p class="has-text-align-center tc-eyebrow">✦ פלטפורמת קמפיינים קהילתיים - לא אתר תהילים</p>
 	<!-- /wp:paragraph -->
 
 	<!-- wp:heading {"textAlign":"center","level":1,"className":"tc-hero-title"} -->
@@ -116,7 +116,7 @@ final class SiteContent {
 	<!-- /wp:heading -->
 
 	<!-- wp:paragraph {"align":"center","className":"tc-hero-sub"} -->
-	<p class="has-text-align-center tc-hero-sub">צרו קמפיין תהילים, הזמינו משפחה וחברים, עקבו אחרי ההתקדמות בזמן אמת והשלימו יחד אלפי פרקים — לרפואה, לעילוי נשמה, לישועה או לכל מטרה יקרה ללב.</p>
+	<p class="has-text-align-center tc-hero-sub">צרו קמפיין תהילים, הזמינו משפחה וחברים, עקבו אחרי ההתקדמות בזמן אמת והשלימו יחד אלפי פרקים - לרפואה, לעילוי נשמה, לישועה או לכל מטרה יקרה ללב.</p>
 	<!-- /wp:paragraph -->
 
 	<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
@@ -146,7 +146,7 @@ final class SiteContent {
 	<!-- wp:group {"className":"tc-grid tc-grid-3","layout":{"type":"default"}} -->
 	<div class="wp-block-group tc-grid tc-grid-3">
 		<!-- wp:group {"className":"tc-step","layout":{"type":"constrained"}} -->
-		<div class="wp-block-group tc-step"><p class="tc-step-num">01</p><h3>פותחים קמפיין</h3><p class="tc-muted">שם, מטרה, יעד של פרקים או ספרים — שתי דקות והקמפיין באוויר.</p></div>
+		<div class="wp-block-group tc-step"><p class="tc-step-num">01</p><h3>פותחים קמפיין</h3><p class="tc-muted">שם, מטרה, יעד של פרקים או ספרים - שתי דקות והקמפיין באוויר.</p></div>
 		<!-- /wp:group -->
 		<!-- wp:group {"className":"tc-step","layout":{"type":"constrained"}} -->
 		<div class="wp-block-group tc-step"><p class="tc-step-num">02</p><h3>מזמינים שגרירים</h3><p class="tc-muted">כל שגריר מקבל לינק אישי ומגייס את הקהילה שלו לעמידה ביעד.</p></div>
@@ -192,13 +192,13 @@ final class SiteContent {
 		<div class="wp-block-group tc-feature"><h3>מעקב אישי</h3><p class="tc-muted">כל משתתף רואה את התרומה שלו ליעד.</p></div>
 		<!-- /wp:group -->
 		<!-- wp:group {"className":"tc-feature","layout":{"type":"constrained"}} -->
-		<div class="wp-block-group tc-feature"><h3>השתתפות קבוצתית</h3><p class="tc-muted">משפחות, כיתות, קהילות — כולם תורמים יחד.</p></div>
+		<div class="wp-block-group tc-feature"><h3>השתתפות קבוצתית</h3><p class="tc-muted">משפחות, כיתות, קהילות - כולם תורמים יחד.</p></div>
 		<!-- /wp:group -->
 		<!-- wp:group {"className":"tc-feature","layout":{"type":"constrained"}} -->
 		<div class="wp-block-group tc-feature"><h3>תגי הישג</h3><p class="tc-muted">ספר ראשון, 10 ספרים, שגריר מצטיין ועוד.</p></div>
 		<!-- /wp:group -->
 		<!-- wp:group {"className":"tc-feature","layout":{"type":"constrained"}} -->
-		<div class="wp-block-group tc-feature"><h3>סטטיסטיקות חיות</h3><p class="tc-muted">מי תרם, מתי, וכמה — הכל שקוף.</p></div>
+		<div class="wp-block-group tc-feature"><h3>סטטיסטיקות חיות</h3><p class="tc-muted">מי תרם, מתי, וכמה - הכל שקוף.</p></div>
 		<!-- /wp:group -->
 	</div>
 	<!-- /wp:group -->
@@ -214,13 +214,13 @@ final class SiteContent {
 	<!-- wp:group {"className":"tc-grid tc-grid-3","layout":{"type":"default"}} -->
 	<div class="wp-block-group tc-grid tc-grid-3">
 		<!-- wp:group {"className":"tc-quote","layout":{"type":"constrained"}} -->
-		<div class="wp-block-group tc-quote"><p class="tc-quote-text">"תוך יומיים סיימנו ספר תהילים שלם לרפואת אבא. אנשים שלא דיברתי איתם שנים הצטרפו."</p><p class="tc-quote-by">— מרים, חיפה</p></div>
+		<div class="wp-block-group tc-quote"><p class="tc-quote-text">"תוך יומיים סיימנו ספר תהילים שלם לרפואת אבא. אנשים שלא דיברתי איתם שנים הצטרפו."</p><p class="tc-quote-by">- מרים, חיפה</p></div>
 		<!-- /wp:group -->
 		<!-- wp:group {"className":"tc-quote","layout":{"type":"constrained"}} -->
-		<div class="wp-block-group tc-quote"><p class="tc-quote-text">"מד ההתקדמות החי פשוט מכר את עצמו. כל אחד רצה להיות זה שמשלים עוד פרק."</p><p class="tc-quote-by">— יוסי, בני ברק</p></div>
+		<div class="wp-block-group tc-quote"><p class="tc-quote-text">"מד ההתקדמות החי פשוט מכר את עצמו. כל אחד רצה להיות זה שמשלים עוד פרק."</p><p class="tc-quote-by">- יוסי, בני ברק</p></div>
 		<!-- /wp:group -->
 		<!-- wp:group {"className":"tc-quote","layout":{"type":"constrained"}} -->
-		<div class="wp-block-group tc-quote"><p class="tc-quote-text">"מערכת השגרירים עשתה את העבודה — כל אחד גייס את הקבוצה שלו בוואטסאפ."</p><p class="tc-quote-by">— חנה, ירושלים</p></div>
+		<div class="wp-block-group tc-quote"><p class="tc-quote-text">"מערכת השגרירים עשתה את העבודה - כל אחד גייס את הקבוצה שלו בוואטסאפ."</p><p class="tc-quote-by">- חנה, ירושלים</p></div>
 		<!-- /wp:group -->
 	</div>
 	<!-- /wp:group -->
@@ -239,10 +239,10 @@ final class SiteContent {
 		<details class="wp-block-details tc-faq-item"><summary>האם צריך להירשם כדי להצטרף לקמפיין?</summary><!-- wp:paragraph --><p>לא. כל אחד יכול לבחור פרק ולומר אותו. הרשמה נדרשת רק כדי לפתוח קמפיין משלך או לקבל תזכורות.</p><!-- /wp:paragraph --></details>
 		<!-- /wp:details -->
 		<!-- wp:details {"className":"tc-faq-item"} -->
-		<details class="wp-block-details tc-faq-item"><summary>איך מקבלים תזכורות?</summary><!-- wp:paragraph --><p>בעת ההצטרפות לתהילים יומי נשלחת תזכורת חכמה עם קישור ישיר לפרק שלך — מתאים לשליחה אוטומטית לוואטסאפ.</p><!-- /wp:paragraph --></details>
+		<details class="wp-block-details tc-faq-item"><summary>איך מקבלים תזכורות?</summary><!-- wp:paragraph --><p>בעת ההצטרפות לתהילים יומי נשלחת תזכורת חכמה עם קישור ישיר לפרק שלך - מתאים לשליחה אוטומטית לוואטסאפ.</p><!-- /wp:paragraph --></details>
 		<!-- /wp:details -->
 		<!-- wp:details {"className":"tc-faq-item"} -->
-		<details class="wp-block-details tc-faq-item"><summary>למה אפשר להקדיש קמפיין?</summary><!-- wp:paragraph --><p>לרפואה, לישועה, לזיווג, להצלחה, לעילוי נשמה — או לכל מטרה יקרה ללב.</p><!-- /wp:paragraph --></details>
+		<details class="wp-block-details tc-faq-item"><summary>למה אפשר להקדיש קמפיין?</summary><!-- wp:paragraph --><p>לרפואה, לישועה, לזיווג, להצלחה, לעילוי נשמה - או לכל מטרה יקרה ללב.</p><!-- /wp:paragraph --></details>
 		<!-- /wp:details -->
 		<!-- wp:details {"className":"tc-faq-item"} -->
 		<details class="wp-block-details tc-faq-item"><summary>האם השימוש חינמי?</summary><!-- wp:paragraph --><p>כן. פתיחת קמפיין והשתתפות בו חינמיים לחלוטין.</p><!-- /wp:paragraph --></details>

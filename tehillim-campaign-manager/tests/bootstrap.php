@@ -8,8 +8,8 @@
  * @package Tehillim_Campaign_Manager
  */
 
-if (!defined('ABSPATH')) {
-    define('ABSPATH', __DIR__ . '/');
+if ( ! defined( 'ABSPATH' ) ) {
+	define( 'ABSPATH', __DIR__ . '/' );
 }
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname( __DIR__ ) . '/vendor/autoload.php';

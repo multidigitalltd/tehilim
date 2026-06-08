@@ -318,6 +318,38 @@ final class AssignmentsRepository extends Repository {
 	}
 
 	/**
+	 * Count chapters completed since a given datetime, across all campaigns.
+	 * Used for the admin analytics trend (e.g. last 30 days).
+	 *
+	 * @param string $since Datetime in MySQL `Y-m-d H:i:s` format.
+	 * @return int
+	 */
+	public function count_done_since( $since ) {
+		$sql = $this->db->prepare(
+			"SELECT COUNT(*) FROM {$this->table}
+             WHERE status='done' AND completed_at >= %s",
+			$since
+		);
+		return (int) $this->db->get_var( $sql );
+	}
+
+	/**
+	 * Count chapters a participant has personally completed, across all
+	 * campaigns. Used to award participant achievement badges.
+	 *
+	 * @param string $email Participant email.
+	 * @return int
+	 */
+	public function count_done_by_participant_email( $email ) {
+		$sql = $this->db->prepare(
+			"SELECT COUNT(*) FROM {$this->table}
+             WHERE participant_email=%s AND status='done'",
+			$email
+		);
+		return (int) $this->db->get_var( $sql );
+	}
+
+	/**
 	 * Fetch a row by id.
 	 *
 	 * @param int $id Row id.

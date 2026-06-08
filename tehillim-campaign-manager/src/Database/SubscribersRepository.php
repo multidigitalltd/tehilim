@@ -145,6 +145,23 @@ final class SubscribersRepository extends Repository {
 	}
 
 	/**
+	 * Count active subscribers, optionally for one list.
+	 *
+	 * @param string $list Optional list slug; empty for all lists.
+	 * @return int
+	 */
+	public function count_active( $list = '' ) {
+		if ( '' !== $list ) {
+			$sql = $this->db->prepare(
+				"SELECT COUNT(*) FROM {$this->table} WHERE status='active' AND list=%s",
+				$list
+			);
+			return (int) $this->db->get_var( $sql );
+		}
+		return (int) $this->db->get_var( "SELECT COUNT(*) FROM {$this->table} WHERE status='active'" );
+	}
+
+	/**
 	 * Mark a subscriber as sent now.
 	 *
 	 * @param int $id Subscriber id.

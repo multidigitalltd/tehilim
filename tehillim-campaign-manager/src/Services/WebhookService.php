@@ -8,6 +8,7 @@
 namespace TCM\Services;
 
 use TCM\Contracts\Registerable;
+use TCM\PostTypes\CampaignPostType;
 use TCM\Support\Hebrew;
 use TCM\Support\Logger;
 use TCM\Support\Options;
@@ -40,6 +41,41 @@ final class WebhookService implements Registerable {
 		add_action( 'tcm_chapter_release_warning', array( $this, 'on_release_warning' ), 20, 1 );
 		add_action( 'tcm_chapter_auto_released', array( $this, 'on_auto_released' ), 20, 1 );
 		add_action( 'tcm_subscription_due', array( $this, 'on_subscription_due' ), 20, 2 );
+		add_action( 'transition_post_status', array( $this, 'maybe_announce_campaign' ), 10, 3 );
+	}
+
+	/**
+	 * Broadcast a `campaign_new` event the first time a campaign is published,
+	 * so an automation can post every new campaign to a WhatsApp group/channel.
+	 * Fires once per campaign (guarded by a meta flag) and only on the
+	 * not-published → published transition.
+	 *
+	 * @param string   $new_status New status.
+	 * @param string   $old_status Old status.
+	 * @param \WP_Post $post       Post.
+	 * @return void
+	 */
+	public function maybe_announce_campaign( $new_status, $old_status, $post ) {
+		if ( ! $post instanceof \WP_Post || CampaignPostType::POST_TYPE !== $post->post_type ) {
+			return;
+		}
+		if ( 'publish' !== $new_status || 'publish' === $old_status ) {
+			return;
+		}
+		if ( get_post_meta( $post->ID, '_tcm_announced', true ) ) {
+			return;
+		}
+		update_post_meta( $post->ID, '_tcm_announced', 1 );
+		$this->dispatch(
+			'campaign_new',
+			array(
+				'campaign_id'    => (int) $post->ID,
+				'campaign_title' => get_the_title( $post ),
+				'dedicated_to'   => (string) get_post_meta( $post->ID, '_tcm_dedicated_to', true ),
+				'target_books'   => (int) get_post_meta( $post->ID, '_tcm_target_books', true ),
+				'permalink'      => (string) get_permalink( $post ),
+			)
+		);
 	}
 
 	/**

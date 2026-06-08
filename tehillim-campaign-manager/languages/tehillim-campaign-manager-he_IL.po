@@ -19,6 +19,27 @@ msgstr "פעולה"
 msgid "Active"
 msgstr "פעיל"
 
+msgid "Active ambassador"
+msgstr "שגריר פעיל"
+
+msgid "Completed a book"
+msgstr "צדיק יסוד עולם"
+
+msgid "Devoted reader"
+msgstr "צדיק נשגב"
+
+msgid "First chapter"
+msgstr "צדיק"
+
+msgid "Gold ambassador"
+msgstr "שגריר זהב"
+
+msgid "Regular reader"
+msgstr "צדיק מופלג"
+
+msgid "Top ambassador"
+msgstr "שגריר מצטיין"
+
 msgid "Ad"
 msgstr "פרסומת"
 
@@ -697,3 +718,33 @@ msgstr "רשות"
 msgid "○ Free · ◐ Taken · ● Done"
 msgstr "○ פנוי · ◐ נתפס · ● הושלם"
 
+
+msgid "Active campaigns"
+msgstr "קמפיינים פעילים"
+
+msgid "Active subscribers"
+msgstr "נרשמים פעילים"
+
+msgid "Ad clicks"
+msgstr "קליקים על פרסומות"
+
+msgid "Ambassadors"
+msgstr "שגרירים"
+
+msgid "Chapters completed"
+msgstr "פרקים שהושלמו"
+
+msgid "Participants"
+msgstr "משתתפים"
+
+msgid "%d chapters completed"
+msgstr "השלמת %d פרקים"
+
+msgid "%1$d more to earn %2$s %3$s"
+msgstr "עוד %1$d לדרגת %2$s %3$s"
+
+msgid "%s in the last 30 days"
+msgstr "%s ב‑30 הימים האחרונים"
+
+msgid "%1$s impressions · %2$s%% CTR"
+msgstr "%1$s חשיפות · %2$s%% הקלקה"

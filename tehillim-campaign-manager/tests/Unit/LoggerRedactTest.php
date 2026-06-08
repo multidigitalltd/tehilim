@@ -33,7 +33,10 @@ final class LoggerRedactTest extends TestCase {
 	public function test_redaction_is_recursive() {
 		$out = Logger::redact(
 			array(
-				'outer' => array( 'email' => 'a@b.com', 'ok' => 'keep' ),
+				'outer' => array(
+					'email' => 'a@b.com',
+					'ok'    => 'keep',
+				),
 			)
 		);
 		$this->assertSame( '[redacted]', $out['outer']['email'] );

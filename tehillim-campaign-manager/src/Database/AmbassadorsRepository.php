@@ -112,6 +112,15 @@ final class AmbassadorsRepository extends Repository {
 	}
 
 	/**
+	 * Total ambassadors across all campaigns (for admin analytics).
+	 *
+	 * @return int
+	 */
+	public function count_all() {
+		return (int) $this->db->get_var( "SELECT COUNT(*) FROM {$this->table}" );
+	}
+
+	/**
 	 * Insert an ambassador and return the new row.
 	 *
 	 * @param array<string,mixed> $data Row data.

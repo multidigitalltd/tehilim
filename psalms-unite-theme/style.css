@@ -3,7 +3,7 @@ Theme Name: Psalms Unite
 Theme URI: https://github.com/multidigitalltd/psalms-unite
 Author: Multi Digital
 Description: WordPress theme bridge for the Psalms Unite / Tehillim Campaigns design and plugin shortcodes.
-Version: 1.9.0
+Version: 1.11.0
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: psalms-unite
@@ -97,4 +97,49 @@ body { margin: 0; background: var(--background, #fbf8ed); }
 .psalms-faq[open] > summary::after { content: "\2013"; }
 .psalms-faq[open] {
   box-shadow: 0 12px 30px -18px color-mix(in oklab, var(--primary, #3a3578) 40%, transparent);
+}
+
+/* Accessibility: skip-to-content link (visible on focus). */
+.psalms-skip {
+  position: absolute;
+  inset-inline-start: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--primary, #3a3578);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 0 0 10px 0;
+}
+.psalms-skip:focus {
+  inset-inline-start: 0;
+}
+
+/* ============================================================
+   Bridge: map the plugin's design tokens to the exact Lovable
+   (compiled-CSS) tokens, so the campaign page and all plugin
+   output share one visual language. Loaded after the plugin CSS,
+   so these win.
+   ============================================================ */
+:root {
+  --tcm-primary: var(--primary);
+  --tcm-secondary: var(--gold);
+  --tcm-gold: var(--gold);
+  --tcm-text: var(--foreground);
+  --tcm-muted: var(--muted-foreground);
+  --tcm-card-bg: var(--card);
+  --tcm-surface: var(--background);
+  --tcm-primary-soft: var(--primary-soft);
+  --tcm-gold-soft: color-mix(in oklab, var(--gold) 18%, transparent);
+  --tcm-border-soft: var(--border);
+  --tcm-field-bg: var(--background);
+  --tcm-field-border: var(--border);
+  --tcm-button-text: var(--primary-foreground);
+  --tcm-radius: 1rem;
+  --tcm-field-radius: 0.75rem;
+}
+
+/* Match Lovable card radius/border weight on plugin cards. */
+.tcm-card {
+  border-color: color-mix(in oklab, var(--border) 85%, transparent);
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--primary) 10%, transparent);
 }

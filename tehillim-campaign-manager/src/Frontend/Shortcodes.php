@@ -208,7 +208,7 @@ final class Shortcodes implements Registerable {
 				'title'        => get_the_title( $id ),
 				'dedicated_to' => (string) get_post_meta( $id, '_tcm_dedicated_to', true ),
 				'image'        => (string) get_the_post_thumbnail_url( $id, 'large' ),
-				'description'  => wpautop( get_post_field( 'post_content', $id ) ),
+				'description'  => wpautop( do_blocks( (string) get_post_field( 'post_content', $id ) ) ),
 				'stats'        => $stats,
 				'participants' => $this->assignments->participant_count( $id ),
 				'ambassadors'  => ( new \TCM\Database\AmbassadorsRepository() )->count_for_campaign( $id ),

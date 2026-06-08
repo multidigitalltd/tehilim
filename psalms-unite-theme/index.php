@@ -19,8 +19,9 @@ if ( is_post_type_archive( 'tcm_campaign' ) ) {
 }
 
 if ( '' === $slug ) {
-	$path = trim( (string) wp_parse_url( (string) $_SERVER['REQUEST_URI'], PHP_URL_PATH ), '/' );
-	$slug = '' === $path ? 'home' : sanitize_title( basename( $path ) );
+	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+	$path        = trim( (string) wp_parse_url( $request_uri, PHP_URL_PATH ), '/' );
+	$slug        = '' === $path ? 'home' : sanitize_title( basename( $path ) );
 }
 
 if ( 'create-campaign' === $slug ) {
@@ -36,12 +37,21 @@ if ( 'daily-tehillim' === $slug ) {
 }
 
 $nav_items = array(
-	'campaigns' => array( 'label' => 'קמפיינים', 'url' => home_url( '/campaigns/' ) ),
-	'about'     => array( 'label' => 'אודות', 'url' => home_url( '/about/' ) ),
-	'create'    => array( 'label' => 'יצירת קמפיין', 'url' => home_url( '/create/' ) ),
+	'campaigns' => array(
+		'label' => 'קמפיינים',
+		'url'   => home_url( '/campaigns/' ),
+	),
+	'about'     => array(
+		'label' => 'אודות',
+		'url'   => home_url( '/about/' ),
+	),
+	'create'    => array(
+		'label' => 'יצירת קמפיין',
+		'url'   => home_url( '/create/' ),
+	),
 );
 
-$button_class = 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
+$button_class  = 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
 $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-primary/20 bg-background/60 px-6 py-3 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
 
 ?><!doctype html>
@@ -53,11 +63,12 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 </head>
 <body <?php body_class( 'bg-background text-foreground font-sans antialiased' ); ?>>
 <?php wp_body_open(); ?>
+<a class="psalms-skip" href="#content"><?php esc_html_e( 'דלג לתוכן', 'psalms-unite' ); ?></a>
 
 <header class="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
 	<div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="flex items-center gap-2 font-display text-xl font-bold">
-			<span class="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground">♥</span>
+			<span class="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground" aria-hidden="true">♥</span>
 			<span><?php echo esc_html( psalms_unite_text( 'brand' ) ); ?></span>
 		</a>
 		<nav class="hidden items-center gap-6 text-sm font-medium text-muted-foreground md:flex" aria-label="ניווט ראשי">
@@ -90,6 +101,7 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 
 	<?php if ( 'campaign_detail' === $slug ) : ?>
 		<section class="mx-auto max-w-6xl px-4 py-10">
+			<h1 class="sr-only"><?php echo esc_html( get_the_title( get_queried_object_id() ) ); ?></h1>
 			<?php
 			echo psalms_unite_shortcode(
 				'tehillim_campaign',
@@ -254,7 +266,8 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 					array( '02', psalms_unite_text( 'how_s2_title' ), psalms_unite_text( 'how_s2_text' ) ),
 					array( '03', psalms_unite_text( 'how_s3_title' ), psalms_unite_text( 'how_s3_text' ) ),
 				);
-				foreach ( $psalms_steps as $step ) : ?>
+				foreach ( $psalms_steps as $step ) :
+					?>
 					<article class="rounded-xl border border-border/60 bg-card p-7">
 						<div class="font-display text-3xl font-bold text-primary/40"><?php echo esc_html( $step[0] ); ?></div>
 						<h3 class="mt-3 text-lg font-semibold"><?php echo esc_html( $step[1] ); ?></h3>
@@ -302,7 +315,10 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 					<h2 class="font-display text-3xl font-bold text-balance md:text-4xl"><?php echo esc_html( psalms_unite_text( 'tst_title' ) ); ?></h2>
 				</div>
 				<div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-					<?php for ( $i = 1; $i <= 6; $i++ ) : $psalms_name = psalms_unite_text( 'tst_' . $i . '_name' ); ?>
+					<?php
+					for ( $i = 1; $i <= 6; $i++ ) :
+						$psalms_name = psalms_unite_text( 'tst_' . $i . '_name' );
+						?>
 						<article class="relative h-full overflow-hidden rounded-xl border border-border/60 bg-card/80 p-8 backdrop-blur-sm">
 							<div aria-hidden="true" class="absolute -top-2 start-5 font-display text-7xl leading-none text-gold/30 select-none">&rdquo;</div>
 							<p class="relative font-display text-lg leading-relaxed text-balance text-foreground/90"><?php echo esc_html( psalms_unite_text( 'tst_' . $i . '_text' ) ); ?></p>
@@ -363,7 +379,7 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 		<div class="grid gap-10 md:grid-cols-12">
 			<div class="md:col-span-5">
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-flex items-center gap-2 font-display text-lg font-semibold">
-					<span class="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">♥</span>
+					<span class="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20" aria-hidden="true">♥</span>
 					<span><?php echo esc_html( psalms_unite_text( 'brand' ) ); ?></span>
 				</a>
 				<p class="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'footer_tagline' ) ); ?></p>

@@ -30,7 +30,7 @@ final class SubscriptionService {
 	 *
 	 * @var string[]
 	 */
-	private $lists = array( 'daily_chapter' );
+	private $lists = array( 'daily_chapter', 'campaign_alerts' );
 
 	/**
 	 * @var SubscribersRepository
@@ -146,6 +146,36 @@ final class SubscriptionService {
 			/** Fires when a subscriber is due their daily content (webhook only). */
 			do_action( 'tcm_subscription_due', $subscriber, $payload );
 			$this->subscribers->mark_sent( (int) $subscriber->id );
+		}
+	}
+
+	/**
+	 * Notify every "campaign_alerts" subscriber that a new campaign launched,
+	 * as a per-subscriber webhook event (for personal WhatsApp/email routing).
+	 * Reuses the subscription-due channel so the automation handles delivery.
+	 *
+	 * @param int $campaign_id Campaign post id.
+	 * @return void
+	 */
+	public function notify_campaign( $campaign_id ) {
+		$campaign_id = (int) $campaign_id;
+		if ( $campaign_id <= 0 ) {
+			return;
+		}
+
+		$base = array(
+			'list'           => 'campaign_alerts',
+			'campaign_id'    => $campaign_id,
+			'campaign_title' => get_the_title( $campaign_id ),
+			'dedicated_to'   => (string) get_post_meta( $campaign_id, '_tcm_dedicated_to', true ),
+			'permalink'      => (string) get_permalink( $campaign_id ),
+		);
+
+		foreach ( $this->subscribers->active_by_list( 'campaign_alerts' ) as $subscriber ) {
+			$payload                    = $base;
+			$payload['unsubscribe_url'] = add_query_arg( 'tcm_unsub', $subscriber->unsubscribe_token, home_url( '/' ) );
+
+			do_action( 'tcm_subscription_due', $subscriber, $payload );
 		}
 	}
 }

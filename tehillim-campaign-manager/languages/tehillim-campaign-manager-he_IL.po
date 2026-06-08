@@ -748,3 +748,9 @@ msgstr "%s ב‑30 הימים האחרונים"
 
 msgid "%1$s impressions · %2$s%% CTR"
 msgstr "%1$s חשיפות · %2$s%% הקלקה"
+
+msgid "Join the Tehillim Corps"
+msgstr "הצטרפו לחיל התהילים"
+
+msgid "Get an alert whenever a new campaign launches, and help finish it."
+msgstr "קבלו התראה בכל פעם שעולה קמפיין חדש, ועזרו לסיים אותו."

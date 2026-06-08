@@ -124,6 +124,25 @@ final class SubscribersRepository extends Repository {
 	}
 
 	/**
+	 * All active subscribers of a list (for one-off broadcasts like campaign
+	 * alerts). Not date-gated, unlike the daily digest.
+	 *
+	 * @param string $list  List key.
+	 * @param int    $limit Batch size.
+	 * @return array<int,object>
+	 */
+	public function active_by_list( $list, $limit = 500 ) {
+		$sql = $this->db->prepare(
+			"SELECT * FROM {$this->table}
+             WHERE list_key=%s AND status='active'
+             ORDER BY id ASC LIMIT %d",
+			$list,
+			max( 1, (int) $limit )
+		);
+		return $this->db->get_results( $sql );
+	}
+
+	/**
 	 * All subscribers for an email (privacy export).
 	 *
 	 * @param string $email Email.
@@ -153,7 +172,7 @@ final class SubscribersRepository extends Repository {
 	public function count_active( $list = '' ) {
 		if ( '' !== $list ) {
 			$sql = $this->db->prepare(
-				"SELECT COUNT(*) FROM {$this->table} WHERE status='active' AND list=%s",
+				"SELECT COUNT(*) FROM {$this->table} WHERE status='active' AND list_key=%s",
 				$list
 			);
 			return (int) $this->db->get_var( $sql );

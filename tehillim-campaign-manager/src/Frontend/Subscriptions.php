@@ -37,6 +37,17 @@ final class Subscriptions implements Registerable {
 	public function register() {
 		add_shortcode( 'tehillim_subscribe', array( $this, 'form' ) );
 		add_action( 'template_redirect', array( $this, 'handle_unsubscribe' ) );
+		add_action( 'tcm_campaign_announced', array( $this, 'on_campaign_announced' ) );
+	}
+
+	/**
+	 * Notify "campaign alerts" subscribers when a new campaign launches.
+	 *
+	 * @param int $campaign_id Campaign post id.
+	 * @return void
+	 */
+	public function on_campaign_announced( $campaign_id ) {
+		$this->service->notify_campaign( (int) $campaign_id );
 	}
 
 	/**

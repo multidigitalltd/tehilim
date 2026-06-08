@@ -54,6 +54,8 @@ return array (
     'Chapter to say now' => 'פרק לאמירה עכשיו',
     'Tehillim %s' => 'תהילים %s',
     'Take this chapter' => 'קחו את הפרק הזה',
+    'Choose chapter' => 'בחר פרק',
+    'Next chapter' => 'הפרק הבא',
     'Your campaign was submitted and is awaiting approval. You will be notified once it is published.' => 'הקמפיין נשלח וממתין לאישור. תקבלו הודעה כשיתפרסם.',
     'Publish user-created campaigns immediately (otherwise they await admin approval)' => 'פרסום מיידי של קמפיינים שנוצרים על ידי משתמשים (אחרת הם ממתינים לאישור מנהל)',
     'Ad clicks' => 'קליקים על פרסומות',

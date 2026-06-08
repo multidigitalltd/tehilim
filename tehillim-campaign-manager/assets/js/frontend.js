@@ -114,6 +114,22 @@
 		return (data.i18n && data.i18n.error) || 'Error';
 	}
 
+	// Campaign reader: switch the previewed chapter (reload with ?tcm_ch=).
+	document.addEventListener('change', function (e) {
+		var sel = e.target.closest('[data-tcm-chapter-select]');
+		if (!sel) {
+			return;
+		}
+		try {
+			var url = new URL(window.location.href);
+			url.searchParams.set('tcm_ch', sel.value);
+			url.hash = 'tcm-read';
+			window.location.href = url.toString();
+		} catch (ignore) {
+			window.location.search = '?tcm_ch=' + encodeURIComponent(sel.value);
+		}
+	});
+
 	// Copy-to-clipboard.
 	document.addEventListener('click', function (e) {
 		var btn = e.target.closest('[data-tcm-copy]');

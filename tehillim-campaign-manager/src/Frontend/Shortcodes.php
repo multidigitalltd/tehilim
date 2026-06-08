@@ -258,12 +258,19 @@ final class Shortcodes implements Registerable {
 			wp_enqueue_script( 'tcm-turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		}
 
+		// Preselect the chapter the reader is showing so "Take this chapter"
+		// reserves exactly that chapter (when it is still free).
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only chapter selection.
+		$chosen    = isset( $_GET['tcm_ch'] ) ? absint( $_GET['tcm_ch'] ) : 0;
+		$preselect = ( $chosen >= 1 && $chosen <= 150 ) ? $chosen : ( ! empty( $free ) ? (int) $free[0]->chapter_number : 0 );
+
 		return Templating::render(
 			'partials/join-form',
 			array(
 				'campaign_id'   => (int) $id,
 				'permalink'     => get_permalink( $id ),
 				'free'          => $free,
+				'preselect'     => $preselect,
 				'allow_multi'   => '0' !== ( $options['allow_multi_chapters'] ?? '1' ),
 				'multi_options' => $multi_options ? $multi_options : array( 3, 5, 10 ),
 				'allow_full'    => $allow_full,
@@ -330,18 +337,22 @@ final class Shortcodes implements Registerable {
 	 * @return string
 	 */
 	private function default_reader_card( $id ) {
-		$stats = $this->stats->for_campaign( $id );
-		$free  = $this->assignments->free_chapters( $id, (int) $stats['round'], 1 );
-		$row   = is_array( $free ) && ! empty( $free ) ? $free[0] : null;
-		if ( ! $row ) {
-			return '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only chapter selection.
+		$chosen = isset( $_GET['tcm_ch'] ) ? absint( $_GET['tcm_ch'] ) : 0;
+		if ( $chosen >= 1 && $chosen <= 150 ) {
+			$chapter = $chosen;
+		} else {
+			$stats   = $this->stats->for_campaign( $id );
+			$free    = $this->assignments->free_chapters( $id, (int) $stats['round'], 1 );
+			$row     = is_array( $free ) && ! empty( $free ) ? $free[0] : null;
+			$chapter = $row ? (int) $row->chapter_number : 1;
 		}
-		$chapter = (int) $row->chapter_number;
 		return Templating::render(
 			'partials/chapter-preview',
 			array(
 				'campaign_id' => (int) $id,
 				'chapter'     => $chapter,
+				'next'        => $chapter >= 150 ? 1 : $chapter + 1,
 				'text'        => $this->chapter_text->get( $chapter ),
 			)
 		);

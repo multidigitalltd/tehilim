@@ -10,6 +10,7 @@ namespace TCM;
 use TCM\Contracts\Registerable;
 use TCM\Admin\CampaignMetabox;
 use TCM\Admin\ChaptersPage;
+use TCM\Admin\CampaignApprovals;
 use TCM\Admin\Dashboard;
 use TCM\Admin\SettingsPage;
 use TCM\Admin\SetupWizard;
@@ -133,6 +134,7 @@ final class Plugin {
 					$this->modules,
 					array(
 						new Dashboard(),
+						new CampaignApprovals(),
 						new SubscribersPage(),
 						new SettingsPage(),
 						new ChaptersPage(),

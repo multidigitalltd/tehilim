@@ -233,18 +233,11 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 			</div>
 			<div class="relative mx-auto max-w-6xl px-4 py-20 md:py-28">
 				<div class="mx-auto max-w-3xl text-center">
-					<span class="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-foreground shadow-sm backdrop-blur-sm">
-						<span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-gold"></span></span>
-						<?php echo esc_html( psalms_unite_text( 'hero_eyebrow' ) ); ?>
-					</span>
 					<h1 class="mt-6 font-display text-4xl font-bold text-balance md:text-6xl"><?php echo esc_html( psalms_unite_text( 'hero_title' ) ); ?></h1>
 					<p class="mx-auto mt-5 max-w-2xl text-balance text-base text-muted-foreground md:text-lg"><?php echo esc_html( psalms_unite_text( 'hero_sub' ) ); ?></p>
 					<div class="mt-8 flex flex-wrap justify-center gap-3">
 						<a class="<?php echo esc_attr( $button_class ); ?>" href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php echo esc_html( psalms_unite_text( 'hero_cta_primary' ) ); ?></a>
 						<a class="<?php echo esc_attr( $outline_class ); ?>" href="<?php echo esc_url( home_url( '/campaigns/' ) ); ?>"><?php echo esc_html( psalms_unite_text( 'hero_cta_secondary' ) ); ?></a>
-					</div>
-					<div class="mt-8 inline-flex items-center gap-3 rounded-full border border-border/60 bg-background/60 px-4 py-2 text-xs text-muted-foreground shadow-sm backdrop-blur-sm">
-						<span class="font-medium text-foreground"><?php echo esc_html( psalms_unite_text( 'hero_ribbon' ) ); ?></span>
 					</div>
 				</div>
 			</div>

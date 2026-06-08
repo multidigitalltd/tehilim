@@ -56,7 +56,17 @@ jobs:
         run: |
           python3 - <<'PY'
           import os, sys
-          markers = ["�", "Ã—", "â€", "×ª×", "Ö¾", "ï»¿"]
+          # Replacement char + double-encoding (UTF-8-as-CP1252/CP1255) signatures.
+          # These never occur in correct UTF-8 Hebrew/English content, so any hit
+          # means real corruption (e.g. an em-dash mangled to "ג€"" or "â€").
+          markers = [
+              "�",
+              "ג€", "ג†", "ג‚",
+              "â€", "â‚¬",
+              "Ã—", "Ã©", "Ã¨", "Ã ", "Ã¼", "Ã‚", "Ã¢",
+              "Â ", "Â©", "Â£",
+              "×ª×", "Ö¾", "ï»¿",
+          ]
           exts = (".php", ".js", ".css", ".po", ".pot", ".md", ".html", ".json")
           bad = []
           for root, _, files in os.walk("."):

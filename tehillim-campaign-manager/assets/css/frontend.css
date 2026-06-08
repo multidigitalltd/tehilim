@@ -846,3 +846,115 @@
 	font-size: 0.85rem;
 	color: color-mix(in oklab, var(--tcm-text) 62%, transparent);
 }
+
+/* My Activity — status pills, empty states, responsive table. */
+.tcm-status {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 3px 11px;
+	border-radius: 999px;
+	font-size: 0.78rem;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+.tcm-status::before {
+	content: "";
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: currentColor;
+}
+
+.tcm-status.is-done {
+	background: color-mix(in oklab, #1a7f37 14%, transparent);
+	color: #1a7f37;
+}
+
+.tcm-status.is-taken {
+	background: color-mix(in oklab, var(--tcm-gold) 18%, transparent);
+	color: color-mix(in oklab, var(--tcm-gold) 60%, var(--tcm-text));
+}
+
+.tcm-status.is-free {
+	background: color-mix(in oklab, var(--tcm-text) 9%, transparent);
+	color: color-mix(in oklab, var(--tcm-text) 65%, transparent);
+}
+
+.tcm-activity-table {
+	border-collapse: separate;
+	border-spacing: 0;
+	width: 100%;
+}
+
+.tcm-activity-table th {
+	font-size: 0.78rem;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	color: color-mix(in oklab, var(--tcm-text) 55%, transparent);
+}
+
+.tcm-activity-table tbody tr {
+	transition: background 0.15s ease;
+}
+
+.tcm-activity-table tbody tr:hover {
+	background: color-mix(in oklab, var(--tcm-gold-soft) 40%, transparent);
+}
+
+.tcm-activity-table td {
+	vertical-align: middle;
+}
+
+.tcm-empty {
+	text-align: center;
+	padding: 32px 16px;
+	color: color-mix(in oklab, var(--tcm-text) 65%, transparent);
+}
+
+.tcm-empty-icon {
+	display: block;
+	font-size: 2.4rem;
+	margin-bottom: 8px;
+	opacity: 0.85;
+}
+
+@media (max-width: 600px) {
+	.tcm-activity-table thead {
+		display: none;
+	}
+
+	.tcm-activity-table,
+	.tcm-activity-table tbody,
+	.tcm-activity-table tr,
+	.tcm-activity-table td {
+		display: block;
+		width: 100%;
+	}
+
+	.tcm-activity-table tr {
+		margin-bottom: 12px;
+		border: 1px solid var(--tcm-line, #e7e2d6);
+		border-radius: var(--tcm-radius);
+		padding: 6px 12px;
+	}
+
+	.tcm-activity-table td {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 12px;
+		border: 0;
+		padding: 7px 0;
+	}
+
+	.tcm-activity-table td::before {
+		content: attr(data-th);
+		font-size: 0.74rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		color: color-mix(in oklab, var(--tcm-text) 50%, transparent);
+	}
+}

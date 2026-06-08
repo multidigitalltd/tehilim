@@ -64,11 +64,17 @@ $labels = array(
 		<?php endif; ?>
 
 		<?php if ( empty( $logged_in ) ) : ?>
-			<p><?php esc_html_e( 'Please log in to view your activity.', 'tehillim-campaign-manager' ); ?></p>
+			<div class="tcm-empty">
+				<span class="tcm-empty-icon" aria-hidden="true">🔑</span>
+				<p><?php esc_html_e( 'Please log in to view your activity.', 'tehillim-campaign-manager' ); ?></p>
+			</div>
 		<?php elseif ( empty( $rows ) ) : ?>
-			<p><?php esc_html_e( 'No activity yet.', 'tehillim-campaign-manager' ); ?></p>
+			<div class="tcm-empty">
+				<span class="tcm-empty-icon" aria-hidden="true">📖</span>
+				<p><?php esc_html_e( 'No activity yet.', 'tehillim-campaign-manager' ); ?></p>
+			</div>
 		<?php else : ?>
-			<table class="tcm-admin-table">
+			<table class="tcm-admin-table tcm-activity-table">
 				<thead>
 					<tr>
 						<th><?php esc_html_e( 'Campaign', 'tehillim-campaign-manager' ); ?></th>
@@ -80,10 +86,12 @@ $labels = array(
 				<tbody>
 					<?php foreach ( $rows as $row ) : ?>
 						<tr>
-							<td><?php echo esc_html( $row['campaign_title'] ); ?></td>
-							<td><?php echo esc_html( $row['chapter'] ); ?></td>
-							<td><?php echo esc_html( $labels[ $row['status'] ] ?? $row['status'] ); ?></td>
-							<td>
+							<td data-th="<?php esc_attr_e( 'Campaign', 'tehillim-campaign-manager' ); ?>"><?php echo esc_html( $row['campaign_title'] ); ?></td>
+							<td data-th="<?php esc_attr_e( 'Chapter', 'tehillim-campaign-manager' ); ?>"><?php echo esc_html( $row['chapter'] ); ?></td>
+							<td data-th="<?php esc_attr_e( 'Status', 'tehillim-campaign-manager' ); ?>">
+								<span class="tcm-status is-<?php echo esc_attr( $row['status'] ); ?>"><?php echo esc_html( $labels[ $row['status'] ] ?? $row['status'] ); ?></span>
+							</td>
+							<td data-th="<?php esc_attr_e( 'Action', 'tehillim-campaign-manager' ); ?>">
 								<?php if ( $row['read_url'] ) : ?>
 									<a class="tcm-btn is-secondary" href="<?php echo esc_url( $row['read_url'] ); ?>"><?php esc_html_e( 'Read / finish', 'tehillim-campaign-manager' ); ?></a>
 								<?php else : ?>

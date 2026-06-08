@@ -115,7 +115,16 @@ final class RestController implements Registerable {
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'join' ),
 				'permission_callback' => '__return_true',
-				'args'                => array( 'id' => $this->id_arg() ),
+				'args'                => array(
+					'id'        => $this->id_arg(),
+					'mode'      => $this->enum_arg( array( 'single', 'multi', 'book' ) ),
+					'chapter'   => $this->int_arg( 0, 150 ),
+					'count'     => $this->int_arg( 0, 150 ),
+					'name'      => $this->text_arg( 120 ),
+					'email'     => $this->email_arg(),
+					'phone'     => $this->text_arg( 40 ),
+					'turnstile' => $this->text_arg( 4000 ),
+				),
 			)
 		);
 
@@ -127,7 +136,29 @@ final class RestController implements Registerable {
 				'callback'            => array( $this, 'create_campaign' ),
 				// Open the route so we can return a structured auth_required
 				// response (with login/register URLs) instead of a bare 401.
+				// Title is intentionally not "required" here so the handler can
+				// return auth_required before validation for logged-out users.
 				'permission_callback' => '__return_true',
+				'args'                => array(
+					'title'        => $this->text_arg( 120 ),
+					'dedicated_to' => $this->text_arg( 120 ),
+					'content'      => array(
+						'type'              => 'string',
+						'sanitize_callback' => 'wp_kses_post',
+						'validate_callback' => static function ( $value ) {
+							return is_scalar( $value ) && self::len( $value ) <= 5000;
+						},
+					),
+					'target'       => $this->int_arg( 1, 1000 ),
+					'bonus'        => $this->int_arg( 0, 1000 ),
+					'redirect'     => array(
+						'type'              => 'string',
+						'sanitize_callback' => 'esc_url_raw',
+						'validate_callback' => static function ( $value ) {
+							return is_scalar( $value ) && self::len( $value ) <= 600;
+						},
+					),
+				),
 			)
 		);
 
@@ -154,6 +185,14 @@ final class RestController implements Registerable {
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'subscribe' ),
 				'permission_callback' => '__return_true',
+				'args'                => array(
+					'list'    => $this->enum_arg( array( 'daily_chapter', 'campaign_alerts' ) ),
+					'channel' => $this->enum_arg( array( 'email', 'whatsapp' ) ),
+					'name'    => $this->text_arg( 120 ),
+					'email'   => $this->email_arg(),
+					'phone'   => $this->text_arg( 40 ),
+					'consent' => $this->bool_arg(),
+				),
 			)
 		);
 
@@ -529,6 +568,99 @@ final class RestController implements Registerable {
 				return is_numeric( $value ) && (int) $value > 0;
 			},
 			'sanitize_callback' => 'absint',
+		);
+	}
+
+	/**
+	 * Character length that is safe when the optional mbstring extension is
+	 * unavailable (falls back to byte length).
+	 *
+	 * @param mixed $value Value.
+	 * @return int
+	 */
+	private static function len( $value ) {
+		$value = (string) $value;
+		return function_exists( 'mb_strlen' ) ? mb_strlen( $value ) : strlen( $value );
+	}
+
+	/**
+	 * A bounded plain-text argument (sanitised + max length).
+	 *
+	 * @param int  $max      Maximum length (characters).
+	 * @param bool $required Whether the argument is required.
+	 * @return array<string,mixed>
+	 */
+	private function text_arg( $max, $required = false ) {
+		return array(
+			'required'          => (bool) $required,
+			'type'              => 'string',
+			'sanitize_callback' => 'sanitize_text_field',
+			'validate_callback' => static function ( $value ) use ( $max ) {
+				return is_scalar( $value ) && self::len( $value ) <= (int) $max;
+			},
+		);
+	}
+
+	/**
+	 * A bounded integer argument.
+	 *
+	 * @param int $min Minimum value.
+	 * @param int $max Maximum value.
+	 * @return array<string,mixed>
+	 */
+	private function int_arg( $min, $max ) {
+		return array(
+			'type'              => 'integer',
+			'sanitize_callback' => 'absint',
+			'validate_callback' => static function ( $value ) use ( $min, $max ) {
+				return is_numeric( $value ) && (int) $value >= (int) $min && (int) $value <= (int) $max;
+			},
+		);
+	}
+
+	/**
+	 * An argument restricted to an allow-list of string values.
+	 *
+	 * @param array<int,string> $values   Allowed values.
+	 * @param bool              $required Whether required.
+	 * @return array<string,mixed>
+	 */
+	private function enum_arg( array $values, $required = false ) {
+		return array(
+			'required'          => (bool) $required,
+			'type'              => 'string',
+			'sanitize_callback' => 'sanitize_key',
+			'validate_callback' => static function ( $value ) use ( $values ) {
+				return in_array( (string) $value, $values, true );
+			},
+		);
+	}
+
+	/**
+	 * An optional email argument (sanitised; validated when non-empty).
+	 *
+	 * @return array<string,mixed>
+	 */
+	private function email_arg() {
+		return array(
+			'type'              => 'string',
+			'sanitize_callback' => 'sanitize_email',
+			'validate_callback' => static function ( $value ) {
+				$value = (string) $value;
+				return '' === $value || ( self::len( $value ) <= 190 && is_email( $value ) );
+			},
+		);
+	}
+
+	/**
+	 * A boolean argument.
+	 *
+	 * @return array<string,mixed>
+	 */
+	private function bool_arg() {
+		return array(
+			'type'              => 'boolean',
+			'sanitize_callback' => 'rest_sanitize_boolean',
 		);
 	}
 

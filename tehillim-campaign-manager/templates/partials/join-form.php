@@ -24,6 +24,7 @@ use TCM\Support\Hebrew;
 $free_count = is_array( $free ) ? count( $free ) : 0;
 $select_id  = 'tcm-chapter-' . (int) $campaign_id;
 $error_id   = 'tcm-join-error-' . (int) $campaign_id;
+$preselect  = isset( $preselect ) ? (int) $preselect : 0;
 ?>
 <section class="tcm-card tcm-join-card" id="tcm-join" aria-labelledby="tcm-join-heading-<?php echo esc_attr( $campaign_id ); ?>">
 	<h3 id="tcm-join-heading-<?php echo esc_attr( $campaign_id ); ?>"><?php echo esc_html( $join_title ); ?></h3>
@@ -45,7 +46,7 @@ $error_id   = 'tcm-join-error-' . (int) $campaign_id;
 
 					<optgroup label="<?php esc_attr_e( 'Specific chapter', 'tehillim-campaign-manager' ); ?>">
 						<?php foreach ( $free as $row ) : ?>
-							<option value="<?php echo esc_attr( $row->chapter_number ); ?>">
+							<option value="<?php echo esc_attr( $row->chapter_number ); ?>" <?php selected( (int) $row->chapter_number, $preselect ); ?>>
 								<?php
 								printf(
 									/* translators: %s: Hebrew chapter label. */

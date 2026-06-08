@@ -258,12 +258,19 @@ final class Shortcodes implements Registerable {
 			wp_enqueue_script( 'tcm-turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		}
 
+		// Preselect the chapter the reader is showing so "Take this chapter"
+		// reserves exactly that chapter (when it is still free).
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only chapter selection.
+		$chosen    = isset( $_GET['tcm_ch'] ) ? absint( $_GET['tcm_ch'] ) : 0;
+		$preselect = ( $chosen >= 1 && $chosen <= 150 ) ? $chosen : ( ! empty( $free ) ? (int) $free[0]->chapter_number : 0 );
+
 		return Templating::render(
 			'partials/join-form',
 			array(
 				'campaign_id'   => (int) $id,
 				'permalink'     => get_permalink( $id ),
 				'free'          => $free,
+				'preselect'     => $preselect,
 				'allow_multi'   => '0' !== ( $options['allow_multi_chapters'] ?? '1' ),
 				'multi_options' => $multi_options ? $multi_options : array( 3, 5, 10 ),
 				'allow_full'    => $allow_full,

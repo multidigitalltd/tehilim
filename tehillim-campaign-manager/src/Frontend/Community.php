@@ -58,6 +58,7 @@ final class Community implements Registerable {
 				'name'  => $row->name ? $row->name : __( 'Ambassador', 'tehillim-campaign-manager' ),
 				'done'  => (int) $row->done,
 				'total' => (int) $row->total,
+				'badge' => \TCM\Services\BadgeService::for_ambassador( (int) $row->done ),
 			);
 		}
 		return Templating::render( 'partials/leaderboard', array( 'entries' => $entries ) );

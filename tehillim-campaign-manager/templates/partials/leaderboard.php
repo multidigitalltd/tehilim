@@ -26,7 +26,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<li class="tcm-leaderboard-row">
 					<div class="tcm-leaderboard-top">
 						<span class="tcm-rank tcm-rank--<?php echo (int) ( $i + 1 ); ?>"><?php echo esc_html( $i + 1 ); ?></span>
-						<span class="tcm-leaderboard-name"><?php echo esc_html( $entry['name'] ); ?></span>
+						<span class="tcm-leaderboard-name"><?php echo esc_html( $entry['name'] ); ?>
+						<?php
+						if ( ! empty( $entry['badge'] ) ) :
+							?>
+							<span class="tcm-badge-chip" title="<?php echo esc_attr( $entry['badge']['label'] ); ?>"><span aria-hidden="true"><?php echo esc_html( $entry['badge']['icon'] ); ?></span> <?php echo esc_html( $entry['badge']['label'] ); ?></span><?php endif; ?></span>
 						<span class="tcm-leaderboard-score"><?php echo esc_html( $done . ' / ' . $tot ); ?></span>
 					</div>
 					<span class="tcm-leaderboard-bar" aria-hidden="true"><span style="width:<?php echo esc_attr( max( 3, $pct ) ); ?>%"></span></span>

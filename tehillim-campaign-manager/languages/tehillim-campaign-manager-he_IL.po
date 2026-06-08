@@ -19,6 +19,27 @@ msgstr "פעולה"
 msgid "Active"
 msgstr "פעיל"
 
+msgid "Active ambassador"
+msgstr "שגריר פעיל"
+
+msgid "Completed a book"
+msgstr "סיים ספר"
+
+msgid "Devoted reader"
+msgstr "קורא מסור"
+
+msgid "First chapter"
+msgstr "פרק ראשון"
+
+msgid "Gold ambassador"
+msgstr "שגריר זהב"
+
+msgid "Regular reader"
+msgstr "קורא קבוע"
+
+msgid "Top ambassador"
+msgstr "שגריר מצטיין"
+
 msgid "Ad"
 msgstr "פרסומת"
 

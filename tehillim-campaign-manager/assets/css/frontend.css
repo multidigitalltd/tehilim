@@ -799,3 +799,19 @@
 	border-radius: 12px;
 	background: color-mix(in oklab, var(--tcm-surface) 60%, transparent);
 }
+
+/* Achievement badge chip (gamification). */
+.tcm-badge-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	margin-inline-start: 6px;
+	padding: 2px 8px;
+	border-radius: 999px;
+	background: var(--tcm-gold-soft);
+	color: color-mix(in oklab, var(--tcm-gold) 55%, var(--tcm-text));
+	font-size: 0.72rem;
+	font-weight: 700;
+	vertical-align: middle;
+	white-space: nowrap;
+}

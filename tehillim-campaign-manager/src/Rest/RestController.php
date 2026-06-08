@@ -256,7 +256,7 @@ final class RestController implements Registerable {
 	 */
 	public function status( WP_REST_Request $request ) {
 		$id = (int) $request['id'];
-		if ( CampaignPostType::POST_TYPE !== get_post_type( $id ) ) {
+		if ( CampaignPostType::POST_TYPE !== get_post_type( $id ) || 'publish' !== get_post_status( $id ) ) {
 			return $this->error( 'not_found', __( 'Campaign not found.', 'tehillim-campaign-manager' ), 404 );
 		}
 		$stats = $this->stats->for_campaign( $id );
@@ -284,7 +284,7 @@ final class RestController implements Registerable {
 		if ( RateLimiter::exceeded( 'join', 15, 60 ) ) {
 			return $this->error( 'rate_limited', __( 'Too many attempts. Please try again shortly.', 'tehillim-campaign-manager' ), 429 );
 		}
-		if ( CampaignPostType::POST_TYPE !== get_post_type( $campaign_id ) ) {
+		if ( CampaignPostType::POST_TYPE !== get_post_type( $campaign_id ) || 'publish' !== get_post_status( $campaign_id ) ) {
 			return $this->error( 'not_found', __( 'Campaign not found.', 'tehillim-campaign-manager' ), 404 );
 		}
 		$status = get_post_meta( $campaign_id, '_tcm_status', true );

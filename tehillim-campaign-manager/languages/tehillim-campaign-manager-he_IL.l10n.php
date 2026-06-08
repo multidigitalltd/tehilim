@@ -51,6 +51,7 @@ return array (
     'Log in & publish' => 'התחברות ופרסום',
     'Create an account' => 'פתיחת חשבון',
     'Please fill in the required fields.' => 'נא למלא את שדות החובה.',
+    'Your campaign was submitted and is awaiting approval. You will be notified once it is published.' => 'הקמפיין נשלח וממתין לאישור. תקבלו הודעה כשיתפרסם.',
     'Publish user-created campaigns immediately (otherwise they await admin approval)' => 'פרסום מיידי של קמפיינים שנוצרים על ידי משתמשים (אחרת הם ממתינים לאישור מנהל)',
     'Ad clicks' => 'קליקים על פרסומות',
     'Chapters completed' => 'פרקים שהושלמו',

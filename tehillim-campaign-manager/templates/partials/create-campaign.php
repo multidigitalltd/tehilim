@@ -68,9 +68,9 @@ $register_url = isset( $register_url ) ? (string) $register_url : '';
 					<div class="tcm-auth-notice" data-tcm-auth-notice>
 						<p><?php esc_html_e( 'To publish your campaign, please log in or create an account. Your details are saved and you will return here automatically.', 'tehillim-campaign-manager' ); ?></p>
 						<p class="tcm-auth-actions">
-							<a class="tcm-btn" href="<?php echo esc_url( $login_url ); ?>" data-tcm-login-link><?php esc_html_e( 'Log in & publish', 'tehillim-campaign-manager' ); ?></a>
+							<a class="tcm-btn" href="<?php echo esc_url( $login_url ); ?>" data-tcm-login-link data-tcm-save-draft><?php esc_html_e( 'Log in & publish', 'tehillim-campaign-manager' ); ?></a>
 							<?php if ( '' !== $register_url ) : ?>
-								<a class="tcm-btn is-secondary" href="<?php echo esc_url( $register_url ); ?>"><?php esc_html_e( 'Create an account', 'tehillim-campaign-manager' ); ?></a>
+								<a class="tcm-btn is-secondary" href="<?php echo esc_url( $register_url ); ?>" data-tcm-save-draft><?php esc_html_e( 'Create an account', 'tehillim-campaign-manager' ); ?></a>
 							<?php endif; ?>
 						</p>
 					</div>
@@ -86,5 +86,8 @@ $register_url = isset( $register_url ) ? (string) $register_url : '';
 			</div>
 			<p class="tcm-form-error" id="tcm-create-error" role="alert" aria-live="assertive" tabindex="-1" hidden></p>
 		</form>
+		<p class="tcm-form-success" data-tcm-pending role="status" tabindex="-1" hidden>
+			<?php esc_html_e( 'Your campaign was submitted and is awaiting approval. You will be notified once it is published.', 'tehillim-campaign-manager' ); ?>
+		</p>
 	</div>
 </div>

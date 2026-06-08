@@ -247,6 +247,33 @@
 	});
 
 	// Create campaign.
+	function tcmWizardFields(scope) {
+		return {
+			title: (scope.querySelector('[name="title"]') || {}).value || '',
+			target: (scope.querySelector('[name="target"]') || {}).value || 1,
+			bonus: (scope.querySelector('[name="bonus"]') || {}).value || 0,
+			dedicated_to: (scope.querySelector('[name="dedicated_to"]') || {}).value || '',
+			content: (scope.querySelector('[name="content"]') || {}).value || ''
+		};
+	}
+
+	function tcmSaveDraft(fields) {
+		try { sessionStorage.setItem('tcmCampaignDraft', JSON.stringify(fields)); } catch (ignore) {}
+	}
+
+	// Save the draft when a logged-out user follows an auth link (instead of the
+	// submit button), so the "your details are saved" promise holds.
+	document.addEventListener('click', function (e) {
+		var link = e.target.closest('[data-tcm-save-draft]');
+		if (!link) {
+			return;
+		}
+		var wizard = link.closest('[data-tcm-wizard]');
+		if (wizard) {
+			tcmSaveDraft(tcmWizardFields(wizard));
+		}
+	});
+
 	document.addEventListener('submit', function (e) {
 		var form = e.target.closest('form[data-tcm-create]');
 		if (!form) {
@@ -255,15 +282,9 @@
 		e.preventDefault();
 		var submit = form.querySelector('[type="submit"]');
 		var errBox = form.querySelector('.tcm-form-error');
-		var fields = {
-			title: (form.querySelector('[name="title"]') || {}).value || '',
-			target: (form.querySelector('[name="target"]') || {}).value || 1,
-			bonus: (form.querySelector('[name="bonus"]') || {}).value || 0,
-			dedicated_to: (form.querySelector('[name="dedicated_to"]') || {}).value || '',
-			content: (form.querySelector('[name="content"]') || {}).value || ''
-		};
+		var fields = tcmWizardFields(form);
 		// Persist the draft so it survives a login/register round-trip.
-		try { sessionStorage.setItem('tcmCampaignDraft', JSON.stringify(fields)); } catch (ignore) {}
+		tcmSaveDraft(fields);
 		if (submit) {
 			submit.setAttribute('disabled', 'disabled');
 		}
@@ -283,7 +304,19 @@
 			if (!json.permalink) {
 				throw new Error(json.message || errorText());
 			}
+			// Created: the draft is no longer needed.
 			try { sessionStorage.removeItem('tcmCampaignDraft'); } catch (ignore) {}
+			if (json.pending) {
+				// Awaiting approval — don't send them to a not-yet-public page.
+				var wizard = form.closest('[data-tcm-wizard]');
+				var pendingMsg = wizard ? wizard.querySelector('[data-tcm-pending]') : null;
+				form.hidden = true;
+				if (pendingMsg) {
+					pendingMsg.hidden = false;
+					if (pendingMsg.focus) { pendingMsg.focus(); }
+				}
+				return;
+			}
 			window.location.href = json.permalink;
 		}).catch(function (err) {
 			if (submit) {

@@ -831,3 +831,6 @@ msgstr "נא למלא את שדות החובה."
 
 msgid "Publish user-created campaigns immediately (otherwise they await admin approval)"
 msgstr "פרסום מיידי של קמפיינים שנוצרים על ידי משתמשים (אחרת הם ממתינים לאישור מנהל)"
+
+msgid "Your campaign was submitted and is awaiting approval. You will be notified once it is published."
+msgstr "הקמפיין נשלח וממתין לאישור. תקבלו הודעה כשיתפרסם."

@@ -143,3 +143,13 @@ body { margin: 0; background: var(--background, #fbf8ed); }
   border-color: color-mix(in oklab, var(--border) 85%, transparent);
   box-shadow: 0 1px 2px color-mix(in oklab, var(--primary) 10%, transparent);
 }
+
+/* Custom site logo in the header. */
+.psalms-site-logo { display: inline-flex; align-items: center; }
+.psalms-site-logo .custom-logo-link { display: inline-flex; align-items: center; line-height: 0; }
+.psalms-site-logo .custom-logo {
+  height: 44px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+}

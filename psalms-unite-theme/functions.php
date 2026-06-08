@@ -18,6 +18,15 @@ add_action(
 		add_theme_support( 'responsive-embeds' );
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script' ) );
+		add_theme_support(
+			'custom-logo',
+			array(
+				'height'      => 80,
+				'width'       => 240,
+				'flex-height' => true,
+				'flex-width'  => true,
+			)
+		);
 	}
 );
 

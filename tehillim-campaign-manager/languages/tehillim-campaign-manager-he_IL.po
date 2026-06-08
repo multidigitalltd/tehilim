@@ -7,6 +7,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Approvals"
+msgstr "אישורים"
+
+msgid "Campaign approvals"
+msgstr "אישור קמפיינים"
+
+msgid "No campaigns are awaiting approval."
+msgstr "אין קמפיינים הממתינים לאישור."
+
+msgid "These campaigns were created by users and are waiting to be published. Approving a campaign makes it public and announces it."
+msgstr "הקמפיינים האלה נוצרו על ידי משתמשים וממתינים לפרסום. אישור קמפיין הופך אותו לציבורי ומשדר אותו."
+
+msgid "Created by"
+msgstr "נוצר על ידי"
+
+msgid "Submitted"
+msgstr "נשלח"
+
+msgid "Actions"
+msgstr "פעולות"
+
+msgid "Preview"
+msgstr "תצוגה מקדימה"
+
+msgid "Approve & publish"
+msgstr "אישור ופרסום"
+
+msgid "Reject"
+msgstr "דחייה"
+
+msgid "Reject this campaign? It will be moved back to draft."
+msgstr "לדחות את הקמפיין? הוא יוחזר לטיוטה."
+
 msgid "%d free chapters remaining"
 msgstr "נותרו %d פרקים פנויים"
 

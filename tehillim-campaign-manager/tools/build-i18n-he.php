@@ -10,6 +10,17 @@
 $domain = 'tehillim-campaign-manager';
 
 $he = array (
+    'Approvals' => 'אישורים',
+    'Campaign approvals' => 'אישור קמפיינים',
+    'No campaigns are awaiting approval.' => 'אין קמפיינים הממתינים לאישור.',
+    'These campaigns were created by users and are waiting to be published. Approving a campaign makes it public and announces it.' => 'הקמפיינים האלה נוצרו על ידי משתמשים וממתינים לפרסום. אישור קמפיין הופך אותו לציבורי ומשדר אותו.',
+    'Created by' => 'נוצר על ידי',
+    'Submitted' => 'נשלח',
+    'Actions' => 'פעולות',
+    'Preview' => 'תצוגה מקדימה',
+    'Approve & publish' => 'אישור ופרסום',
+    'Reject' => 'דחייה',
+    'Reject this campaign? It will be moved back to draft.' => 'לדחות את הקמפיין? הוא יוחזר לטיוטה.',
   '%d free chapters remaining' => 'נותרו %d פרקים פנויים',
   '(saved - leave blank to keep)' => '(שמור - השאירו ריק כדי לשמור על הקיים)',
   'Action' => 'פעולה',

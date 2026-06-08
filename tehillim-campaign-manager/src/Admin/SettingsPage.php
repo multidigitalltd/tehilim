@@ -107,9 +107,10 @@ final class SettingsPage implements Registerable {
 		$clean['link_base'] = $base ? $base : 'tehillim';
 
 		// Checkboxes.
-		$clean['allow_multi_chapters'] = empty( $input['allow_multi_chapters'] ) ? '0' : '1';
-		$clean['allow_full_book']      = empty( $input['allow_full_book'] ) ? '0' : '1';
-		$clean['reminders_enabled']    = empty( $input['reminders_enabled'] ) ? '0' : '1';
+		$clean['allow_multi_chapters']   = empty( $input['allow_multi_chapters'] ) ? '0' : '1';
+		$clean['allow_full_book']        = empty( $input['allow_full_book'] ) ? '0' : '1';
+		$clean['auto_publish_campaigns'] = empty( $input['auto_publish_campaigns'] ) ? '0' : '1';
+		$clean['reminders_enabled']      = empty( $input['reminders_enabled'] ) ? '0' : '1';
 
 		// Reminder timings (integers with sensible minimums).
 		$ints = array(
@@ -214,6 +215,7 @@ final class SettingsPage implements Registerable {
 			$this->checkbox_row( 'allow_multi_chapters', __( 'Allow taking several chapters', 'tehillim-campaign-manager' ), $o );
 			$this->text_row( 'multi_chapter_options', __( 'Multi-chapter options', 'tehillim-campaign-manager' ), $o, __( 'Comma separated, e.g. 3,5,10', 'tehillim-campaign-manager' ) );
 			$this->checkbox_row( 'allow_full_book', __( 'Allow taking a whole book', 'tehillim-campaign-manager' ), $o );
+			$this->checkbox_row( 'auto_publish_campaigns', __( 'Publish user-created campaigns immediately (otherwise they await admin approval)', 'tehillim-campaign-manager' ), $o );
 		} elseif ( 'messaging' === $tab ) {
 			$this->text_row( 'email_subject', __( 'Email subject', 'tehillim-campaign-manager' ), $o );
 			$this->textarea_row( 'email_body', __( 'Email body', 'tehillim-campaign-manager' ), $o, __( 'Placeholders: {name}, {campaign_title}, {chapter}, {read_url}', 'tehillim-campaign-manager' ) );

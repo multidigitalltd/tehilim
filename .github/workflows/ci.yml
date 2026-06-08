@@ -42,3 +42,41 @@ jobs:
 
       - name: Unit tests
         run: composer test
+
+  encoding:
+    name: Encoding (no mojibake)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for replacement characters / mojibake
+        run: |
+          python3 - <<'PY'
+          import os, sys
+          markers = ["�", "Ã—", "â€", "×ª×", "Ö¾", "ï»¿"]
+          exts = (".php", ".js", ".css", ".po", ".pot", ".md", ".html", ".json")
+          bad = []
+          for root, _, files in os.walk("."):
+              if any(p in root for p in (os.sep + ".git", "vendor", "node_modules")):
+                  continue
+              for fn in files:
+                  if not fn.endswith(exts):
+                      continue
+                  path = os.path.join(root, fn)
+                  try:
+                      data = open(path, encoding="utf-8").read()
+                  except Exception as e:
+                      bad.append(f"{path}: unreadable as UTF-8 ({e})")
+                      continue
+                  for m in markers:
+                      if m in data:
+                          bad.append(f"{path}: contains {m!r} x{data.count(m)}")
+          if bad:
+              print("Mojibake / encoding issues found:")
+              print("\n".join(bad))
+              sys.exit(1)
+          print("No mojibake found.")
+          PY

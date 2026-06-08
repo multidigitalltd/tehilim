@@ -59,7 +59,16 @@ final class SelfService implements Registerable {
 	 */
 	public function create_form() {
 		Assets::ensure();
-		return Templating::render( 'partials/create-campaign', array() );
+		$logged_in = is_user_logged_in();
+		$current   = home_url( add_query_arg( array() ) );
+		return Templating::render(
+			'partials/create-campaign',
+			array(
+				'logged_in'    => $logged_in,
+				'login_url'    => wp_login_url( $current ),
+				'register_url' => get_option( 'users_can_register' ) ? wp_registration_url() : '',
+			)
+		);
 	}
 
 	/**

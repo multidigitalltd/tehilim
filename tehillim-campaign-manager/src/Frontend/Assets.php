@@ -98,8 +98,9 @@ final class Assets implements Registerable {
 				'restUrl' => esc_url_raw( rest_url( \TCM\Rest\RestController::NS ) ),
 				'nonce'   => wp_create_nonce( 'wp_rest' ),
 				'i18n'    => array(
-					'copied' => __( 'Copied', 'tehillim-campaign-manager' ),
-					'error'  => __( 'Something went wrong. Please try again.', 'tehillim-campaign-manager' ),
+					'copied'       => __( 'Copied', 'tehillim-campaign-manager' ),
+					'error'        => __( 'Something went wrong. Please try again.', 'tehillim-campaign-manager' ),
+					'fillRequired' => __( 'Please fill in the required fields.', 'tehillim-campaign-manager' ),
 				),
 			)
 		);

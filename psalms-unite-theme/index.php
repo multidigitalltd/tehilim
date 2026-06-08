@@ -67,10 +67,14 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 
 <header class="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
 	<div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="flex items-center gap-2 font-display text-xl font-bold">
-			<span class="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground" aria-hidden="true">♥</span>
-			<span><?php echo esc_html( psalms_unite_text( 'brand' ) ); ?></span>
-		</a>
+		<?php if ( has_custom_logo() ) : ?>
+			<span class="psalms-site-logo"><?php the_custom_logo(); ?></span>
+		<?php else : ?>
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="flex items-center gap-2 font-display text-xl font-bold">
+				<span class="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground" aria-hidden="true">♥</span>
+				<span><?php echo esc_html( psalms_unite_text( 'brand' ) ); ?></span>
+			</a>
+		<?php endif; ?>
 		<nav class="hidden items-center gap-6 text-sm font-medium text-muted-foreground md:flex" aria-label="ניווט ראשי">
 			<?php foreach ( $nav_items as $item_slug => $item ) : ?>
 				<a class="transition-colors hover:text-foreground <?php echo esc_attr( $slug === $item_slug ? 'text-foreground' : '' ); ?>" href="<?php echo esc_url( $item['url'] ); ?>">

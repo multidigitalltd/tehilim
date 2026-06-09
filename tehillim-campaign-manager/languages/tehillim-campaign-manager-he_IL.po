@@ -7,6 +7,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "New Tehillim campaign: {campaign_title}. Join and say a chapter: {link}"
+msgstr "קמפיין תהילים חדש: {campaign_title}. הצטרפו ואמרו פרק: {link}"
+
+msgid "Almost done with {campaign_title}! {remaining} chapters left. Come help close it: {link}"
+msgstr "כמעט סיימנו את {campaign_title}! נשארו {remaining} פרקים. בואו לעזור לסגור: {link}"
+
+msgid "A new campaign to join: {campaign_title}. {link}"
+msgstr "קמפיין חדש להצטרף אליו: {campaign_title}. {link}"
+
+msgid "Daily Tehillim - chapter {chapter}"
+msgstr "תהילים יומי - פרק {chapter}"
+
+msgid "Message templates"
+msgstr "תבניות הודעה"
+
+msgid "These texts are included as a ready-to-send \"message\" field in the matching webhook events, so your WhatsApp/automation can forward them as-is. One line or several; leave a placeholder out to omit it."
+msgstr "הטקסטים האלה נכללים כשדה \"message\" מוכן לשליחה באירועי ה-webhook המתאימים, כך שהוואטסאפ/אוטומציה יכולים לשלוח אותם כמו שהם. שורה אחת או כמה; אפשר להשמיט משתנה ולא להשתמש בו."
+
+msgid "New campaign (broadcast)"
+msgstr "קמפיין חדש (שידור)"
+
+msgid "Campaign almost done (broadcast)"
+msgstr "קמפיין כמעט הושלם (שידור)"
+
+msgid "Personal campaign alert (Tehillim Corps)"
+msgstr "התראת קמפיין אישית (חיל התהילים)"
+
+msgid "Daily chapter (subscriber)"
+msgstr "פרק יומי (נרשם)"
+
+msgid "Placeholders: {campaign_title}, {dedicated_to}, {link}"
+msgstr "משתנים: {campaign_title}, {dedicated_to}, {link}"
+
+msgid "Placeholders: {campaign_title}, {remaining}, {link}"
+msgstr "משתנים: {campaign_title}, {remaining}, {link}"
+
+msgid "Placeholders: {campaign_title}, {link}"
+msgstr "משתנים: {campaign_title}, {link}"
+
+msgid "Placeholders: {chapter}"
+msgstr "משתנים: {chapter}"
+
 msgid "Tel Aviv"
 msgstr "תל אביב"
 

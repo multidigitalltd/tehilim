@@ -36,6 +36,7 @@ final class Options {
 			'multi_chapter_options'  => '3,5,10',
 			'allow_full_book'        => '1',
 			'auto_publish_campaigns' => '0',
+			'zmanim_city'            => 'tel_aviv',
 			'reminders_enabled'      => '1',
 			'reminder_hours'         => '6',
 			'reminder_max'           => '2',

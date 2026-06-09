@@ -26,6 +26,7 @@ use TCM\Frontend\SelfService;
 use TCM\Frontend\Shortcodes;
 use TCM\Frontend\Subscriptions;
 use TCM\Frontend\Widgets;
+use TCM\Frontend\Zmanim;
 use TCM\PostTypes\AdPostType;
 use TCM\PostTypes\CampaignPostType;
 use TCM\PostTypes\PrayerPostType;
@@ -119,6 +120,7 @@ final class Plugin {
 				new Subscriptions(),
 				new Prayers(),
 				new SelfService(),
+				new Zmanim(),
 				new Ads(),
 				new BlocksModule(),
 				new RestController(),

@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<form class="tcm-form tcm-inline-form" data-tcm-update data-tcm-id="<?php echo esc_attr( $c['id'] ); ?>">
 					<div class="tcm-field">
 						<label for="tcm-t-<?php echo esc_attr( $c['id'] ); ?>"><?php esc_html_e( 'Title / dedication', 'tehillim-campaign-manager' ); ?></label>
-						<input type="text" id="tcm-t-<?php echo esc_attr( $c['id'] ); ?>" name="title" value="<?php echo esc_attr( $c['title'] ); ?>" required>
+						<input type="text" id="tcm-t-<?php echo esc_attr( $c['id'] ); ?>" name="title" value="<?php echo esc_attr( $c['title'] ); ?>" aria-describedby="tcm-update-error-<?php echo esc_attr( $c['id'] ); ?>" required>
 					</div>
 					<div class="tcm-field">
 						<label for="tcm-d-<?php echo esc_attr( $c['id'] ); ?>"><?php esc_html_e( 'Description', 'tehillim-campaign-manager' ); ?></label>
@@ -49,8 +49,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</div>
 					<button class="tcm-btn" type="submit"><?php esc_html_e( 'Save changes', 'tehillim-campaign-manager' ); ?></button>
 					<button class="tcm-btn is-secondary" type="button" data-tcm-bonus data-tcm-id="<?php echo esc_attr( $c['id'] ); ?>"><?php esc_html_e( 'Add one bonus book', 'tehillim-campaign-manager' ); ?></button>
-					<p class="tcm-form-error" role="alert" hidden></p>
-					<p class="tcm-form-success" role="status" hidden><?php esc_html_e( 'Saved.', 'tehillim-campaign-manager' ); ?></p>
+					<p class="tcm-form-error" id="tcm-update-error-<?php echo esc_attr( $c['id'] ); ?>" role="alert" aria-live="assertive" tabindex="-1" hidden></p>
+					<p class="tcm-form-success" role="status" tabindex="-1" hidden><?php esc_html_e( 'Saved.', 'tehillim-campaign-manager' ); ?></p>
 				</form>
 			</div>
 		<?php endforeach; ?>

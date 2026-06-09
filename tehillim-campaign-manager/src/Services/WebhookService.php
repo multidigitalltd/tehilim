@@ -12,6 +12,7 @@ use TCM\PostTypes\CampaignPostType;
 use TCM\Support\Hebrew;
 use TCM\Support\Logger;
 use TCM\Support\Options;
+use TCM\Support\Templates;
 use TCM\Support\Urls;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -55,14 +56,24 @@ final class WebhookService implements Registerable {
 	 * @return void
 	 */
 	public function on_campaign_nearly_done( $campaign_id, $round, $remaining ) {
+		$title     = get_the_title( (int) $campaign_id );
+		$permalink = (string) get_permalink( (int) $campaign_id );
 		$this->dispatch(
 			'campaign_nearly_done',
 			array(
 				'campaign_id'    => (int) $campaign_id,
-				'campaign_title' => get_the_title( (int) $campaign_id ),
+				'campaign_title' => $title,
 				'round'          => (int) $round,
 				'remaining'      => (int) $remaining,
-				'permalink'      => (string) get_permalink( (int) $campaign_id ),
+				'permalink'      => $permalink,
+				'message'        => Templates::from_option(
+					'tpl_campaign_nearly_done',
+					array(
+						'campaign_title' => $title,
+						'remaining'      => (int) $remaining,
+						'link'           => $permalink,
+					)
+				),
 			)
 		);
 	}
@@ -89,14 +100,25 @@ final class WebhookService implements Registerable {
 			return;
 		}
 		update_post_meta( $post->ID, '_tcm_announced', 1 );
+		$title     = get_the_title( $post );
+		$dedicated = (string) get_post_meta( $post->ID, '_tcm_dedicated_to', true );
+		$permalink = (string) get_permalink( $post );
 		$this->dispatch(
 			'campaign_new',
 			array(
 				'campaign_id'    => (int) $post->ID,
-				'campaign_title' => get_the_title( $post ),
-				'dedicated_to'   => (string) get_post_meta( $post->ID, '_tcm_dedicated_to', true ),
+				'campaign_title' => $title,
+				'dedicated_to'   => $dedicated,
 				'target_books'   => (int) get_post_meta( $post->ID, '_tcm_target_books', true ),
-				'permalink'      => (string) get_permalink( $post ),
+				'permalink'      => $permalink,
+				'message'        => Templates::from_option(
+					'tpl_campaign_new',
+					array(
+						'campaign_title' => $title,
+						'dedicated_to'   => $dedicated,
+						'link'           => $permalink,
+					)
+				),
 			)
 		);
 
@@ -117,6 +139,20 @@ final class WebhookService implements Registerable {
 		$payload['subscriber_phone'] = (string) $subscriber->phone;
 		$payload['subscriber_email'] = (string) $subscriber->email;
 		$event                       = ( 'campaign_alerts' === ( $payload['list'] ?? '' ) ) ? 'subscription_campaign' : 'subscription_daily';
+		if ( 'subscription_campaign' === $event ) {
+			$payload['message'] = Templates::from_option(
+				'tpl_subscription_campaign',
+				array(
+					'campaign_title' => (string) ( $payload['campaign_title'] ?? '' ),
+					'link'           => (string) ( $payload['permalink'] ?? '' ),
+				)
+			);
+		} else {
+			$payload['message'] = Templates::from_option(
+				'tpl_subscription_daily',
+				array( 'chapter' => (string) ( $payload['chapter_label'] ?? $payload['chapter_number'] ?? '' ) )
+			);
+		}
 		$this->dispatch( $event, $payload );
 	}
 

@@ -10,6 +10,20 @@
 $domain = 'tehillim-campaign-manager';
 
 $he = array (
+    'New Tehillim campaign: {campaign_title}. Join and say a chapter: {link}' => 'קמפיין תהילים חדש: {campaign_title}. הצטרפו ואמרו פרק: {link}',
+    'Almost done with {campaign_title}! {remaining} chapters left. Come help close it: {link}' => 'כמעט סיימנו את {campaign_title}! נשארו {remaining} פרקים. בואו לעזור לסגור: {link}',
+    'A new campaign to join: {campaign_title}. {link}' => 'קמפיין חדש להצטרף אליו: {campaign_title}. {link}',
+    'Daily Tehillim - chapter {chapter}' => 'תהילים יומי - פרק {chapter}',
+    'Message templates' => 'תבניות הודעה',
+    'These texts are included as a ready-to-send "message" field in the matching webhook events, so your WhatsApp/automation can forward them as-is. One line or several; leave a placeholder out to omit it.' => 'הטקסטים האלה נכללים כשדה "message" מוכן לשליחה באירועי ה-webhook המתאימים, כך שהוואטסאפ/אוטומציה יכולים לשלוח אותם כמו שהם. שורה אחת או כמה; אפשר להשמיט משתנה ולא להשתמש בו.',
+    'New campaign (broadcast)' => 'קמפיין חדש (שידור)',
+    'Campaign almost done (broadcast)' => 'קמפיין כמעט הושלם (שידור)',
+    'Personal campaign alert (Tehillim Corps)' => 'התראת קמפיין אישית (חיל התהילים)',
+    'Daily chapter (subscriber)' => 'פרק יומי (נרשם)',
+    'Placeholders: {campaign_title}, {dedicated_to}, {link}' => 'משתנים: {campaign_title}, {dedicated_to}, {link}',
+    'Placeholders: {campaign_title}, {remaining}, {link}' => 'משתנים: {campaign_title}, {remaining}, {link}',
+    'Placeholders: {campaign_title}, {link}' => 'משתנים: {campaign_title}, {link}',
+    'Placeholders: {chapter}' => 'משתנים: {chapter}',
     'Tel Aviv' => 'תל אביב',
     'Jerusalem' => 'ירושלים',
     'Bnei Brak' => 'בני ברק',

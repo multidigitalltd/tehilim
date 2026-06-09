@@ -136,6 +136,13 @@ final class SettingsPage implements Registerable {
 		foreach ( array( 'tpl_campaign_new', 'tpl_campaign_nearly_done', 'tpl_subscription_campaign', 'tpl_subscription_daily' ) as $key ) {
 			$clean[ $key ] = isset( $input[ $key ] ) ? sanitize_textarea_field( $input[ $key ] ) : ( $existing[ $key ] ?? '' );
 		}
+		// Per-event email subjects (text) and bodies (light HTML allowed).
+		foreach ( array( 'email_subject_daily', 'email_subject_campaign' ) as $key ) {
+			$clean[ $key ] = isset( $input[ $key ] ) ? sanitize_text_field( $input[ $key ] ) : ( $existing[ $key ] ?? '' );
+		}
+		foreach ( array( 'email_body_daily', 'email_body_campaign' ) as $key ) {
+			$clean[ $key ] = isset( $input[ $key ] ) ? wp_kses_post( $input[ $key ] ) : ( $existing[ $key ] ?? '' );
+		}
 
 		// URLs.
 		$clean['webhook_url']        = isset( $input['webhook_url'] ) ? esc_url_raw( $input['webhook_url'] ) : '';
@@ -242,6 +249,11 @@ final class SettingsPage implements Registerable {
 			$this->textarea_row( 'tpl_campaign_nearly_done', __( 'Campaign almost done (broadcast)', 'tehillim-campaign-manager' ), $o, __( 'Placeholders: {campaign_title}, {remaining}, {link}', 'tehillim-campaign-manager' ) );
 			$this->textarea_row( 'tpl_subscription_campaign', __( 'Personal campaign alert (Tehillim Corps)', 'tehillim-campaign-manager' ), $o, __( 'Placeholders: {campaign_title}, {link}', 'tehillim-campaign-manager' ) );
 			$this->textarea_row( 'tpl_subscription_daily', __( 'Daily chapter (subscriber)', 'tehillim-campaign-manager' ), $o, __( 'Placeholders: {chapter}', 'tehillim-campaign-manager' ) );
+			echo '<tr><td colspan="2"><h2>' . esc_html__( 'Email per event (email-channel subscribers)', 'tehillim-campaign-manager' ) . '</h2><p class="description">' . esc_html__( 'Sent as a designed RTL email (with an email_footer ad). Placeholders: {name}, {chapter}, {campaign_title}, {link}, {date_he}, {site_name}.', 'tehillim-campaign-manager' ) . '</p></td></tr>';
+			$this->text_row( 'email_subject_daily', __( 'Daily email subject', 'tehillim-campaign-manager' ), $o );
+			$this->textarea_row( 'email_body_daily', __( 'Daily email body', 'tehillim-campaign-manager' ), $o );
+			$this->text_row( 'email_subject_campaign', __( 'Campaign-alert email subject', 'tehillim-campaign-manager' ), $o );
+			$this->textarea_row( 'email_body_campaign', __( 'Campaign-alert email body', 'tehillim-campaign-manager' ), $o );
 		} elseif ( 'reminders' === $tab ) {
 			echo '<tr><td colspan="2"><p class="description">' . esc_html__( 'Reminders are delivered as webhook events (chapter_reminder, chapter_release_warning, chapter_auto_released). Each payload includes participant_phone and a read_url to the specific chapter, so you can route it to WhatsApp via your automation.', 'tehillim-campaign-manager' ) . '</p></td></tr>';
 			$this->checkbox_row( 'reminders_enabled', __( 'Enable reminders', 'tehillim-campaign-manager' ), $o );

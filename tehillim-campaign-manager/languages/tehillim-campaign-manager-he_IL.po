@@ -7,6 +7,69 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Previous"
+msgstr "הקודם"
+
+msgid "Next"
+msgstr "הבא"
+
+msgid "No prayers or segulot have been published yet."
+msgstr "טרם פורסמו תפילות או סגולות."
+
+msgid "Subject"
+msgstr "נושא"
+
+msgid "Message"
+msgstr "הודעה"
+
+msgid "Send message"
+msgstr "שליחת הודעה"
+
+msgid "Thank you! Your message has been sent."
+msgstr "תודה! ההודעה נשלחה."
+
+msgid "Please fill in your name, a valid email and a message."
+msgstr "נא למלא שם, אימייל תקין והודעה."
+
+msgid "[Contact] %s"
+msgstr "[צור קשר] %s"
+
+msgid "Website message"
+msgstr "הודעה מהאתר"
+
+msgid "Name:"
+msgstr "שם:"
+
+msgid "Your daily Tehillim chapter"
+msgstr "פרק התהילים היומי שלך"
+
+msgid "Hello {name}, the chapter for today is {chapter}."
+msgstr "שלום {name}, הפרק להיום הוא {chapter}."
+
+msgid "A new Tehillim campaign"
+msgstr "קמפיין תהילים חדש"
+
+msgid "Hello {name}, a new campaign: {campaign_title}. Join here: {link}"
+msgstr "שלום {name}, עלה קמפיין חדש: {campaign_title}. להצטרפות: {link}"
+
+msgid "Email per event (email-channel subscribers)"
+msgstr "אימייל לכל אירוע (מנויי ערוץ אימייל)"
+
+msgid "Sent as a designed RTL email (with an email_footer ad). Placeholders: {name}, {chapter}, {campaign_title}, {link}, {date_he}, {site_name}."
+msgstr "נשלח כאימייל מעוצב מימין לשמאל (עם פרסומת מאזור email_footer). משתנים: {name}, {chapter}, {campaign_title}, {link}, {date_he}, {site_name}."
+
+msgid "Daily email subject"
+msgstr "נושא אימייל יומי"
+
+msgid "Daily email body"
+msgstr "גוף אימייל יומי"
+
+msgid "Campaign-alert email subject"
+msgstr "נושא אימייל התראת קמפיין"
+
+msgid "Campaign-alert email body"
+msgstr "גוף אימייל התראת קמפיין"
+
 msgid "Accessibility statement"
 msgstr "הצהרת נגישות"
 

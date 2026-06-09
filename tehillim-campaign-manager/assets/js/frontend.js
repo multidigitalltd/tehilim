@@ -264,6 +264,77 @@
 			});
 	});
 
+	// Personal area: join/leave a subscription list.
+	document.addEventListener('click', function (e) {
+		var btn = e.target.closest('[data-tcm-sub-toggle]');
+		if (!btn) {
+			return;
+		}
+		e.preventDefault();
+		var errBox = document.getElementById('tcm-subs-error');
+		btn.setAttribute('disabled', 'disabled');
+		post('/me/subscription', {
+			list: btn.getAttribute('data-tcm-list') || '',
+			action: btn.getAttribute('data-tcm-action') || 'join'
+		}).then(function (result) {
+			if (!result.ok || !result.json || result.json.ok !== true) {
+				throw new Error((result.json && result.json.message) || errorText());
+			}
+			window.location.reload();
+		}).catch(function (err) {
+			btn.removeAttribute('disabled');
+			if (errBox) {
+				errBox.textContent = err.message || errorText();
+				errBox.hidden = false;
+				if (errBox.focus) { errBox.focus(); }
+			}
+		});
+	});
+
+	// Contact form submission.
+	document.addEventListener('submit', function (e) {
+		var form = e.target.closest('form[data-tcm-contact]');
+		if (!form) {
+			return;
+		}
+		e.preventDefault();
+		var submit = form.querySelector('[type="submit"]');
+		var errBox = form.querySelector('.tcm-form-error');
+		var okBox = form.querySelector('.tcm-form-success');
+		if (submit) {
+			submit.setAttribute('disabled', 'disabled');
+		}
+		post('/contact', {
+			name: (form.querySelector('[name="name"]') || {}).value || '',
+			email: (form.querySelector('[name="email"]') || {}).value || '',
+			subject: (form.querySelector('[name="subject"]') || {}).value || '',
+			message: (form.querySelector('[name="message"]') || {}).value || '',
+			turnstile: (form.querySelector('[name="cf-turnstile-response"]') || {}).value || ''
+		}).then(function (result) {
+			if (!result.ok || !result.json || result.json.ok !== true) {
+				throw new Error((result.json && result.json.message) || errorText());
+			}
+			form.reset();
+			if (okBox) {
+				okBox.hidden = false;
+				if (okBox.focus) { okBox.focus(); }
+			}
+			if (errBox) {
+				errBox.hidden = true;
+			}
+		}).catch(function (err) {
+			if (errBox) {
+				errBox.textContent = err.message || errorText();
+				errBox.hidden = false;
+				if (errBox.focus) { errBox.focus(); }
+			}
+		}).then(function () {
+			if (submit) {
+				submit.removeAttribute('disabled');
+			}
+		});
+	});
+
 	// Create campaign.
 	function tcmWizardFields(scope) {
 		return {

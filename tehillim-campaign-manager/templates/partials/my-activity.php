@@ -15,9 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$done      = isset( $done ) ? (int) $done : 0;
-$badge     = isset( $badge ) ? $badge : null;
-$next_tier = isset( $next_tier ) ? $next_tier : null;
+$done          = isset( $done ) ? (int) $done : 0;
+$badge         = isset( $badge ) ? $badge : null;
+$next_tier     = isset( $next_tier ) ? $next_tier : null;
+$subscriptions = isset( $subscriptions ) && is_array( $subscriptions ) ? $subscriptions : array();
+
+$subscription_lists = array(
+	'daily_chapter'   => __( 'Daily Tehillim chapter', 'tehillim-campaign-manager' ),
+	'campaign_alerts' => __( 'Tehillim Corps (new-campaign alerts)', 'tehillim-campaign-manager' ),
+);
 
 $labels = array(
 	'free'  => __( 'Free', 'tehillim-campaign-manager' ),
@@ -60,6 +66,27 @@ $labels = array(
 						?>
 					</span>
 				<?php endif; ?>
+			</div>
+		<?php endif; ?>
+
+		<?php if ( ! empty( $logged_in ) ) : ?>
+			<div class="tcm-subs">
+				<h4 class="tcm-subs-title"><?php esc_html_e( 'My subscriptions', 'tehillim-campaign-manager' ); ?></h4>
+				<ul class="tcm-subs-list">
+					<?php
+					foreach ( $subscription_lists as $sub_key => $sub_label ) :
+						$sub_active = ! empty( $subscriptions[ $sub_key ] );
+						?>
+						<li class="tcm-subs-row">
+							<span class="tcm-subs-name"><?php echo esc_html( $sub_label ); ?></span>
+							<span class="tcm-status is-<?php echo $sub_active ? 'done' : 'free'; ?>"><?php echo $sub_active ? esc_html__( 'Subscribed', 'tehillim-campaign-manager' ) : esc_html__( 'Not subscribed', 'tehillim-campaign-manager' ); ?></span>
+							<button type="button" class="tcm-btn is-secondary tcm-btn-sm" data-tcm-sub-toggle data-tcm-list="<?php echo esc_attr( $sub_key ); ?>" data-tcm-action="<?php echo $sub_active ? 'leave' : 'join'; ?>">
+								<?php echo $sub_active ? esc_html__( 'Unsubscribe', 'tehillim-campaign-manager' ) : esc_html__( 'Subscribe', 'tehillim-campaign-manager' ); ?>
+							</button>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+				<p class="tcm-form-error" id="tcm-subs-error" role="alert" aria-live="assertive" tabindex="-1" hidden></p>
 			</div>
 		<?php endif; ?>
 

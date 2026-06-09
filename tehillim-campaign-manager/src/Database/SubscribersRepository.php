@@ -83,6 +83,40 @@ final class SubscribersRepository extends Repository {
 	}
 
 	/**
+	 * The active subscription row for a list + email, if any.
+	 *
+	 * @param string $list  List key.
+	 * @param string $email Email.
+	 * @return object|null
+	 */
+	public function find_active_by_list_email( $list, $email ) {
+		$sql = $this->db->prepare(
+			"SELECT * FROM {$this->table} WHERE list_key=%s AND email=%s AND status='active' LIMIT 1",
+			$list,
+			$email
+		);
+		return $this->db->get_row( $sql );
+	}
+
+	/**
+	 * Mark the active subscription(s) for a list + email as unsubscribed.
+	 *
+	 * @param string $list  List key.
+	 * @param string $email Email.
+	 * @return int Rows affected.
+	 */
+	public function unsubscribe_by_list_email( $list, $email ) {
+		return (int) $this->db->query(
+			$this->db->prepare(
+				"UPDATE {$this->table} SET status='unsubscribed', updated_at=%s WHERE list_key=%s AND email=%s AND status='active'",
+				current_time( 'mysql' ),
+				$list,
+				$email
+			)
+		);
+	}
+
+	/**
 	 * Set a subscriber's status.
 	 *
 	 * @param int    $id     Subscriber id.

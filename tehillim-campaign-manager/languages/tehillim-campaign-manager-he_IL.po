@@ -7,6 +7,159 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Previous"
+msgstr "הקודם"
+
+msgid "Next"
+msgstr "הבא"
+
+msgid "No prayers or segulot have been published yet."
+msgstr "טרם פורסמו תפילות או סגולות."
+
+msgid "Subject"
+msgstr "נושא"
+
+msgid "Message"
+msgstr "הודעה"
+
+msgid "Send message"
+msgstr "שליחת הודעה"
+
+msgid "Thank you! Your message has been sent."
+msgstr "תודה! ההודעה נשלחה."
+
+msgid "Please fill in your name, a valid email and a message."
+msgstr "נא למלא שם, אימייל תקין והודעה."
+
+msgid "[Contact] %s"
+msgstr "[צור קשר] %s"
+
+msgid "Website message"
+msgstr "הודעה מהאתר"
+
+msgid "Name:"
+msgstr "שם:"
+
+msgid "Your daily Tehillim chapter"
+msgstr "פרק התהילים היומי שלך"
+
+msgid "Hello {name}, the chapter for today is {chapter}."
+msgstr "שלום {name}, הפרק להיום הוא {chapter}."
+
+msgid "A new Tehillim campaign"
+msgstr "קמפיין תהילים חדש"
+
+msgid "Hello {name}, a new campaign: {campaign_title}. Join here: {link}"
+msgstr "שלום {name}, עלה קמפיין חדש: {campaign_title}. להצטרפות: {link}"
+
+msgid "Email per event (email-channel subscribers)"
+msgstr "אימייל לכל אירוע (מנויי ערוץ אימייל)"
+
+msgid "Sent as a designed RTL email (with an email_footer ad). Placeholders: {name}, {chapter}, {campaign_title}, {link}, {date_he}, {site_name}."
+msgstr "נשלח כאימייל מעוצב מימין לשמאל (עם פרסומת מאזור email_footer). משתנים: {name}, {chapter}, {campaign_title}, {link}, {date_he}, {site_name}."
+
+msgid "Daily email subject"
+msgstr "נושא אימייל יומי"
+
+msgid "Daily email body"
+msgstr "גוף אימייל יומי"
+
+msgid "Campaign-alert email subject"
+msgstr "נושא אימייל התראת קמפיין"
+
+msgid "Campaign-alert email body"
+msgstr "גוף אימייל התראת קמפיין"
+
+msgid "Accessibility statement"
+msgstr "הצהרת נגישות"
+
+msgid "Contact details for the accessibility coordinator, shown by the [tehillim_accessibility_statement] shortcode."
+msgstr "פרטי הקשר של רכז הנגישות, מוצגים על ידי השורטקוד [tehillim_accessibility_statement]."
+
+msgid "Accessibility coordinator"
+msgstr "רכז נגישות"
+
+msgid "Accessibility email"
+msgstr "אימייל נגישות"
+
+msgid "Accessibility phone"
+msgstr "טלפון נגישות"
+
+msgid "We see great importance in making our website accessible to everyone, including people with disabilities, and we invest ongoing effort to do so."
+msgstr "אנו רואים חשיבות רבה בהנגשת האתר לכלל הציבור, לרבות אנשים עם מוגבלות, ומשקיעים מאמץ מתמשך לשם כך."
+
+msgid "Compliance"
+msgstr "עמידה בתקן"
+
+msgid "This site aims to comply with the Equal Rights for Persons with Disabilities Regulations (Service Accessibility Adjustments), 5773-2013, at level AA of the WCAG 2.0 guidelines and Israeli Standard 5568."
+msgstr "האתר שואף לעמוד בדרישות תקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע\"ג-2013, ברמת AA לפי הנחיות WCAG 2.0 ותקן ישראלי 5568."
+
+msgid "What is accessible"
+msgstr "מה הונגש"
+
+msgid "Keyboard navigation across interactive elements."
+msgstr "ניווט מלא במקלדת בכל הרכיבים האינטראקטיביים."
+
+msgid "Screen-reader support, ARIA roles and live regions on forms."
+msgstr "תמיכה בקוראי מסך, תפקידי ARIA ואזורים חיים בטפסים."
+
+msgid "Sufficient colour contrast (AA) and resizable text."
+msgstr "ניגודיות צבעים מספקת (AA) וטקסט הניתן להגדלה."
+
+msgid "Clear heading structure, focus indicators and alt text for images."
+msgstr "מבנה כותרות ברור, סימוני פוקוס וטקסט חלופי לתמונות."
+
+msgid "Responsive layout for mobile and tablet."
+msgstr "התאמה מלאה למובייל ולטאבלט."
+
+msgid "Limitations"
+msgstr "מגבלות"
+
+msgid "Despite our efforts, some pages or third-party content may not yet be fully accessible. We continue to improve accessibility over time."
+msgstr "על אף מאמצינו, ייתכן שדפים מסוימים או תכנים של צד שלישי טרם הונגשו במלואם. אנו ממשיכים לשפר את הנגישות באופן שוטף."
+
+msgid "Accessibility requests and contact"
+msgstr "פניות נגישות ויצירת קשר"
+
+msgid "If you encounter an accessibility problem, or need assistance, please contact our accessibility coordinator:"
+msgstr "אם נתקלתם בבעיית נגישות, או שאתם זקוקים לסיוע, נשמח שתפנו אל רכז הנגישות שלנו:"
+
+msgid "Coordinator:"
+msgstr "רכז נגישות:"
+
+msgid "Email:"
+msgstr "אימייל:"
+
+msgid "Phone:"
+msgstr "טלפון:"
+
+msgid "Please add the accessibility contact under the plugin settings."
+msgstr "נא להוסיף את פרטי הקשר לנגישות בהגדרות התוסף."
+
+msgid "Statement last updated: %s"
+msgstr "ההצהרה עודכנה לאחרונה: %s"
+
+msgid "My subscriptions"
+msgstr "המנויים שלי"
+
+msgid "Daily Tehillim chapter"
+msgstr "פרק תהילים יומי"
+
+msgid "Tehillim Corps (new-campaign alerts)"
+msgstr "חיל התהילים (התראות על קמפיינים חדשים)"
+
+msgid "Subscribed"
+msgstr "רשום"
+
+msgid "Not subscribed"
+msgstr "לא רשום"
+
+msgid "Your account has no valid email address."
+msgstr "לחשבון שלך אין כתובת אימייל תקינה."
+
+msgid "Could not subscribe."
+msgstr "לא ניתן להירשם."
+
 msgid "New Tehillim campaign: {campaign_title}. Join and say a chapter: {link}"
 msgstr "קמפיין תהילים חדש: {campaign_title}. הצטרפו ואמרו פרק: {link}"
 

@@ -56,30 +56,16 @@ $tiles        = array(
 			<p class="tcm-eyebrow">✦ <?php esc_html_e( 'Tehillim campaign', 'tehillim-campaign-manager' ); ?></p>
 			<h2 class="tcm-title tcm-hero-title"><?php echo esc_html( $title ); ?></h2>
 
-			<?php if ( $dedicated_to ) : ?>
-				<p class="tcm-dedicated">♥ 
-				<?php
-					printf(
-						/* translators: %s: who the campaign is dedicated to. */
-						esc_html__( 'Dedicated to %s', 'tehillim-campaign-manager' ),
-						'<strong>' . esc_html( $dedicated_to ) . '</strong>'
-					);
-				?>
-				</p>
-			<?php endif; ?>
-
 			<?php if ( ! empty( $description ) ) : ?>
 				<div class="tcm-description"><?php echo wp_kses_post( $description ); ?></div>
 			<?php endif; ?>
 		</div>
 
-		<div class="tcm-hero-media">
-			<?php if ( $image ) : ?>
+		<?php if ( $image ) : ?>
+			<div class="tcm-hero-media">
 				<img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
-			<?php else : ?>
-				<span class="tcm-hero-media__placeholder" aria-hidden="true">♥</span>
-			<?php endif; ?>
-		</div>
+			</div>
+		<?php endif; ?>
 	</div>
 </section>
 

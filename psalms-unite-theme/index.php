@@ -36,10 +36,22 @@ if ( 'daily-tehillim' === $slug ) {
 	$slug = 'subscribe';
 }
 
+if ( 'tehillim-corps' === $slug ) {
+	$slug = 'corps';
+}
+
 $nav_items = array(
 	'campaigns' => array(
 		'label' => 'קמפיינים',
 		'url'   => home_url( '/campaigns/' ),
+	),
+	'tehillim'  => array(
+		'label' => 'תהילים',
+		'url'   => home_url( '/tehillim/' ),
+	),
+	'prayers'   => array(
+		'label' => 'תפילות וסגולות',
+		'url'   => home_url( '/prayers/' ),
 	),
 	'about'     => array(
 		'label' => 'אודות',
@@ -66,6 +78,14 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 <a class="psalms-skip" href="#content"><?php esc_html_e( 'דלג לתוכן', 'psalms-unite' ); ?></a>
 
 <header class="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
+	<?php
+	$psalms_header_strip = trim( (string) psalms_unite_text( 'header_strip' ) );
+	if ( '' !== $psalms_header_strip ) :
+		?>
+		<div class="psalms-header-strip border-b border-border/40 bg-background/60">
+			<div class="mx-auto max-w-6xl px-4 py-2 text-sm"><?php echo wp_kses_post( do_shortcode( $psalms_header_strip ) ); ?></div>
+		</div>
+	<?php endif; ?>
 	<div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
 		<?php if ( has_custom_logo() ) : ?>
 			<span class="psalms-site-logo"><?php the_custom_logo(); ?></span>
@@ -160,9 +180,38 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 			<div class="rounded-xl border border-border/60 bg-card p-8 shadow-sm">
 				<h1 class="font-display text-3xl font-bold"><?php echo esc_html( psalms_unite_text( 'auth_title' ) ); ?></h1>
 				<p class="mt-1 text-sm text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'auth_sub' ) ); ?></p>
-				<div class="psalms-unite-shortcode mt-6">
-					<?php wp_login_form( array( 'redirect' => home_url( '/dashboard/' ) ) ); ?>
-				</div>
+				<?php
+				$psalms_login_redirect = home_url( '/dashboard/' );
+				$psalms_tcm_opts       = get_option( 'tcm_options', array() );
+				$psalms_turnstile_key  = is_array( $psalms_tcm_opts ) && ! empty( $psalms_tcm_opts['turnstile_site_key'] ) ? trim( (string) $psalms_tcm_opts['turnstile_site_key'] ) : '';
+				if ( '' !== $psalms_turnstile_key ) {
+					wp_enqueue_script( 'cf-turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+				}
+				?>
+				<?php if ( is_user_logged_in() ) : ?>
+					<p class="mt-6 text-sm"><a class="font-medium text-primary" href="<?php echo esc_url( $psalms_login_redirect ); ?>"><?php echo 'מעבר לאזור האישי'; ?></a></p>
+				<?php else : ?>
+					<form class="psalms-login mt-6 space-y-4" method="post" action="<?php echo esc_url( wp_login_url( $psalms_login_redirect ) ); ?>">
+						<div>
+							<label for="psalms-user" class="block text-sm font-medium"><?php echo 'שם משתמש או אימייל'; ?></label>
+							<input id="psalms-user" name="log" type="text" autocomplete="username" required class="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+						</div>
+						<div>
+							<label for="psalms-pass" class="block text-sm font-medium"><?php echo 'סיסמה'; ?></label>
+							<input id="psalms-pass" name="pwd" type="password" autocomplete="current-password" required class="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+						</div>
+						<label class="flex items-center gap-2 text-sm">
+							<input name="rememberme" type="checkbox" value="forever"> <?php echo 'זכור אותי'; ?>
+						</label>
+						<?php if ( '' !== $psalms_turnstile_key ) : ?>
+							<div class="cf-turnstile" data-sitekey="<?php echo esc_attr( $psalms_turnstile_key ); ?>"></div>
+						<?php endif; ?>
+						<input type="hidden" name="tcm_front_login" value="1">
+						<input type="hidden" name="redirect_to" value="<?php echo esc_url( $psalms_login_redirect ); ?>">
+						<button type="submit" class="<?php echo esc_attr( $button_class ); ?> w-full justify-center"><?php echo 'התחברות'; ?></button>
+						<p class="text-center text-sm"><a class="text-muted-foreground hover:text-foreground" href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php echo 'שכחת סיסמה?'; ?></a></p>
+					</form>
+				<?php endif; ?>
 			</div>
 		</section>
 	<?php elseif ( 'subscribe' === $slug ) : ?>
@@ -226,7 +275,50 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 			<div class="rounded-xl border border-primary/20 bg-primary p-12 text-primary-foreground">
 				<h2 class="font-display text-3xl font-bold md:text-4xl"><?php echo esc_html( psalms_unite_text( 'about_cta_title' ) ); ?></h2>
 				<p class="mx-auto mt-3 max-w-xl text-balance opacity-90"><?php echo esc_html( psalms_unite_text( 'about_cta_sub' ) ); ?></p>
-				<a class="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-medium text-foreground hover:opacity-90" href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php echo esc_html( psalms_unite_text( 'about_cta_button' ) ); ?></a>
+				<div class="mt-6 flex flex-wrap justify-center gap-3">
+					<a class="inline-flex items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-medium text-foreground hover:opacity-90" href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php echo esc_html( psalms_unite_text( 'about_cta_button' ) ); ?></a>
+					<a class="inline-flex items-center justify-center gap-2 rounded-full border border-background/40 px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-background/10" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php echo esc_html( psalms_unite_text( 'about_cta_contact' ) ); ?></a>
+				</div>
+			</div>
+		</section>
+	<?php elseif ( 'corps' === $slug ) : ?>
+		<section class="mx-auto max-w-3xl px-4 py-12">
+			<div class="mb-8 text-center">
+				<h1 class="font-display text-4xl font-bold"><?php echo esc_html( psalms_unite_text( 'corps_title' ) ); ?></h1>
+				<p class="mt-2 text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'corps_sub' ) ); ?></p>
+			</div>
+			<div class="psalms-unite-shortcode">
+				<?php echo psalms_unite_shortcode( 'tehillim_subscribe', array( 'list' => 'campaign_alerts' ), '<div class="rounded-xl border border-dashed border-border/60 bg-card p-12 text-center text-muted-foreground">יש להפעיל את רכיב ההרשמה בתוסף.</div>' ); ?>
+			</div>
+		</section>
+	<?php elseif ( 'tehillim' === $slug ) : ?>
+		<section class="mx-auto max-w-3xl px-4 py-12">
+			<div class="mb-8 text-center">
+				<h1 class="font-display text-4xl font-bold"><?php echo esc_html( psalms_unite_text( 'reader_title' ) ); ?></h1>
+				<p class="mt-2 text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'reader_sub' ) ); ?></p>
+			</div>
+			<div class="psalms-unite-shortcode">
+				<?php echo psalms_unite_shortcode( 'tehillim_reader', array(), '<div class="rounded-xl border border-dashed border-border/60 bg-card p-12 text-center text-muted-foreground">יש להפעיל את התוסף.</div>' ); ?>
+			</div>
+		</section>
+	<?php elseif ( 'prayers' === $slug ) : ?>
+		<section class="mx-auto max-w-6xl px-4 py-12">
+			<div class="mx-auto max-w-2xl text-center">
+				<h1 class="font-display text-4xl font-bold"><?php echo esc_html( psalms_unite_text( 'prayers_title' ) ); ?></h1>
+				<p class="mt-2 text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'prayers_sub' ) ); ?></p>
+			</div>
+			<div class="psalms-unite-shortcode mt-10">
+				<?php echo psalms_unite_shortcode( 'tehillim_prayers', array(), '<div class="rounded-xl border border-dashed border-border/60 bg-card p-12 text-center text-muted-foreground">יש להפעיל את התוסף.</div>' ); ?>
+			</div>
+		</section>
+	<?php elseif ( 'contact' === $slug ) : ?>
+		<section class="mx-auto max-w-xl px-4 py-12">
+			<div class="mb-8 text-center">
+				<h1 class="font-display text-4xl font-bold"><?php echo esc_html( psalms_unite_text( 'contact_title' ) ); ?></h1>
+				<p class="mt-2 text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'contact_sub' ) ); ?></p>
+			</div>
+			<div class="psalms-unite-shortcode">
+				<?php echo psalms_unite_shortcode( 'tehillim_contact_form', array(), '<div class="rounded-xl border border-dashed border-border/60 bg-card p-12 text-center text-muted-foreground">יש להפעיל את התוסף.</div>' ); ?>
 			</div>
 		</section>
 	<?php else : ?>
@@ -375,15 +467,15 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 	<div class="relative mx-auto max-w-6xl px-4 pt-16 pb-8">
 		<div class="grid gap-10 md:grid-cols-12">
 			<div class="md:col-span-5">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-flex items-center gap-2 font-display text-lg font-semibold">
-					<span class="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20" aria-hidden="true">♥</span>
-					<span><?php echo esc_html( psalms_unite_text( 'brand' ) ); ?></span>
-				</a>
+				<?php if ( has_custom_logo() ) : ?>
+					<span class="psalms-site-logo"><?php the_custom_logo(); ?></span>
+				<?php else : ?>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-flex items-center gap-2 font-display text-lg font-semibold">
+						<span class="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20" aria-hidden="true">♥</span>
+						<span><?php echo esc_html( psalms_unite_text( 'brand' ) ); ?></span>
+					</a>
+				<?php endif; ?>
 				<p class="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'footer_tagline' ) ); ?></p>
-				<div class="mt-5 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-foreground/80">
-					<span aria-hidden="true" class="text-gold">♥</span>
-					<?php echo esc_html( psalms_unite_text( 'footer_made' ) ); ?>
-				</div>
 			</div>
 			<div class="md:col-span-7 grid grid-cols-2 gap-8 sm:grid-cols-3">
 				<div>
@@ -392,6 +484,8 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 						<li><a href="<?php echo esc_url( home_url( '/campaigns/' ) ); ?>" class="text-muted-foreground transition-colors hover:text-foreground"><?php echo esc_html( psalms_unite_text( 'footer_link_explore' ) ); ?></a></li>
 						<li><a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="text-muted-foreground transition-colors hover:text-foreground"><?php echo esc_html( psalms_unite_text( 'footer_link_create' ) ); ?></a></li>
 						<li><a href="<?php echo esc_url( home_url( '/dashboard/' ) ); ?>" class="text-muted-foreground transition-colors hover:text-foreground"><?php echo esc_html( psalms_unite_text( 'footer_link_dashboard' ) ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/tehillim-corps/' ) ); ?>" class="text-muted-foreground transition-colors hover:text-foreground">חיל התהילים</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/daily-tehillim/' ) ); ?>" class="text-muted-foreground transition-colors hover:text-foreground">תהילים יומי</a></li>
 					</ul>
 				</div>
 				<div>
@@ -412,7 +506,7 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 			<div class="absolute inset-0 bg-gradient-to-r from-transparent via-gold/40 to-transparent"></div>
 		</div>
 		<div class="mt-6 flex flex-col items-center justify-between gap-3 text-xs text-muted-foreground sm:flex-row">
-			<div>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( psalms_unite_text( 'brand' ) ); ?> &middot; <?php echo esc_html( psalms_unite_text( 'footer_rights' ) ); ?></div>
+			<div>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( psalms_unite_text( 'brand' ) ); ?></div>
 			<div class="flex items-center gap-1.5">
 				<span class="inline-block h-1.5 w-1.5 rounded-full bg-gold animate-pulse"></span>
 				<span><?php echo esc_html( psalms_unite_text( 'footer_free' ) ); ?></span>

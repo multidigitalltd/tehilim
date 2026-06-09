@@ -127,6 +127,37 @@ final class SubscriptionService {
 	}
 
 	/**
+	 * Whether an email has an active subscription to a list.
+	 *
+	 * @param string $list  List key.
+	 * @param string $email Email.
+	 * @return bool
+	 */
+	public function is_subscribed( $list, $email ) {
+		$email = sanitize_email( (string) $email );
+		if ( '' === $email ) {
+			return false;
+		}
+		return null !== $this->subscribers->find_active_by_list_email( sanitize_key( $list ), $email );
+	}
+
+	/**
+	 * Unsubscribe an email from a list (e.g. from the personal area).
+	 *
+	 * @param string $list  List key.
+	 * @param string $email Email.
+	 * @return bool
+	 */
+	public function unsubscribe_list_email( $list, $email ) {
+		$email = sanitize_email( (string) $email );
+		if ( '' === $email ) {
+			return false;
+		}
+		$this->subscribers->unsubscribe_by_list_email( sanitize_key( $list ), $email );
+		return true;
+	}
+
+	/**
 	 * Emit today's chapter to each due subscriber as a webhook event.
 	 *
 	 * @return void

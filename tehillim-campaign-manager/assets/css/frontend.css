@@ -1055,3 +1055,54 @@
 }
 .tcm-zmanim-label { font-weight: 600; color: var(--tcm-text); }
 .tcm-zmanim-time { font-weight: 800; color: var(--tcm-primary); font-variant-numeric: tabular-nums; }
+
+/* Compact inline zmanim strip (e.g. header). */
+.tcm-zmanim-inline {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 6px 16px;
+	font-size: 0.85rem;
+}
+.tcm-zmanim-inline-date { font-weight: 800; color: var(--tcm-primary); }
+.tcm-zmanim-inline-item { white-space: nowrap; }
+.tcm-zmanim-inline .tcm-zmanim-label { font-weight: 600; }
+.tcm-zmanim-inline .tcm-zmanim-time { color: var(--tcm-primary); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Personal-area subscription management. */
+.tcm-subs {
+	margin: 6px 0 18px;
+	padding: 14px 16px;
+	border-radius: var(--tcm-radius, 1rem);
+	border: 1px solid var(--tcm-border-soft, #e7e2d6);
+}
+.tcm-subs-title { margin: 0 0 10px; font-size: 1rem; }
+.tcm-subs-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.tcm-subs-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.tcm-subs-name { font-weight: 600; flex: 1 1 auto; }
+.tcm-btn-sm { padding: 5px 12px; font-size: 0.82rem; margin: 0; }
+
+/* Prayers / segulot archive cards. */
+.tcm-prayers-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 16px;
+}
+.tcm-prayer-card {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	padding: 0;
+	text-decoration: none;
+	color: inherit;
+	transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.tcm-prayer-card:hover { transform: translateY(-2px); box-shadow: var(--tcm-shadow); }
+.tcm-prayer-thumb { display: block; height: 150px; background-size: cover; background-position: center; }
+.tcm-prayer-thumb--ph { display: grid; place-items: center; font-size: 2rem; color: var(--tcm-gold); background: var(--tcm-gold-soft); }
+.tcm-prayer-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.tcm-prayer-title { font-weight: 800; font-size: 1.1rem; color: var(--tcm-text); }
+.tcm-prayer-excerpt { color: var(--tcm-muted); font-size: 0.9rem; }
+.tcm-prayer-date { color: var(--tcm-muted); font-size: 0.78rem; }
+.tcm-contact-form textarea { resize: vertical; }

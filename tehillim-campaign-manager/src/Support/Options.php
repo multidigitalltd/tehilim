@@ -37,6 +37,9 @@ final class Options {
 			'allow_full_book'           => '1',
 			'auto_publish_campaigns'    => '0',
 			'zmanim_city'               => 'tel_aviv',
+			'a11y_contact_name'         => '',
+			'a11y_contact_email'        => '',
+			'a11y_contact_phone'        => '',
 			'reminders_enabled'         => '1',
 			'reminder_hours'            => '6',
 			'reminder_max'              => '2',
@@ -48,6 +51,10 @@ final class Options {
 			'tpl_campaign_nearly_done'  => __( 'Almost done with {campaign_title}! {remaining} chapters left. Come help close it: {link}', 'tehillim-campaign-manager' ),
 			'tpl_subscription_campaign' => __( 'A new campaign to join: {campaign_title}. {link}', 'tehillim-campaign-manager' ),
 			'tpl_subscription_daily'    => __( 'Daily Tehillim - chapter {chapter}', 'tehillim-campaign-manager' ),
+			'email_subject_daily'       => __( 'Your daily Tehillim chapter', 'tehillim-campaign-manager' ),
+			'email_body_daily'          => __( 'Hello {name}, the chapter for today is {chapter}.', 'tehillim-campaign-manager' ),
+			'email_subject_campaign'    => __( 'A new Tehillim campaign', 'tehillim-campaign-manager' ),
+			'email_body_campaign'       => __( 'Hello {name}, a new campaign: {campaign_title}. Join here: {link}', 'tehillim-campaign-manager' ),
 		);
 	}
 

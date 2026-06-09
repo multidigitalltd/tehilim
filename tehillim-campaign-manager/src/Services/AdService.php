@@ -89,6 +89,35 @@ final class AdService {
 	}
 
 	/**
+	 * Inline-styled HTML for one active "email_footer" ad, for embedding in
+	 * emails (with a tracking click URL). Empty when there is no eligible ad.
+	 *
+	 * @return string
+	 */
+	public function email_html() {
+		$ad = $this->pick( 'email_footer' );
+		if ( ! $ad ) {
+			return '';
+		}
+		$image = (string) get_post_meta( $ad->ID, '_tcm_ad_image', true );
+		if ( '' === $image ) {
+			return '';
+		}
+		$this->stats->increment( (int) $ad->ID, 'email_footer', 'impressions' );
+		$click = add_query_arg(
+			array(
+				'tcm_ad_click' => (int) $ad->ID,
+				'zone'         => 'email_footer',
+			),
+			home_url( '/' )
+		);
+		return '<div style="margin-top:24px;text-align:center">'
+			. '<div style="font-size:11px;color:#999;margin-bottom:6px">' . esc_html__( 'Sponsored', 'tehillim-campaign-manager' ) . '</div>'
+			. '<a href="' . esc_url( $click ) . '" target="_blank" rel="sponsored noopener">'
+			. '<img src="' . esc_url( $image ) . '" alt="' . esc_attr( get_the_title( $ad ) ) . '" style="max-width:100%;height:auto;border-radius:10px"></a></div>';
+	}
+
+	/**
 	 * Record a click and return the (validated) destination URL.
 	 *
 	 * @param int    $ad_id Ad id.

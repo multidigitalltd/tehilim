@@ -28,7 +28,7 @@ final class MailService implements Registerable {
 	 *
 	 * @var string
 	 */
-	private $alt_body = '';
+	private static $alt_body = '';
 
 	/**
 	 * {@inheritDoc}
@@ -64,7 +64,7 @@ final class MailService implements Registerable {
 			)
 		);
 
-		$this->send(
+		self::send(
 			$email,
 			(string) Options::get( 'email_subject' ),
 			(string) Options::get( 'email_body' ),
@@ -78,10 +78,11 @@ final class MailService implements Registerable {
 	 * @param string               $to      Recipient.
 	 * @param string               $subject Subject (with placeholders).
 	 * @param string               $body    Body (with placeholders).
-	 * @param array<string,string> $replace Placeholder replacements.
+	 * @param array<string,string> $replace     Placeholder replacements.
+	 * @param string               $unsubscribe Optional unsubscribe URL.
 	 * @return bool
 	 */
-	public function send( $to, $subject, $body, array $replace = array() ) {
+	public static function send( $to, $subject, $body, array $replace = array(), $unsubscribe = '' ) {
 		if ( ! $to || ! is_email( $to ) ) {
 			return false;
 		}
@@ -89,14 +90,14 @@ final class MailService implements Registerable {
 		$subject = strtr( $subject, $replace );
 		$body    = strtr( $body, $replace );
 
-		$this->alt_body = wp_strip_all_tags( $body );
+		self::$alt_body = wp_strip_all_tags( $body );
 		$is_html        = ( false !== strpos( $body, '<' ) );
 		$html_body      = $is_html ? $body : nl2br( esc_html( $body ) );
-		$html           = '<!doctype html><html lang="he" dir="rtl"><body dir="rtl" style="direction:rtl;text-align:right;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.8;color:#111">'
-			. $html_body . '</body></html>';
+
+		$html = self::wrap( $html_body, (string) $unsubscribe );
 
 		$sent           = wp_mail( $to, $subject, $html, array( 'Content-Type: text/html; charset=UTF-8' ) );
-		$this->alt_body = '';
+		self::$alt_body = '';
 
 		if ( ! $sent ) {
 			Logger::log(
@@ -112,14 +113,43 @@ final class MailService implements Registerable {
 	}
 
 	/**
+	 * Designed, RTL HTML email wrapper: site-name header, the body in a card,
+	 * an active "email_footer" ad, and an optional unsubscribe footer.
+	 *
+	 * @param string $body_html   Inner body HTML.
+	 * @param string $unsubscribe Optional unsubscribe URL.
+	 * @return string
+	 */
+	private static function wrap( $body_html, $unsubscribe = '' ) {
+		$site = esc_html( (string) get_bloginfo( 'name' ) );
+		$ad   = ( new AdService() )->email_html();
+
+		$footer = '';
+		if ( '' !== $unsubscribe ) {
+			$footer = '<div style="margin-top:18px;font-size:12px;color:#999;text-align:center">'
+				. '<a href="' . esc_url( $unsubscribe ) . '" style="color:#999">' . esc_html__( 'Unsubscribe', 'tehillim-campaign-manager' ) . '</a></div>';
+		}
+
+		return '<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"></head>'
+			. '<body dir="rtl" style="direction:rtl;text-align:right;margin:0;padding:24px;background:#f4f1e8;font-family:Arial,Helvetica,sans-serif;color:#13192d">'
+			. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">'
+			. '<table role="presentation" width="600" style="max-width:600px;width:100%" cellpadding="0" cellspacing="0">'
+			. '<tr><td style="padding:0 8px 14px;font-size:20px;font-weight:bold;color:#2e40c0">' . $site . '</td></tr>'
+			. '<tr><td style="background:#ffffff;border-radius:14px;padding:24px;font-size:16px;line-height:1.9">' . $body_html . '</td></tr>'
+			. '<tr><td>' . $ad . '</td></tr>'
+			. '<tr><td>' . $footer . '</td></tr>'
+			. '</table></td></tr></table></body></html>';
+	}
+
+	/**
 	 * Attach the plain-text alternative to the outgoing message.
 	 *
 	 * @param \PHPMailer\PHPMailer\PHPMailer $phpmailer Mailer.
 	 * @return void
 	 */
 	public function set_alt_body( $phpmailer ) {
-		if ( '' !== $this->alt_body ) {
-			$phpmailer->AltBody = $this->alt_body; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- PHPMailer property.
+		if ( '' !== self::$alt_body ) {
+			$phpmailer->AltBody = self::$alt_body; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- PHPMailer property.
 		}
 	}
 }

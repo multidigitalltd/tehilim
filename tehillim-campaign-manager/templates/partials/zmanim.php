@@ -1,6 +1,7 @@
 <?php
 /**
- * Hebrew date + daily zmanim card.
+ * Hebrew date + daily zmanim. Two layouts: a full "card" and a compact
+ * "inline" strip suitable for a header.
  *
  * @package Tehillim_Campaign_Manager
  *
@@ -8,11 +9,28 @@
  * @var string                $city_label  City label.
  * @var array<string,string>  $zmanim      key => "HH:MM".
  * @var array<string,string>  $labels      key => label.
+ * @var string                $layout      'card' or 'inline'.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+$layout = isset( $layout ) && 'inline' === $layout ? 'inline' : 'card';
+
+if ( 'inline' === $layout ) :
+	?>
+	<div class="tcm-zmanim-inline">
+		<?php if ( '' !== $hebrew_date ) : ?>
+			<span class="tcm-zmanim-inline-date"><?php echo esc_html( $hebrew_date ); ?></span>
+		<?php endif; ?>
+		<?php foreach ( $zmanim as $key => $time ) : ?>
+			<span class="tcm-zmanim-inline-item"><span class="tcm-zmanim-label"><?php echo esc_html( $labels[ $key ] ?? $key ); ?></span> <span class="tcm-zmanim-time"><?php echo esc_html( $time ); ?></span></span>
+		<?php endforeach; ?>
+	</div>
+	<?php
+	return;
+endif;
 ?>
 <div class="tcm-wrap tcm-zmanim">
 	<div class="tcm-card">

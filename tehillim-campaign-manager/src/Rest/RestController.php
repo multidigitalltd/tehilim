@@ -196,6 +196,37 @@ final class RestController implements Registerable {
 			)
 		);
 
+		register_rest_route(
+			self::NS,
+			'/me/subscription',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'me_subscription' ),
+				'permission_callback' => 'is_user_logged_in',
+				'args'                => array(
+					'list'   => $this->enum_arg( array( 'daily_chapter', 'campaign_alerts' ), true ),
+					'action' => $this->enum_arg( array( 'join', 'leave' ), true ),
+				),
+			)
+		);
+
+		register_rest_route(
+			self::NS,
+			'/contact',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'contact' ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'name'      => $this->text_arg( 120 ),
+					'email'     => $this->email_arg(),
+					'subject'   => $this->text_arg( 160 ),
+					'message'   => $this->text_arg( 4000 ),
+					'turnstile' => $this->text_arg( 4000 ),
+				),
+			)
+		);
+
 		foreach ( array( 'done', 'take-more', 'release' ) as $action ) {
 			register_rest_route(
 				self::NS,
@@ -515,6 +546,87 @@ final class RestController implements Registerable {
 			return $this->error( 'subscribe_invalid', __( 'Please check the form and try again.', 'tehillim-campaign-manager' ), 400 );
 		}
 		return new WP_REST_Response( array( 'ok' => true ), 201 );
+	}
+
+	/**
+	 * POST a logged-in user's own join/leave for a subscription list. Uses the
+	 * account email server-side (never trusts a client-supplied address).
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function me_subscription( WP_REST_Request $request ) {
+		$user  = wp_get_current_user();
+		$email = sanitize_email( (string) $user->user_email );
+		if ( '' === $email || ! is_email( $email ) ) {
+			return $this->error( 'no_email', __( 'Your account has no valid email address.', 'tehillim-campaign-manager' ), 400 );
+		}
+
+		$list    = sanitize_key( (string) $request->get_param( 'list' ) );
+		$action  = sanitize_key( (string) $request->get_param( 'action' ) );
+		$service = new SubscriptionService();
+
+		try {
+			if ( 'join' === $action ) {
+				$result = $service->subscribe(
+					$list,
+					array(
+						'name'    => sanitize_text_field( (string) $user->display_name ),
+						'email'   => $email,
+						'channel' => 'email',
+						'consent' => true,
+					)
+				);
+				if ( empty( $result['ok'] ) ) {
+					return $this->error( 'subscribe_failed', __( 'Could not subscribe.', 'tehillim-campaign-manager' ), 400 );
+				}
+			} else {
+				$service->unsubscribe_list_email( $list, $email );
+			}
+		} catch ( \Throwable $e ) {
+			return $this->fail( $e, 'me_subscription_failed', array( 'list' => $list ) );
+		}
+
+		return new WP_REST_Response( array( 'ok' => true ), 200 );
+	}
+
+	/**
+	 * POST a contact-form message (Turnstile-gated, rate-limited) to the admin.
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function contact( WP_REST_Request $request ) {
+		if ( RateLimiter::exceeded( 'contact', 5, 300 ) ) {
+			return $this->error( 'rate_limited', __( 'Too many attempts. Please try again shortly.', 'tehillim-campaign-manager' ), 429 );
+		}
+		if ( ! Turnstile::verify( (string) $request->get_param( 'turnstile' ) ) ) {
+			return $this->error( 'verification_failed', __( 'Security verification failed. Please try again.', 'tehillim-campaign-manager' ), 400 );
+		}
+
+		$name    = sanitize_text_field( (string) $request->get_param( 'name' ) );
+		$email   = sanitize_email( (string) $request->get_param( 'email' ) );
+		$subject = sanitize_text_field( (string) $request->get_param( 'subject' ) );
+		$message = sanitize_textarea_field( (string) $request->get_param( 'message' ) );
+
+		if ( '' === $name || '' === $email || ! is_email( $email ) || '' === $message ) {
+			return $this->error( 'contact_invalid', __( 'Please fill in your name, a valid email and a message.', 'tehillim-campaign-manager' ), 400 );
+		}
+
+		$to           = sanitize_email( (string) get_option( 'admin_email' ) );
+		$mail_subject = sprintf(
+			/* translators: %s: message subject or a default. */
+			__( '[Contact] %s', 'tehillim-campaign-manager' ),
+			'' !== $subject ? $subject : __( 'Website message', 'tehillim-campaign-manager' )
+		);
+		$body    = __( 'Name:', 'tehillim-campaign-manager' ) . ' ' . $name . "\n"
+			. __( 'Email:', 'tehillim-campaign-manager' ) . ' ' . $email . "\n\n"
+			. $message;
+		$headers = array( 'Reply-To: ' . $name . ' <' . $email . '>' );
+
+		wp_mail( $to, $mail_subject, $body, $headers );
+
+		return new WP_REST_Response( array( 'ok' => true ), 200 );
 	}
 
 	/**

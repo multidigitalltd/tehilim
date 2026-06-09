@@ -17,13 +17,16 @@ use TCM\Admin\SetupWizard;
 use TCM\Admin\SubscribersPage;
 use TCM\Services\CampaignAlertService;
 use TCM\Blocks\BlocksModule;
+use TCM\Frontend\AccessibilityStatement;
 use TCM\Frontend\Ads;
+use TCM\Frontend\LoginGuard;
 use TCM\Frontend\Ambassadors;
 use TCM\Frontend\Assets;
 use TCM\Frontend\Community;
 use TCM\Frontend\Prayers;
 use TCM\Frontend\SelfService;
 use TCM\Frontend\Shortcodes;
+use TCM\Frontend\SiteExtras;
 use TCM\Frontend\Subscriptions;
 use TCM\Frontend\Widgets;
 use TCM\Frontend\Zmanim;
@@ -33,6 +36,7 @@ use TCM\PostTypes\PrayerPostType;
 use TCM\Privacy\PrivacyModule;
 use TCM\Rest\RestController;
 use TCM\Services\CronService;
+use TCM\Services\EmailService;
 use TCM\Services\MailService;
 use TCM\Services\WebhookService;
 
@@ -121,10 +125,14 @@ final class Plugin {
 				new Prayers(),
 				new SelfService(),
 				new Zmanim(),
+				new AccessibilityStatement(),
+				new SiteExtras(),
+				new LoginGuard(),
 				new Ads(),
 				new BlocksModule(),
 				new RestController(),
 				new MailService(),
+				new EmailService(),
 				new WebhookService(),
 				new CronService(),
 				new CampaignAlertService(),

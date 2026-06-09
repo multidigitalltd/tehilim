@@ -7,6 +7,60 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Tel Aviv"
+msgstr "תל אביב"
+
+msgid "Jerusalem"
+msgstr "ירושלים"
+
+msgid "Bnei Brak"
+msgstr "בני ברק"
+
+msgid "Haifa"
+msgstr "חיפה"
+
+msgid "Beer Sheva"
+msgstr "באר שבע"
+
+msgid "Dawn"
+msgstr "עלות השחר"
+
+msgid "Sunrise"
+msgstr "הנץ החמה"
+
+msgid "Latest Shema"
+msgstr "סוף זמן ק\"ש"
+
+msgid "Latest Shacharit"
+msgstr "סוף זמן תפילה"
+
+msgid "Midday"
+msgstr "חצות"
+
+msgid "Mincha Gedola"
+msgstr "מנחה גדולה"
+
+msgid "Plag HaMincha"
+msgstr "פלג המנחה"
+
+msgid "Sunset"
+msgstr "שקיעה"
+
+msgid "Nightfall"
+msgstr "צאת הכוכבים"
+
+msgid "Times of the day"
+msgstr "זמני היום"
+
+msgid "Times are not available right now."
+msgstr "הזמנים אינם זמינים כרגע."
+
+msgid "Zmanim city"
+msgstr "עיר לזמנים"
+
+msgid "City used for the Hebrew date and daily times. Shortcode: [tehillim_zmanim]"
+msgstr "העיר לחישוב התאריך העברי וזמני היום. שורטקוד: [tehillim_zmanim]"
+
 msgid "Approvals"
 msgstr "אישורים"
 

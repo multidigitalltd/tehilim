@@ -1030,3 +1030,28 @@
 		color: color-mix(in oklab, var(--tcm-text) 50%, transparent);
 	}
 }
+
+/* Hebrew date + daily zmanim card. */
+.tcm-zmanim-head { text-align: center; margin-bottom: 14px; }
+.tcm-zmanim-date { font-size: 1.6rem; margin: 4px 0 2px; }
+.tcm-zmanim-city { margin: 0; }
+.tcm-zmanim-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: 8px;
+}
+.tcm-zmanim-row {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 10px;
+	padding: 9px 14px;
+	border-radius: 12px;
+	background: var(--tcm-gold-soft, #f4e8cd);
+	border: 1px solid color-mix(in oklab, var(--tcm-gold, #c39a45) 28%, transparent);
+}
+.tcm-zmanim-label { font-weight: 600; color: var(--tcm-text); }
+.tcm-zmanim-time { font-weight: 800; color: var(--tcm-primary); font-variant-numeric: tabular-nums; }

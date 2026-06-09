@@ -9,6 +9,7 @@ namespace TCM\Admin;
 
 use TCM\Contracts\Registerable;
 use TCM\PostTypes\CampaignPostType;
+use TCM\Services\ZmanimService;
 use TCM\Support\Options;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -110,6 +111,8 @@ final class SettingsPage implements Registerable {
 		$clean['allow_multi_chapters']   = empty( $input['allow_multi_chapters'] ) ? '0' : '1';
 		$clean['allow_full_book']        = empty( $input['allow_full_book'] ) ? '0' : '1';
 		$clean['auto_publish_campaigns'] = empty( $input['auto_publish_campaigns'] ) ? '0' : '1';
+		$city                            = isset( $input['zmanim_city'] ) ? sanitize_key( $input['zmanim_city'] ) : 'tel_aviv';
+		$clean['zmanim_city']            = isset( ZmanimService::cities()[ $city ] ) ? $city : 'tel_aviv';
 		$clean['reminders_enabled']      = empty( $input['reminders_enabled'] ) ? '0' : '1';
 
 		// Reminder timings (integers with sensible minimums).
@@ -216,6 +219,7 @@ final class SettingsPage implements Registerable {
 			$this->text_row( 'multi_chapter_options', __( 'Multi-chapter options', 'tehillim-campaign-manager' ), $o, __( 'Comma separated, e.g. 3,5,10', 'tehillim-campaign-manager' ) );
 			$this->checkbox_row( 'allow_full_book', __( 'Allow taking a whole book', 'tehillim-campaign-manager' ), $o );
 			$this->checkbox_row( 'auto_publish_campaigns', __( 'Publish user-created campaigns immediately (otherwise they await admin approval)', 'tehillim-campaign-manager' ), $o );
+			$this->city_row( $o );
 		} elseif ( 'messaging' === $tab ) {
 			$this->text_row( 'email_subject', __( 'Email subject', 'tehillim-campaign-manager' ), $o );
 			$this->textarea_row( 'email_body', __( 'Email body', 'tehillim-campaign-manager' ), $o, __( 'Placeholders: {name}, {campaign_title}, {chapter}, {read_url}', 'tehillim-campaign-manager' ) );
@@ -399,6 +403,26 @@ final class SettingsPage implements Registerable {
 		$this->row(
 			$label,
 			'<label><input type="checkbox" name="tcm_options[' . esc_attr( $key ) . ']" value="1" ' . checked( ( $o[ $key ] ?? $default ), '1', false ) . '> ' . esc_html__( 'Enabled', 'tehillim-campaign-manager' ) . '</label>'
+		);
+	}
+
+	/**
+	 * City selector for the zmanim/Hebrew-date area.
+	 *
+	 * @param array<string,mixed> $o Options.
+	 * @return void
+	 */
+	private function city_row( $o ) {
+		$current = (string) ( $o['zmanim_city'] ?? 'tel_aviv' );
+		$html    = '<select name="tcm_options[zmanim_city]">';
+		foreach ( ZmanimService::cities() as $key => $city ) {
+			$html .= '<option value="' . esc_attr( $key ) . '" ' . selected( $current, $key, false ) . '>' . esc_html( $city['label'] ) . '</option>';
+		}
+		$html .= '</select>';
+		$this->row(
+			__( 'Zmanim city', 'tehillim-campaign-manager' ),
+			$html,
+			__( 'City used for the Hebrew date and daily times. Shortcode: [tehillim_zmanim]', 'tehillim-campaign-manager' )
 		);
 	}
 

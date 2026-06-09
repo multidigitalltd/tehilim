@@ -12,6 +12,7 @@ use TCM\Database\AssignmentsRepository;
 use TCM\PostTypes\CampaignPostType;
 use TCM\Services\BadgeService;
 use TCM\Services\StatsService;
+use TCM\Services\SubscriptionService;
 use TCM\Support\Hebrew;
 use TCM\Support\Urls;
 
@@ -149,14 +150,20 @@ final class SelfService implements Registerable {
 			$badge     = BadgeService::for_participant( $done );
 			$next_tier = BadgeService::next_tier( BadgeService::participant_tiers(), $done );
 		}
+		$subs          = new SubscriptionService();
+		$subscriptions = array(
+			'daily_chapter'   => $subs->is_subscribed( 'daily_chapter', (string) $user->user_email ),
+			'campaign_alerts' => $subs->is_subscribed( 'campaign_alerts', (string) $user->user_email ),
+		);
 		return Templating::render(
 			'partials/my-activity',
 			array(
-				'logged_in' => true,
-				'rows'      => $rows,
-				'done'      => $done,
-				'badge'     => $badge,
-				'next_tier' => $next_tier,
+				'logged_in'     => true,
+				'rows'          => $rows,
+				'done'          => $done,
+				'badge'         => $badge,
+				'next_tier'     => $next_tier,
+				'subscriptions' => $subscriptions,
 			)
 		);
 	}

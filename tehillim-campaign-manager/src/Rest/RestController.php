@@ -196,6 +196,20 @@ final class RestController implements Registerable {
 			)
 		);
 
+		register_rest_route(
+			self::NS,
+			'/me/subscription',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'me_subscription' ),
+				'permission_callback' => 'is_user_logged_in',
+				'args'                => array(
+					'list'   => $this->enum_arg( array( 'daily_chapter', 'campaign_alerts' ), true ),
+					'action' => $this->enum_arg( array( 'join', 'leave' ), true ),
+				),
+			)
+		);
+
 		foreach ( array( 'done', 'take-more', 'release' ) as $action ) {
 			register_rest_route(
 				self::NS,
@@ -515,6 +529,48 @@ final class RestController implements Registerable {
 			return $this->error( 'subscribe_invalid', __( 'Please check the form and try again.', 'tehillim-campaign-manager' ), 400 );
 		}
 		return new WP_REST_Response( array( 'ok' => true ), 201 );
+	}
+
+	/**
+	 * POST a logged-in user's own join/leave for a subscription list. Uses the
+	 * account email server-side (never trusts a client-supplied address).
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function me_subscription( WP_REST_Request $request ) {
+		$user  = wp_get_current_user();
+		$email = sanitize_email( (string) $user->user_email );
+		if ( '' === $email || ! is_email( $email ) ) {
+			return $this->error( 'no_email', __( 'Your account has no valid email address.', 'tehillim-campaign-manager' ), 400 );
+		}
+
+		$list    = sanitize_key( (string) $request->get_param( 'list' ) );
+		$action  = sanitize_key( (string) $request->get_param( 'action' ) );
+		$service = new SubscriptionService();
+
+		try {
+			if ( 'join' === $action ) {
+				$result = $service->subscribe(
+					$list,
+					array(
+						'name'    => sanitize_text_field( (string) $user->display_name ),
+						'email'   => $email,
+						'channel' => 'email',
+						'consent' => true,
+					)
+				);
+				if ( empty( $result['ok'] ) ) {
+					return $this->error( 'subscribe_failed', __( 'Could not subscribe.', 'tehillim-campaign-manager' ), 400 );
+				}
+			} else {
+				$service->unsubscribe_list_email( $list, $email );
+			}
+		} catch ( \Throwable $e ) {
+			return $this->fail( $e, 'me_subscription_failed', array( 'list' => $list ) );
+		}
+
+		return new WP_REST_Response( array( 'ok' => true ), 200 );
 	}
 
 	/**

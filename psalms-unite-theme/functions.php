@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'PSALMS_UNITE_THEME_VERSION', '1.12.0' );
+define( 'PSALMS_UNITE_THEME_VERSION', '1.13.0' );
 
 add_action(
 	'after_setup_theme',
@@ -154,8 +154,10 @@ add_action(
 			'about'     => array( 'title' => 'אודות' ),
 			'campaigns' => array( 'title' => 'קמפיינים' ),
 			'create'    => array( 'title' => 'יצירת קמפיין' ),
-			'dashboard' => array( 'title' => 'אזור אישי' ),
-			'auth'      => array( 'title' => 'התחברות' ),
+			'dashboard'      => array( 'title' => 'אזור אישי' ),
+			'auth'           => array( 'title' => 'התחברות' ),
+			'daily-tehillim' => array( 'title' => 'תהילים יומי' ),
+			'tehillim-corps' => array( 'title' => 'חיל התהילים' ),
 		);
 
 		foreach ( $pages as $slug => $page ) {
@@ -263,6 +265,15 @@ function psalms_unite_font_css(): string {
  */
 function psalms_unite_text_config() {
 	return array(
+		'psalms_header'       => array(
+			'title'  => 'הידר - רצועה עליונה',
+			'fields' => array(
+				'header_strip' => array(
+					'default' => '',
+					'type'    => 'textarea',
+				),
+			),
+		),
 		'psalms_hero'         => array(
 			'title'  => 'תכנים - באנר ראשי (דף הבית)',
 			'fields' => array(
@@ -698,6 +709,14 @@ function psalms_unite_text_config() {
 					'default' => 'הרשמה לקבלת פרק יומי ותזכורות חכמות ישירות לוואטסאפ.',
 					'type'    => 'textarea',
 				),
+				'corps_title'     => array(
+					'default' => 'חיל התהילים',
+					'type'    => 'text',
+				),
+				'corps_sub'       => array(
+					'default' => 'הצטרפו וקבלו התראה על כל קמפיין חדש, ועזרו לסיים אותו.',
+					'type'    => 'textarea',
+				),
 				'auth_title'      => array(
 					'default' => 'התחברות',
 					'type'    => 'text',
@@ -718,10 +737,6 @@ function psalms_unite_text_config() {
 				'footer_tagline'        => array(
 					'default' => 'פלטפורמה חינמית לאיחוד קהילות סביב אמירת תהילים - כי יחד מגיעים רחוק יותר.',
 					'type'    => 'textarea',
-				),
-				'footer_made'           => array(
-					'default' => 'נבנה באהבה לעם ישראל',
-					'type'    => 'text',
 				),
 				'footer_rights'         => array(
 					'default' => 'כל הזכויות שמורות.',

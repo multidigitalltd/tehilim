@@ -87,6 +87,13 @@ final class SetupWizard implements Registerable {
 				'intro'     => 'הירשמו לקבלת פרק תהילים יומי ותזכורות.',
 				'shortcode' => '[tehillim_subscribe]',
 			),
+			'corps'       => array(
+				'title'     => 'חיל התהילים',
+				'slug'      => 'tehillim-corps',
+				'block'     => 'corps',
+				'intro'     => 'הצטרפו לחיל התהילים וקבלו התראה על כל קמפיין חדש.',
+				'shortcode' => '[tehillim_subscribe list="campaign_alerts"]',
+			),
 		);
 	}
 
@@ -94,8 +101,8 @@ final class SetupWizard implements Registerable {
 	 * Full designed block markup for a page. Uses the ready-made layout from
 	 * {@see SiteContent}; falls back to a simple heading + intro + block.
 	 *
-	 * @param string                                        $key Page key.
-	 * @param array{title:string,block:string,intro:string} $def Page definition.
+	 * @param string               $key Page key.
+	 * @param array<string,string> $def Page definition.
 	 * @return string
 	 */
 	private function page_content( $key, array $def ) {
@@ -103,13 +110,17 @@ final class SetupWizard implements Registerable {
 		if ( '' !== $rich ) {
 			return $rich;
 		}
+		$body = isset( $def['shortcode'] ) && '' !== $def['shortcode']
+			? '<!-- wp:shortcode -->' . "\n" . $def['shortcode'] . "\n" . '<!-- /wp:shortcode -->'
+			: '<!-- wp:tehillim/' . $def['block'] . ' /-->';
+
 		return '<!-- wp:heading {"textAlign":"center"} -->' . "\n"
 			. '<h2 class="wp-block-heading has-text-align-center">' . esc_html( $def['title'] ) . '</h2>' . "\n"
 			. '<!-- /wp:heading -->' . "\n\n"
 			. '<!-- wp:paragraph {"align":"center"} -->' . "\n"
 			. '<p class="has-text-align-center">' . esc_html( $def['intro'] ) . '</p>' . "\n"
 			. '<!-- /wp:paragraph -->' . "\n\n"
-			. '<!-- wp:tehillim/' . $def['block'] . ' /-->';
+			. $body;
 	}
 
 	/**

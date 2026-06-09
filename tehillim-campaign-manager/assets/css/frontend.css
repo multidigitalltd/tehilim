@@ -1055,3 +1055,30 @@
 }
 .tcm-zmanim-label { font-weight: 600; color: var(--tcm-text); }
 .tcm-zmanim-time { font-weight: 800; color: var(--tcm-primary); font-variant-numeric: tabular-nums; }
+
+/* Compact inline zmanim strip (e.g. header). */
+.tcm-zmanim-inline {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 6px 16px;
+	font-size: 0.85rem;
+}
+.tcm-zmanim-inline-date { font-weight: 800; color: var(--tcm-primary); }
+.tcm-zmanim-inline-item { white-space: nowrap; }
+.tcm-zmanim-inline .tcm-zmanim-label { font-weight: 600; }
+.tcm-zmanim-inline .tcm-zmanim-time { color: var(--tcm-primary); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Personal-area subscription management. */
+.tcm-subs {
+	margin: 6px 0 18px;
+	padding: 14px 16px;
+	border-radius: var(--tcm-radius, 1rem);
+	border: 1px solid var(--tcm-border-soft, #e7e2d6);
+}
+.tcm-subs-title { margin: 0 0 10px; font-size: 1rem; }
+.tcm-subs-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.tcm-subs-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.tcm-subs-name { font-weight: 600; flex: 1 1 auto; }
+.tcm-btn-sm { padding: 5px 12px; font-size: 0.82rem; margin: 0; }

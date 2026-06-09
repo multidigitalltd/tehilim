@@ -17,6 +17,7 @@ use TCM\Admin\SetupWizard;
 use TCM\Admin\SubscribersPage;
 use TCM\Services\CampaignAlertService;
 use TCM\Blocks\BlocksModule;
+use TCM\Frontend\AccessibilityStatement;
 use TCM\Frontend\Ads;
 use TCM\Frontend\Ambassadors;
 use TCM\Frontend\Assets;
@@ -121,6 +122,7 @@ final class Plugin {
 				new Prayers(),
 				new SelfService(),
 				new Zmanim(),
+				new AccessibilityStatement(),
 				new Ads(),
 				new BlocksModule(),
 				new RestController(),

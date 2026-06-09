@@ -36,6 +36,10 @@ if ( 'daily-tehillim' === $slug ) {
 	$slug = 'subscribe';
 }
 
+if ( 'tehillim-corps' === $slug ) {
+	$slug = 'corps';
+}
+
 $nav_items = array(
 	'campaigns' => array(
 		'label' => 'קמפיינים',
@@ -66,6 +70,14 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 <a class="psalms-skip" href="#content"><?php esc_html_e( 'דלג לתוכן', 'psalms-unite' ); ?></a>
 
 <header class="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
+	<?php
+	$psalms_header_strip = trim( (string) psalms_unite_text( 'header_strip' ) );
+	if ( '' !== $psalms_header_strip ) :
+		?>
+		<div class="psalms-header-strip border-b border-border/40 bg-background/60">
+			<div class="mx-auto max-w-6xl px-4 py-2 text-sm"><?php echo wp_kses_post( do_shortcode( $psalms_header_strip ) ); ?></div>
+		</div>
+	<?php endif; ?>
 	<div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
 		<?php if ( has_custom_logo() ) : ?>
 			<span class="psalms-site-logo"><?php the_custom_logo(); ?></span>
@@ -229,6 +241,16 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 				<a class="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-medium text-foreground hover:opacity-90" href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php echo esc_html( psalms_unite_text( 'about_cta_button' ) ); ?></a>
 			</div>
 		</section>
+	<?php elseif ( 'corps' === $slug ) : ?>
+		<section class="mx-auto max-w-3xl px-4 py-12">
+			<div class="mb-8 text-center">
+				<h1 class="font-display text-4xl font-bold"><?php echo esc_html( psalms_unite_text( 'corps_title' ) ); ?></h1>
+				<p class="mt-2 text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'corps_sub' ) ); ?></p>
+			</div>
+			<div class="psalms-unite-shortcode">
+				<?php echo psalms_unite_shortcode( 'tehillim_subscribe', array( 'list' => 'campaign_alerts' ), '<div class="rounded-xl border border-dashed border-border/60 bg-card p-12 text-center text-muted-foreground">יש להפעיל את רכיב ההרשמה בתוסף.</div>' ); ?>
+			</div>
+		</section>
 	<?php else : ?>
 		<section class="gradient-warm relative overflow-hidden">
 			<div aria-hidden="true" class="pointer-events-none absolute inset-0">
@@ -375,15 +397,15 @@ $outline_class = 'inline-flex items-center justify-center gap-2 whitespace-nowra
 	<div class="relative mx-auto max-w-6xl px-4 pt-16 pb-8">
 		<div class="grid gap-10 md:grid-cols-12">
 			<div class="md:col-span-5">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-flex items-center gap-2 font-display text-lg font-semibold">
-					<span class="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20" aria-hidden="true">♥</span>
-					<span><?php echo esc_html( psalms_unite_text( 'brand' ) ); ?></span>
-				</a>
+				<?php if ( has_custom_logo() ) : ?>
+					<span class="psalms-site-logo"><?php the_custom_logo(); ?></span>
+				<?php else : ?>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-flex items-center gap-2 font-display text-lg font-semibold">
+						<span class="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20" aria-hidden="true">♥</span>
+						<span><?php echo esc_html( psalms_unite_text( 'brand' ) ); ?></span>
+					</a>
+				<?php endif; ?>
 				<p class="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground"><?php echo esc_html( psalms_unite_text( 'footer_tagline' ) ); ?></p>
-				<div class="mt-5 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-foreground/80">
-					<span aria-hidden="true" class="text-gold">♥</span>
-					<?php echo esc_html( psalms_unite_text( 'footer_made' ) ); ?>
-				</div>
 			</div>
 			<div class="md:col-span-7 grid grid-cols-2 gap-8 sm:grid-cols-3">
 				<div>

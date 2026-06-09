@@ -48,13 +48,21 @@ final class Zmanim implements Registerable {
 	 */
 	public function render( $atts ) {
 		Assets::ensure();
-		$atts = shortcode_atts( array( 'city' => '' ), $atts, 'tehillim_zmanim' );
+		$atts = shortcode_atts(
+			array(
+				'city'   => '',
+				'layout' => 'card',
+			),
+			$atts,
+			'tehillim_zmanim'
+		);
 
 		$city_key = sanitize_key( '' !== $atts['city'] ? $atts['city'] : (string) Options::get( 'zmanim_city' ) );
 		if ( ! isset( ZmanimService::cities()[ $city_key ] ) ) {
 			$city_key = 'tel_aviv';
 		}
-		$city = ZmanimService::city( $city_key );
+		$city   = ZmanimService::city( $city_key );
+		$layout = ( 'inline' === $atts['layout'] ) ? 'inline' : 'card';
 
 		return Templating::render(
 			'partials/zmanim',
@@ -63,6 +71,7 @@ final class Zmanim implements Registerable {
 				'city_label'  => $city['label'],
 				'zmanim'      => $this->service->for_city( $city_key ),
 				'labels'      => ZmanimService::labels(),
+				'layout'      => $layout,
 			)
 		);
 	}

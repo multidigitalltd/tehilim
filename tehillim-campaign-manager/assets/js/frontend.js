@@ -264,6 +264,33 @@
 			});
 	});
 
+	// Personal area: join/leave a subscription list.
+	document.addEventListener('click', function (e) {
+		var btn = e.target.closest('[data-tcm-sub-toggle]');
+		if (!btn) {
+			return;
+		}
+		e.preventDefault();
+		var errBox = document.getElementById('tcm-subs-error');
+		btn.setAttribute('disabled', 'disabled');
+		post('/me/subscription', {
+			list: btn.getAttribute('data-tcm-list') || '',
+			action: btn.getAttribute('data-tcm-action') || 'join'
+		}).then(function (result) {
+			if (!result.ok || !result.json || result.json.ok !== true) {
+				throw new Error((result.json && result.json.message) || errorText());
+			}
+			window.location.reload();
+		}).catch(function (err) {
+			btn.removeAttribute('disabled');
+			if (errBox) {
+				errBox.textContent = err.message || errorText();
+				errBox.hidden = false;
+				if (errBox.focus) { errBox.focus(); }
+			}
+		});
+	});
+
 	// Create campaign.
 	function tcmWizardFields(scope) {
 		return {

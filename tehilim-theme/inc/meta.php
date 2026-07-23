@@ -182,6 +182,50 @@ function tehilim_get_praise_verses() {
 }
 
 /**
+ * Hebrew numeral (gematria) for chapter numbers 1..150:
+ * 1 → א׳, 15 → ט״ו, 100 → ק׳, 103 → ק״ג, 119 → קי״ט, 150 → ק״נ
+ */
+function tehilim_hebrew_numeral( $n ) {
+	$n       = max( 1, min( 499, intval( $n ) ) );
+	$letters = array();
+
+	$hundreds = array( '', 'ק', 'ר', 'ש', 'ת' );
+	$tens     = array( '', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ' );
+	$ones     = array( '', 'א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט' );
+
+	$h    = intdiv( $n, 100 );
+	$rest = $n % 100;
+
+	if ( $h ) {
+		$letters[] = $hundreds[ $h ];
+	}
+
+	if ( 15 === $rest ) {
+		$letters[] = 'ט';
+		$letters[] = 'ו';
+	} elseif ( 16 === $rest ) {
+		$letters[] = 'ט';
+		$letters[] = 'ז';
+	} else {
+		$t = intdiv( $rest, 10 );
+		$o = $rest % 10;
+		if ( $t ) {
+			$letters[] = $tens[ $t ];
+		}
+		if ( $o ) {
+			$letters[] = $ones[ $o ];
+		}
+	}
+
+	if ( 1 === count( $letters ) ) {
+		return $letters[0] . '׳';
+	}
+
+	$last = array_pop( $letters );
+	return implode( '', $letters ) . '״' . $last;
+}
+
+/**
  * Parse admin textarea lines into quote arrays. Line format: part1 | part2 | part3
  */
 function tehilim_parse_quote_lines( $raw, $keys ) {

@@ -247,13 +247,13 @@ if ( have_posts() ) :
 					if ( $recitations ) :
 						foreach ( $recitations as $index => $rec ) :
 							$name    = $rec->reciter_name ? $rec->reciter_name : __( 'משתתף אנונימי', 'tehilim' );
-							$chapter = intval( $rec->chapter_number );
+							$chapter = tehilim_hebrew_numeral( intval( $rec->chapter_number ) );
 							$when    = date_i18n( 'j.n.Y, H:i', strtotime( $rec->created_at ) );
 							$dot     = ( 0 === $index ) ? 'gold' : 'primary';
 							?>
 							<div class="activity-item">
 								<div class="activity-dot <?php echo esc_attr( $dot ); ?>"></div>
-								<div class="activity-text"><?php printf( esc_html__( '%1$s אמר/ה את פרק %2$d', 'tehilim' ), '<b>' . esc_html( $name ) . '</b>', $chapter ); ?></div>
+								<div class="activity-text"><?php printf( esc_html__( '%1$s אמר/ה את פרק %2$s', 'tehilim' ), '<b>' . esc_html( $name ) . '</b>', esc_html( $chapter ) ); ?></div>
 								<div class="activity-time"><?php echo esc_html( $when ); ?></div>
 							</div>
 						<?php endforeach; ?>

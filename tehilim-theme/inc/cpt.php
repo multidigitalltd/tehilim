@@ -40,6 +40,9 @@ function tehilim_register_ambassador_cpt() {
 		'supports'        => array( 'title', 'custom-fields' ),
 		'rewrite'         => array( 'slug' => 'ambassadors', 'with_front' => false ),
 		'show_in_menu'    => 'tehilim-settings',
+		// The referral route (/c/{campaign}/{ambassador}) uses an 'ambassador'
+		// query var; the CPT's own query var must not hijack it in WP_Query.
+		'query_var'       => false,
 		'capability_type' => 'post',
 	) );
 }
@@ -117,26 +120,28 @@ add_filter( 'query_vars', 'tehilim_register_query_vars' );
  * to the ambassador template.
  */
 function tehilim_template_router( $template ) {
-	// Referral link: campaign + ambassador query vars present
-	if ( get_query_var( 'ambassador' ) && get_query_var( 'name' ) ) {
-		$referral = get_template_directory() . '/template-ambassador.php';
-		if ( file_exists( $referral ) ) {
-			return $referral;
-		}
+	$referral = get_template_directory() . '/template-ambassador.php';
+	if ( ! file_exists( $referral ) ) {
+		return $template;
 	}
 
-	// Direct ambassador permalink → same personal page (derive vars from the post)
+	// Direct ambassador permalink → personal page (derive vars from the post).
+	// Must run BEFORE the referral check: on singular views WP may populate
+	// 'name' with the ambassador slug, which is not a campaign slug.
 	if ( is_singular( 'ambassador' ) ) {
-		$referral = get_template_directory() . '/template-ambassador.php';
-		if ( file_exists( $referral ) ) {
-			$ambassador  = get_queried_object();
-			$campaign_id = intval( get_post_meta( $ambassador->ID, 'campaign_id', true ) );
-			if ( $campaign_id ) {
-				set_query_var( 'ambassador', $ambassador->post_name );
-				set_query_var( 'name', get_post_field( 'post_name', $campaign_id ) );
-				return $referral;
-			}
+		$ambassador  = get_queried_object();
+		$campaign_id = intval( get_post_meta( $ambassador->ID, 'campaign_id', true ) );
+		if ( $campaign_id ) {
+			set_query_var( 'ambassador', $ambassador->post_name );
+			set_query_var( 'name', get_post_field( 'post_name', $campaign_id ) );
+			return $referral;
 		}
+		return $template;
+	}
+
+	// Referral link /c/{campaign}/{ambassador}: both query vars present
+	if ( get_query_var( 'ambassador' ) && get_query_var( 'name' ) ) {
+		return $referral;
 	}
 
 	return $template;

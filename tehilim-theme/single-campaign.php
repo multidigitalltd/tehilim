@@ -40,8 +40,9 @@ if ( have_posts() ) :
 			'#B08968',
 		);
 
-		$share_url  = get_permalink();
-		$share_text = get_the_title();
+		$share_url     = get_permalink();
+		$share_text    = get_the_title();
+		$campaign_slug = get_post_field( 'post_name', $campaign_id );
 		?>
 
 <div class="campaign-detail">
@@ -206,7 +207,7 @@ if ( have_posts() ) :
 							$bar       = $max_amb_count > 0 ? round( $amb['count'] / $max_amb_count * 100 ) : 0;
 							$avatar    = $avatar_bg[ $i % count( $avatar_bg ) ];
 							$initial   = function_exists( 'mb_substr' ) ? mb_substr( $amb['name'], 0, 1, 'UTF-8' ) : substr( $amb['name'], 0, 1 );
-							$amb_link  = get_permalink( $amb['id'] );
+							$amb_link  = home_url( '/c/' . $campaign_slug . '/' . get_post_field( 'post_name', $amb['id'] ) );
 							?>
 							<a class="ambassador-row" href="<?php echo esc_url( $amb_link ); ?>">
 								<div class="ambassador-rank"><?php echo esc_html( $rank ); ?></div>
@@ -283,10 +284,11 @@ if ( have_posts() ) :
 				<div class="leaderboard-list">
 					<?php if ( $ambassadors ) : ?>
 						<?php foreach ( $ambassadors as $i => $amb ) :
-							$rank = $i + 1;
-							$bar  = $max_amb_count > 0 ? round( $amb['count'] / $max_amb_count * 100 ) : 0;
+							$rank     = $i + 1;
+							$bar      = $max_amb_count > 0 ? round( $amb['count'] / $max_amb_count * 100 ) : 0;
+							$amb_link = home_url( '/c/' . $campaign_slug . '/' . get_post_field( 'post_name', $amb['id'] ) );
 							?>
-							<div>
+							<a class="leaderboard-btn" href="<?php echo esc_url( $amb_link ); ?>">
 								<div class="leaderboard-row-top">
 									<div class="leaderboard-row-info">
 										<span class="leaderboard-rank"><?php echo esc_html( $rank ); ?></span>
@@ -295,7 +297,7 @@ if ( have_posts() ) :
 									<div class="leaderboard-count"><?php echo esc_html( $amb['count'] ); ?></div>
 								</div>
 								<div class="leaderboard-bar"><div class="leaderboard-bar-fill" style="width:<?php echo esc_attr( $bar ); ?>%"></div></div>
-							</div>
+							</a>
 						<?php endforeach; ?>
 					<?php else : ?>
 						<div class="share-card-desc"><?php esc_html_e( 'אין שגרירים עדיין.', 'tehilim' ); ?></div>

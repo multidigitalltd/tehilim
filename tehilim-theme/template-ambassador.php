@@ -67,7 +67,7 @@ if ( $campaign && $ambassador ) :
 	}
 
 	$initial   = function_exists( 'mb_substr' ) ? mb_substr( $amb_title, 0, 1, 'UTF-8' ) : substr( $amb_title, 0, 1 );
-	$amb_url   = get_permalink( $amb_id );
+	$amb_url   = home_url( '/c/' . $campaign->post_name . '/' . $ambassador->post_name );
 	$campaign_url = get_permalink( $campaign_id );
 	?>
 
@@ -240,11 +240,12 @@ if ( $campaign && $ambassador ) :
 				<div class="leaderboard-list">
 					<?php if ( $ambassadors ) : ?>
 						<?php foreach ( $ambassadors as $i => $amb ) :
-							$rank   = $i + 1;
-							$bar    = $max_amb_count > 0 ? round( $amb['count'] / $max_amb_count * 100 ) : 0;
-							$active = ( $amb['id'] === $amb_id ) ? ' active' : '';
+							$rank     = $i + 1;
+							$bar      = $max_amb_count > 0 ? round( $amb['count'] / $max_amb_count * 100 ) : 0;
+							$active   = ( $amb['id'] === $amb_id ) ? ' active' : '';
+							$row_link = home_url( '/c/' . $campaign->post_name . '/' . get_post_field( 'post_name', $amb['id'] ) );
 							?>
-							<a class="leaderboard-btn<?php echo esc_attr( $active ); ?>" href="<?php echo esc_url( get_permalink( $amb['id'] ) ); ?>">
+							<a class="leaderboard-btn<?php echo esc_attr( $active ); ?>" href="<?php echo esc_url( $row_link ); ?>">
 								<div class="leaderboard-row-top">
 									<div class="leaderboard-row-info">
 										<span class="leaderboard-rank"><?php echo esc_html( $rank ); ?></span>

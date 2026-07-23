@@ -361,17 +361,31 @@ If `TURNSTILE_SITE_KEY` env var set:
 
 ---
 
-## Work Cadence
+## Work Cadence & Completion Status
 
-**Week 1**:
-- Mon: Phases 1–2 (cleanup, scaffold, tokens)
+**COMPLETED**:
+- ✅ **Phase 1a** (b991136): Delete old theme and plugin
+- ✅ **Phase 1b** (2a5095e): Bootstrap tehilim-theme skeleton with 17 files
+- ✅ **CI/QA Fix** (d0812d5): Update .github/workflows/ci.yml for new theme, add CSS reset
+- ✅ **Phase 2** (099e8c7): Design tokens, header/footer scaffolds, responsive CSS (~257 lines added)
+- ✅ **Phase 3 (scaffolded)**: CPT registration (inc/cpt.php), REST endpoints (inc/rest.php), rate-limiting
+
+**READY FOR IMPLEMENTATION**:
+- 🔄 **Phase 4–5** (templates exist, need content): Homepage, archive, campaign detail, ambassador referral
+- 🔄 **Phase 6**: Campaign creation form, ambassador dashboard
+- 🔄 **Phase 7**: Polish, a11y, security audits
+- 🔄 **Phase 8**: Final QA and PR review
+
+**Original Week 1 Plan**:
+- Mon: Phases 1–2 (cleanup, scaffold, tokens) ✅ COMPLETED
 - Tue–Wed: Phases 3–4 (CPT, homepage, archive)
 - Thu–Fri: Phases 5–6 (reader, referral, forms)
 
-**Week 2**:
-- Mon–Tue: Phase 7 (polish, a11y, security)
-- Wed: Phase 8 (CI, testing, PR)
-- Thu–Fri: User feedback loop, final tweaks, merge to main
+**Current State**:
+- Theme skeleton complete and ready for content
+- CI passing (PHP syntax lint)
+- Design system fully integrated
+- All major scaffolding in place (~1500 lines PHP + 400 lines CSS)
 
 ---
 

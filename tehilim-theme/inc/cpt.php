@@ -95,7 +95,7 @@ function tehilim_create_recitations_table() {
 
 	$table_name = $wpdb->prefix . 'tehilim_recitations';
 
-	if ( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) !== $table_name ) {
+	if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table_name ) ) !== $table_name ) {
 		$sql = $wpdb->prepare(
 			"CREATE TABLE `%i` (
 				id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

@@ -80,8 +80,8 @@ function tehilim_settings_page() {
 
 				global $wpdb;
 				$table = $wpdb->prefix . 'tehilim_recitations';
-				$total_recitations = $wpdb->get_var( "SELECT COUNT(*) FROM `$table`" );
-				$total_chapters = $wpdb->get_var( "SELECT COUNT(DISTINCT chapter_number) FROM `$table`" );
+				$total_recitations = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}tehilim_recitations" ) );
+				$total_chapters = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(DISTINCT chapter_number) FROM {$wpdb->prefix}tehilim_recitations" ) );
 				?>
 				<p>
 					<strong><?php echo esc_html( $total_campaigns ); ?></strong> Active Campaigns<br>
@@ -140,7 +140,7 @@ function tehilim_settings_page() {
 					<td>
 						<?php
 						$db_table = $wpdb->prefix . 'tehilim_recitations';
-						if ( $wpdb->get_var( "SHOW TABLES LIKE '$db_table'" ) === $db_table ) {
+						if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $db_table ) ) === $db_table ) {
 							echo '<span style="color: green;">✓ Recitations table exists</span>';
 						} else {
 							echo '<span style="color: red;">✗ Table missing (activate theme to create)</span>';

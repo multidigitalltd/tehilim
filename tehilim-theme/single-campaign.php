@@ -29,14 +29,8 @@ if ( have_posts() ) :
 			}
 		}
 
-		// Participants (distinct reciters)
-		global $wpdb;
-		$rec_table    = $wpdb->prefix . 'tehilim_recitations';
-		$participants = (int) $wpdb->get_var( $wpdb->prepare(
-			"SELECT COUNT(DISTINCT reciter_name) FROM `%i` WHERE campaign_id = %d AND reciter_name IS NOT NULL AND reciter_name <> ''",
-			$rec_table,
-			$campaign_id
-		) );
+		// Participants (distinct reciters, cached helper)
+		$participants = tehilim_get_campaign_participants( $campaign_id );
 
 		// Avatar palette (matches design rank order)
 		$avatar_bg = array(
@@ -75,7 +69,7 @@ if ( have_posts() ) :
 				<?php if ( has_post_thumbnail() ) : ?>
 					<?php the_post_thumbnail( 'large' ); ?>
 				<?php else : ?>
-					<div class="campaign-hero-image-placeholder"><?php esc_html_e( 'תמונת הנצחה / לוגו הקמפיין', 'tehilim' ); ?></div>
+					<div class="campaign-hero-image-placeholder"><?php esc_html_e( 'גררו לכאן תמונת הנצחה / לוגו הקמפיין', 'tehilim' ); ?></div>
 				<?php endif; ?>
 			</div>
 		</div>

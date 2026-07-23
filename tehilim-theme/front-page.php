@@ -7,7 +7,7 @@
 get_header();
 ?>
 
-<main class="site-main">
+<main class="site-main page-anim">
 
 	<!-- Hero Section -->
 	<section class="hero-section">
@@ -190,8 +190,8 @@ get_header();
 			?>
 		</div>
 
-		<div style="text-align: center; margin-top: 34px;">
-			<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>" class="btn-hero-secondary">
+		<div style="text-align: center;">
+			<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>" class="btn-all-campaigns">
 				לכל הקמפיינים
 			</a>
 		</div>
@@ -347,7 +347,7 @@ get_header();
 
 		<div class="testimonials-grid">
 			<div class="testimonial-card">
-				<div class="quote-mark">"</div>
+				<div class="quote-mark">”</div>
 				<p class="testimonial-text">כל הקורא בספר תהילים — מעלה עליו הכתוב כאילו עוסק בכל התורה כולה.</p>
 				<div class="testimonial-author">
 					<div class="author-avatar">מ</div>
@@ -359,7 +359,7 @@ get_header();
 			</div>
 
 			<div class="testimonial-card">
-				<div class="quote-mark">"</div>
+				<div class="quote-mark">”</div>
 				<p class="testimonial-text">אם היו יודעים בני אדם את מעלת אמירת תהילים — היו אומרים אותם בכל עת ובכל שעה.</p>
 				<div class="testimonial-author">
 					<div class="author-avatar">נ</div>
@@ -371,7 +371,7 @@ get_header();
 			</div>
 
 			<div class="testimonial-card">
-				<div class="quote-mark">"</div>
+				<div class="quote-mark">”</div>
 				<p class="testimonial-text">אין לך דבר המעורר את רחמי שמים כאמירת תהילים בציבור מתוך לב שלם.</p>
 				<div class="testimonial-author">
 					<div class="author-avatar">ח</div>
@@ -505,7 +505,7 @@ get_header();
 
 			<div class="cta-content">
 				<!-- Left Column -->
-				<div>
+				<div class="cta-text">
 					<div class="cta-badge">
 						<svg width="14" height="14" viewBox="0 0 24 24" fill="#EFC978">
 							<path d="M12 2l2.4 5.6L20 8l-4.4 4 1.3 6L12 15l-4.9 3 1.3-6L4 8l5.6-.4z"></path>

@@ -18,7 +18,13 @@
 				<span class="footer-brand-name"><?php bloginfo( 'name' ); ?></span>
 			</div>
 			<p class="footer-description">
-				<?php echo esc_html( get_bloginfo( 'description' ) ); ?>
+				<?php
+				$tehilim_footer_desc = get_bloginfo( 'description' );
+				if ( ! $tehilim_footer_desc ) {
+					$tehilim_footer_desc = __( 'פלטפורמה חינמית לאיחוד קהילות סביב אמירת תהילים — כי יחד מגיעים רחוק יותר.', 'tehilim' );
+				}
+				echo esc_html( $tehilim_footer_desc );
+				?>
 			</p>
 			<div class="footer-heart">
 				<svg width="13" height="13" viewBox="0 0 24 24" fill="#C05A3A">

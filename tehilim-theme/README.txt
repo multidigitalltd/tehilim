@@ -54,6 +54,14 @@ GitHub: https://github.com/multidigitalltd/tehilim
 
 == Changelog ==
 
+= 2.1.0 =
+- Pixel-accuracy pass: all six pages audited against the design handoff and corrected (hover states, responsive breakpoints 1024/900/620, footer/CTA/archive structure, dead CSS removed)
+- Live Psalms reader: real menukad chapter text (Sefaria API), Hebrew numeral titles, random/next/pick navigation, communal next-chapter suggestion from the server
+- Live stats: instant UI update after each recitation + 10s polling
+- Campaign creation endpoint (rate-limited, CAPTCHA-ready) with inline Hebrew validation messages
+- Fixed multi-book progress counting; fixed /c/{campaign}/{ambassador} referral routing
+- Ambassador join flow: inline form, personal link with copy button, organizer email notification
+
 = 2.0.1 =
 - CSS/JS cache bust for asset reload
 - Performance and styling refinements

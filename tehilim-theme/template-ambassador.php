@@ -50,7 +50,7 @@ if ( $campaign && $ambassador ) :
 	$amb_chapters    = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE campaign_id = %d AND ambassador_id = %d", $rec_table, $campaign_id, $amb_id ) );
 	$amb_reciters    = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(DISTINCT reciter_name) FROM %i WHERE campaign_id = %d AND ambassador_id = %d AND reciter_name IS NOT NULL AND reciter_name <> ''", $rec_table, $campaign_id, $amb_id ) );
 	$participants    = tehilim_get_campaign_participants( $campaign_id );
-	$amb_ring        = min( 100, round( $amb_chapters / $goal_chapters * 100 ) );
+	$amb_ring        = $amb_chapters > 0 ? max( 1, min( 100, (int) ceil( $amb_chapters / $goal_chapters * 100 ) ) ) : 0;
 
 	// Ambassadors + rank
 	$ambassadors       = tehilim_get_top_ambassadors( $campaign_id, 20 );
@@ -104,16 +104,21 @@ if ( $campaign && $ambassador ) :
 						?>
 					</p>
 					<p class="amb-hero-desc">
-						<?php printf( esc_html__( 'כל פרק שתאמרו כאן נזקף לזכות היעד של %s בקמפיין. יחד מגיעים רחוק יותר.', 'tehilim' ), esc_html( $amb_title ) ); ?>
+						<?php esc_html_e( 'כל פרק שתגידו יצטרף לספר שלם ויעמוד לכם לזכות - כי ביחד אפשר להפוך עולמות!', 'tehilim' ); ?>
 					</p>
 					<div class="amb-hero-actions">
 						<button class="btn-amb-join"><?php esc_html_e( 'הצטרפו ואמרו תהילים', 'tehilim' ); ?></button>
-						<button class="btn-amb-share btn-share" data-share-type="whatsapp" data-share-url="<?php echo esc_url( $amb_url ); ?>" data-share-text="<?php echo esc_attr( $amb_title . ' · ' . $campaign->post_title ); ?>">
+						<button class="btn-amb-share btn-share-modal" data-share-url="<?php echo esc_url( $amb_url ); ?>" data-share-text="<?php echo esc_attr( $amb_title . ' · ' . $campaign->post_title ); ?>">
 							<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#EFC978" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20a8 8 0 1 0-6.9-4L4 20l4-1.1A8 8 0 0 0 12 20z"></path></svg>
 							<?php esc_html_e( 'שתפו הלאה', 'tehilim' ); ?>
 						</button>
 					</div>
 				</div>
+				<?php if ( has_post_thumbnail( $campaign_id ) ) : ?>
+					<div class="amb-hero-image">
+						<?php echo get_the_post_thumbnail( $campaign_id, 'medium_large', array( 'loading' => 'lazy' ) ); ?>
+					</div>
+				<?php endif; ?>
 				<div class="amb-goal-card">
 					<div class="amb-goal-label"><?php printf( esc_html__( 'היעד האישי של %s', 'tehilim' ), esc_html( $amb_title ) ); ?></div>
 					<div class="amb-ring" style="background:conic-gradient(#D9A441 0deg,#C05A3A <?php echo esc_attr( $amb_ring * 3.6 ); ?>deg,#EFE3CF <?php echo esc_attr( $amb_ring * 3.6 ); ?>deg)">
@@ -132,28 +137,8 @@ if ( $campaign && $ambassador ) :
 	<div class="campaign-layout">
 		<div class="campaign-main">
 
-			<!-- Stats row -->
-			<div class="amb-stats-row">
-				<div class="amb-stat">
-					<div class="amb-stat-num"><?php echo esc_html( $amb_chapters ); ?></div>
-					<div class="amb-stat-label"><?php esc_html_e( 'פרקים גויסו', 'tehilim' ); ?></div>
-				</div>
-				<div class="amb-stat">
-					<div class="amb-stat-num"><?php echo esc_html( $amb_reciters ); ?></div>
-					<div class="amb-stat-label"><?php esc_html_e( 'אמרו דרכי', 'tehilim' ); ?></div>
-				</div>
-				<div class="amb-stat">
-					<div class="amb-stat-num"><?php echo esc_html( $amb_rank ); ?><small>/<?php echo esc_html( max( 1, $ambassadors_count ) ); ?></small></div>
-					<div class="amb-stat-label"><?php esc_html_e( 'מקום בדירוג', 'tehilim' ); ?></div>
-				</div>
-			</div>
-
 			<!-- Reader -->
 			<div class="reader-card">
-				<div class="reader-note">
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="#C05A3A"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.6 2 5 5.5 5c2 0 3.4 1.1 4.5 2.6C11 6.1 12.5 5 14.5 5 18 5 19.6 8.6 22 11.7 19.5 16.3 12 21 12 21z"></path></svg>
-					<span><?php printf( esc_html__( 'כל פרק שתסמנו כאן נזקף לזכות %s בקמפיין.', 'tehilim' ), esc_html( $amb_title ) ); ?></span>
-				</div>
 				<div class="reader-head">
 					<div class="reader-head-info">
 						<div class="reader-icon">
@@ -188,6 +173,22 @@ if ( $campaign && $ambassador ) :
 						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFF7F2" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
 						<?php esc_html_e( 'סימנתי שאמרתי', 'tehilim' ); ?>
 					</button>
+				</div>
+			</div>
+
+			<!-- Stats row -->
+			<div class="amb-stats-row">
+				<div class="amb-stat">
+					<div class="amb-stat-num"><?php echo esc_html( $amb_chapters ); ?></div>
+					<div class="amb-stat-label"><?php esc_html_e( 'פרקים גויסו', 'tehilim' ); ?></div>
+				</div>
+				<div class="amb-stat">
+					<div class="amb-stat-num"><?php echo esc_html( $amb_reciters ); ?></div>
+					<div class="amb-stat-label"><?php esc_html_e( 'אמרו דרכי', 'tehilim' ); ?></div>
+				</div>
+				<div class="amb-stat">
+					<div class="amb-stat-num"><?php echo esc_html( $amb_rank ); ?><small>/<?php echo esc_html( max( 1, $ambassadors_count ) ); ?></small></div>
+					<div class="amb-stat-label"><?php esc_html_e( 'מקום בדירוג', 'tehilim' ); ?></div>
 				</div>
 			</div>
 

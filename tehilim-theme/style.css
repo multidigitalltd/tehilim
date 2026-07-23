@@ -3,7 +3,7 @@ Theme Name: Tehilim
 Theme URI: https://github.com/multidigitalltd/tehilim
 Author: Multi Digital
 Description: Community Psalms campaign platform
-Version: 2.7.1
+Version: 2.8.0
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: tehilim
@@ -3572,8 +3572,8 @@ a.btn-login:hover {
 }
 
 .amb-hero-name {
-  font-weight: 900;
-  font-size: 44px;
+  font-weight: 800;
+  font-size: 28px;
   line-height: 1.05;
   margin: 0;
   color: var(--text);
@@ -3586,7 +3586,8 @@ a.btn-login:hover {
 }
 
 .amb-hero-lead {
-  font-size: 19px;
+  font-size: 24px;
+  font-weight: 600;
   color: #33261A;
   margin: 0 0 8px;
   line-height: 1.5;
@@ -4258,5 +4259,138 @@ video {
   .testimonials-grid .testimonial-card {
     flex: 0 0 88%;
     scroll-snap-align: center;
+  }
+}
+
+/* ===== v2.8.0 additions ===== */
+
+/* Campaign image in the ambassador hero */
+.amb-hero-image {
+  width: 210px;
+  flex-shrink: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid #EFE1CC;
+  box-shadow: 0 16px 40px rgba(70, 50, 25, 0.14);
+  align-self: center;
+}
+
+.amb-hero-image img {
+  width: 100%;
+  height: 100%;
+  min-height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .amb-hero-image {
+    width: 100%;
+  }
+
+  .amb-hero-image img {
+    max-height: 220px;
+  }
+}
+
+/* Share modal */
+.tehilim-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  background: rgba(28, 19, 16, 0.55);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: floatIn 0.2s ease both;
+}
+
+.tehilim-modal {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  background: #FFFCF6;
+  border: 1px solid #EFE1CC;
+  border-radius: 22px;
+  padding: 26px 24px 22px;
+  box-shadow: 0 34px 66px -22px rgba(28, 18, 8, 0.6);
+  animation: pop 0.3s ease both;
+  direction: rtl;
+  text-align: right;
+}
+
+.tehilim-modal-close {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-page);
+  color: #7A6B58;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tehilim-modal-close:hover {
+  background: #F6EEDF;
+  color: #A94B2E;
+}
+
+.tehilim-modal-title {
+  font-family: 'Asimon', 'Assistant', sans-serif;
+  font-weight: 900;
+  font-size: 21px;
+  color: #2E2318;
+  margin-bottom: 5px;
+}
+
+.tehilim-modal-sub {
+  font-size: 13.5px;
+  color: #7A6B58;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.tehilim-modal .btn-share-whatsapp,
+.tehilim-modal .btn-share-copy {
+  width: 100%;
+  margin-bottom: 9px;
+}
+
+/* Archive page on mobile */
+@media (max-width: 620px) {
+  .archive-page {
+    padding: 30px 16px 54px;
+  }
+
+  .archive-filters {
+    gap: 8px;
+    margin: 22px 0 26px;
+  }
+
+  .archive-filters .filter-chip {
+    padding: 8px 14px;
+    font-size: 13.5px;
+  }
+
+  .archive-head h1 {
+    font-size: 27px;
+  }
+
+  .amb-hero-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  .amb-goal-card {
+    width: 100%;
   }
 }

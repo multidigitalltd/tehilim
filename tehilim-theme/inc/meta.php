@@ -124,7 +124,11 @@ function tehilim_get_campaign_progress( $campaign_id ) {
 
 	$chapters_in_book = TEHILIM_CHAPTERS_PER_BOOK - count( $available );
 	$credited         = $books_done * TEHILIM_CHAPTERS_PER_BOOK + $chapters_in_book;
-	$progress_percent = min( 100, intdiv( $credited * 100, max( 1, $goal_books ) * TEHILIM_CHAPTERS_PER_BOOK ) );
+
+	// Any real progress must be visible: round UP, so 13/7500 shows 1%, not 0%
+	$progress_percent = $credited > 0
+		? max( 1, min( 100, (int) ceil( $credited * 100 / ( max( 1, $goal_books ) * TEHILIM_CHAPTERS_PER_BOOK ) ) ) )
+		: 0;
 
 	$result = array(
 		'books_done'       => $books_done,
@@ -270,7 +274,7 @@ function tehilim_get_ambassador_stats( $campaign_id, $ambassador_id ) {
 		'rank'              => $rank,
 		'total_ambassadors' => max( 1, count( $all ) ),
 		'goal_chapters'     => $goal_chapters,
-		'ring_percent'      => min( 100, (int) round( $chapters / $goal_chapters * 100 ) ),
+		'ring_percent'      => $chapters > 0 ? max( 1, min( 100, (int) ceil( $chapters / $goal_chapters * 100 ) ) ) : 0,
 	);
 }
 

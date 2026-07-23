@@ -199,14 +199,10 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 function tehilim_build_stats_payload( $campaign_id, $ambassador_id = 0 ) {
 	global $wpdb;
 
-	$table    = $wpdb->prefix . 'tehilim_recitations';
 	$progress = tehilim_get_campaign_progress( $campaign_id );
 
-	$total_ambassadors = (int) $wpdb->get_var( $wpdb->prepare(
-		"SELECT COUNT(DISTINCT ambassador_id) FROM %i WHERE campaign_id = %d AND ambassador_id IS NOT NULL",
-		$table,
-		$campaign_id
-	) );
+	// Count APPROVED ambassadors (cached helper) — not only those with recitations
+	$total_ambassadors = count( tehilim_get_top_ambassadors( $campaign_id, 100 ) );
 
 	$in_book   = intval( $progress['chapters_done'] );
 	$available = isset( $progress['available'] ) && $progress['available']

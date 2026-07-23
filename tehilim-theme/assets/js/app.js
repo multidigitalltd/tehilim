@@ -131,6 +131,13 @@
 					return;
 				}
 
+				var shareModal = e.target.closest( '.btn-share-modal' );
+				if ( shareModal ) {
+					e.preventDefault();
+					self.openShareModal( shareModal.dataset.shareUrl || window.location.href, shareModal.dataset.shareText || '' );
+					return;
+				}
+
 				var share = e.target.closest( '.btn-share' );
 				if ( share ) {
 					e.preventDefault();
@@ -590,6 +597,99 @@
 			var cta = trigger.closest( '.ambassador-cta' ) || trigger.parentElement;
 			cta.parentNode.insertBefore( form, cta.nextSibling );
 			nameInput.focus();
+		},
+
+		/* ============ Share modal (copy / email / WhatsApp) ============ */
+
+		openShareModal: function( url, text ) {
+			var self = this;
+			var existing = document.querySelector( '.tehilim-modal-overlay' );
+			if ( existing ) { existing.remove(); }
+
+			var overlay = document.createElement( 'div' );
+			overlay.className = 'tehilim-modal-overlay';
+
+			var modal = document.createElement( 'div' );
+			modal.className = 'tehilim-modal';
+			modal.setAttribute( 'role', 'dialog' );
+			modal.setAttribute( 'aria-label', 'שיתוף' );
+
+			var close = document.createElement( 'button' );
+			close.type = 'button';
+			close.className = 'tehilim-modal-close';
+			close.setAttribute( 'aria-label', 'סגירה' );
+			close.textContent = '✕';
+
+			var title = document.createElement( 'div' );
+			title.className = 'tehilim-modal-title';
+			title.textContent = 'שתפו את העמוד';
+
+			var sub = document.createElement( 'div' );
+			sub.className = 'tehilim-modal-sub';
+			sub.textContent = 'כל מי שייכנס דרך הקישור מצטרף למניין שלכם';
+
+			function makeBtn( className, label, svgPath, fill ) {
+				var b = document.createElement( 'button' );
+				b.type = 'button';
+				b.className = className;
+				var svg = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' );
+				svg.setAttribute( 'width', '18' );
+				svg.setAttribute( 'height', '18' );
+				svg.setAttribute( 'viewBox', '0 0 24 24' );
+				svg.setAttribute( 'fill', 'none' );
+				var p = document.createElementNS( 'http://www.w3.org/2000/svg', 'path' );
+				p.setAttribute( 'd', svgPath );
+				p.setAttribute( 'stroke', fill );
+				p.setAttribute( 'stroke-width', '1.9' );
+				p.setAttribute( 'stroke-linecap', 'round' );
+				p.setAttribute( 'stroke-linejoin', 'round' );
+				svg.appendChild( p );
+				b.appendChild( svg );
+				b.appendChild( document.createTextNode( ' ' + label ) );
+				return b;
+			}
+
+			var waBtn = makeBtn( 'btn-share-whatsapp', 'שיתוף ב-WhatsApp', 'M12 20a8 8 0 1 0-6.9-4L4 20l4-1.1A8 8 0 0 0 12 20z', '#EFC978' );
+			waBtn.addEventListener( 'click', function() {
+				window.open( 'https://wa.me/?text=' + encodeURIComponent( text + '\n' + url ), '_blank', 'noopener' );
+			} );
+
+			var mailBtn = makeBtn( 'btn-share-copy', 'שיתוף במייל', 'M3 6h18v12H3zM3 7l9 6 9-6', '#A94B2E' );
+			mailBtn.addEventListener( 'click', function() {
+				window.location.href = 'mailto:?subject=' + encodeURIComponent( text || 'הזמנה לאמירת תהילים' ) + '&body=' + encodeURIComponent( text + '\n' + url );
+			} );
+
+			var copyBtn = makeBtn( 'btn-share-copy', 'העתקת קישור', 'M9 9h12v12H9zM5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1', '#A94B2E' );
+			copyBtn.addEventListener( 'click', function() {
+				navigator.clipboard.writeText( url ).then( function() {
+					copyBtn.textContent = '✓ הקישור הועתק!';
+					window.setTimeout( function() { overlay.remove(); }, 900 );
+				} ).catch( function() {
+					window.prompt( 'העתיקו את הקישור:', url );
+				} );
+			} );
+
+			modal.appendChild( close );
+			modal.appendChild( title );
+			modal.appendChild( sub );
+			modal.appendChild( waBtn );
+			modal.appendChild( mailBtn );
+			modal.appendChild( copyBtn );
+			overlay.appendChild( modal );
+			document.body.appendChild( overlay );
+
+			function shut() {
+				overlay.remove();
+				document.removeEventListener( 'keydown', onKey );
+			}
+			function onKey( ev ) {
+				if ( 'Escape' === ev.key ) { shut(); }
+			}
+			close.addEventListener( 'click', shut );
+			overlay.addEventListener( 'click', function( ev ) {
+				if ( ev.target === overlay ) { shut(); }
+			} );
+			document.addEventListener( 'keydown', onKey );
 		},
 
 		/* ============ Sharing ============ */

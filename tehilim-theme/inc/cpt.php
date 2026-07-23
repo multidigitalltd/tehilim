@@ -73,8 +73,19 @@ function tehilim_insert_default_occasions() {
 	);
 
 	foreach ( $occasions as $slug => $name ) {
-		if ( ! term_exists( $slug, 'occasion' ) ) {
+		$existing = term_exists( $slug, 'occasion' );
+
+		if ( ! $existing ) {
 			wp_insert_term( $name, 'occasion', array( 'slug' => $slug ) );
+			continue;
+		}
+
+		// Legacy installs may carry English names (e.g. "Healing (Refua)") —
+		// normalize them to the Hebrew names once.
+		$term_id = is_array( $existing ) ? intval( $existing['term_id'] ) : intval( $existing );
+		$term    = get_term( $term_id, 'occasion' );
+		if ( $term && ! is_wp_error( $term ) && $term->name !== $name ) {
+			wp_update_term( $term_id, 'occasion', array( 'name' => $name ) );
 		}
 	}
 }

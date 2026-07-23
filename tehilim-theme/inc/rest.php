@@ -121,9 +121,8 @@ function tehilim_verify_turnstile( $token ) {
  * Handle recitation endpoint
  */
 function tehilim_handle_recitation( WP_REST_Request $request ) {
-	if ( ! tehilim_check_rate_limit( 'recitations', TEHILIM_RATE_LIMIT_RECITATIONS, TEHILIM_RATE_LIMIT_WINDOW ) ) {
-		return new WP_Error( 'rate_limit', 'Too many requests', array( 'status' => 429 ) );
-	}
+	// No rate limit here by design: saying many chapters in a row is the whole
+	// point. Turnstile (when configured) still guards against bots.
 
 	$params = $request->get_json_params();
 

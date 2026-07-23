@@ -16,7 +16,7 @@ $campaigns = get_posts( array(
 	'post_type'      => 'campaign',
 	'author'         => $user->ID,
 	'posts_per_page' => -1,
-	'post_status'    => 'publish',
+	'post_status'    => array( 'publish', 'pending' ),
 	'orderby'        => 'date',
 	'order'          => 'DESC',
 ) );
@@ -116,6 +116,9 @@ foreach ( $campaigns as $c ) {
 						<div>
 							<div class="account-camp-title"><?php echo esc_html( $c->post_title ); ?></div>
 							<div class="account-camp-meta">
+								<?php if ( 'pending' === $c->post_status ) : ?>
+									<span class="account-camp-waiting"><?php esc_html_e( 'ממתין לאישור מנהל', 'tehilim' ); ?></span>
+								<?php endif; ?>
 								<?php if ( $occ_name ) : ?><span class="account-camp-occ"><?php echo esc_html( $occ_name ); ?></span><?php endif; ?>
 								<span><?php printf( esc_html__( 'נפתח ב-%s', 'tehilim' ), esc_html( date_i18n( 'j.n.Y', strtotime( $c->post_date ) ) ) ); ?></span>
 							</div>

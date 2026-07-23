@@ -334,10 +334,11 @@ function tehilim_handle_campaign_create( WP_REST_Request $request ) {
 		return new WP_Error( 'invalid_occasion', 'Occasion not found', array( 'status' => 400 ) );
 	}
 
+	// New campaigns await site-admin approval before going live
 	$campaign_id = wp_insert_post( array(
 		'post_type'   => 'campaign',
 		'post_title'  => $dedication_name,
-		'post_status' => 'publish',
+		'post_status' => 'pending',
 		'post_author' => get_current_user_id(),
 	), true );
 
@@ -362,13 +363,31 @@ function tehilim_handle_campaign_create( WP_REST_Request $request ) {
 		tehilim_attach_image_from_data_url( $campaign_id, $params['image_data'] );
 	}
 
+	// Notify the site admin that a campaign awaits approval
+	$admin_email = get_option( 'admin_email' );
+	if ( $admin_email && is_email( $admin_email ) ) {
+		wp_mail(
+			$admin_email,
+			sprintf( 'קמפיין חדש ממתין לאישור: "%s"', $dedication_name ),
+			sprintf(
+				"קמפיין חדש נוצר באתר וממתין לאישורך.\n\nשם ההקדשה: %s\nמארגן: %s\nיעד: %d ספרים\n\nלאישור ופרסום:\n%s\n\nלכל הקמפיינים הממתינים:\n%s",
+				$dedication_name,
+				$organizer_name,
+				$goal_books,
+				admin_url( 'post.php?post=' . $campaign_id . '&action=edit' ),
+				admin_url( 'edit.php?post_status=pending&post_type=campaign' )
+			)
+		);
+	}
+
 	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
 	header( 'Pragma: no-cache' );
 
 	return array(
-		'success'      => true,
-		'campaign_id'  => $campaign_id,
-		'campaign_url' => esc_url_raw( get_permalink( $campaign_id ) ),
+		'success'     => true,
+		'pending'     => true,
+		'campaign_id' => $campaign_id,
+		'account_url' => esc_url_raw( function_exists( 'tehilim_account_page_url' ) ? tehilim_account_page_url() : home_url( '/' ) ),
 	);
 }
 

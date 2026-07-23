@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const TEHILIM_VERSION = '2.10.1';
+const TEHILIM_VERSION = '2.11.0';
 
 /**
  * Theme Setup

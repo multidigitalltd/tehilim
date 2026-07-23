@@ -335,6 +335,13 @@
 
 			this.apiPost( 'campaigns', body )
 				.then( function( data ) {
+					if ( data.pending ) {
+						self.showMessage( form, 'הקמפיין מוכן וממתין לאישור מנהל! תקבלו מייל ברגע שהוא יאושר ויעלה לאוויר. מעבירים אתכם לאזור האישי…' );
+						window.setTimeout( function() {
+							window.location.href = data.account_url || '/';
+						}, 2600 );
+						return;
+					}
 					self.showMessage( form, 'הקמפיין נוצר בהצלחה! מעבירים אתכם לעמוד הקמפיין…' );
 					window.setTimeout( function() {
 						window.location.href = data.campaign_url;

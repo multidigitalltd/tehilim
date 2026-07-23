@@ -173,6 +173,46 @@ function tehilim_no_cache_live_pages() {
 add_action( 'template_redirect', 'tehilim_no_cache_live_pages', 1 );
 
 /**
+ * When an admin approves (publishes) a pending campaign, email its creator
+ * that the campaign is live. Sent once per campaign.
+ */
+function tehilim_notify_campaign_approved( $new_status, $old_status, $post ) {
+	if ( 'campaign' !== $post->post_type || 'publish' !== $new_status || 'publish' === $old_status ) {
+		return;
+	}
+
+	if ( get_post_meta( $post->ID, '_tehilim_approved_mail_sent', true ) ) {
+		return;
+	}
+
+	// Demo/seeded content never mails anyone
+	if ( get_post_meta( $post->ID, '_tehilim_demo', true ) ) {
+		return;
+	}
+
+	$owner_email = function_exists( 'tehilim_campaign_owner_email' ) ? tehilim_campaign_owner_email( $post->ID ) : '';
+	if ( ! $owner_email ) {
+		$author      = get_userdata( intval( $post->post_author ) );
+		$owner_email = ( $author && is_email( $author->user_email ) ) ? $author->user_email : '';
+	}
+
+	if ( $owner_email ) {
+		wp_mail(
+			$owner_email,
+			sprintf( 'הקמפיין "%s" אושר ועלה לאוויר!', $post->post_title ),
+			sprintf(
+				"בשורה טובה — מנהל האתר אישר את הקמפיין שלכם והוא כבר באוויר!\n\nעמוד הקמפיין (העתיקו ושתפו עם כולם):\n%s\n\nניהול הקמפיין באזור האישי:\n%s\n\nשיהיה בהצלחה — שהתפילות יתקבלו!",
+				get_permalink( $post->ID ),
+				function_exists( 'tehilim_account_page_url' ) ? tehilim_account_page_url() : home_url( '/' )
+			)
+		);
+	}
+
+	update_post_meta( $post->ID, '_tehilim_approved_mail_sent', 1 );
+}
+add_action( 'transition_post_status', 'tehilim_notify_campaign_approved', 10, 3 );
+
+/**
  * Flush rewrite rules on theme activation (so /c/... works immediately)
  */
 function tehilim_flush_rewrites_on_activation() {

@@ -247,8 +247,10 @@ function tehilim_get_campaign_stats( WP_REST_Request $request ) {
 		return new WP_Error( 'not_found', 'Campaign not found', array( 'status' => 404 ) );
 	}
 
-	// Short cache for stats (30 seconds) since data updates frequently
-	header( 'Cache-Control: public, max-age=30' );
+	// Never cache: the client polls this for live progress, and any HTTP-level
+	// caching makes counters appear frozen after a recitation
+	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+	header( 'Pragma: no-cache' );
 
 	return tehilim_build_stats_payload( $campaign_id, absint( $request->get_param( 'ambassador_id' ) ) );
 }

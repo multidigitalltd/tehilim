@@ -308,15 +308,25 @@
 
 			this.apiPost( 'recitations', body )
 				.then( function( data ) {
-					var next = data.chapter_number || ( ( chapterNumber % CHAPTERS ) + 1 );
-					self.showToast( 'פרק ' + self.hebrewNumeral( chapterNumber ) + ' נרשם — תודה! הפרק הבא שלכם: פרק ' + self.hebrewNumeral( next ) );
+					// Apply fresh stats first — this also refreshes the open-chapters list
 					if ( data.stats ) {
 						self.updateStatsUI( data.stats );
 					}
+
+					// Next chapter: RANDOM from the chapters still open in this book
+					var next = self.randomAvailable();
+					if ( ! next || next === chapterNumber ) {
+						next = data.chapter_number || ( ( chapterNumber % CHAPTERS ) + 1 );
+					}
+
+					self.showToast( 'פרק ' + self.hebrewNumeral( chapterNumber ) + ' נרשם — תודה! הפרק הבא שלכם: פרק ' + self.hebrewNumeral( next ) );
 					if ( window.turnstile && self.turnstileWidgetId !== null ) {
 						window.turnstile.reset( self.turnstileWidgetId );
 					}
 					button.innerHTML = original;
+
+					// Verification refresh shortly after (beats any proxy-level caching)
+					window.setTimeout( function() { self.fetchStats(); }, 1500 );
 
 					// Load the fresh chapter immediately and make the swap obvious:
 					// scroll the reader back into view and pulse it
@@ -387,26 +397,38 @@
 
 		/* ============ Live stats ============ */
 
-		startStatsPolling: function() {
+		/* One fresh, cache-busted stats fetch (used by polling and after recitations) */
+		fetchStats: function() {
 			var holder = document.querySelector( '[data-campaign-id]' );
-			if ( ! holder || ! document.querySelector( '.reader-card' ) ) {
-				return;
-			}
-			var campaignId = holder.dataset.campaignId;
+			if ( ! holder ) { return; }
 			var self = this;
 
-			// On ambassador pages, ask for ambassador-scoped stats too
-			var ambBtn = document.querySelector( '.btn-say-chapter[data-ambassador-id]' );
-			var statsPath = 'campaigns/' + campaignId + '/stats' + ( ambBtn ? '?ambassador_id=' + ambBtn.dataset.ambassadorId : '' );
+			var path = 'campaigns/' + holder.dataset.campaignId + '/stats';
+			var url = this.apiUrl + path;
+			var sep = url.indexOf( '?' ) !== -1 ? '&' : '?';
+			url += sep + '_=' + new Date().getTime();
 
+			var ambBtn = document.querySelector( '.btn-say-chapter[data-ambassador-id]' );
+			if ( ambBtn ) {
+				url += '&ambassador_id=' + ambBtn.dataset.ambassadorId;
+			}
+
+			fetch( url, { cache: 'no-store' } )
+				.then( function( r ) { return r.ok ? r.json() : null; } )
+				.then( function( stats ) {
+					if ( stats ) { self.updateStatsUI( stats ); }
+				} )
+				.catch( function() {} );
+		},
+
+		startStatsPolling: function() {
+			if ( ! document.querySelector( '[data-campaign-id]' ) || ! document.querySelector( '.reader-card' ) ) {
+				return;
+			}
+			var self = this;
 			this.pollTimer = window.setInterval( function() {
 				if ( document.hidden ) { return; }
-				fetch( self.apiUrl + statsPath )
-					.then( function( r ) { return r.ok ? r.json() : null; } )
-					.then( function( stats ) {
-						if ( stats ) { self.updateStatsUI( stats ); }
-					} )
-					.catch( function() {} );
+				self.fetchStats();
 			}, 10000 );
 		},
 

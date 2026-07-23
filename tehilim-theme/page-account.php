@@ -38,6 +38,7 @@ foreach ( $campaigns as $c ) {
 		'progress'    => $p,
 		'ambassadors' => count( $ambs ),
 		'participants' => tehilim_get_campaign_participants( $c->ID ),
+		'pending'     => tehilim_get_pending_ambassadors( $c->ID ),
 	);
 	$agg_chapters += intval( $p['total_chapters'] );
 	$agg_books    += intval( $p['books_done'] );
@@ -135,6 +136,28 @@ foreach ( $campaigns as $c ) {
 						<button type="button" class="btn-account-share btn-share" data-share-type="copy" data-share-url="<?php echo esc_url( $c_url ); ?>"><?php esc_html_e( 'העתקת קישור', 'tehilim' ); ?></button>
 						<button type="button" class="btn-account-edit" data-edit-toggle><?php esc_html_e( 'ניהול ועריכה', 'tehilim' ); ?></button>
 					</div>
+
+					<?php if ( $d['pending'] ) : ?>
+						<div class="account-pending">
+							<div class="account-pending-title">
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B9822B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg>
+								<?php printf( esc_html__( 'בקשות שגרירים ממתינות לאישור (%d)', 'tehilim' ), count( $d['pending'] ) ); ?>
+							</div>
+							<?php foreach ( $d['pending'] as $req ) : ?>
+								<div class="account-pending-row">
+									<div class="account-pending-info">
+										<b><?php echo esc_html( $req['name'] ); ?></b>
+										<span dir="ltr"><?php echo esc_html( $req['email'] ); ?></span>
+										<span><?php echo esc_html( date_i18n( 'j.n.Y', strtotime( $req['date'] ) ) ); ?></span>
+									</div>
+									<div class="account-pending-actions">
+										<button type="button" class="btn-pending-approve" data-amb-action="approve" data-ambassador-id="<?php echo esc_attr( $req['id'] ); ?>"><?php esc_html_e( 'אישור', 'tehilim' ); ?></button>
+										<button type="button" class="btn-pending-reject" data-amb-action="reject" data-ambassador-id="<?php echo esc_attr( $req['id'] ); ?>"><?php esc_html_e( 'דחייה', 'tehilim' ); ?></button>
+									</div>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					<?php endif; ?>
 
 					<!-- Inline edit panel -->
 					<form class="form-campaign-edit account-edit" data-campaign-id="<?php echo esc_attr( $c->ID ); ?>" hidden>

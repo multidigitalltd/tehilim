@@ -182,32 +182,72 @@ function tehilim_get_top_ambassadors( $campaign_id, $limit = 3 ) {
 
 	$table = $wpdb->prefix . 'tehilim_recitations';
 
-	$results = $wpdb->get_results( $wpdb->prepare(
-		"SELECT ambassador_id, COUNT(*) as count FROM `%i`
-		 WHERE campaign_id = %d AND ambassador_id IS NOT NULL
-		 GROUP BY ambassador_id
-		 ORDER BY count DESC
-		 LIMIT %d",
-		$table,
-		$campaign_id,
-		$limit
+	// Every APPROVED ambassador appears, including those with no recitations yet
+	$posts = get_posts( array(
+		'post_type'      => 'ambassador',
+		'post_status'    => 'publish',
+		'posts_per_page' => -1,
+		'meta_key'       => 'campaign_id',
+		'meta_value'     => $campaign_id,
 	) );
 
-	$ambassadors = array();
-	foreach ( $results as $row ) {
-		$ambassador = get_post( $row->ambassador_id );
-		if ( $ambassador ) {
-			$ambassadors[] = array(
-				'id'    => $ambassador->ID,
-				'name'  => $ambassador->post_title,
-				'count' => intval( $row->count ),
-			);
-		}
+	$counts = array();
+	$rows   = $wpdb->get_results( $wpdb->prepare(
+		"SELECT ambassador_id, COUNT(*) as count FROM `%i`
+		 WHERE campaign_id = %d AND ambassador_id IS NOT NULL
+		 GROUP BY ambassador_id",
+		$table,
+		$campaign_id
+	) );
+	foreach ( $rows as $row ) {
+		$counts[ intval( $row->ambassador_id ) ] = intval( $row->count );
 	}
+
+	$ambassadors = array();
+	foreach ( $posts as $post ) {
+		$ambassadors[] = array(
+			'id'    => $post->ID,
+			'name'  => $post->post_title,
+			'count' => isset( $counts[ $post->ID ] ) ? $counts[ $post->ID ] : 0,
+		);
+	}
+
+	usort( $ambassadors, function( $a, $b ) {
+		return $b['count'] - $a['count'];
+	} );
+
+	$ambassadors = array_slice( $ambassadors, 0, $limit );
 
 	set_transient( $cache_key, $ambassadors, 300 );
 
 	return $ambassadors;
+}
+
+/**
+ * Pending ambassador join requests for a campaign (awaiting owner approval)
+ */
+function tehilim_get_pending_ambassadors( $campaign_id ) {
+	$posts = get_posts( array(
+		'post_type'      => 'ambassador',
+		'post_status'    => 'pending',
+		'posts_per_page' => -1,
+		'meta_key'       => 'campaign_id',
+		'meta_value'     => $campaign_id,
+		'orderby'        => 'date',
+		'order'          => 'ASC',
+	) );
+
+	$pending = array();
+	foreach ( $posts as $post ) {
+		$pending[] = array(
+			'id'    => $post->ID,
+			'name'  => $post->post_title,
+			'email' => get_post_meta( $post->ID, 'email', true ),
+			'date'  => $post->post_date,
+		);
+	}
+
+	return $pending;
 }
 
 /**

@@ -3,7 +3,7 @@ Theme Name: Tehilim
 Theme URI: https://github.com/multidigitalltd/tehilim
 Author: Multi Digital
 Description: Community Psalms campaign platform
-Version: 2.4.0
+Version: 2.5.0
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: tehilim
@@ -2917,6 +2917,114 @@ a.btn-dashboard-secondary:active {
   .account-camp-actions .btn-account-edit {
     flex: 1;
   }
+}
+
+/* Ambassador join form — single row under the CTA */
+.tehilim-join-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  background: #FFFFFF;
+  border: 1px solid #EADCC6;
+  border-radius: 16px;
+  padding: 14px 16px;
+  box-shadow: 0 8px 22px rgba(70, 50, 25, 0.06);
+}
+
+.tehilim-join-form .reader-name-input {
+  flex: 1;
+  min-width: 170px;
+  margin: 0;
+}
+
+.tehilim-join-form .btn-reader-said {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.tehilim-join-form .tehilim-form-msg {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+/* Pending ambassador requests (personal area) */
+.account-pending {
+  margin-top: 16px;
+  background: #FBF3E4;
+  border: 1px solid #EED9B2;
+  border-radius: 16px;
+  padding: 16px 18px;
+}
+
+.account-pending-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 14.5px;
+  color: #B9822B;
+  margin-bottom: 12px;
+}
+
+.account-pending-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 0;
+  border-top: 1px solid #F0E2C4;
+}
+
+.account-pending-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 13.5px;
+  color: #6B5D4C;
+}
+
+.account-pending-info b {
+  color: #2E2318;
+  font-size: 14.5px;
+}
+
+.account-pending-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-pending-approve {
+  padding: 8px 18px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #4E8B5E, #3E7050);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13.5px;
+  box-shadow: 0 6px 14px -6px rgba(62, 112, 80, 0.6);
+}
+
+.btn-pending-approve:hover {
+  transform: translateY(-1px);
+  color: #fff;
+}
+
+.btn-pending-reject {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1.5px solid #E8C4B4;
+  background: #FFFCF6;
+  color: #A03C22;
+  font-weight: 700;
+  font-size: 13.5px;
+}
+
+.btn-pending-reject:hover {
+  background: #FBEAE4;
+  color: #A03C22;
 }
 
 /* ========== Login Page ========== */

@@ -103,6 +103,21 @@ function tehilim_ensure_theme_pages() {
 }
 add_action( 'after_switch_theme', 'tehilim_ensure_theme_pages', 5 );
 
+/**
+ * Heal after in-place theme updates: uploading a new ZIP over the active
+ * theme never fires after_switch_theme, so required pages and rewrite rules
+ * would be missing. Runs once per theme version.
+ */
+function tehilim_maybe_upgrade() {
+	if ( get_option( 'tehilim_setup_version' ) === TEHILIM_VERSION ) {
+		return;
+	}
+	tehilim_ensure_theme_pages();
+	flush_rewrite_rules();
+	update_option( 'tehilim_setup_version', TEHILIM_VERSION );
+}
+add_action( 'init', 'tehilim_maybe_upgrade', 99 );
+
 /* ========================================================================
  * Google OAuth (server-side authorization-code flow, no SDK)
  * Redirect URI to register in Google Console:

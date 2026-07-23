@@ -38,6 +38,11 @@
 					var panel = card && card.querySelector( '.form-campaign-edit' );
 					if ( panel ) { panel.hidden = ! panel.hidden; }
 				}
+
+				var moderate = e.target.closest( '[data-amb-action]' );
+				if ( moderate ) {
+					self.handleAmbassadorModerate( moderate );
+				}
 			} );
 
 			// Personal area: image file selection inside an edit panel
@@ -169,6 +174,9 @@
 				create_failed: 'יצירת הקמפיין נכשלה בשרת. נסו שוב.',
 				login_required: 'יש להתחבר כדי לפתוח קמפיין. מעבירים אתכם להתחברות…',
 				rest_no_route: 'נקודת הקצה לא נמצאה — ודאו שערכת הנושא פעילה ורעננו קישורים קבועים.',
+				already_requested: 'כבר קיימת בקשה עם האימייל הזה לקמפיין. המתינו לאישור המנהל.',
+				db_error: 'שגיאת שרת בשמירה. נסו שוב בעוד רגע.',
+				forbidden: 'אין לכם הרשאה לנהל את הקמפיין הזה.',
 			};
 			if ( data && map[ data.code ] ) {
 				return map[ data.code ];
@@ -176,6 +184,41 @@
 			// Unmapped error: append the code so the problem is diagnosable
 			var suffix = data && data.code ? ' [' + data.code + ']' : '';
 			return fallback + suffix;
+		},
+
+		/* ============ Ambassador moderation (personal area) ============ */
+
+		handleAmbassadorModerate: function( button ) {
+			var self = this;
+			var ambassadorId = parseInt( button.dataset.ambassadorId, 10 );
+			var action = button.dataset.ambAction;
+			if ( ! ambassadorId || ! action ) { return; }
+
+			if ( 'reject' === action && ! window.confirm( 'לדחות את בקשת השגריר הזו?' ) ) {
+				return;
+			}
+
+			var row = button.closest( '.account-pending-row' );
+			button.disabled = true;
+			button.textContent = 'מעבדים…';
+
+			this.apiPost( 'ambassadors/' + ambassadorId + '/moderate', { action: action } )
+				.then( function() {
+					if ( row ) {
+						row.style.cssText = 'opacity:.55;pointer-events:none';
+						row.querySelectorAll( 'button' ).forEach( function( b ) { b.remove(); } );
+						var note = document.createElement( 'span' );
+						note.style.cssText = 'font-weight:700;font-size:13px;color:' + ( 'approve' === action ? '#4E8B5E' : '#A03C22' );
+						note.textContent = 'approve' === action ? '✓ אושר — נשלח מייל לשגריר' : 'נדחה';
+						row.appendChild( note );
+					}
+					window.setTimeout( function() { window.location.reload(); }, 1400 );
+				} )
+				.catch( function( err ) {
+					button.disabled = false;
+					button.textContent = 'approve' === action ? 'אישור' : 'דחייה';
+					window.alert( self.restError( err, 'הפעולה נכשלה. נסו שוב.' ) );
+				} );
 		},
 
 		/* ============ Ambassador join ============ */
@@ -201,8 +244,8 @@
 				name: nameInput.value.trim(),
 				email: emailInput.value.trim(),
 			} )
-				.then( function( data ) {
-					self.renderJoinSuccess( form, data.personal_url );
+				.then( function() {
+					self.renderJoinPending( form );
 				} )
 				.catch( function( err ) {
 					submitBtn.disabled = false;
@@ -211,31 +254,26 @@
 				} );
 		},
 
-		renderJoinSuccess: function( form, personalUrl ) {
+		/* Styled "request sent" confirmation replacing the join form */
+		renderJoinPending: function( form ) {
 			form.textContent = '';
-			form.style.cssText = 'display:flex;flex-direction:column;gap:10px';
+			form.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:8px;background:#EAF3EC;border:1px solid #CFE6D5;border-radius:16px;padding:22px 24px;text-align:center';
+
+			var icon = document.createElement( 'div' );
+			icon.style.cssText = 'width:44px;height:44px;border-radius:50%;background:#4E8B5E;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:800';
+			icon.textContent = '✓';
 
 			var title = document.createElement( 'div' );
-			title.style.cssText = 'font-weight:800;font-size:16px;color:#4E8B5E';
-			title.textContent = 'ברוכים הבאים! זה הקישור האישי שלכם:';
+			title.style.cssText = 'font-weight:800;font-size:17px;color:#2E2318';
+			title.textContent = 'הבקשה נשלחה למנהל הקמפיין!';
 
-			var linkBox = document.createElement( 'div' );
-			linkBox.style.cssText = 'padding:12px 16px;border-radius:12px;background:#FBF3E4;border:1px dashed #D9C4A3;color:#B9822B;font-weight:700;font-size:13.5px;word-break:break-all;direction:ltr;text-align:left';
-			linkBox.textContent = personalUrl;
+			var sub = document.createElement( 'div' );
+			sub.style.cssText = 'font-size:14px;color:#4E8B5E;font-weight:600;line-height:1.6;max-width:420px';
+			sub.textContent = 'לאחר שהבקשה תאושר, יישלח אליכם מייל עם הקישור לעמוד האישי שלכם וקישור מוכן לשיתוף.';
 
-			var copyBtn = document.createElement( 'button' );
-			copyBtn.type = 'button';
-			copyBtn.className = 'btn-reader-said';
-			copyBtn.textContent = 'העתקת הקישור';
-			copyBtn.addEventListener( 'click', function() {
-				navigator.clipboard.writeText( personalUrl ).then( function() {
-					copyBtn.textContent = '✓ הועתק';
-				} );
-			} );
-
+			form.appendChild( icon );
 			form.appendChild( title );
-			form.appendChild( linkBox );
-			form.appendChild( copyBtn );
+			form.appendChild( sub );
 		},
 
 		/* ============ Campaign creation ============ */

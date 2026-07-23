@@ -156,32 +156,48 @@ function tehilim_flush_rewrites_on_activation() {
 add_action( 'after_switch_theme', 'tehilim_flush_rewrites_on_activation' );
 
 /**
- * Create recitations table on theme activation
+ * Create (and heal) the recitations table.
+ *
+ * Deliberately avoids dbDelta + FOREIGN KEY: dbDelta does not support FK
+ * clauses and can silently fail to create the table on many hosts. Plain
+ * indexes are sufficient here.
  */
-function tehilim_create_recitations_table() {
+function tehilim_create_recitations_table( $force = false ) {
 	global $wpdb;
 
-	$table_name = $wpdb->prefix . 'tehilim_recitations';
+	if ( ! $force && get_transient( 'tehilim_table_ok' ) ) {
+		return;
+	}
 
-	if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table_name ) ) !== $table_name ) {
-		$sql = $wpdb->prepare(
-			"CREATE TABLE `%i` (
-				id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-				campaign_id BIGINT UNSIGNED NOT NULL,
-				ambassador_id BIGINT UNSIGNED,
-				chapter_number INT UNSIGNED NOT NULL,
-				reciter_name VARCHAR(255),
-				created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-				FOREIGN KEY (campaign_id) REFERENCES `%i`(ID) ON DELETE CASCADE,
-				INDEX (campaign_id),
-				INDEX (ambassador_id)
-			)",
-			$table_name,
-			$wpdb->posts
+	$table   = $wpdb->prefix . 'tehilim_recitations';
+	$charset = $wpdb->get_charset_collate();
+
+	$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$table}` (
+		id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+		campaign_id BIGINT UNSIGNED NOT NULL,
+		ambassador_id BIGINT UNSIGNED NULL,
+		chapter_number INT UNSIGNED NOT NULL,
+		reciter_name VARCHAR(255) NULL,
+		created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		KEY campaign_id (campaign_id),
+		KEY ambassador_id (ambassador_id)
+	) {$charset}" );
+
+	// Heal legacy tables (created by the old plugin) that miss newer columns
+	$existing = $wpdb->get_col( "SHOW COLUMNS FROM `{$table}`" );
+	if ( $existing ) {
+		$needed = array(
+			'ambassador_id'  => "ALTER TABLE `{$table}` ADD COLUMN ambassador_id BIGINT UNSIGNED NULL, ADD KEY ambassador_id (ambassador_id)",
+			'chapter_number' => "ALTER TABLE `{$table}` ADD COLUMN chapter_number INT UNSIGNED NOT NULL DEFAULT 1",
+			'reciter_name'   => "ALTER TABLE `{$table}` ADD COLUMN reciter_name VARCHAR(255) NULL",
+			'created_at'     => "ALTER TABLE `{$table}` ADD COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP",
 		);
-
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		dbDelta( $sql );
+		foreach ( $needed as $col => $sql ) {
+			if ( ! in_array( $col, $existing, true ) ) {
+				$wpdb->query( $sql );
+			}
+		}
+		set_transient( 'tehilim_table_ok', 1, DAY_IN_SECONDS );
 	}
 }
 add_action( 'init', 'tehilim_create_recitations_table' );

@@ -61,9 +61,19 @@ function tehilim_settings_page() {
 
 		update_option( 'tehilim_site_description', sanitize_text_field( $_POST['site_description'] ?? '' ) );
 		update_option( 'tehilim_enable_turnstile', isset( $_POST['enable_turnstile'] ) ? 1 : 0 );
-		update_option( 'tehilim_google_client_id', sanitize_text_field( $_POST['google_client_id'] ?? '' ) );
-		if ( ! empty( $_POST['google_client_secret'] ) ) {
-			update_option( 'tehilim_google_client_secret', sanitize_text_field( $_POST['google_client_secret'] ) );
+
+		// Google credentials: never wipe on an empty field — an admin saving an
+		// unrelated setting must not disable Google sign-in. Explicit disconnect only.
+		if ( ! empty( $_POST['google_disconnect'] ) ) {
+			delete_option( 'tehilim_google_client_id' );
+			delete_option( 'tehilim_google_client_secret' );
+		} else {
+			if ( ! empty( $_POST['google_client_id'] ) ) {
+				update_option( 'tehilim_google_client_id', sanitize_text_field( $_POST['google_client_id'] ) );
+			}
+			if ( ! empty( $_POST['google_client_secret'] ) ) {
+				update_option( 'tehilim_google_client_secret', sanitize_text_field( $_POST['google_client_secret'] ) );
+			}
 		}
 
 		echo '<div class="notice notice-success"><p>ההגדרות נשמרו!</p></div>';
@@ -159,6 +169,12 @@ function tehilim_settings_page() {
 								<span style="color: orange;">✗ לא מוגדר — הכפתור מוסתר</span>
 							<?php endif; ?>
 						</p>
+						<?php if ( get_option( 'tehilim_google_client_id' ) || get_option( 'tehilim_google_client_secret' ) ) : ?>
+							<label style="display:inline-flex;align-items:center;gap:6px;margin-top:6px">
+								<input type="checkbox" name="google_disconnect" value="1">
+								ניתוק חשבון Google (מחיקת המפתחות)
+							</label>
+						<?php endif; ?>
 					</td>
 				</tr>
 

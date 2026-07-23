@@ -81,6 +81,12 @@ function tehilim_register_rest_routes() {
 		'callback'            => 'tehilim_handle_ambassador_join',
 		'permission_callback' => '__return_true',
 	) );
+
+	register_rest_route( 'tehilim/v1', '/ambassadors/(?P<id>\d+)/moderate', array(
+		'methods'             => 'POST',
+		'callback'            => 'tehilim_handle_ambassador_moderate',
+		'permission_callback' => 'is_user_logged_in',
+	) );
 }
 add_action( 'rest_api_init', 'tehilim_register_rest_routes' );
 
@@ -174,15 +180,24 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 
 	global $wpdb;
 	$table = $wpdb->prefix . 'tehilim_recitations';
-
-	$wpdb->insert( $table, array(
+	$row   = array(
 		'campaign_id'    => $campaign_id,
 		'ambassador_id'  => $ambassador_id,
 		'chapter_number' => $chapter_number,
 		'reciter_name'   => $reciter_name,
-	), array( '%d', '%d', '%d', '%s' ) );
+	);
+	$formats = array( '%d', '%d', '%d', '%s' );
 
-	if ( $wpdb->last_error ) {
+	$inserted = $wpdb->insert( $table, $row, $formats );
+
+	if ( false === $inserted ) {
+		// Table may be missing or carry a legacy schema — heal and retry once
+		tehilim_create_recitations_table( true );
+		$wpdb->last_error = '';
+		$inserted = $wpdb->insert( $table, $row, $formats );
+	}
+
+	if ( false === $inserted ) {
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			error_log( 'Tehilim: Database error during recitation insert: ' . $wpdb->last_error );
 		}
@@ -529,10 +544,25 @@ function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
 		return new WP_Error( 'not_found', 'Campaign not found', array( 'status' => 404 ) );
 	}
 
+	// One open request per email per campaign
+	$existing = get_posts( array(
+		'post_type'      => 'ambassador',
+		'post_status'    => array( 'pending', 'publish' ),
+		'posts_per_page' => 1,
+		'meta_query'     => array(
+			array( 'key' => 'campaign_id', 'value' => $campaign_id ),
+			array( 'key' => 'email', 'value' => $email ),
+		),
+	) );
+	if ( $existing ) {
+		return new WP_Error( 'already_requested', 'A request for this email already exists', array( 'status' => 409 ) );
+	}
+
+	// The request awaits the campaign owner's approval
 	$ambassador_id = wp_insert_post( array(
 		'post_type'   => 'ambassador',
 		'post_title'  => $name,
-		'post_status' => 'publish',
+		'post_status' => 'pending',
 		'post_parent' => $campaign_id,
 	) );
 
@@ -550,32 +580,26 @@ function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
 	$palette = array( '#C05A3A', '#D9A441', '#8A6B4A', '#B08968' );
 	update_post_meta( $ambassador_id, 'avatar_color', $palette[ $ambassador_id % 4 ] );
 
-	// Clear campaign caches to include new ambassador
-	tehilim_clear_campaign_caches( $campaign_id );
-
-	// Notify the campaign organizer (best-effort; never blocks the response)
-	$organizer_email = get_post_meta( $campaign_id, 'organizer_email', true );
-	if ( $organizer_email && is_email( $organizer_email ) ) {
+	// Notify the campaign organizer that a request awaits approval
+	$organizer_email = tehilim_campaign_owner_email( $campaign_id );
+	if ( $organizer_email ) {
+		$account_url = function_exists( 'tehilim_account_page_url' ) ? tehilim_account_page_url() : admin_url();
 		wp_mail(
 			$organizer_email,
-			sprintf( 'שגריר/ה חדש/ה בקמפיין "%s"', $campaign->post_title ),
-			sprintf( "%s הצטרף/ה כשגריר/ה לקמפיין שלך.\n\nלצפייה בקמפיין: %s", $name, get_permalink( $campaign_id ) )
+			sprintf( 'בקשת שגריר חדשה בקמפיין "%s"', $campaign->post_title ),
+			sprintf(
+				"%s (%s) מבקש/ת להצטרף כשגריר/ה לקמפיין \"%s\".\n\nלאישור או דחייה של הבקשה היכנסו לאזור האישי:\n%s",
+				$name,
+				$email,
+				$campaign->post_title,
+				$account_url
+			)
 		);
 	}
 
-	$campaign_slug = get_post_field( 'post_name', $campaign_id );
-	$ambassador_slug = get_post_field( 'post_name', $ambassador_id );
-
-	if ( ! $campaign_slug || ! $ambassador_slug ) {
-		return new WP_Error( 'slug_error', 'Failed to generate URLs', array( 'status' => 500 ) );
-	}
-
-	$personal_url = home_url( '/c/' . $campaign_slug . '/' . $ambassador_slug );
-
 	$response = array(
-		'success'       => true,
-		'ambassador_id' => $ambassador_id,
-		'personal_url'  => esc_url( $personal_url ),
+		'success' => true,
+		'pending' => true,
 	);
 
 	// No caching for write operations
@@ -583,4 +607,91 @@ function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
 	header( 'Pragma: no-cache' );
 
 	return $response;
+}
+
+/**
+ * Best email for the campaign owner: organizer_email meta, else author email.
+ */
+function tehilim_campaign_owner_email( $campaign_id ) {
+	$email = get_post_meta( $campaign_id, 'organizer_email', true );
+	if ( $email && is_email( $email ) ) {
+		return $email;
+	}
+	$author = get_userdata( intval( get_post_field( 'post_author', $campaign_id ) ) );
+	return ( $author && is_email( $author->user_email ) ) ? $author->user_email : '';
+}
+
+/**
+ * Approve / reject an ambassador request (campaign owner only).
+ */
+function tehilim_handle_ambassador_moderate( WP_REST_Request $request ) {
+	$ambassador_id = absint( $request->get_param( 'id' ) );
+	$ambassador    = get_post( $ambassador_id );
+
+	if ( ! $ambassador || 'ambassador' !== $ambassador->post_type ) {
+		return new WP_Error( 'not_found', 'Ambassador not found', array( 'status' => 404 ) );
+	}
+
+	$campaign_id = intval( get_post_meta( $ambassador_id, 'campaign_id', true ) );
+	$campaign    = $campaign_id ? get_post( $campaign_id ) : null;
+	if ( ! $campaign || 'campaign' !== $campaign->post_type ) {
+		return new WP_Error( 'not_found', 'Campaign not found', array( 'status' => 404 ) );
+	}
+
+	$is_owner = intval( $campaign->post_author ) === get_current_user_id();
+	if ( ! $is_owner && ! current_user_can( 'edit_post', $campaign_id ) ) {
+		return new WP_Error( 'forbidden', 'You cannot manage this campaign', array( 'status' => 403 ) );
+	}
+
+	$params = $request->get_json_params();
+	$action = isset( $params['action'] ) ? sanitize_key( $params['action'] ) : '';
+
+	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+
+	if ( 'reject' === $action ) {
+		wp_trash_post( $ambassador_id );
+		tehilim_clear_campaign_caches( $campaign_id );
+		return array( 'success' => true, 'status' => 'rejected' );
+	}
+
+	if ( 'approve' !== $action ) {
+		return new WP_Error( 'invalid_params', 'Unknown action', array( 'status' => 400 ) );
+	}
+
+	$updated = wp_update_post( array(
+		'ID'          => $ambassador_id,
+		'post_status' => 'publish',
+	), true );
+
+	if ( is_wp_error( $updated ) ) {
+		return new WP_Error( 'update_failed', 'Failed to approve ambassador', array( 'status' => 500 ) );
+	}
+
+	tehilim_clear_campaign_caches( $campaign_id );
+
+	// Personal referral URL (slug is finalized on publish)
+	$campaign_slug   = get_post_field( 'post_name', $campaign_id );
+	$ambassador_slug = get_post_field( 'post_name', $ambassador_id );
+	$personal_url    = home_url( '/c/' . $campaign_slug . '/' . $ambassador_slug );
+
+	// Email the ambassador: their personal page + a ready-to-share link
+	$amb_email = get_post_meta( $ambassador_id, 'email', true );
+	if ( $amb_email && is_email( $amb_email ) ) {
+		$share_text = sprintf( 'הצטרפו אליי לאמירת תהילים בקמפיין "%s": %s', $campaign->post_title, $personal_url );
+		wp_mail(
+			$amb_email,
+			sprintf( 'אושרתם כשגריר/ה בקמפיין "%s"!', $campaign->post_title ),
+			sprintf(
+				"מזל טוב! מנהל הקמפיין אישר את הצטרפותכם כשגריר/ה.\n\nהעמוד האישי שלכם:\n%s\n\nקישור מוכן לשיתוף (העתיקו ושלחו לחברים):\n%s\n\nכל פרק שייאמר דרך הקישור שלכם נזקף לזכותכם בלוח השגרירים.",
+				$personal_url,
+				$share_text
+			)
+		);
+	}
+
+	return array(
+		'success'      => true,
+		'status'       => 'approved',
+		'personal_url' => esc_url_raw( $personal_url ),
+	);
 }

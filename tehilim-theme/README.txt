@@ -54,6 +54,14 @@ GitHub: https://github.com/multidigitalltd/tehilim
 
 == Changelog ==
 
+= 2.5.0 =
+- Ambassador approval workflow: join requests are now pending until the campaign owner approves them; styled "request sent" confirmation replaces the form; organizer receives an email with a link to the personal area; approve/reject buttons per campaign in the personal area; on approval the ambassador appears on the campaign page, their personal page goes live, and they receive an email with their page link + a ready-to-share link; one open request per email per campaign
+- Ambassador list now shows every approved ambassador (including 0 chapters)
+- Join form displays in a single row under the CTA (styled card)
+- Reliability: recitations table created without dbDelta/FOREIGN KEY (which silently fails on many hosts), legacy schema healing, automatic retry on insert failure
+- Fix: in-place theme updates now auto-create missing pages (/account/ etc.) and refresh permalinks — no re-activation needed
+- Fix: saving unrelated admin settings no longer wipes the Google sign-in credentials; explicit disconnect checkbox added
+
 = 2.4.0 =
 - Personal area (/account/, auto-created): greeting header with avatar, aggregate stats (campaigns, chapters, books, ambassadors), and a management card per campaign
 - Per-campaign management: progress bar + live stats, view/copy-link actions, and an inline edit panel — dedication name, goal, occasion, description, replace/remove image (removal switches the hero to praise verses)

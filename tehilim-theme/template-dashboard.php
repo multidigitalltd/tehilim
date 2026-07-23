@@ -5,7 +5,7 @@
  */
 
 if ( ! is_user_logged_in() ) {
-	wp_safe_remote_get( wp_login_url( get_permalink() ) );
+	wp_redirect( wp_login_url( get_permalink() ) );
 	exit;
 }
 

@@ -10,7 +10,16 @@ get_header();
 		<div class="create-campaign-wrapper">
 			<header class="create-header">
 				<h1><?php esc_html_e( 'Create a Campaign', 'tehilim' ); ?></h1>
-				<p><?php esc_html_e( 'Start a campaign to bring the community together', 'tehilim' ); ?></p>
+				<p><?php esc_html_e( 'Start a campaign to bring the community together in saying Tehilim', 'tehilim' ); ?></p>
+				<div class="create-info">
+					<h3><?php esc_html_e( 'Why Create a Campaign?', 'tehilim' ); ?></h3>
+					<ul>
+						<li><?php esc_html_e( 'Unite a community for prayer and spiritual growth', 'tehilim' ); ?></li>
+						<li><?php esc_html_e( 'Track collective progress toward a meaningful goal', 'tehilim' ); ?></li>
+						<li><?php esc_html_e( 'Share personal referral links with ambassadors', 'tehilim' ); ?></li>
+						<li><?php esc_html_e( 'Create lasting impact through shared devotion', 'tehilim' ); ?></li>
+					</ul>
+				</div>
 			</header>
 
 			<form class="form-campaign-create">

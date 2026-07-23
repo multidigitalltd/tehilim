@@ -9,13 +9,23 @@
 		<!-- Brand Column -->
 		<div>
 			<div class="footer-brand">
-				<div class="footer-logo">
-					<svg width="21" height="21" viewBox="0 0 24 24" fill="none">
-						<path d="M12 6.4C10.2 5 7.4 4.5 4.6 5v12.3c2.8-.5 5.6 0 7.4 1.4 1.8-1.4 4.6-1.9 7.4-1.4V5c-2.8-.5-5.6 0-7.4 1.4Z" stroke="#FFF3E4" stroke-width="1.7" stroke-linejoin="round"></path>
-						<path d="M12 6.4v12.3" stroke="#F0CE7E" stroke-width="1.7" stroke-linecap="round"></path>
-					</svg>
-				</div>
-				<span class="footer-brand-name"><?php esc_html_e( 'תהילים', 'tehilim' ); ?></span>
+				<?php
+				$tehilim_footer_logo_id = get_theme_mod( 'custom_logo' );
+				if ( $tehilim_footer_logo_id ) :
+					echo wp_get_attachment_image( $tehilim_footer_logo_id, 'medium', false, array(
+						'class' => 'footer-logo-img',
+						'alt'   => esc_attr( get_bloginfo( 'name' ) ),
+					) );
+				else :
+					?>
+					<div class="footer-logo">
+						<svg width="21" height="21" viewBox="0 0 24 24" fill="none">
+							<path d="M12 6.4C10.2 5 7.4 4.5 4.6 5v12.3c2.8-.5 5.6 0 7.4 1.4 1.8-1.4 4.6-1.9 7.4-1.4V5c-2.8-.5-5.6 0-7.4 1.4Z" stroke="#FFF3E4" stroke-width="1.7" stroke-linejoin="round"></path>
+							<path d="M12 6.4v12.3" stroke="#F0CE7E" stroke-width="1.7" stroke-linecap="round"></path>
+						</svg>
+					</div>
+					<span class="footer-brand-name"><?php esc_html_e( 'תהילים', 'tehilim' ); ?></span>
+				<?php endif; ?>
 			</div>
 			<p class="footer-description">
 				<?php

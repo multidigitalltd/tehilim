@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const TEHILIM_VERSION = '2.12.1';
+const TEHILIM_VERSION = '2.12.2';
 
 /**
  * Theme Setup
@@ -16,6 +16,12 @@ function tehilim_setup() {
 	add_theme_support( 'title-tag' );
 	add_theme_support( 'post-thumbnails' );
 	add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form' ) );
+	add_theme_support( 'custom-logo', array(
+		'height'      => 96,
+		'width'       => 340,
+		'flex-height' => true,
+		'flex-width'  => true,
+	) );
 	register_nav_menu( 'primary', 'ניווט ראשי' );
 }
 add_action( 'after_setup_theme', 'tehilim_setup' );

@@ -10,7 +10,16 @@ Text Domain: tehilim
 Domain Path: /languages
 */
 
-/* Fonts */
+/* Fonts - Optional: Add Asimon font files to assets/fonts/ */
+/*
+ * If you have Asimon font files (.otf), place them in assets/fonts/:
+ * - asimon-regular.otf (font-weight: 400)
+ * - asimon-medium.otf (font-weight: 500)
+ * - asimon-bold.otf (font-weight: 700)
+ *
+ * Uncomment below if you have the font files:
+ */
+/*
 @font-face {
   font-family: 'Asimon';
   src: url('./assets/fonts/asimon-regular.otf') format('opentype');
@@ -31,11 +40,11 @@ Domain Path: /languages
   font-weight: 700;
   font-style: normal;
 }
+*/
 
-@font-face {
-  font-family: 'Frank Ruhl Libre';
-  src: url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;700&display=swap');
-}
+/* Fallback font stack - uses system fonts when Asimon is not available */
+
+/* Frank Ruhl Libre is loaded from Google Fonts via <link> in header.php */
 
 :root {
   --primary: #C05A3A;

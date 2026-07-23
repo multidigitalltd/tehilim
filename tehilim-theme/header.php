@@ -38,7 +38,11 @@
 				<a class="btn-login" href="<?php echo esc_url( tehilim_account_page_url() ); ?>" title="<?php echo esc_attr( wp_get_current_user()->display_name ); ?>"><?php esc_html_e( 'האזור האישי', 'tehilim' ); ?></a>
 				<a class="btn-login btn-logout" href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>"><?php esc_html_e( 'התנתקות', 'tehilim' ); ?></a>
 			<?php else : ?>
-				<a class="btn-login" href="<?php echo esc_url( tehilim_login_page_url( home_url( '/create/' ) ) ); ?>"><?php esc_html_e( 'התחברות', 'tehilim' ); ?></a>
+				<?php
+				// Send the visitor back to the page they are on right now
+				$tehilim_current = home_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/' );
+				?>
+				<a class="btn-login" href="<?php echo esc_url( tehilim_login_page_url( $tehilim_current ) ); ?>"><?php esc_html_e( 'התחברות', 'tehilim' ); ?></a>
 			<?php endif; ?>
 			<a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="btn-create-primary"><?php esc_html_e( 'צור קמפיין', 'tehilim' ); ?></a>
 		</div>

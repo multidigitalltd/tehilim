@@ -53,6 +53,46 @@ function tehilim_account_page_url() {
 }
 
 /**
+ * After login, send visitors back to the page they came from — never to
+ * the WordPress dashboard. Admins/editors keep normal behavior.
+ */
+function tehilim_login_redirect_filter( $redirect_to, $requested, $user ) {
+	if ( is_wp_error( $user ) || ! ( $user instanceof WP_User ) ) {
+		return $redirect_to;
+	}
+
+	if ( user_can( $user, 'edit_posts' ) ) {
+		return $redirect_to; // authors/editors/admins: default behavior
+	}
+
+	// Prefer the explicitly requested front-end destination
+	if ( $requested && false === strpos( $requested, 'wp-admin' ) ) {
+		return $requested;
+	}
+
+	// No destination, or one pointing into wp-admin → personal area
+	if ( ! $redirect_to || false !== strpos( $redirect_to, 'wp-admin' ) ) {
+		return tehilim_account_page_url();
+	}
+
+	return $redirect_to;
+}
+add_filter( 'login_redirect', 'tehilim_login_redirect_filter', 99, 3 );
+
+/**
+ * Regular members never belong in wp-admin: any flow (or plugin) that lands
+ * them on the dashboard bounces to the personal area instead.
+ */
+function tehilim_block_admin_for_members() {
+	if ( wp_doing_ajax() || ! is_user_logged_in() || current_user_can( 'edit_posts' ) ) {
+		return;
+	}
+	wp_safe_redirect( tehilim_account_page_url() );
+	exit;
+}
+add_action( 'admin_init', 'tehilim_block_admin_for_members' );
+
+/**
  * Point wp_login_url() at the themed page so every login link lands there.
  */
 function tehilim_filter_login_url( $login_url, $redirect ) {

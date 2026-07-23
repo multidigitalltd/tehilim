@@ -97,7 +97,14 @@ $gradient = $gradients[ $campaign_id % count( $gradients ) ];
 			<div class="progress-bar-container">
 				<div class="progress-bar-fill" style="width: <?php echo absint( $percent ); ?>%;"></div>
 			</div>
-			<div class="progress-text"><?php esc_html_e( 'ספרים הושלמו', 'tehilim' ); ?></div>
+			<div class="progress-text">
+				<?php
+				printf(
+					esc_html__( 'ספרים הושלמו · נאמרו %s פרקים', 'tehilim' ),
+					esc_html( number_format_i18n( intval( $progress['total_chapters'] ) ) )
+				);
+				?>
+			</div>
 		</div>
 
 		<a href="<?php the_permalink(); ?>" class="btn-card-action">

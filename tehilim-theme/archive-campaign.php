@@ -30,29 +30,6 @@ get_header();
 			</p>
 		</div>
 
-		<!-- Occasion filters -->
-		<div class="archive-filters">
-			<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>" class="filter-chip active">
-				<?php esc_html_e( 'הכל', 'tehilim' ); ?>
-			</a>
-			<?php
-			$occasions = get_terms( array(
-				'taxonomy'   => 'occasion',
-				'hide_empty' => true,
-			) );
-
-			if ( ! is_wp_error( $occasions ) && ! empty( $occasions ) ) {
-				foreach ( $occasions as $occasion ) {
-					printf(
-						'<a href="%s" class="filter-chip">%s</a>',
-						esc_url( get_term_link( $occasion ) ),
-						esc_html( $occasion->name )
-					);
-				}
-			}
-			?>
-		</div>
-
 		<!-- Campaign grid -->
 		<div class="archive-grid">
 			<?php

@@ -1,6 +1,6 @@
 <?php
 /**
- * Header Template
+ * Header Template - Tehilim
  */
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -13,33 +13,29 @@
 <?php wp_body_open(); ?>
 
 <header class="site-header">
-	<div class="header-top">
-		<div class="container">
-			<div class="header-logo">
-				<?php
-				if ( has_custom_logo() ) {
-					the_custom_logo();
-				} else {
-					echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="site-logo">' . esc_html( get_bloginfo( 'name' ) ) . '</a>';
-				}
-				?>
+	<div class="header-wrapper">
+		<!-- Logo & Brand -->
+		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo">
+			<div class="logo-icon">
+				<svg width="23" height="23" viewBox="0 0 24 24" fill="none">
+					<path d="M12 6.4C10.2 5 7.4 4.5 4.6 5v12.3c2.8-.5 5.6 0 7.4 1.4 1.8-1.4 4.6-1.9 7.4-1.4V5c-2.8-.5-5.6 0-7.4 1.4Z" stroke="#FFF3E4" stroke-width="1.7" stroke-linejoin="round"></path>
+					<path d="M12 6.4v12.3" stroke="#F0CE7E" stroke-width="1.7" stroke-linecap="round"></path>
+				</svg>
 			</div>
+			<span><?php bloginfo( 'name' ); ?></span>
+		</a>
 
-			<nav class="primary-nav" role="navigation">
-				<?php
-				wp_nav_menu( array(
-					'theme_location' => 'primary',
-					'fallback_cb'    => '__return_empty_string',
-					'container'      => false,
-				) );
-				?>
-			</nav>
+		<!-- Navigation Links -->
+		<nav class="header-nav" role="navigation" aria-label="<?php esc_attr_e( 'Primary Navigation', 'tehilim' ); ?>">
+			<a href="#how-it-works"><?php esc_html_e( 'איך זה עובד', 'tehilim' ); ?></a>
+			<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'קמפיינים', 'tehilim' ); ?></a>
+			<a href="#about"><?php esc_html_e( 'אודות', 'tehilim' ); ?></a>
+		</nav>
 
-			<button class="nav-toggle" aria-label="פתחו תפריט ניווט">
-				<span></span>
-				<span></span>
-				<span></span>
-			</button>
+		<!-- Action Buttons -->
+		<div class="header-actions">
+			<button class="btn-login"><?php esc_html_e( 'התחברות', 'tehilim' ); ?></button>
+			<a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="btn-create-primary"><?php esc_html_e( 'צור קמפיין', 'tehilim' ); ?></a>
 		</div>
 	</div>
 </header>

@@ -10,10 +10,13 @@
 	var App = {
 		apiUrl: ( window.tehilim && window.tehilim.api_url ) || '/wp-json/tehilim/v1/',
 		nonce: ( window.tehilim && window.tehilim.nonce ) || '',
+		textUrl: ( window.tehilim && window.tehilim.text_url ) || '',
 		turnstileSiteKey: ( window.tehilim && window.tehilim.turnstile_site_key ) || '',
 		turnstileWidgetId: null,
 		currentChapter: 0,
-		chapterCache: {},
+		textData: null,
+		textPromise: null,
+		available: null,
 		pollTimer: null,
 
 		init: function() {
@@ -84,14 +87,14 @@
 				var random = e.target.closest( '.btn-random' );
 				if ( random ) {
 					e.preventDefault();
-					self.loadChapter( 1 + Math.floor( Math.random() * CHAPTERS ) );
+					self.loadChapter( self.randomAvailable() );
 					return;
 				}
 
 				var next = e.target.closest( '.btn-next' );
 				if ( next && document.querySelector( '.reader-card' ) ) {
 					e.preventDefault();
-					self.loadChapter( ( self.currentChapter % CHAPTERS ) + 1 );
+					self.loadChapter( self.nextAvailable( self.currentChapter ) );
 					return;
 				}
 
@@ -121,7 +124,10 @@
 			var campaignId = btn.dataset.campaignId;
 			var self = this;
 
-			// Ask the server for the communal next chapter, then render it
+			// Warm the local Psalms text in parallel with the next-chapter request
+			this.loadTextData();
+
+			// Ask the server which chapters are still open in the current book
 			fetch( this.apiUrl + 'campaigns/' + campaignId + '/next-chapter' )
 				.then( function( r ) { return r.ok ? r.json() : null; } )
 				.then( function( data ) {
@@ -137,13 +143,60 @@
 				} );
 		},
 
+		/* Chapters still open in the current communal book */
+		setAvailable: function( list ) {
+			if ( Array.isArray( list ) && list.length ) {
+				this.available = list.map( Number );
+			}
+		},
+
+		nextAvailable: function( after ) {
+			var list = ( this.available && this.available.length ) ? this.available : null;
+			if ( ! list ) { return ( after % CHAPTERS ) + 1; }
+			for ( var i = 0; i < list.length; i++ ) {
+				if ( list[ i ] > after ) { return list[ i ]; }
+			}
+			return list[ 0 ]; // wrap around
+		},
+
+		randomAvailable: function() {
+			var list = ( this.available && this.available.length ) ? this.available : null;
+			if ( ! list ) { return 1 + Math.floor( Math.random() * CHAPTERS ); }
+			var pool = list.length > 1 ? list.filter( function( c ) { return c !== this.currentChapter; }, this ) : list;
+			return pool[ Math.floor( Math.random() * pool.length ) ];
+		},
+
 		pickChapter: function() {
-			var input = window.prompt( 'בחרו פרק (1–150):', String( this.currentChapter || 1 ) );
+			var open = ( this.available && this.available.length ) ? ' פרקים פנויים: ' + this.available.slice( 0, 12 ).join( ', ' ) + ( this.available.length > 12 ? '…' : '' ) : '';
+			var input = window.prompt( 'בחרו פרק (1–150).' + open, String( this.currentChapter || 1 ) );
 			if ( input === null ) { return; }
 			var n = parseInt( input, 10 );
 			if ( n >= 1 && n <= CHAPTERS ) {
 				this.loadChapter( n );
 			}
+		},
+
+		/* Local bundled Psalms text (all 150 chapters, menukad) */
+		loadTextData: function() {
+			var self = this;
+			if ( this.textPromise ) { return this.textPromise; }
+			this.textPromise = fetch( this.textUrl )
+				.then( function( r ) {
+					if ( ! r.ok ) { throw new Error( 'HTTP ' + r.status ); }
+					return r.json();
+				} )
+				.then( function( data ) {
+					if ( ! Array.isArray( data ) || data.length !== CHAPTERS ) {
+						throw new Error( 'bad data' );
+					}
+					self.textData = data;
+					return data;
+				} )
+				.catch( function( err ) {
+					self.textPromise = null; // allow retry
+					throw err;
+				} );
+			return this.textPromise;
 		},
 
 		loadChapter: function( n ) {
@@ -165,31 +218,17 @@
 			var container = document.querySelector( '.chapter-text' );
 			if ( ! container ) { return; }
 
-			if ( this.chapterCache[ n ] ) {
-				this.renderVerses( container, this.chapterCache[ n ] );
+			if ( this.textData ) {
+				this.renderVerses( container, this.textData[ n - 1 ] );
 				return;
 			}
 
 			container.textContent = 'טוען את הפרק…';
 
-			// Public-domain Psalms text (with nikud) from the Sefaria API
-			fetch( 'https://www.sefaria.org/api/texts/Psalms.' + n + '?context=0&commentary=0' )
-				.then( function( r ) {
-					if ( ! r.ok ) { throw new Error( 'HTTP ' + r.status ); }
-					return r.json();
-				} )
+			this.loadTextData()
 				.then( function( data ) {
-					var verses = ( data && data.he ) || [];
-					if ( ! verses.length ) { throw new Error( 'empty' ); }
-					// Strip any markup Sefaria embeds; keep plain nikud text
-					verses = verses.map( function( v ) {
-						var div = document.createElement( 'div' );
-						div.innerHTML = v;
-						return div.textContent.replace( /\s+/g, ' ' ).trim();
-					} );
-					self.chapterCache[ n ] = verses;
 					if ( self.currentChapter === n ) {
-						self.renderVerses( container, verses );
+						self.renderVerses( container, data[ n - 1 ] );
 					}
 				} )
 				.catch( function() {
@@ -329,6 +368,7 @@
 
 		updateStatsUI: function( stats ) {
 			if ( ! stats ) { return; }
+			this.setAvailable( stats.available );
 			var fmt = this.formatNumber;
 
 			// Campaign page — progress overview

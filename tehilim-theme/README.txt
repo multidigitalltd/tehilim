@@ -54,6 +54,12 @@ GitHub: https://github.com/multidigitalltd/tehilim
 
 == Changelog ==
 
+= 2.2.0 =
+- Full Psalms text (all 150 chapters, 2,527 verses, menukad) now bundled locally in the theme (assets/data/tehilim.json) — no external API dependency, matching the design's text style (nikud without cantillation, Hashem abbreviation, punctuation)
+- Smart chapter assignment: the reader offers chapters that were NOT yet said in the current communal book; a book completes only when all 150 chapters are covered
+- Random / next navigation picks from the remaining open chapters; chapter picker shows which chapters are still open
+- Progress semantics updated accordingly (books_done = fully covered cycles)
+
 = 2.1.0 =
 - Pixel-accuracy pass: all six pages audited against the design handoff and corrected (hover states, responsive breakpoints 1024/900/620, footer/CTA/archive structure, dead CSS removed)
 - Live Psalms reader: real menukad chapter text (Sefaria API), Hebrew numeral titles, random/next/pick navigation, communal next-chapter suggestion from the server

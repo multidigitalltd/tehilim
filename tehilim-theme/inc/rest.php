@@ -217,21 +217,24 @@ function tehilim_build_stats_payload( $campaign_id ) {
 		$campaign_id
 	) );
 
-	$total_chapters = intval( $progress['total_chapters'] );
-	$in_book        = $total_chapters % TEHILIM_CHAPTERS_PER_BOOK;
+	$in_book   = intval( $progress['chapters_done'] );
+	$available = isset( $progress['available'] ) && $progress['available']
+		? array_map( 'intval', $progress['available'] )
+		: range( 1, TEHILIM_CHAPTERS_PER_BOOK );
 
 	return array(
 		'books_done'       => intval( $progress['books_done'] ),
 		'chapters_done'    => $in_book,
-		'total_chapters'   => $total_chapters,
+		'total_chapters'   => intval( $progress['total_chapters'] ),
 		'goal_books'       => intval( $progress['goal_books'] ),
 		'progress_percent' => intval( $progress['progress_percent'] ),
 		'participants'     => tehilim_get_campaign_participants( $campaign_id ),
 		'ambassadors'      => $total_ambassadors,
 		'current_book'     => intval( $progress['books_done'] ) + 1,
 		'in_book'          => $in_book,
-		'remaining_in_book' => TEHILIM_CHAPTERS_PER_BOOK - $in_book,
-		'next_chapter'     => ( $total_chapters % TEHILIM_CHAPTERS_PER_BOOK ) + 1,
+		'remaining_in_book' => count( $available ),
+		'next_chapter'     => $available[0],
+		'available'        => $available,
 	);
 }
 

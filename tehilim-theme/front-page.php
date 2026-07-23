@@ -8,87 +8,140 @@ get_header();
 <main class="site-main">
 	<!-- HERO SECTION -->
 	<section class="hero">
-		<div class="hero-grid">
-			<!-- Left: Text Content -->
-			<div style="animation: floatIn .6s ease both;">
-				<h1>מתאחדים סביב<br>קריאת תהילים משותפת<br><span class="highlight">לברכה, לרפואה ולישועה</span></h1>
-				<p style="font-size: 18.5px; line-height: 1.65; color: #6B5D4C; max-width: 480px; margin: 0 0 32px;">בחרו מטרה, הזמינו שגרירים ועקבו בזמן אמת אחרי כל פרק — עד שהקהילה כולה משלימה יחד אלפי פרקי תהילים.</p>
+		<div class="container">
+			<div class="hero-content">
+				<div class="hero-text">
+					<h1>מתאחדים סביב<br>קריאת תהילים משותפת<br><span style="color: var(--primary);">לברכה, לרפואה ולישועה</span></h1>
+					<p class="hero-subtitle">בחרו מטרה, הזמינו שגרירים ועקבו בזמן אמת אחרי כל פרק — עד שהקהילה כולה משלימה יחד אלפי פרקי תהילים.</p>
 
-				<div style="display: flex; flex-wrap: wrap; gap: 13px; align-items: center; margin-bottom: 28px;">
-					<a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 9px; padding: 16px 30px; border-radius: 15px; font-size: 16.5px; font-weight: 800;">
-						צרו קמפיין
-						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFF7F2" stroke-width="2.4" stroke-linecap="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
-					</a>
-					<a href="<?php echo esc_url( home_url( '/campaigns/' ) ); ?>" class="btn btn-secondary" style="padding: 15px 26px; border-radius: 15px;">גלו קמפיינים</a>
-				</div>
-
-				<!-- Social Proof -->
-				<div style="display: flex; align-items: center; gap: 12px;">
-					<div style="display: flex; align-items: center;">
-						<div style="z-index: 4; width: 33px; height: 33px; border-radius: 50%; background: linear-gradient(135deg, #C05A3A, #A94B2E); border: 2px solid #FBEFDF; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 12px;">ר</div>
-						<div style="margin-right: -10px; width: 33px; height: 33px; border-radius: 50%; background: linear-gradient(135deg, #D9A441, #B9822B); border: 2px solid #FBEFDF; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 12px;">ש</div>
-						<div style="margin-right: -10px; width: 33px; height: 33px; border-radius: 50%; background: #8A6B4A; border: 2px solid #FBEFDF; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 12px;">י</div>
-						<div style="margin-right: -10px; width: 33px; height: 33px; border-radius: 50%; background: #EFE0C6; border: 2px solid #FBEFDF; display: flex; align-items: center; justify-content: center; color: #A9773A; font-weight: 800; font-size: 11px;">+83</div>
+					<div class="hero-cta">
+						<a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="btn btn-primary">
+							צרו קמפיין
+						</a>
+						<a href="<?php echo esc_url( home_url( '/campaigns/' ) ); ?>" class="btn btn-secondary">
+							גלו קמפיינים
+						</a>
 					</div>
-					<div style="font-size: 14px; color: #7A6B58;">כבר <b style="color: #3A2C1C;">4,280</b> אומרים תהילים ב־<b style="color: #3A2C1C;">128</b> קמפיינים</div>
+
+					<!-- Social Proof -->
+					<div class="social-proof">
+						<div class="avatars">
+							<div class="avatar avatar-1">ר</div>
+							<div class="avatar avatar-2">ש</div>
+							<div class="avatar avatar-3">י</div>
+							<div class="avatar avatar-count">+83</div>
+						</div>
+						<div class="proof-text">
+							כבר <strong>4,280</strong> אומרים תהילים ב־<strong>128</strong> קמפיינים
+						</div>
+					</div>
 				</div>
-			</div>
 
-			<!-- Right: Campaign Card Preview (Placeholder) -->
-			<div style="position: relative; min-height: 400px; animation: floatIn .72s ease both; display: none;">
-				<!-- Card will be shown on wider screens via CSS -->
-			</div>
-		</div>
-
-		<!-- STATS STRIP -->
-		<div class="stats-strip">
-			<div class="stat">
-				<div class="stat-value">4,280</div>
-				<div class="stat-label">משתתפים</div>
-			</div>
-			<div class="stat-divider"></div>
-			<div class="stat">
-				<div class="stat-value">46,800</div>
-				<div class="stat-label">פרקי תהילים נאמרו</div>
-			</div>
-			<div class="stat-divider"></div>
-			<div class="stat">
-				<div class="stat-value">312</div>
-				<div class="stat-label">ספרים הושלמו</div>
-			</div>
-			<div class="stat-divider"></div>
-			<div class="stat">
-				<div class="stat-value">128</div>
-				<div class="stat-label">קמפיינים פעילים</div>
+				<!-- Stats Strip (inside hero) -->
+				<div class="stats-strip">
+					<div class="stat">
+						<div class="stat-value">4,280</div>
+						<div class="stat-label">משתתפים</div>
+					</div>
+					<div class="stat-divider"></div>
+					<div class="stat">
+						<div class="stat-value">46,800</div>
+						<div class="stat-label">פרקי תהילים</div>
+					</div>
+					<div class="stat-divider"></div>
+					<div class="stat">
+						<div class="stat-value">312</div>
+						<div class="stat-label">ספרים הושלמו</div>
+					</div>
+					<div class="stat-divider"></div>
+					<div class="stat">
+						<div class="stat-value">128</div>
+						<div class="stat-label">קמפיינים</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
 
-	<!-- How It Works -->
+	<!-- How It Works Section -->
 	<section class="how-it-works">
 		<div class="container">
-			<h2>כך זה עובד</h2>
-			<div class="cards-grid">
-				<div class="card">
-					<h3>1. צרו</h3>
-					<p>התחילו קמפיין למטרה או אדם בצורך. בחרו את הסיבה, קבעו מטרה והזמינו אחרים להשתתף.</p>
+			<div class="section-header">
+				<h2>כך זה עובד</h2>
+				<p>שלושה שלבים פשוטים להתחיל קמפיין משלכם</p>
+			</div>
+
+			<div class="steps-grid">
+				<div class="step-card">
+					<div class="step-number">1</div>
+					<h3>צרו קמפיין</h3>
+					<p>בחרו מטרה, הגדירו סיבה וקבעו מטרה כמה ספרים תהילים תרצו להשלים.</p>
 				</div>
-				<div class="card">
-					<h3>2. הזמינו</h3>
-					<p>שתפו את הקישור האישי שלכם עם חברים וחברים בקהילה. עקבו בזמן אמת אחרי מי שהצטרף והתקדמות שלו.</p>
+				<div class="step-card">
+					<div class="step-number">2</div>
+					<h3>הזמינו שגרירים</h3>
+					<p>שתפו את הקישור האישי שלכם. כל שגריר מקבל קישור אישי להצטרפות ועקיבה.</p>
 				</div>
-				<div class="card">
-					<h3>3. אמרו</h3>
-					<p>אמרו פרקי תהילים ביחד במרחב זה. כל פרק מקרב את הקהילה כולה למטרה.</p>
+				<div class="step-card">
+					<div class="step-number">3</div>
+					<h3>אמרו פרקים</h3>
+					<p>אמרו פרקי תהילים וצפו כיצד הקמפיין מקדם בזמן אמת עם העדכונים.</p>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<!-- Recent Campaigns -->
+	<!-- Features Section -->
+	<section class="features">
+		<div class="container">
+			<div class="section-header">
+				<h2>למה בחרים בתהילים</h2>
+				<p>פלטפורמה מקיפה למטרות ביחד</p>
+			</div>
+
+			<div class="features-grid">
+				<div class="feature-item">
+					<div class="feature-icon">📊</div>
+					<h3>עקיבה בזמן אמת</h3>
+					<p>צפו בהתקדמות הקמפיין בזמן אמת עם עדכונים מיידיים.</p>
+				</div>
+				<div class="feature-item">
+					<div class="feature-icon">👥</div>
+					<h3>הנהלת שגרירים</h3>
+					<p>הזמינו שגרירים עם קישורים אישיים לעקיבה והנהלה.</p>
+				</div>
+				<div class="feature-item">
+					<div class="feature-icon">🏆</div>
+					<h3>דירוג חברים</h3>
+					<p>צפו בדירוג כי מי משתתפים הכי פעילים בקמפיין.</p>
+				</div>
+				<div class="feature-item">
+					<div class="feature-icon">🔔</div>
+					<h3>הודעות עדכון</h3>
+					<p>קבלו הודעות על התקדמות וחברים חדשים.</p>
+				</div>
+				<div class="feature-item">
+					<div class="feature-icon">🎯</div>
+					<h3>מטרות ברורות</h3>
+					<p>קבעו מטרות בהירות ועקבו בכל שלב של ההשלמה.</p>
+				</div>
+				<div class="feature-item">
+					<div class="feature-icon">🔐</div>
+					<h3>בטוח ופרטי</h3>
+					<p>כל המידע שלכם מוגן בסטנדרטים גבוהים של אבטחה.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Recent Campaigns Section -->
 	<section class="recent-campaigns">
 		<div class="container">
-			<h2>קמפיינים פעילים</h2>
+			<div class="section-header">
+				<h2>קמפיינים פעילים</h2>
+				<p>הצטרפו לקמפיין קיים או צרו שלכם</p>
+			</div>
+
 			<div class="campaigns-grid">
 				<?php
 				$recent = get_posts( array(
@@ -106,44 +159,104 @@ get_header();
 					}
 					wp_reset_postdata();
 				} else {
-					echo '<p>אין קמפיינים עדיין. בואו להיות הראשונים ליצור!</p>';
+					echo '<div class="no-campaigns"><p>אין קמפיינים עדיין. בואו להיות הראשונים!</p></div>';
 				}
 				?>
 			</div>
-			<div style="text-align: center; margin-top: 2rem;">
-				<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>" class="btn btn-secondary">
+
+			<div class="section-cta">
+				<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>" class="btn btn-secondary btn-lg">
 					צפו בכל הקמפיינים
 				</a>
 			</div>
 		</div>
 	</section>
 
-	<!-- FAQ -->
+	<!-- Testimonials Section -->
+	<section class="testimonials">
+		<div class="container">
+			<div class="section-header">
+				<h2>מה אומרים עליים</h2>
+				<p>חוויות ממשות מהקהילה שלנו</p>
+			</div>
+
+			<div class="testimonials-grid">
+				<div class="testimonial-card">
+					<div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+					<p class="testimonial-text">"פלטפורמה מדהימה לארגון קמפיינים קהילתיים. קל לשימוש וממש עזר לנו להשלים את מטרתנו!"</p>
+					<p class="testimonial-author">— רחל כהן</p>
+				</div>
+				<div class="testimonial-card">
+					<div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+					<p class="testimonial-text">"כמעט לא כולם יודעים איך זה עובד, ופשוט. הממשק ברור מאוד ותומך בהתקדמות בזמן אמת."</p>
+					<p class="testimonial-author">— דוד ברק</p>
+				</div>
+				<div class="testimonial-card">
+					<div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+					<p class="testimonial-text">"הצלחנו להשלים שלושה קמפיינים ברצף. תהילים הפכה לחלק חיוני מהקהילה שלנו."</p>
+					<p class="testimonial-author">— שרה לוי</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- FAQ Section -->
 	<section class="faq">
 		<div class="container">
-			<h2>שאלות נפוצות</h2>
-			<details class="faq-item">
-				<summary>מה זה תהילים?</summary>
-				<p>תהילים היא פלטפורמה קהילתית לאמירת תהילים ביחד למטרות משמעותיות.</p>
-			</details>
-			<details class="faq-item">
-				<summary>איך אני יוצר קמפיין?</summary>
-				<p>בואו לעמוד ההיצור שלנו, מלאו את הפרטים, ושתפו את הקישור האישי שלכם עם אחרים.</p>
-			</details>
-			<details class="faq-item">
-				<summary>האם אני יכול לעקוב אחרי התקדמות?</summary>
-				<p>בטח! כל קמפיין מציג התקדמות בזמן אמת כשפרקים משלימים.</p>
-			</details>
+			<div class="section-header">
+				<h2>שאלות נפוצות</h2>
+				<p>תשובות לשאלות הנפוצות ביותר</p>
+			</div>
+
+			<div class="faq-grid">
+				<details class="faq-item">
+					<summary>מה זה תהילים בדיוק?</summary>
+					<p>תהילים היא פלטפורמה קהילתית המאפשרת לך ליצור קמפיינים לאמירת תהילים ביחד עם קהילה. אתה יכול לבחור מטרה, להזמין שגרירים, ולעקוב אחרי התקדמות בזמן אמת.</p>
+				</details>
+
+				<details class="faq-item">
+					<summary>איך אני יוצר קמפיין?</summary>
+					<p>בואו לעמוד ההיצור שלנו, מלאו את הפרטים (מטרה, סיבה, שם), קבעו כמה ספרים תרצו להשלים, ושתפו את הקישור האישי שלכם עם אחרים כדי שהם יוכלו להשתתף.</p>
+				</details>
+
+				<details class="faq-item">
+					<summary>האם יש עלות להשתמש בתהילים?</summary>
+					<p>לא! תהילים הוא שירות חינם לחלוטין לכל אחד. אין דמי מנוי או הוצאות כלשהן.</p>
+				</details>
+
+				<details class="faq-item">
+					<summary>איך נראה הקישור האישי שלי?</summary>
+					<p>קישור אישי נראה כך: https://site.com/c/campaign-slug/ambassador-slug. תוכל לשתף את זה עם חברים כדי שהם יוכלו לחתום על הקמפיין שלך ולעקוב אחרי הערכים שהם אומרים.</p>
+				</details>
+
+				<details class="faq-item">
+					<summary>האם אוכל לעקוב אחרי התקדמות?</summary>
+					<p>כן! כל קמפיין מציג סטטיסטיקות בזמן אמת של כמה פרקים הושלמו, כמה שגרירים הצטרפו, ודירוג של המשתתפים הכי פעילים.</p>
+				</details>
+
+				<details class="faq-item">
+					<summary>אני רוצה לערוך קמפיין קיים. האם זה אפשרי?</summary>
+					<p>בהחלט! אתה יכול לערוך את פרטי הקמפיין שלך, לעדכן את המטרה, ולהוסיף או להסיר שגרירים לפי הצורך.</p>
+				</details>
+
+				<details class="faq-item">
+					<summary>מה אם אני צריך עזרה?</summary>
+					<p>אנחנו כאן כדי לעזור! אתה יכול לפנות אלינו דרך מסך ההוא. אנחנו תמיד שמחים לשמוע משוב והצעות.</p>
+				</details>
+			</div>
 		</div>
 	</section>
 
 	<!-- CTA Banner -->
 	<section class="cta-banner">
 		<div class="container">
-			<h2>מוכנים להתחיל?</h2>
-			<a href="<?php echo esc_url( home_url( '/create' ) ); ?>" class="btn btn-light">
-				צרו קמפיין
-			</a>
+			<div class="cta-content">
+				<h2>מוכנים להתחיל קמפיין?</h2>
+				<p>צרו קמפיין היום והזמינו את הקהילה שלכם להשתתף</p>
+				<a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="btn btn-light btn-lg">
+					צרו קמפיין עכשיו
+				</a>
+			</div>
 		</div>
 	</section>
 </main>

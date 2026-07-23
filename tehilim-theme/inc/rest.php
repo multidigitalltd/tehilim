@@ -29,7 +29,7 @@ function tehilim_register_rest_routes() {
 				'required'          => true,
 				'type'              => 'integer',
 				'validate_callback' => function( $value ) {
-					return is_numeric( $value ) && $value >= 1 && $value <= 150;
+					return is_numeric( $value ) && $value >= 1 && $value <= TEHILIM_CHAPTERS_PER_BOOK;
 				},
 			),
 			'ambassador_id'          => array(
@@ -64,7 +64,7 @@ add_action( 'rest_api_init', 'tehilim_register_rest_routes' );
 /**
  * Rate-limiting helper
  */
-function tehilim_check_rate_limit( $endpoint, $limit = 10, $window = 3600 ) {
+function tehilim_check_rate_limit( $endpoint, $limit = TEHILIM_RATE_LIMIT_RECITATIONS, $window = TEHILIM_RATE_LIMIT_WINDOW ) {
 	if ( is_user_logged_in() ) {
 		return true;
 	}
@@ -122,7 +122,7 @@ function tehilim_verify_turnstile( $token ) {
  * Handle recitation endpoint
  */
 function tehilim_handle_recitation( WP_REST_Request $request ) {
-	if ( ! tehilim_check_rate_limit( 'recitations', 10, 3600 ) ) {
+	if ( ! tehilim_check_rate_limit( 'recitations', TEHILIM_RATE_LIMIT_RECITATIONS, TEHILIM_RATE_LIMIT_WINDOW ) ) {
 		return new WP_Error( 'rate_limit', 'Too many requests', array( 'status' => 429 ) );
 	}
 
@@ -134,7 +134,7 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 	$reciter_name = isset( $params['reciter_name'] ) ? sanitize_text_field( $params['reciter_name'] ) : '';
 	$turnstile_response = isset( $params['cf_turnstile_response'] ) ? sanitize_text_field( $params['cf_turnstile_response'] ) : '';
 
-	if ( ! $campaign_id || ! $chapter_number || $chapter_number < 1 || $chapter_number > 150 ) {
+	if ( ! $campaign_id || ! $chapter_number || $chapter_number < 1 || $chapter_number > TEHILIM_CHAPTERS_PER_BOOK ) {
 		return new WP_Error( 'invalid_params', 'Invalid campaign_id or chapter_number', array( 'status' => 400 ) );
 	}
 
@@ -169,7 +169,7 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 	// Clear campaign caches to ensure fresh stats
 	tehilim_clear_campaign_caches( $campaign_id );
 
-	$next_chapter = $chapter_number === 150 ? 1 : $chapter_number + 1;
+	$next_chapter = $chapter_number === TEHILIM_CHAPTERS_PER_BOOK ? 1 : $chapter_number + 1;
 	$response = array(
 		'success'        => true,
 		'chapter_number' => $next_chapter,
@@ -234,7 +234,7 @@ function tehilim_get_campaign_stats( WP_REST_Request $request ) {
  * Handle ambassador join endpoint
  */
 function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
-	if ( ! tehilim_check_rate_limit( 'ambassador_join', 1, 3600 ) ) {
+	if ( ! tehilim_check_rate_limit( 'ambassador_join', TEHILIM_RATE_LIMIT_AMBASSADOR, TEHILIM_RATE_LIMIT_WINDOW ) ) {
 		return new WP_Error( 'rate_limit', 'Too many requests', array( 'status' => 429 ) );
 	}
 

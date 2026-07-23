@@ -7,6 +7,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+const TEHILIM_CHAPTERS_PER_BOOK = 150;
+const TEHILIM_RATE_LIMIT_WINDOW = 3600;
+const TEHILIM_RATE_LIMIT_RECITATIONS = 10;
+const TEHILIM_RATE_LIMIT_AMBASSADOR = 1;
+
 /**
  * Register Campaign CPT
  */

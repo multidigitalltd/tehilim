@@ -87,7 +87,7 @@ function tehilim_settings_page() {
 					<strong><?php echo esc_html( $total_campaigns ); ?></strong> Active Campaigns<br>
 					<strong><?php echo esc_html( $total_ambassadors ); ?></strong> Ambassadors<br>
 					<strong><?php echo esc_html( $total_recitations ); ?></strong> Recitations Made<br>
-					<strong><?php echo esc_html( intdiv( $total_chapters, 150 ) ); ?></strong> Complete Books
+					<strong><?php echo esc_html( intdiv( $total_chapters, TEHILIM_CHAPTERS_PER_BOOK ) ); ?></strong> Complete Books
 				</p>
 			</div>
 		</div>

@@ -94,10 +94,10 @@ function tehilim_get_campaign_progress( $campaign_id ) {
 	) );
 
 	$chapters_done = intval( $chapters_done ?: 0 );
-	$books_done = intdiv( $chapters_done, 150 );
-	$chapters_in_book = $chapters_done % 150;
+	$books_done = intdiv( $chapters_done, TEHILIM_CHAPTERS_PER_BOOK );
+	$chapters_in_book = $chapters_done % TEHILIM_CHAPTERS_PER_BOOK;
 
-	$progress_percent = min( 100, intdiv( $chapters_done * 100, $goal_books * 150 ) );
+	$progress_percent = min( 100, intdiv( $chapters_done * 100, $goal_books * TEHILIM_CHAPTERS_PER_BOOK ) );
 
 	$result = array(
 		'books_done'       => $books_done,

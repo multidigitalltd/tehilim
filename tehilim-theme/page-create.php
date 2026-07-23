@@ -9,15 +9,15 @@ get_header();
 	<div class="container">
 		<div class="create-campaign-wrapper">
 			<header class="create-header">
-				<h1><?php esc_html_e( 'Create a Campaign', 'tehilim' ); ?></h1>
-				<p><?php esc_html_e( 'Start a campaign to bring the community together in saying Tehilim', 'tehilim' ); ?></p>
+				<h1>צרו קמפיין</h1>
+				<p>הפעילו קמפיין כדי לאחד את הקהילה בקריאת תהילים</p>
 				<div class="create-info">
-					<h3><?php esc_html_e( 'Why Create a Campaign?', 'tehilim' ); ?></h3>
+					<h3>למה ליצור קמפיין?</h3>
 					<ul>
-						<li><?php esc_html_e( 'Unite a community for prayer and spiritual growth', 'tehilim' ); ?></li>
-						<li><?php esc_html_e( 'Track collective progress toward a meaningful goal', 'tehilim' ); ?></li>
-						<li><?php esc_html_e( 'Share personal referral links with ambassadors', 'tehilim' ); ?></li>
-						<li><?php esc_html_e( 'Create lasting impact through shared devotion', 'tehilim' ); ?></li>
+						<li>אחדו קהילה לתפילה וגדילה רוחנית</li>
+						<li>עקבו אחרי ההתקדמות המשותפת לעבר מטרה משמעותית</li>
+						<li>שתפו קישורים אישיים עם שגרירים</li>
+						<li>יצרו השפעה ארוכת טווח דרך התבטאות משותפות</li>
 					</ul>
 				</div>
 			</header>
@@ -25,9 +25,9 @@ get_header();
 			<form class="form-campaign-create">
 				<!-- Occasion Selector -->
 				<div class="form-group">
-					<label for="occasion"><?php esc_html_e( 'What is this campaign for?', 'tehilim' ); ?></label>
+					<label for="occasion">למה קמפיין זה?</label>
 					<select id="occasion" name="occasion" required>
-						<option value=""><?php esc_html_e( 'Select an occasion', 'tehilim' ); ?></option>
+						<option value="">בחרו סיבה</option>
 						<?php
 						$occasions = get_terms( array(
 							'taxonomy'   => 'occasion',
@@ -47,20 +47,20 @@ get_header();
 
 				<!-- Dedication Name -->
 				<div class="form-group">
-					<label for="dedication_name"><?php esc_html_e( 'Name to dedicate this to', 'tehilim' ); ?></label>
-					<input type="text" id="dedication_name" name="dedication_name" required placeholder="e.g., Sarah bat David">
+					<label for="dedication_name">שם להקדיש את זה</label>
+					<input type="text" id="dedication_name" name="dedication_name" required placeholder="למשל: שרה בת דוד">
 				</div>
 
 				<!-- Organizer Name -->
 				<div class="form-group">
-					<label for="organizer_name"><?php esc_html_e( 'Your name', 'tehilim' ); ?></label>
-					<input type="text" id="organizer_name" name="organizer_name" required placeholder="Your name">
+					<label for="organizer_name">שמך</label>
+					<input type="text" id="organizer_name" name="organizer_name" required placeholder="שמך">
 				</div>
 
 				<!-- Goal Books -->
 				<div class="form-group">
 					<label for="goal_books">
-						<?php esc_html_e( 'Goal (books of Psalms)', 'tehilim' ); ?>
+						מטרה (ספרי תהילים)
 						<output for="goal_books">1</output>
 					</label>
 					<input type="range" id="goal_books" name="goal_books" min="1" max="100" value="1">
@@ -74,7 +74,7 @@ get_header();
 				<?php endif; ?>
 
 				<button type="submit" class="btn btn-primary">
-					<?php esc_html_e( 'Create Campaign', 'tehilim' ); ?>
+					צרו קמפיין
 				</button>
 			</form>
 		</div>

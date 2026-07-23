@@ -67,19 +67,19 @@ get_header();
 	<!-- How It Works -->
 	<section class="how-it-works">
 		<div class="container">
-			<h2><?php esc_html_e( 'How It Works', 'tehilim' ); ?></h2>
+			<h2>כך זה עובד</h2>
 			<div class="cards-grid">
 				<div class="card">
-					<h3>1. <?php esc_html_e( 'Create', 'tehilim' ); ?></h3>
-					<p><?php esc_html_e( 'Start a campaign for a cause or person in need. Choose the occasion, set your goal, and invite others to participate.', 'tehilim' ); ?></p>
+					<h3>1. צרו</h3>
+					<p>התחילו קמפיין למטרה או אדם בצורך. בחרו את הסיבה, קבעו מטרה והזמינו אחרים להשתתף.</p>
 				</div>
 				<div class="card">
-					<h3>2. <?php esc_html_e( 'Invite', 'tehilim' ); ?></h3>
-					<p><?php esc_html_e( 'Share your personal link with friends and community members. Track who has joined and their progress in real-time.', 'tehilim' ); ?></p>
+					<h3>2. הזמינו</h3>
+					<p>שתפו את הקישור האישי שלכם עם חברים וחברים בקהילה. עקבו בזמן אמת אחרי מי שהצטרף והתקדמות שלו.</p>
 				</div>
 				<div class="card">
-					<h3>3. <?php esc_html_e( 'Recite', 'tehilim' ); ?></h3>
-					<p><?php esc_html_e( 'Say chapters of Tehilim together in this sacred space. Every chapter brings the community closer to the goal.', 'tehilim' ); ?></p>
+					<h3>3. אמרו</h3>
+					<p>אמרו פרקי תהילים ביחד במרחב זה. כל פרק מקרב את הקהילה כולה למטרה.</p>
 				</div>
 			</div>
 		</div>
@@ -88,7 +88,7 @@ get_header();
 	<!-- Recent Campaigns -->
 	<section class="recent-campaigns">
 		<div class="container">
-			<h2><?php esc_html_e( 'Active Campaigns', 'tehilim' ); ?></h2>
+			<h2>קמפיינים פעילים</h2>
 			<div class="campaigns-grid">
 				<?php
 				$recent = get_posts( array(
@@ -106,13 +106,13 @@ get_header();
 					}
 					wp_reset_postdata();
 				} else {
-					echo '<p>' . esc_html__( 'No campaigns yet. Be the first to create one!', 'tehilim' ) . '</p>';
+					echo '<p>אין קמפיינים עדיין. בואו להיות הראשונים ליצור!</p>';
 				}
 				?>
 			</div>
 			<div style="text-align: center; margin-top: 2rem;">
 				<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>" class="btn btn-secondary">
-					<?php esc_html_e( 'View All Campaigns', 'tehilim' ); ?>
+					צפו בכל הקמפיינים
 				</a>
 			</div>
 		</div>
@@ -121,18 +121,18 @@ get_header();
 	<!-- FAQ -->
 	<section class="faq">
 		<div class="container">
-			<h2><?php esc_html_e( 'Frequently Asked Questions', 'tehilim' ); ?></h2>
+			<h2>שאלות נפוצות</h2>
 			<details class="faq-item">
-				<summary><?php esc_html_e( 'What is Tehilim?', 'tehilim' ); ?></summary>
-				<p><?php esc_html_e( 'Tehilim is a community platform for saying Psalms together for meaningful causes.', 'tehilim' ); ?></p>
+				<summary>מה זה תהילים?</summary>
+				<p>תהילים היא פלטפורמה קהילתית לאמירת תהילים ביחד למטרות משמעותיות.</p>
 			</details>
 			<details class="faq-item">
-				<summary><?php esc_html_e( 'How do I create a campaign?', 'tehilim' ); ?></summary>
-				<p><?php esc_html_e( 'Visit our create page, fill in the details, and share your personal link with others.', 'tehilim' ); ?></p>
+				<summary>איך אני יוצר קמפיין?</summary>
+				<p>בואו לעמוד ההיצור שלנו, מלאו את הפרטים, ושתפו את הקישור האישי שלכם עם אחרים.</p>
 			</details>
 			<details class="faq-item">
-				<summary><?php esc_html_e( 'Can I track progress?', 'tehilim' ); ?></summary>
-				<p><?php esc_html_e( 'Yes! Each campaign shows real-time progress as chapters are completed.', 'tehilim' ); ?></p>
+				<summary>האם אני יכול לעקוב אחרי התקדמות?</summary>
+				<p>בטח! כל קמפיין מציג התקדמות בזמן אמת כשפרקים משלימים.</p>
 			</details>
 		</div>
 	</section>
@@ -140,9 +140,9 @@ get_header();
 	<!-- CTA Banner -->
 	<section class="cta-banner">
 		<div class="container">
-			<h2><?php esc_html_e( 'Ready to Start?', 'tehilim' ); ?></h2>
+			<h2>מוכנים להתחיל?</h2>
 			<a href="<?php echo esc_url( home_url( '/create' ) ); ?>" class="btn btn-light">
-				<?php esc_html_e( 'Create Your Campaign', 'tehilim' ); ?>
+				צרו קמפיין
 			</a>
 		</div>
 	</section>

@@ -38,19 +38,19 @@ get_header();
 						<div class="campaign-stats">
 							<div class="stat">
 								<strong><?php echo esc_html( $progress['books_done'] ); ?></strong>
-								<span><?php esc_html_e( 'Books', 'tehilim' ); ?></span>
+								<span>ספרים</span>
 							</div>
 							<div class="stat">
 								<strong><?php echo esc_html( $progress['chapters_done'] ); ?></strong>
-								<span><?php esc_html_e( 'Chapters', 'tehilim' ); ?></span>
+								<span>פרקים</span>
 							</div>
 							<div class="stat">
 								<strong><?php echo esc_html( $progress['total_chapters'] ); ?></strong>
-								<span><?php esc_html_e( 'Total Said', 'tehilim' ); ?></span>
+								<span>סה״כ אמורים</span>
 							</div>
 							<div class="stat">
 								<strong><?php echo esc_html( $progress['goal_books'] ); ?></strong>
-								<span><?php esc_html_e( 'Goal', 'tehilim' ); ?></span>
+								<span>מטרה</span>
 							</div>
 						</div>
 						<div style="margin-top: 1rem;">
@@ -58,7 +58,7 @@ get_header();
 								<div class="progress-fill" style="width: <?php echo esc_attr( $progress['progress_percent'] ); ?>%;"></div>
 							</div>
 							<p style="text-align: center; margin-top: 0.5rem; color: var(--text-muted);">
-								<?php echo esc_html( $progress['progress_percent'] ); ?>% <?php esc_html_e( 'Complete', 'tehilim' ); ?>
+								<?php echo esc_html( $progress['progress_percent'] ); ?>% בוצע
 							</p>
 						</div>
 					</div>
@@ -71,21 +71,21 @@ get_header();
 					<div class="reader-wrapper">
 						<div class="reader-main">
 							<div class="chapter-display">
-								<h2 class="chapter-title"><?php esc_html_e( 'Psalm 1', 'tehilim' ); ?></h2>
+								<h2 class="chapter-title">תהילים א</h2>
 								<div class="chapter-text">
-									<?php esc_html_e( 'Chapter text will load here...', 'tehilim' ); ?>
+									טקסט הפרק יטען כאן...
 								</div>
 							</div>
 
 							<div class="reader-controls">
 								<button class="btn btn-say-chapter" data-campaign-id="<?php echo esc_attr( $campaign_id ); ?>" data-chapter-number="1">
-									<?php esc_html_e( 'I Said This', 'tehilim' ); ?>
+									אמרתי זאת
 								</button>
 								<button class="btn btn-next">
-									<?php esc_html_e( 'Next Chapter', 'tehilim' ); ?>
+									פרק הבא
 								</button>
 								<button class="btn btn-random">
-									<?php esc_html_e( 'Random', 'tehilim' ); ?>
+									אקראי
 								</button>
 							</div>
 						</div>
@@ -94,18 +94,18 @@ get_header();
 						<aside class="reader-sidebar">
 							<!-- Share Card -->
 							<div class="share-card">
-								<h3><?php esc_html_e( 'Share', 'tehilim' ); ?></h3>
+								<h3>שתפו</h3>
 								<button class="btn btn-share" data-share-type="whatsapp" data-share-url="<?php echo esc_url( get_permalink() ); ?>" data-share-text="<?php echo esc_attr( get_the_title() ); ?>">
-									<?php esc_html_e( 'WhatsApp', 'tehilim' ); ?>
+									WhatsApp
 								</button>
 								<button class="btn btn-share" data-share-type="copy" data-share-url="<?php echo esc_url( get_permalink() ); ?>">
-									<?php esc_html_e( 'Copy Link', 'tehilim' ); ?>
+									העתיקו קישור
 								</button>
 							</div>
 
 							<!-- Leaderboard -->
 							<div class="leaderboard">
-								<h3><?php esc_html_e( 'Top Ambassadors', 'tehilim' ); ?></h3>
+								<h3>שגרירים מובילים</h3>
 								<div class="leaderboard-list">
 									<?php
 									$ambassadors = tehilim_get_top_ambassadors( $campaign_id );
@@ -119,7 +119,7 @@ get_header();
 											<?php
 										}
 									} else {
-										echo '<p style="color: var(--text-muted);">' . esc_html__( 'No ambassadors yet.', 'tehilim' ) . '</p>';
+										echo '<p style="color: var(--text-muted);">אין שגרירים עדיין.</p>';
 									}
 									?>
 								</div>
@@ -132,7 +132,7 @@ get_header();
 			<!-- Activity Feed -->
 			<section class="activity-section">
 				<div class="container">
-					<h2><?php esc_html_e( 'Recent Activity', 'tehilim' ); ?></h2>
+					<h2>פעילות אחרונה</h2>
 					<div class="activity-feed">
 						<?php
 						$recitations = tehilim_get_recent_recitations( $campaign_id, 10 );
@@ -142,15 +142,15 @@ get_header();
 								?>
 								<div style="padding: 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
 									<div>
-										<strong><?php echo esc_html( $rec->reciter_name ?: __( 'Anonymous', 'tehilim' ) ); ?></strong>
-										<span style="color: var(--text-muted);"> <?php esc_html_e( 'said Psalm', 'tehilim' ); ?> <?php echo esc_html( $rec->chapter_number ); ?></span>
+										<strong><?php echo esc_html( $rec->reciter_name ?: 'אנונימי' ); ?></strong>
+										<span style="color: var(--text-muted);"> אמר תהילים <?php echo esc_html( $rec->chapter_number ); ?></span>
 									</div>
-									<span style="color: var(--text-muted); font-size: 0.85rem;"><?php echo esc_html( $time_ago ); ?> ago</span>
+									<span style="color: var(--text-muted); font-size: 0.85rem;"><?php echo esc_html( $time_ago ); ?> לפני</span>
 								</div>
 								<?php
 							}
 						} else {
-							echo '<p style="color: var(--text-muted); padding: 1rem;">' . esc_html__( 'No activity yet. Be the first to say a chapter!', 'tehilim' ) . '</p>';
+							echo '<p style="color: var(--text-muted); padding: 1rem;">אין פעילות עדיין. בואו להיות הראשונים לומר פרק!</p>';
 						}
 						?>
 					</div>

@@ -35,7 +35,7 @@
 				?>
 			</nav>
 
-			<button class="nav-toggle" aria-label="<?php esc_attr_e( 'Toggle navigation', 'tehilim' ); ?>">
+			<button class="nav-toggle" aria-label="פתחו תפריט ניווט">
 				<span></span>
 				<span></span>
 				<span></span>

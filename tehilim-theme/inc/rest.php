@@ -46,6 +46,12 @@ function tehilim_register_rest_routes() {
 		'permission_callback' => 'is_user_logged_in',
 	) );
 
+	register_rest_route( 'tehilim/v1', '/site-stats', array(
+		'methods'             => 'GET',
+		'callback'            => 'tehilim_get_site_stats_endpoint',
+		'permission_callback' => '__return_true',
+	) );
+
 	register_rest_route( 'tehilim/v1', '/ambassadors/join', array(
 		'methods'             => 'POST',
 		'callback'            => 'tehilim_handle_ambassador_join',
@@ -130,6 +136,7 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 	$chapter_number = isset( $params['chapter_number'] ) ? absint( $params['chapter_number'] ) : 0;
 	$ambassador_id = isset( $params['ambassador_id'] ) ? absint( $params['ambassador_id'] ) : null;
 	$reciter_name = isset( $params['reciter_name'] ) ? mb_substr( sanitize_text_field( $params['reciter_name'] ), 0, 100 ) : '';
+	$visitor_key  = isset( $params['visitor_key'] ) ? substr( preg_replace( '/[^a-zA-Z0-9]/', '', (string) $params['visitor_key'] ), 0, 64 ) : '';
 	$turnstile_response = isset( $params['cf_turnstile_response'] ) ? sanitize_text_field( $params['cf_turnstile_response'] ) : '';
 
 	if ( ! $campaign_id || ! $chapter_number || $chapter_number < 1 || $chapter_number > TEHILIM_CHAPTERS_PER_BOOK ) {
@@ -154,8 +161,9 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 		'ambassador_id'  => $ambassador_id,
 		'chapter_number' => $chapter_number,
 		'reciter_name'   => $reciter_name,
+		'visitor_key'    => $visitor_key,
 	);
-	$formats = array( '%d', '%d', '%d', '%s' );
+	$formats = array( '%d', '%d', '%d', '%s', '%s' );
 
 	$inserted = $wpdb->insert( $table, $row, $formats );
 
@@ -225,7 +233,9 @@ function tehilim_build_stats_payload( $campaign_id, $ambassador_id = 0 ) {
 
 	// Ambassador-scoped tiles/ring for personal pages
 	if ( $ambassador_id > 0 && function_exists( 'tehilim_get_ambassador_stats' ) ) {
-		$payload['ambassador'] = tehilim_get_ambassador_stats( $campaign_id, $ambassador_id );
+		$amb_stats          = tehilim_get_ambassador_stats( $campaign_id, $ambassador_id );
+		$amb_stats['books'] = intdiv( intval( $amb_stats['chapters'] ), TEHILIM_CHAPTERS_PER_BOOK );
+		$payload['ambassador'] = $amb_stats;
 	}
 
 	return $payload;
@@ -248,6 +258,14 @@ function tehilim_get_campaign_stats( WP_REST_Request $request ) {
 	header( 'Pragma: no-cache' );
 
 	return tehilim_build_stats_payload( $campaign_id, absint( $request->get_param( 'ambassador_id' ) ) );
+}
+
+/**
+ * Site-wide totals for the homepage counters (baseline + live activity)
+ */
+function tehilim_get_site_stats_endpoint() {
+	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+	return tehilim_get_site_stats();
 }
 
 /**

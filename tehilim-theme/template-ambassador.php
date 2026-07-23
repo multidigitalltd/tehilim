@@ -183,8 +183,8 @@ if ( $campaign && $ambassador ) :
 					<div class="amb-stat-label"><?php esc_html_e( 'פרקים גויסו', 'tehilim' ); ?></div>
 				</div>
 				<div class="amb-stat">
-					<div class="amb-stat-num"><?php echo esc_html( $amb_reciters ); ?></div>
-					<div class="amb-stat-label"><?php esc_html_e( 'אמרו דרכי', 'tehilim' ); ?></div>
+					<div class="amb-stat-num"><?php echo esc_html( intdiv( $amb_chapters, $chapters_per_book ) ); ?></div>
+					<div class="amb-stat-label"><?php esc_html_e( 'ספרים', 'tehilim' ); ?></div>
 				</div>
 				<div class="amb-stat">
 					<div class="amb-stat-num"><?php echo esc_html( $amb_rank ); ?><small>/<?php echo esc_html( max( 1, $ambassadors_count ) ); ?></small></div>

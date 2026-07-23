@@ -88,6 +88,9 @@ function tehilim_ensure_theme_pages() {
 		'create'  => 'יצירת קמפיין',
 		'login'   => 'התחברות',
 		'account' => 'האזור האישי',
+		'about'   => 'אודות',
+		'terms'   => 'תקנון האתר',
+		'privacy' => 'מדיניות פרטיות',
 	);
 
 	foreach ( $pages as $slug => $title ) {

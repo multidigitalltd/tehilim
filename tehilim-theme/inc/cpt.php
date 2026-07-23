@@ -207,6 +207,7 @@ function tehilim_create_recitations_table( $force = false ) {
 		ambassador_id BIGINT UNSIGNED NULL,
 		chapter_number INT UNSIGNED NOT NULL,
 		reciter_name VARCHAR(255) NULL,
+		visitor_key VARCHAR(64) NULL,
 		created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 		KEY campaign_id (campaign_id),
 		KEY ambassador_id (ambassador_id)
@@ -219,6 +220,7 @@ function tehilim_create_recitations_table( $force = false ) {
 			'ambassador_id'  => "ALTER TABLE `{$table}` ADD COLUMN ambassador_id BIGINT UNSIGNED NULL, ADD KEY ambassador_id (ambassador_id)",
 			'chapter_number' => "ALTER TABLE `{$table}` ADD COLUMN chapter_number INT UNSIGNED NOT NULL DEFAULT 1",
 			'reciter_name'   => "ALTER TABLE `{$table}` ADD COLUMN reciter_name VARCHAR(255) NULL",
+			'visitor_key'    => "ALTER TABLE `{$table}` ADD COLUMN visitor_key VARCHAR(64) NULL",
 			'created_at'     => "ALTER TABLE `{$table}` ADD COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP",
 		);
 		foreach ( $needed as $col => $sql ) {

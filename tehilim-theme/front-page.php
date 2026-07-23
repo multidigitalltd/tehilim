@@ -48,7 +48,7 @@ get_header();
 						<div class="avatar avatar-count">+83</div>
 					</div>
 					<div class="proof-text">
-						כבר <strong>4,280</strong> אומרים תהילים ב־<strong>128</strong> קמפיינים
+						כבר <strong data-site-stat="participants">4,280</strong> אומרים תהילים ב־<strong data-site-stat="campaigns">128</strong> קמפיינים
 					</div>
 				</div>
 			</div>
@@ -130,22 +130,22 @@ get_header();
 		<!-- Stats Bar -->
 		<div class="stats-bar">
 			<div class="stat-item">
-				<div class="stat-value">4,280</div>
+				<div class="stat-value" data-site-stat="participants">4,280</div>
 				<div class="stat-label">משתתפים</div>
 			</div>
 			<div class="stat-divider"></div>
 			<div class="stat-item">
-				<div class="stat-value">46,800</div>
+				<div class="stat-value" data-site-stat="chapters">46,800</div>
 				<div class="stat-label">פרקי תהילים נאמרו</div>
 			</div>
 			<div class="stat-divider"></div>
 			<div class="stat-item">
-				<div class="stat-value">312</div>
+				<div class="stat-value" data-site-stat="books">312</div>
 				<div class="stat-label">ספרים הושלמו</div>
 			</div>
 			<div class="stat-divider"></div>
 			<div class="stat-item">
-				<div class="stat-value">128</div>
+				<div class="stat-value" data-site-stat="campaigns">128</div>
 				<div class="stat-label">קמפיינים פעילים</div>
 			</div>
 		</div>
@@ -388,7 +388,7 @@ get_header();
 	</section>
 
 	<!-- FAQ Section -->
-	<section class="faq-section">
+	<section class="faq-section" id="faq">
 		<div class="faq-badge">שאלות ותשובות</div>
 		<h2>שאלות נפוצות</h2>
 		<p>כל מה שצריך לדעת לפני שפותחים קמפיין.</p>
@@ -543,7 +543,7 @@ get_header();
 							<div class="cta-avatar cta-avatar-4">+</div>
 						</div>
 						<div class="cta-stats">
-							<strong>4,280</strong> אומרים תהילים ב־<strong>128</strong> קמפיינים פעילים
+							<strong data-site-stat="participants">4,280</strong> אומרים תהילים ב־<strong data-site-stat="campaigns">128</strong> קמפיינים פעילים
 						</div>
 					</div>
 				</div>

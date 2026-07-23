@@ -250,7 +250,7 @@ function tehilim_get_ambassador_stats( $campaign_id, $ambassador_id ) {
 	) );
 
 	$reciters = (int) $wpdb->get_var( $wpdb->prepare(
-		"SELECT COUNT(DISTINCT reciter_name) FROM %i WHERE campaign_id = %d AND ambassador_id = %d AND reciter_name IS NOT NULL AND reciter_name <> ''",
+		"SELECT COUNT(DISTINCT COALESCE(NULLIF(reciter_name,''), NULLIF(visitor_key,''))) FROM %i WHERE campaign_id = %d AND ambassador_id = %d AND (COALESCE(reciter_name,'') <> '' OR COALESCE(visitor_key,'') <> '')",
 		$table,
 		$campaign_id,
 		$ambassador_id
@@ -329,7 +329,7 @@ function tehilim_get_campaign_participants( $campaign_id ) {
 	$table = $wpdb->prefix . 'tehilim_recitations';
 
 	$count = (int) $wpdb->get_var( $wpdb->prepare(
-		"SELECT COUNT(DISTINCT reciter_name) FROM %i WHERE campaign_id = %d AND reciter_name IS NOT NULL AND reciter_name <> ''",
+		"SELECT COUNT(DISTINCT COALESCE(NULLIF(reciter_name,''), NULLIF(visitor_key,''))) FROM %i WHERE campaign_id = %d AND (COALESCE(reciter_name,'') <> '' OR COALESCE(visitor_key,'') <> '')",
 		$table,
 		$campaign_id
 	) );
@@ -358,4 +358,47 @@ function tehilim_get_recent_recitations( $campaign_id, $limit = 10 ) {
 	) );
 
 	return $results ?: array();
+}
+
+/**
+ * Site-wide homepage counters: fixed baseline + live activity on top.
+ * Baselines are the numbers the site launched with; every real chapter,
+ * completed book, campaign and participant increments them.
+ */
+function tehilim_get_site_stats() {
+	$cached = get_transient( 'tehilim_site_stats' );
+	if ( false !== $cached ) {
+		return $cached;
+	}
+
+	global $wpdb;
+	$table = $wpdb->prefix . 'tehilim_recitations';
+
+	$baseline = apply_filters( 'tehilim_baseline_stats', array(
+		'participants' => 4280,
+		'chapters'     => 46800,
+		'books'        => 312,
+		'campaigns'    => 128,
+	) );
+
+	$chapters = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i", $table ) );
+
+	$participants = (int) $wpdb->get_var( $wpdb->prepare(
+		"SELECT COUNT(DISTINCT COALESCE(NULLIF(reciter_name,''), NULLIF(visitor_key,''))) FROM %i WHERE (COALESCE(reciter_name,'') <> '' OR COALESCE(visitor_key,'') <> '')",
+		$table
+	) );
+
+	$campaign_counts = wp_count_posts( 'campaign' );
+	$campaigns       = $campaign_counts ? intval( $campaign_counts->publish ) : 0;
+
+	$stats = array(
+		'participants' => $baseline['participants'] + $participants,
+		'chapters'     => $baseline['chapters'] + $chapters,
+		'books'        => $baseline['books'] + intdiv( $chapters, TEHILIM_CHAPTERS_PER_BOOK ),
+		'campaigns'    => $baseline['campaigns'] + $campaigns,
+	);
+
+	set_transient( 'tehilim_site_stats', $stats, 30 );
+
+	return $stats;
 }

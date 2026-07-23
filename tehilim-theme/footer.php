@@ -15,7 +15,7 @@
 						<path d="M12 6.4v12.3" stroke="#F0CE7E" stroke-width="1.7" stroke-linecap="round"></path>
 					</svg>
 				</div>
-				<span class="footer-brand-name"><?php bloginfo( 'name' ); ?></span>
+				<span class="footer-brand-name"><?php esc_html_e( 'תהילים', 'tehilim' ); ?></span>
 			</div>
 			<p class="footer-description">
 				<?php
@@ -40,7 +40,7 @@
 			<ul class="footer-col">
 				<li><a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'גלו קמפיינים', 'tehilim' ); ?></a></li>
 				<li><a href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php esc_html_e( 'פתחו קמפיין', 'tehilim' ); ?></a></li>
-				<li><a href="#"><?php esc_html_e( 'האזור שלי', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( is_user_logged_in() ? tehilim_account_page_url() : tehilim_login_page_url( home_url( '/account/' ) ) ); ?>"><?php esc_html_e( 'האזור שלי', 'tehilim' ); ?></a></li>
 			</ul>
 		</div>
 
@@ -48,7 +48,8 @@
 		<div>
 			<h4><?php esc_html_e( 'אודות', 'tehilim' ); ?></h4>
 			<ul class="footer-col">
-				<li><a href="#"><?php esc_html_e( 'אודות הפלטפורמה', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>"><?php esc_html_e( 'אודות הפלטפורמה', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/#faq' ) ); ?>"><?php esc_html_e( 'שאלות נפוצות', 'tehilim' ); ?></a></li>
 			</ul>
 		</div>
 
@@ -56,7 +57,8 @@
 		<div>
 			<h4><?php esc_html_e( 'משאבים', 'tehilim' ); ?></h4>
 			<ul class="footer-col">
-				<li><a href="#"><?php esc_html_e( 'שאלות נפוצות', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/terms/' ) ); ?>"><?php esc_html_e( 'תקנון האתר', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/privacy/' ) ); ?>"><?php esc_html_e( 'מדיניות פרטיות', 'tehilim' ); ?></a></li>
 			</ul>
 		</div>
 	</div>

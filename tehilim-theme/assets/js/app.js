@@ -26,9 +26,40 @@
 			this.initPraiseVerses();
 			this.initFaq();
 			this.initCarousel();
+			this.initSiteStats();
 			if ( this.turnstileSiteKey && document.querySelector( '.btn-say-chapter' ) ) {
 				this.loadTurnstile();
 			}
+		},
+
+		/* Homepage counters: baseline + live activity, refreshed every 12s */
+		initSiteStats: function() {
+			var els = document.querySelectorAll( '[data-site-stat]' );
+			if ( ! els.length ) { return; }
+			var self = this;
+
+			function apply( stats ) {
+				els.forEach( function( el ) {
+					var key = el.dataset.siteStat;
+					if ( stats && typeof stats[ key ] !== 'undefined' ) {
+						el.textContent = self.formatNumber( stats[ key ] );
+					}
+				} );
+			}
+
+			function refresh() {
+				var url = self.apiUrl + 'site-stats';
+				url += ( url.indexOf( '?' ) !== -1 ? '&' : '?' ) + '_=' + new Date().getTime();
+				fetch( url, { cache: 'no-store' } )
+					.then( function( r ) { return r.ok ? r.json() : null; } )
+					.then( apply )
+					.catch( function() {} );
+			}
+
+			refresh();
+			window.setInterval( function() {
+				if ( ! document.hidden ) { refresh(); }
+			}, 12000 );
 		},
 
 		/* FAQ accordion: one item open at a time, first open by default */
@@ -118,6 +149,24 @@
 			return Number( n || 0 ).toLocaleString( 'en-US' );
 		},
 
+		// Stable anonymous visitor id — lets unnamed reciters count as unique people
+		visitorKey: function() {
+			try {
+				var k = window.localStorage.getItem( 'tehilim_vk' );
+				if ( ! k ) {
+					var bytes = new Uint8Array( 16 );
+					( window.crypto || window.msCrypto ).getRandomValues( bytes );
+					k = Array.prototype.map.call( bytes, function( b ) {
+						return ( '0' + b.toString( 16 ) ).slice( -2 );
+					} ).join( '' );
+					window.localStorage.setItem( 'tehilim_vk', k );
+				}
+				return k;
+			} catch ( e ) {
+				return '';
+			}
+		},
+
 		/* ============ Event wiring ============ */
 
 		setupEventListeners: function() {
@@ -166,7 +215,19 @@
 					return;
 				}
 
-				var join = e.target.closest( '.btn-ambassador-cta, .btn-amb-join' );
+				var joinScroll = e.target.closest( '.btn-amb-join' );
+				if ( joinScroll ) {
+					e.preventDefault();
+					var reader = document.querySelector( '.reader-card' );
+					if ( reader ) {
+						reader.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+						var nameField = reader.querySelector( '.reader-name-input' );
+						if ( nameField ) { window.setTimeout( function() { nameField.focus(); }, 600 ); }
+					}
+					return;
+				}
+
+				var join = e.target.closest( '.btn-ambassador-cta' );
 				if ( join ) {
 					e.preventDefault();
 					self.toggleJoinForm( join );
@@ -344,6 +405,10 @@
 			var reciterName = nameInput ? nameInput.value.trim() : '';
 			if ( reciterName ) {
 				body.reciter_name = reciterName;
+			}
+			var vk = this.visitorKey();
+			if ( vk ) {
+				body.visitor_key = vk;
 			}
 
 			if ( this.turnstileSiteKey && window.turnstile && this.turnstileWidgetId !== null ) {
@@ -531,7 +596,7 @@
 				var tiles = document.querySelectorAll( '.amb-stat-num' );
 				if ( tiles.length >= 3 ) {
 					tiles[ 0 ].textContent = fmt( amb.chapters );
-					tiles[ 1 ].textContent = fmt( amb.reciters );
+					tiles[ 1 ].textContent = fmt( amb.books || 0 );
 					tiles[ 2 ].textContent = '';
 					tiles[ 2 ].appendChild( document.createTextNode( String( amb.rank ) ) );
 					var sm = document.createElement( 'small' );

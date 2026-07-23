@@ -54,6 +54,10 @@ GitHub: https://github.com/multidigitalltd/tehilim
 
 == Changelog ==
 
+= 2.0.1 =
+- CSS/JS cache bust for asset reload
+- Performance and styling refinements
+
 = 2.0.0 =
 - Initial release
 - Full security audit and hardening

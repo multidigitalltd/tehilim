@@ -22,26 +22,26 @@
 				</div>
 
 				<div class="footer-col">
-					<h4><?php esc_html_e( 'Product', 'tehilim' ); ?></h4>
+					<h4>מוצרים</h4>
 					<ul>
-						<li><a href="<?php echo esc_url( home_url( '/campaigns' ) ); ?>"><?php esc_html_e( 'Campaigns', 'tehilim' ); ?></a></li>
-						<li><a href="<?php echo esc_url( home_url( '/create' ) ); ?>"><?php esc_html_e( 'Create Campaign', 'tehilim' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/campaigns' ) ); ?>">קמפיינים</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/create' ) ); ?>">צרו קמפיין</a></li>
 					</ul>
 				</div>
 
 				<div class="footer-col">
-					<h4><?php esc_html_e( 'About', 'tehilim' ); ?></h4>
+					<h4>על אודות</h4>
 					<ul>
-						<li><a href="#"><?php esc_html_e( 'How it Works', 'tehilim' ); ?></a></li>
-						<li><a href="#"><?php esc_html_e( 'Features', 'tehilim' ); ?></a></li>
+						<li><a href="#">כך זה עובד</a></li>
+						<li><a href="#">תכונות</a></li>
 					</ul>
 				</div>
 
 				<div class="footer-col">
-					<h4><?php esc_html_e( 'Resources', 'tehilim' ); ?></h4>
+					<h4>משאבים</h4>
 					<ul>
-						<li><a href="#"><?php esc_html_e( 'FAQ', 'tehilim' ); ?></a></li>
-						<li><a href="#"><?php esc_html_e( 'Contact', 'tehilim' ); ?></a></li>
+						<li><a href="#">שאלות נפוצות</a></li>
+						<li><a href="#">צרו קשר</a></li>
 					</ul>
 				</div>
 			</div>

@@ -17,7 +17,7 @@ const TEHILIM_RATE_LIMIT_AMBASSADOR = 1;
  */
 function tehilim_register_campaign_cpt() {
 	register_post_type( 'campaign', array(
-		'label'              => 'Campaigns',
+		'label'              => 'קמפיינים',
 		'public'             => true,
 		'has_archive'        => true,
 		'show_in_rest'       => true,
@@ -34,7 +34,7 @@ add_action( 'init', 'tehilim_register_campaign_cpt' );
  */
 function tehilim_register_ambassador_cpt() {
 	register_post_type( 'ambassador', array(
-		'label'           => 'Ambassadors',
+		'label'           => 'שגרירים',
 		'public'          => true,
 		'show_in_rest'    => true,
 		'supports'        => array( 'title', 'custom-fields' ),
@@ -50,7 +50,7 @@ add_action( 'init', 'tehilim_register_ambassador_cpt' );
  */
 function tehilim_register_occasion_taxonomy() {
 	register_taxonomy( 'occasion', 'campaign', array(
-		'label'         => 'Occasions',
+		'label'         => 'סיבות',
 		'public'        => true,
 		'show_in_rest'  => true,
 		'hierarchical'  => false,
@@ -64,12 +64,12 @@ add_action( 'init', 'tehilim_register_occasion_taxonomy' );
  */
 function tehilim_insert_default_occasions() {
 	$occasions = array(
-		'refua'   => 'Healing (Refua)',
-		'iluy'    => 'Soul Elevation (Iluy)',
-		'zivug'   => 'Finding a Partner (Zivug)',
-		'parnasa' => 'Livelihood (Parnasa)',
-		'zchut'   => 'Merit (Zchut)',
-		'event'   => 'Event',
+		'refua'   => 'רפואה',
+		'iluy'    => 'עליית הנשמה',
+		'zivug'   => 'זיווג',
+		'parnasa' => 'פרנסה',
+		'zchut'   => 'זכות',
+		'event'   => 'אירוע',
 	);
 
 	foreach ( $occasions as $slug => $name ) {

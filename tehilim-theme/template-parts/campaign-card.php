@@ -45,7 +45,7 @@ $goal_books = intval( get_post_meta( $campaign_id, 'goal_books', true ) ?: 1 );
 			<p class="progress-text">
 				<?php
 				printf(
-					esc_html_x( '%d of %d books', 'progress counter', 'tehilim' ),
+					esc_html_x( '%d מתוך %d ספרים', 'progress counter', 'tehilim' ),
 					1, // Replace with actual progress
 					$goal_books
 				);
@@ -54,7 +54,7 @@ $goal_books = intval( get_post_meta( $campaign_id, 'goal_books', true ) ?: 1 );
 		</div>
 
 		<a href="<?php the_permalink(); ?>" class="btn btn-secondary">
-			<?php esc_html_e( 'View Campaign', 'tehilim' ); ?>
+			צפו בקמפיין
 		</a>
 	</div>
 </article>

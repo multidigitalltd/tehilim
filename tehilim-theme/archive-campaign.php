@@ -14,7 +14,7 @@ get_header();
 		<!-- Occasion Filters -->
 		<div class="filter-bar">
 			<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>" class="filter-chip">
-				<?php esc_html_e( 'All', 'tehilim' ); ?>
+				הכל
 			</a>
 
 			<?php
@@ -44,7 +44,7 @@ get_header();
 				}
 			} else {
 				?>
-				<p><?php esc_html_e( 'No campaigns found.', 'tehilim' ); ?></p>
+				<p>לא נמצאו קמפיינים.</p>
 				<?php
 			}
 			?>

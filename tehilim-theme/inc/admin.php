@@ -12,8 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function tehilim_register_admin_menu() {
 	add_menu_page(
-		'Tehilim Settings',
-		'Tehilim',
+		'הגדרות תהילים',
+		'תהילים',
 		'manage_options',
 		'tehilim-settings',
 		'tehilim_settings_page',
@@ -23,8 +23,8 @@ function tehilim_register_admin_menu() {
 
 	add_submenu_page(
 		'tehilim-settings',
-		'Settings',
-		'Settings',
+		'הגדרות',
+		'הגדרות',
 		'manage_options',
 		'tehilim-settings',
 		'tehilim_settings_page'
@@ -32,16 +32,16 @@ function tehilim_register_admin_menu() {
 
 	add_submenu_page(
 		'tehilim-settings',
-		'Campaign Manager',
-		'Campaigns',
+		'מנהל קמפיינים',
+		'קמפיינים',
 		'manage_options',
 		'edit.php?post_type=campaign'
 	);
 
 	add_submenu_page(
 		'tehilim-settings',
-		'Ambassador Manager',
-		'Ambassadors',
+		'מנהל שגרירים',
+		'שגרירים',
 		'manage_options',
 		'edit.php?post_type=ambassador'
 	);
@@ -62,18 +62,18 @@ function tehilim_settings_page() {
 		update_option( 'tehilim_site_description', sanitize_text_field( $_POST['site_description'] ?? '' ) );
 		update_option( 'tehilim_enable_turnstile', isset( $_POST['enable_turnstile'] ) ? 1 : 0 );
 
-		echo '<div class="notice notice-success"><p>Settings saved!</p></div>';
+		echo '<div class="notice notice-success"><p>ההגדרות נשמרו!</p></div>';
 	}
 
 	$description = get_option( 'tehilim_site_description', '' );
 	$enable_turnstile = get_option( 'tehilim_enable_turnstile', 0 );
 	?>
 	<div class="wrap">
-		<h1>Tehilim Settings</h1>
+		<h1>הגדרות תהילים</h1>
 
 		<div style="max-width: 800px; margin: 20px 0;">
 			<div style="background: #f0f4f8; border-left: 4px solid #C05A3A; padding: 15px; border-radius: 4px;">
-				<h3 style="margin-top: 0; color: #C05A3A;">Quick Stats</h3>
+				<h3 style="margin-top: 0; color: #C05A3A;">סטטיסטיקה מהירה</h3>
 				<?php
 				$total_campaigns = wp_count_posts( 'campaign' )->publish;
 				$total_ambassadors = wp_count_posts( 'ambassador' )->publish;
@@ -84,10 +84,10 @@ function tehilim_settings_page() {
 				$total_chapters = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(DISTINCT chapter_number) FROM {$wpdb->prefix}tehilim_recitations" ) );
 				?>
 				<p>
-					<strong><?php echo esc_html( $total_campaigns ); ?></strong> Active Campaigns<br>
-					<strong><?php echo esc_html( $total_ambassadors ); ?></strong> Ambassadors<br>
-					<strong><?php echo esc_html( $total_recitations ); ?></strong> Recitations Made<br>
-					<strong><?php echo esc_html( intdiv( $total_chapters, TEHILIM_CHAPTERS_PER_BOOK ) ); ?></strong> Complete Books
+					<strong><?php echo esc_html( $total_campaigns ); ?></strong> קמפיינים פעילים<br>
+					<strong><?php echo esc_html( $total_ambassadors ); ?></strong> שגרירים<br>
+					<strong><?php echo esc_html( $total_recitations ); ?></strong> אמירות<br>
+					<strong><?php echo esc_html( intdiv( $total_chapters, TEHILIM_CHAPTERS_PER_BOOK ) ); ?></strong> ספרים שהושלמו
 				</p>
 			</div>
 		</div>
@@ -98,7 +98,7 @@ function tehilim_settings_page() {
 			<table class="form-table">
 				<tr>
 					<th scope="row">
-						<label for="site_description">Site Description</label>
+						<label for="site_description">תיאור אתר</label>
 					</th>
 					<td>
 						<textarea
@@ -108,42 +108,42 @@ function tehilim_settings_page() {
 							style="width: 100%; max-width: 400px;"
 							class="widefat"
 						><?php echo esc_textarea( $description ); ?></textarea>
-						<p class="description">Displayed on homepage</p>
+						<p class="description">מוצג בעמוד הבית</p>
 					</td>
 				</tr>
 
 				<tr>
 					<th scope="row">
-						<label for="enable_turnstile">Enable Turnstile CAPTCHA</label>
+						<label for="enable_turnstile">הפעלת Turnstile CAPTCHA</label>
 					</th>
 					<td>
 						<input type="checkbox" name="enable_turnstile" id="enable_turnstile" value="1" <?php checked( $enable_turnstile, 1 ); ?> />
 						<p class="description">
-							Requires <code>TURNSTILE_SITE_KEY</code> and <code>TURNSTILE_SECRET_KEY</code> in <code>wp-config.php</code>
+							דורש <code>TURNSTILE_SITE_KEY</code> ו<code>TURNSTILE_SECRET_KEY</code> ב<code>wp-config.php</code>
 						</p>
 					</td>
 				</tr>
 
 				<tr>
-					<th scope="row">Configured CAPTCHA</th>
+					<th scope="row">CAPTCHA מוגדר</th>
 					<td>
 						<?php if ( defined( 'TURNSTILE_SITE_KEY' ) && defined( 'TURNSTILE_SECRET_KEY' ) ) : ?>
-							<span style="color: green;">✓ Enabled</span>
+							<span style="color: green;">✓ מופעל</span>
 						<?php else : ?>
-							<span style="color: orange;">✗ Not configured (add to wp-config.php)</span>
+							<span style="color: orange;">✗ לא מוגדר (הוסיפו ל wp-config.php)</span>
 						<?php endif; ?>
 					</td>
 				</tr>
 
 				<tr>
-					<th scope="row">Database Status</th>
+					<th scope="row">מצב מסד הנתונים</th>
 					<td>
 						<?php
 						$db_table = $wpdb->prefix . 'tehilim_recitations';
 						if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $db_table ) ) === $db_table ) {
-							echo '<span style="color: green;">✓ Recitations table exists</span>';
+							echo '<span style="color: green;">✓ טבלת האמירות קיימת</span>';
 						} else {
-							echo '<span style="color: red;">✗ Table missing (activate theme to create)</span>';
+							echo '<span style="color: red;">✗ טבלה חסרה (הפעילו את ערכת הנושא כדי ליצור)</span>';
 						}
 						?>
 					</td>
@@ -156,10 +156,10 @@ function tehilim_settings_page() {
 		<hr style="margin: 40px 0;">
 
 		<div style="max-width: 600px;">
-			<h2>Documentation</h2>
+			<h2>תיעוד</h2>
 			<ul>
-				<li><a href="https://github.com/multidigitalltd/tehilim/blob/claude/tehilim-v2-clean/README.md" target="_blank">📖 User Guide</a></li>
-				<li><a href="https://github.com/multidigitalltd/tehilim/blob/claude/tehilim-v2-clean/CLAUDE.md" target="_blank">👨‍💻 Developer Docs</a></li>
+				<li><a href="https://github.com/multidigitalltd/tehilim/blob/claude/tehilim-v2-clean/README.md" target="_blank">📖 מדריך משתמש</a></li>
+				<li><a href="https://github.com/multidigitalltd/tehilim/blob/claude/tehilim-v2-clean/CLAUDE.md" target="_blank">👨‍💻 תיעוד מפתחים</a></li>
 				<li><a href="https://github.com/multidigitalltd/tehilim" target="_blank">🔗 GitHub Repository</a></li>
 			</ul>
 		</div>
@@ -180,9 +180,9 @@ add_action( 'admin_init', 'tehilim_register_settings' );
  * Add admin columns for campaigns
  */
 function tehilim_campaign_columns( $columns ) {
-	$columns['occasion'] = 'Occasion';
-	$columns['progress'] = 'Progress';
-	$columns['ambassadors'] = 'Ambassadors';
+	$columns['occasion'] = 'סיבה';
+	$columns['progress'] = 'התקדמות';
+	$columns['ambassadors'] = 'שגרירים';
 	return $columns;
 }
 add_filter( 'manage_campaign_posts_columns', 'tehilim_campaign_columns' );

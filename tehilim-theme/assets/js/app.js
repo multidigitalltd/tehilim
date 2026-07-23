@@ -69,13 +69,13 @@
 				const data = await response.json();
 
 				if ( data.success ) {
-					button.innerHTML = '✓ Said!';
+					button.innerHTML = '✓ אמרתי!';
 					button.disabled = true;
 					this.pollCampaignStats( campaignId );
 				}
 			} catch ( error ) {
 				console.error( 'Recitation error:', error );
-				alert( 'Failed to record recitation. Please try again.' );
+				alert( 'נכשל בתיעוד האמירה. נסו שוב.' );
 			}
 		},
 
@@ -92,19 +92,19 @@
 					statsEl.innerHTML = `
 						<div class="stat">
 							<strong>${data.books_done}</strong>
-							<span>${data.books_done === 1 ? 'Book' : 'Books'}</span>
+							<span>${data.books_done === 1 ? 'ספר' : 'ספרים'}</span>
 						</div>
 						<div class="stat">
 							<strong>${data.chapters_done}</strong>
-							<span>Chapters</span>
+							<span>פרקים</span>
 						</div>
 						<div class="stat">
 							<strong>${data.participants}</strong>
-							<span>Participants</span>
+							<span>משתתפים</span>
 						</div>
 						<div class="stat">
 							<strong>${data.ambassadors}</strong>
-							<span>Ambassadors</span>
+							<span>שגרירים</span>
 						</div>
 					`;
 				}
@@ -117,12 +117,12 @@
 		 * Handle sharing
 		 */
 		handleShare( button ) {
-			const text = button.dataset.shareText || 'Join me in saying Tehilim';
+			const text = button.dataset.shareText || 'בואו לומר תהילים איתי';
 			const url = button.dataset.shareUrl || window.location.href;
 
 			if ( navigator.share ) {
 				navigator.share( {
-					title: 'Tehilim Campaign',
+					title: 'קמפיין תהילים',
 					text,
 					url,
 				} );
@@ -131,7 +131,7 @@
 				window.open( whatsappUrl, '_blank' );
 			} else {
 				navigator.clipboard.writeText( url );
-				button.innerHTML = '✓ Copied!';
+				button.innerHTML = '✓ הועתק!';
 			}
 		},
 

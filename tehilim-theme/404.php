@@ -8,10 +8,10 @@ get_header();
 <main class="site-main">
 	<div class="container">
 		<div class="error-404">
-			<h1><?php esc_html_e( 'Page Not Found', 'tehilim' ); ?></h1>
-			<p><?php esc_html_e( 'The page you are looking for could not be found.', 'tehilim' ); ?></p>
+			<h1>עמוד לא נמצא</h1>
+			<p>העמוד שחיפשתם לא נמצא.</p>
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="button">
-				<?php esc_html_e( 'Back to Home', 'tehilim' ); ?>
+				חזרו לדף הבית
 			</a>
 		</div>
 	</div>

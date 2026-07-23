@@ -41,12 +41,12 @@
 			const submitBtn = form.querySelector( 'button[type="submit"]' );
 
 			if ( !campaignId || !nameInput?.value || !emailInput?.value ) {
-				alert( 'Please fill in all fields' );
+				alert( 'אנא מלאו את כל השדות' );
 				return;
 			}
 
 			submitBtn.disabled = true;
-			submitBtn.innerHTML = 'Joining...';
+			submitBtn.innerHTML = 'הצטרפות...';
 
 			try {
 				const response = await fetch( this.apiUrl + 'ambassadors/join', {
@@ -72,14 +72,14 @@
 				// Copy personal URL to clipboard
 				navigator.clipboard.writeText( data.personal_url );
 
-				alert( `Welcome! Your personal link has been copied:\n${data.personal_url}` );
+				alert( `ברוכים הבאים! הקישור האישי שלכם הועתק:\n${data.personal_url}` );
 				form.reset();
 			} catch ( error ) {
 				console.error( 'Join error:', error );
 				alert( `Error: ${error.message}` );
 			} finally {
 				submitBtn.disabled = false;
-				submitBtn.innerHTML = 'Join as Ambassador';
+				submitBtn.innerHTML = 'הצטרפו כשגריר';
 			}
 		},
 
@@ -94,12 +94,12 @@
 			const submitBtn = form.querySelector( 'button[type="submit"]' );
 
 			if ( !occasionSelect?.value || !dedicationInput?.value || !organizerInput?.value ) {
-				alert( 'Please fill in all required fields' );
+				alert( 'אנא מלאו את כל השדות הנדרשים' );
 				return;
 			}
 
 			submitBtn.disabled = true;
-			submitBtn.innerHTML = 'Creating...';
+			submitBtn.innerHTML = 'יוצרים...';
 
 			try {
 				const formData = new FormData( form );
@@ -128,15 +128,15 @@
 						} );
 					}
 
-					alert( 'Campaign created! Check your email for next steps.' );
+					alert( 'קמפיין נוצר! בדקו את הדוא"ל שלכם להמשך השלבים.' );
 					window.location.href = `/campaigns/${response.id}`;
 				}
 			} catch ( error ) {
 				console.error( 'Create campaign error:', error );
-				alert( 'Error creating campaign. Please try again.' );
+				alert( 'שגיאה ביצירת קמפיין. נסו שוב.' );
 			} finally {
 				submitBtn.disabled = false;
-				submitBtn.innerHTML = 'Create Campaign';
+				submitBtn.innerHTML = 'צרו קמפיין';
 			}
 		},
 	};

@@ -35,7 +35,7 @@ get_header();
 					<h1>
 						<?php
 						printf(
-							esc_html__( 'You\'re invited by %s', 'tehilim' ),
+							'הוזמנתם על ידי %s',
 							esc_html( $ambassador->post_title )
 						);
 						?>
@@ -54,15 +54,15 @@ get_header();
 						<div class="campaign-stats">
 							<div class="stat">
 								<strong>0</strong>
-								<span><?php esc_html_e( 'Books', 'tehilim' ); ?></span>
+								<span><?php echo 'ספרים'; ?></span>
 							</div>
 							<div class="stat">
 								<strong>0</strong>
-								<span><?php esc_html_e( 'Chapters', 'tehilim' ); ?></span>
+								<span><?php echo 'פרקים'; ?></span>
 							</div>
 							<div class="stat">
 								<strong>0</strong>
-								<span><?php esc_html_e( 'Participants', 'tehilim' ); ?></span>
+								<span><?php echo 'משתתפים'; ?></span>
 							</div>
 						</div>
 					</div>
@@ -75,30 +75,30 @@ get_header();
 					<div class="reader-wrapper">
 						<div class="reader-main">
 							<div class="chapter-display">
-								<h2 class="chapter-title"><?php esc_html_e( 'Psalm 1', 'tehilim' ); ?></h2>
+								<h2 class="chapter-title"><?php echo 'תהילים א'; ?></h2>
 								<div class="chapter-text">
-									<?php esc_html_e( 'Chapter text will load here...', 'tehilim' ); ?>
+									<?php echo 'טקסט הפרק יטען כאן...'; ?>
 								</div>
 							</div>
 
 							<div class="reader-controls">
 								<button class="btn btn-say-chapter" data-campaign-id="<?php echo esc_attr( $campaign->ID ); ?>" data-ambassador-id="<?php echo esc_attr( $ambassador->ID ); ?>" data-chapter-number="1">
-									<?php esc_html_e( 'I Said This', 'tehilim' ); ?>
+									<?php echo 'אמרתי זאת'; ?>
 								</button>
-								<button class="btn btn-next"><?php esc_html_e( 'Next Chapter', 'tehilim' ); ?></button>
-								<button class="btn btn-random"><?php esc_html_e( 'Random', 'tehilim' ); ?></button>
+								<button class="btn btn-next"><?php echo 'פרק הבא'; ?></button>
+								<button class="btn btn-random"><?php echo 'אקראי'; ?></button>
 							</div>
 						</div>
 
 						<!-- Sidebar -->
 						<aside class="reader-sidebar">
 							<div class="share-card">
-								<h3><?php esc_html_e( 'Share', 'tehilim' ); ?></h3>
+								<h3><?php echo 'שתפו'; ?></h3>
 								<button class="btn btn-share" data-share-type="whatsapp" data-share-url="<?php echo esc_url( get_permalink() ); ?>" data-share-text="<?php echo esc_attr( $ambassador->post_title . ' - ' . $campaign->post_title ); ?>">
-									<?php esc_html_e( 'WhatsApp', 'tehilim' ); ?>
+									<?php echo 'WhatsApp'; ?>
 								</button>
 								<button class="btn btn-share" data-share-type="copy" data-share-url="<?php echo esc_url( get_permalink() ); ?>">
-									<?php esc_html_e( 'Copy Link', 'tehilim' ); ?>
+									<?php echo 'העתיקו קישור'; ?>
 								</button>
 							</div>
 						</aside>
@@ -110,14 +110,14 @@ get_header();
 		} else {
 			?>
 			<div class="container">
-				<p><?php esc_html_e( 'Campaign or ambassador not found.', 'tehilim' ); ?></p>
+				<p><?php echo 'קמפיין או שגריר לא נמצאו.'; ?></p>
 			</div>
 			<?php
 		}
 	} else {
 		?>
 		<div class="container">
-			<p><?php esc_html_e( 'Invalid referral link.', 'tehilim' ); ?></p>
+			<p><?php echo 'קישור הנחיה לא חוקי.'; ?></p>
 		</div>
 		<?php
 	}

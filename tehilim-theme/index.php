@@ -22,7 +22,7 @@ get_header();
 			}
 		} else {
 			?>
-			<p><?php esc_html_e( 'No posts found.', 'tehilim' ); ?></p>
+			<p>לא נמצאו פוסטים.</p>
 			<?php
 		}
 		?>

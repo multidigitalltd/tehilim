@@ -792,7 +792,7 @@ p {
   content: '✓ ';
   color: var(--gold);
   font-weight: bold;
-  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 /* Dashboard */

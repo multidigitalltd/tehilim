@@ -15,22 +15,22 @@ get_header();
 <main class="site-main">
 	<div class="container">
 		<header class="dashboard-header">
-			<h1><?php esc_html_e( 'My Dashboard', 'tehilim' ); ?></h1>
+			<h1>לוח הבקרה שלי</h1>
 		</header>
 
 		<!-- Personal Stats -->
 		<section class="dashboard-stats">
 			<div class="stats-grid">
 				<div class="stat-card">
-					<h3><?php esc_html_e( 'Chapters Said', 'tehilim' ); ?></h3>
+					<h3>פרקים שנאמרו</h3>
 					<strong class="stat-value">0</strong>
 				</div>
 				<div class="stat-card">
-					<h3><?php esc_html_e( 'Recruited Chapters', 'tehilim' ); ?></h3>
+					<h3>פרקים שגויסו</h3>
 					<strong class="stat-value">0</strong>
 				</div>
 				<div class="stat-card">
-					<h3><?php esc_html_e( 'Leaderboard Rank', 'tehilim' ); ?></h3>
+					<h3>דירוג בטבלת הדירוגים</h3>
 					<strong class="stat-value">—</strong>
 				</div>
 			</div>
@@ -38,15 +38,15 @@ get_header();
 
 		<!-- Personal Referral Link -->
 		<section class="referral-section">
-			<h2><?php esc_html_e( 'Your Referral Links', 'tehilim' ); ?></h2>
+			<h2>קישורי ההנחיה שלך</h2>
 			<div class="referral-card">
-				<p><?php esc_html_e( 'Your campaigns will appear here...', 'tehilim' ); ?></p>
+				<p>הקמפיינים שלך יופיעו כאן...</p>
 			</div>
 		</section>
 
 		<!-- Pending Campaigns -->
 		<section class="pending-campaigns">
-			<h2><?php esc_html_e( 'My Campaigns', 'tehilim' ); ?></h2>
+			<h2>הקמפיינים שלי</h2>
 			<div class="campaigns-list">
 				<?php
 				$campaigns = get_posts( array(
@@ -62,14 +62,14 @@ get_header();
 						<div class="campaign-item">
 							<h3><?php echo esc_html( $campaign->post_title ); ?></h3>
 							<a href="<?php echo esc_url( get_permalink( $campaign->ID ) ); ?>" class="btn btn-link">
-								<?php esc_html_e( 'View Campaign', 'tehilim' ); ?>
+								<?php echo 'צפו בקמפיין'; ?>
 							</a>
 						</div>
 						<?php
 					}
 				} else {
 					?>
-					<p><?php esc_html_e( 'You haven\'t created any campaigns yet.', 'tehilim' ); ?></p>
+					<p><?php echo 'לא יצרתם קמפיינים עדיין.'; ?></p>
 					<?php
 				}
 				?>

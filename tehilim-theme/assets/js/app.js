@@ -32,17 +32,71 @@
 			}
 		},
 
-		/* Homepage counters: baseline + live activity, refreshed every 12s */
+		/* Homepage counters: count-up animation + live refresh every 12s */
 		initSiteStats: function() {
 			var els = document.querySelectorAll( '[data-site-stat]' );
 			if ( ! els.length ) { return; }
 			var self = this;
+			var reduced = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+
+			function currentValue( el ) {
+				return parseInt( String( el.textContent ).replace( /[^\d]/g, '' ), 10 ) || 0;
+			}
+
+			// Smooth count-up from the element's current value to the target
+			function countTo( el, target, duration ) {
+				var from = currentValue( el );
+				if ( from === target ) { return; }
+				if ( reduced ) {
+					el.textContent = self.formatNumber( target );
+					return;
+				}
+				if ( el._countRaf ) { window.cancelAnimationFrame( el._countRaf ); }
+				var start = null;
+				function step( ts ) {
+					if ( ! start ) { start = ts; }
+					var p = Math.min( 1, ( ts - start ) / duration );
+					var eased = 1 - Math.pow( 1 - p, 3 ); // easeOutCubic
+					el.textContent = self.formatNumber( Math.round( from + ( target - from ) * eased ) );
+					if ( p < 1 ) {
+						el._countRaf = window.requestAnimationFrame( step );
+					}
+				}
+				el._countRaf = window.requestAnimationFrame( step );
+			}
+
+			// Entry animation: run up from 0 when a counter first scrolls into view
+			var pending = [];
+			els.forEach( function( el ) {
+				el.dataset.statTarget = String( currentValue( el ) );
+				el.textContent = '0';
+				pending.push( el );
+			} );
+
+			function reveal( el ) {
+				countTo( el, parseInt( el.dataset.statTarget, 10 ) || 0, 1600 );
+			}
+
+			if ( 'IntersectionObserver' in window ) {
+				var io = new IntersectionObserver( function( entries ) {
+					entries.forEach( function( entry ) {
+						if ( entry.isIntersecting ) {
+							reveal( entry.target );
+							io.unobserve( entry.target );
+						}
+					} );
+				}, { threshold: 0.4 } );
+				pending.forEach( function( el ) { io.observe( el ); } );
+			} else {
+				pending.forEach( reveal );
+			}
 
 			function apply( stats ) {
 				els.forEach( function( el ) {
 					var key = el.dataset.siteStat;
 					if ( stats && typeof stats[ key ] !== 'undefined' ) {
-						el.textContent = self.formatNumber( stats[ key ] );
+						el.dataset.statTarget = String( stats[ key ] );
+						countTo( el, stats[ key ], 900 );
 					}
 				} );
 			}
@@ -56,7 +110,7 @@
 					.catch( function() {} );
 			}
 
-			refresh();
+			window.setTimeout( refresh, 2200 ); // let the entry animation finish first
 			window.setInterval( function() {
 				if ( ! document.hidden ) { refresh(); }
 			}, 12000 );

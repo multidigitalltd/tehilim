@@ -288,12 +288,19 @@
 			button.disabled = true;
 			button.innerHTML = 'רושמים…';
 
+			// Only send fields that carry a value — null/empty optional params
+			// can trip REST validation on some setups
 			var body = {
 				campaign_id: campaignId,
 				chapter_number: chapterNumber,
-				ambassador_id: ambassadorId,
-				reciter_name: nameInput ? nameInput.value.trim() : '',
 			};
+			if ( ambassadorId ) {
+				body.ambassador_id = ambassadorId;
+			}
+			var reciterName = nameInput ? nameInput.value.trim() : '';
+			if ( reciterName ) {
+				body.reciter_name = reciterName;
+			}
 
 			if ( this.turnstileSiteKey && window.turnstile && this.turnstileWidgetId !== null ) {
 				body.cf_turnstile_response = window.turnstile.getResponse( this.turnstileWidgetId ) || '';
@@ -323,7 +330,7 @@
 					} else if ( code === 'db_error' ) {
 						msg = 'שגיאת שרת בשמירת האמירה. נסו שוב בעוד רגע.';
 					} else if ( code ) {
-						msg += ' [' + code + ']';
+						msg += ' [' + code + ( err && err.message ? ': ' + err.message : '' ) + ']';
 					}
 					self.showToast( msg, true );
 				} );

@@ -11,45 +11,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Register REST routes
  */
 function tehilim_register_rest_routes() {
+	// NOTE: no 'args' schema here on purpose — nullable JSON fields (e.g.
+	// ambassador_id: null) trip WP's arg validation with rest_invalid_param.
+	// tehilim_handle_recitation() fully validates and sanitizes every input.
 	register_rest_route( 'tehilim/v1', '/recitations', array(
 		'methods'             => 'POST',
 		'callback'            => 'tehilim_handle_recitation',
 		'permission_callback' => function() {
 			return true; // Public campaigns allow unauthenticated recitations; rate-limiting + CAPTCHA enforce security
 		},
-		'args'                => array(
-			'campaign_id'            => array(
-				'required'          => true,
-				'type'              => 'integer',
-				'validate_callback' => function( $value ) {
-					return is_numeric( $value ) && $value > 0;
-				},
-			),
-			'chapter_number'         => array(
-				'required'          => true,
-				'type'              => 'integer',
-				'validate_callback' => function( $value ) {
-					return is_numeric( $value ) && $value >= 1 && $value <= TEHILIM_CHAPTERS_PER_BOOK;
-				},
-			),
-			'ambassador_id'          => array(
-				'required'          => false,
-				'type'              => 'integer',
-				'validate_callback' => function( $value ) {
-					return empty( $value ) || ( is_numeric( $value ) && $value > 0 );
-				},
-			),
-			'reciter_name'           => array(
-				'required'          => false,
-				'type'              => 'string',
-				'sanitize_callback' => 'sanitize_text_field',
-			),
-			'cf_turnstile_response'  => array(
-				'required'          => false,
-				'type'              => 'string',
-				'sanitize_callback' => 'sanitize_text_field',
-			),
-		),
 	) );
 
 	register_rest_route( 'tehilim/v1', '/campaigns/(?P<id>\d+)/stats', array(

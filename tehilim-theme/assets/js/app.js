@@ -308,7 +308,8 @@
 
 			this.apiPost( 'recitations', body )
 				.then( function( data ) {
-					self.showToast( 'פרק ' + self.hebrewNumeral( chapterNumber ) + ' נרשם — תודה!' );
+					var next = data.chapter_number || ( ( chapterNumber % CHAPTERS ) + 1 );
+					self.showToast( 'פרק ' + self.hebrewNumeral( chapterNumber ) + ' נרשם — תודה! הפרק הבא שלכם: פרק ' + self.hebrewNumeral( next ) );
 					if ( data.stats ) {
 						self.updateStatsUI( data.stats );
 					}
@@ -316,7 +317,20 @@
 						window.turnstile.reset( self.turnstileWidgetId );
 					}
 					button.innerHTML = original;
-					self.loadChapter( data.chapter_number || ( ( chapterNumber % CHAPTERS ) + 1 ) );
+
+					// Load the fresh chapter immediately and make the swap obvious:
+					// scroll the reader back into view and pulse it
+					self.loadChapter( next );
+					var readerBody = document.querySelector( '.reader-body' );
+					if ( readerBody ) {
+						var reduced = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+						if ( ! reduced ) {
+							readerBody.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+							readerBody.classList.remove( 'chapter-swap' );
+							void readerBody.offsetWidth; // restart the animation
+							readerBody.classList.add( 'chapter-swap' );
+						}
+					}
 				} )
 				.catch( function( err ) {
 					button.disabled = false;
@@ -381,9 +395,13 @@
 			var campaignId = holder.dataset.campaignId;
 			var self = this;
 
+			// On ambassador pages, ask for ambassador-scoped stats too
+			var ambBtn = document.querySelector( '.btn-say-chapter[data-ambassador-id]' );
+			var statsPath = 'campaigns/' + campaignId + '/stats' + ( ambBtn ? '?ambassador_id=' + ambBtn.dataset.ambassadorId : '' );
+
 			this.pollTimer = window.setInterval( function() {
 				if ( document.hidden ) { return; }
-				fetch( self.apiUrl + 'campaigns/' + campaignId + '/stats' )
+				fetch( self.apiUrl + statsPath )
 					.then( function( r ) { return r.ok ? r.json() : null; } )
 					.then( function( stats ) {
 						if ( stats ) { self.updateStatsUI( stats ); }
@@ -439,6 +457,34 @@
 				ambNums[ 0 ].textContent = fmt( stats.participants );
 				ambNums[ 1 ].textContent = fmt( stats.total_chapters );
 				ambNums[ 2 ].textContent = fmt( stats.ambassadors );
+			}
+
+			// Ambassador page — personal tiles (פרקים גויסו / אמרו דרכי / דירוג) + ring
+			if ( stats.ambassador ) {
+				var amb = stats.ambassador;
+				var tiles = document.querySelectorAll( '.amb-stat-num' );
+				if ( tiles.length >= 3 ) {
+					tiles[ 0 ].textContent = fmt( amb.chapters );
+					tiles[ 1 ].textContent = fmt( amb.reciters );
+					tiles[ 2 ].textContent = '';
+					tiles[ 2 ].appendChild( document.createTextNode( String( amb.rank ) ) );
+					var sm = document.createElement( 'small' );
+					sm.textContent = '/' + amb.total_ambassadors;
+					tiles[ 2 ].appendChild( sm );
+				}
+
+				var ring = document.querySelector( '.amb-ring' );
+				if ( ring ) {
+					var deg = Math.min( 360, amb.ring_percent * 3.6 );
+					ring.style.background = 'conic-gradient(#D9A441 0deg,#C05A3A ' + deg + 'deg,#EFE3CF ' + deg + 'deg)';
+					var rp = ring.querySelector( '.amb-ring-percent' );
+					if ( rp ) { rp.textContent = amb.ring_percent + '%'; }
+				}
+
+				var goalCount = document.querySelector( '.amb-goal-count' );
+				if ( goalCount ) {
+					goalCount.textContent = fmt( amb.chapters ) + ' / ' + fmt( amb.goal_chapters ) + ' פרקים';
+				}
 			}
 		},
 

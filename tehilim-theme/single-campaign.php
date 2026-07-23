@@ -97,39 +97,6 @@ if ( have_posts() ) :
 		<!-- Main column -->
 		<div class="campaign-main">
 
-			<!-- Progress overview -->
-			<div class="progress-overview" data-campaign-id="<?php echo esc_attr( $campaign_id ); ?>">
-				<div class="progress-overview-head">
-					<div class="progress-overview-percent"><?php echo esc_html( $progress['progress_percent'] ); ?>%</div>
-					<div class="progress-overview-label"><?php esc_html_e( 'התקדמות', 'tehilim' ); ?></div>
-				</div>
-				<div class="progress-track">
-					<div class="progress-track-fill" style="width:<?php echo esc_attr( $progress['progress_percent'] ); ?>%"></div>
-				</div>
-				<div class="progress-overview-meta">
-					<span><?php printf( esc_html__( '%d ספרים הושלמו', 'tehilim' ), (int) $progress['books_done'] ); ?></span>
-					<span><?php printf( esc_html__( '%d מתוך היעד', 'tehilim' ), (int) $progress['goal_books'] ); ?></span>
-				</div>
-				<div class="progress-stats-grid campaign-stats">
-					<div class="progress-stat">
-						<div class="progress-stat-num"><?php echo esc_html( $progress['books_done'] ); ?></div>
-						<div class="progress-stat-label"><?php esc_html_e( 'ספרים הושלמו', 'tehilim' ); ?></div>
-					</div>
-					<div class="progress-stat">
-						<div class="progress-stat-num"><?php echo esc_html( $progress['total_chapters'] ); ?></div>
-						<div class="progress-stat-label"><?php esc_html_e( 'פרקים הושלמו', 'tehilim' ); ?></div>
-					</div>
-					<div class="progress-stat">
-						<div class="progress-stat-num"><?php echo esc_html( $participants ); ?></div>
-						<div class="progress-stat-label"><?php esc_html_e( 'משתתפים', 'tehilim' ); ?></div>
-					</div>
-					<div class="progress-stat">
-						<div class="progress-stat-num"><?php echo esc_html( $ambassadors_count ); ?></div>
-						<div class="progress-stat-label"><?php esc_html_e( 'שגרירים', 'tehilim' ); ?></div>
-					</div>
-				</div>
-			</div>
-
 			<!-- Reader -->
 			<div class="reader-card">
 				<div class="reader-head">
@@ -175,6 +142,39 @@ if ( have_posts() ) :
 						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFF7F2" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
 						<?php esc_html_e( 'סימנתי שאמרתי', 'tehilim' ); ?>
 					</button>
+				</div>
+			</div>
+
+			<!-- Progress overview -->
+			<div class="progress-overview" data-campaign-id="<?php echo esc_attr( $campaign_id ); ?>">
+				<div class="progress-overview-head">
+					<div class="progress-overview-percent"><?php echo esc_html( $progress['progress_percent'] ); ?>%</div>
+					<div class="progress-overview-label"><?php esc_html_e( 'התקדמות', 'tehilim' ); ?></div>
+				</div>
+				<div class="progress-track">
+					<div class="progress-track-fill" style="width:<?php echo esc_attr( $progress['progress_percent'] ); ?>%"></div>
+				</div>
+				<div class="progress-overview-meta">
+					<span><?php printf( esc_html__( '%d ספרים הושלמו', 'tehilim' ), (int) $progress['books_done'] ); ?></span>
+					<span><?php printf( esc_html__( '%d מתוך היעד', 'tehilim' ), (int) $progress['goal_books'] ); ?></span>
+				</div>
+				<div class="progress-stats-grid campaign-stats">
+					<div class="progress-stat">
+						<div class="progress-stat-num"><?php echo esc_html( $progress['books_done'] ); ?></div>
+						<div class="progress-stat-label"><?php esc_html_e( 'ספרים הושלמו', 'tehilim' ); ?></div>
+					</div>
+					<div class="progress-stat">
+						<div class="progress-stat-num"><?php echo esc_html( $progress['total_chapters'] ); ?></div>
+						<div class="progress-stat-label"><?php esc_html_e( 'פרקים הושלמו', 'tehilim' ); ?></div>
+					</div>
+					<div class="progress-stat">
+						<div class="progress-stat-num"><?php echo esc_html( $participants ); ?></div>
+						<div class="progress-stat-label"><?php esc_html_e( 'משתתפים', 'tehilim' ); ?></div>
+					</div>
+					<div class="progress-stat">
+						<div class="progress-stat-num"><?php echo esc_html( $ambassadors_count ); ?></div>
+						<div class="progress-stat-label"><?php esc_html_e( 'שגרירים', 'tehilim' ); ?></div>
+					</div>
 				</div>
 			</div>
 

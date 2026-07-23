@@ -3,7 +3,7 @@ Theme Name: Tehilim
 Theme URI: https://github.com/multidigitalltd/tehilim
 Author: Multi Digital
 Description: Community Psalms campaign platform
-Version: 2.5.4
+Version: 2.6.0
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: tehilim
@@ -2355,6 +2355,19 @@ a.btn-dashboard-secondary:active {
   align-items: center;
   gap: 9px;
   margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.share-link-box svg {
+  flex-shrink: 0;
+}
+
+.share-link-box span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  font-size: 12.5px;
+  line-height: 1.5;
 }
 
 .share-link-box span {
@@ -2947,6 +2960,107 @@ a.btn-dashboard-secondary:active {
 .tehilim-join-form .tehilim-form-msg {
   flex-basis: 100%;
   margin: 0;
+}
+
+/* Header logout (shown next to האזור האישי when signed in) */
+.btn-logout {
+  color: #7A6B58;
+  border-color: transparent;
+  background: transparent;
+}
+
+.btn-logout:hover {
+  color: #A94B2E;
+  background: #F6EEDF;
+  border-color: #EADCC6;
+}
+
+@media (max-width: 620px) {
+  .btn-logout {
+    display: none; /* stays available inside the personal area */
+  }
+}
+
+/* Ambassadors breakdown inside a personal-area campaign card */
+.account-camp-ambbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 13.5px;
+  color: #A94B2E;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.account-camp-ambbtn b {
+  color: #A94B2E;
+  font-weight: 800;
+}
+
+.account-camp-ambbtn:hover {
+  color: #C05A3A;
+}
+
+.account-amblist {
+  margin: 4px 0 16px;
+  background: var(--bg-page);
+  border: 1px solid #F0E4D0;
+  border-radius: 14px;
+  padding: 6px 16px;
+}
+
+.account-amblist-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid #F0E7D6;
+  color: #2E2318;
+}
+
+.account-amblist-row:last-child {
+  border-bottom: none;
+}
+
+.account-amblist-row:hover .account-amblist-name {
+  color: #A94B2E;
+}
+
+.account-amblist-rank {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #FBF3E4;
+  border: 1px solid #EED9B2;
+  color: #B9822B;
+  font-weight: 800;
+  font-size: 11.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.account-amblist-name {
+  flex: 1;
+  font-weight: 700;
+  font-size: 14.5px;
+  color: #2E2318;
+}
+
+.account-amblist-count {
+  font-size: 13px;
+  color: #7A6B58;
+  font-weight: 600;
+}
+
+.account-amblist-empty {
+  padding: 12px 0;
+  font-size: 13.5px;
+  color: #7A6B58;
 }
 
 /* Pending ambassador requests (personal area) */

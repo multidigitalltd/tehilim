@@ -43,6 +43,13 @@
 				if ( moderate ) {
 					self.handleAmbassadorModerate( moderate );
 				}
+
+				var ambToggle = e.target.closest( '[data-amblist-toggle]' );
+				if ( ambToggle ) {
+					var ambCard = ambToggle.closest( '.account-camp' );
+					var ambList = ambCard && ambCard.querySelector( '.account-amblist' );
+					if ( ambList ) { ambList.hidden = ! ambList.hidden; }
+				}
 			} );
 
 			// Personal area: image file selection inside an edit panel

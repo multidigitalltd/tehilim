@@ -37,6 +37,7 @@ foreach ( $campaigns as $c ) {
 	$campaign_data[ $c->ID ] = array(
 		'progress'    => $p,
 		'ambassadors' => count( $ambs ),
+		'amb_list'    => $ambs,
 		'participants' => tehilim_get_campaign_participants( $c->ID ),
 		'pending'     => tehilim_get_pending_ambassadors( $c->ID ),
 	);
@@ -128,7 +129,29 @@ foreach ( $campaigns as $c ) {
 						<span><b><?php echo esc_html( number_format_i18n( $p['books_done'] ) ); ?></b> / <?php echo esc_html( number_format_i18n( $p['goal_books'] ) ); ?> <?php esc_html_e( 'ספרים', 'tehilim' ); ?></span>
 						<span><b><?php echo esc_html( number_format_i18n( $p['total_chapters'] ) ); ?></b> <?php esc_html_e( 'פרקים', 'tehilim' ); ?></span>
 						<span><b><?php echo esc_html( number_format_i18n( $d['participants'] ) ); ?></b> <?php esc_html_e( 'משתתפים', 'tehilim' ); ?></span>
-						<span><b><?php echo esc_html( number_format_i18n( $d['ambassadors'] ) ); ?></b> <?php esc_html_e( 'שגרירים', 'tehilim' ); ?></span>
+						<button type="button" class="account-camp-ambbtn" data-amblist-toggle>
+							<b><?php echo esc_html( number_format_i18n( $d['ambassadors'] ) ); ?></b> <?php esc_html_e( 'שגרירים', 'tehilim' ); ?>
+							<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+						</button>
+					</div>
+
+					<?php
+					$camp_slug = get_post_field( 'post_name', $c->ID );
+					?>
+					<div class="account-amblist" hidden>
+						<?php if ( $d['amb_list'] ) : ?>
+							<?php foreach ( $d['amb_list'] as $ai => $amb ) :
+								$amb_page = home_url( '/c/' . $camp_slug . '/' . get_post_field( 'post_name', $amb['id'] ) );
+								?>
+								<a class="account-amblist-row" href="<?php echo esc_url( $amb_page ); ?>">
+									<span class="account-amblist-rank"><?php echo esc_html( $ai + 1 ); ?></span>
+									<span class="account-amblist-name"><?php echo esc_html( $amb['name'] ); ?></span>
+									<span class="account-amblist-count"><?php printf( esc_html__( '%s פרקים גויסו', 'tehilim' ), esc_html( number_format_i18n( $amb['count'] ) ) ); ?></span>
+								</a>
+							<?php endforeach; ?>
+						<?php else : ?>
+							<div class="account-amblist-empty"><?php esc_html_e( 'עדיין אין שגרירים מאושרים בקמפיין הזה.', 'tehilim' ); ?></div>
+						<?php endif; ?>
 					</div>
 
 					<div class="account-camp-actions">

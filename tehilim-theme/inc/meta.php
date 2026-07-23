@@ -224,6 +224,50 @@ function tehilim_get_top_ambassadors( $campaign_id, $limit = 3 ) {
 }
 
 /**
+ * Live stats for a single ambassador within a campaign (tiles + ring).
+ */
+function tehilim_get_ambassador_stats( $campaign_id, $ambassador_id ) {
+	global $wpdb;
+
+	$table = $wpdb->prefix . 'tehilim_recitations';
+
+	$chapters = (int) $wpdb->get_var( $wpdb->prepare(
+		"SELECT COUNT(*) FROM `%i` WHERE campaign_id = %d AND ambassador_id = %d",
+		$table,
+		$campaign_id,
+		$ambassador_id
+	) );
+
+	$reciters = (int) $wpdb->get_var( $wpdb->prepare(
+		"SELECT COUNT(DISTINCT reciter_name) FROM `%i` WHERE campaign_id = %d AND ambassador_id = %d AND reciter_name IS NOT NULL AND reciter_name <> ''",
+		$table,
+		$campaign_id,
+		$ambassador_id
+	) );
+
+	$all  = tehilim_get_top_ambassadors( $campaign_id, 100 );
+	$rank = count( $all );
+	foreach ( $all as $i => $amb ) {
+		if ( intval( $amb['id'] ) === intval( $ambassador_id ) ) {
+			$rank = $i + 1;
+			break;
+		}
+	}
+
+	$progress      = tehilim_get_campaign_progress( $campaign_id );
+	$goal_chapters = max( 1, intval( $progress['goal_books'] ) * TEHILIM_CHAPTERS_PER_BOOK );
+
+	return array(
+		'chapters'          => $chapters,
+		'reciters'          => $reciters,
+		'rank'              => $rank,
+		'total_ambassadors' => max( 1, count( $all ) ),
+		'goal_chapters'     => $goal_chapters,
+		'ring_percent'      => min( 100, (int) round( $chapters / $goal_chapters * 100 ) ),
+	);
+}
+
+/**
  * Pending ambassador join requests for a campaign (awaiting owner approval)
  */
 function tehilim_get_pending_ambassadors( $campaign_id ) {

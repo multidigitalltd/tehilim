@@ -54,6 +54,14 @@ GitHub: https://github.com/multidigitalltd/tehilim
 
 == Changelog ==
 
+= 2.6.0 =
+- After marking a chapter as said, the next open chapter loads instantly, the reader scrolls into view with a subtle pulse, and the toast names the next chapter
+- Campaign page: the Tehilim reader now appears before the progress card
+- Ambassador pages: personal tiles (chapters recruited, said through me, rank), the goal ring, and the count update live after each recitation and via polling
+- Personal area: clicking a campaign's ambassadors count opens a ranked list showing how many chapters each ambassador recruited (linked to their pages)
+- Header: logout button next to the personal-area button when signed in
+- Share-link box shows the URL in readable Hebrew and never overflows
+
 = 2.5.0 =
 - Ambassador approval workflow: join requests are now pending until the campaign owner approves them; styled "request sent" confirmation replaces the form; organizer receives an email with a link to the personal area; approve/reject buttons per campaign in the personal area; on approval the ambassador appears on the campaign page, their personal page goes live, and they receive an email with their page link + a ready-to-share link; one open request per email per campaign
 - Ambassador list now shows every approved ambassador (including 0 chapters)

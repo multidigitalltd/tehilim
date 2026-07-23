@@ -178,7 +178,7 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 	tehilim_clear_campaign_caches( $campaign_id );
 
 	// Fresh stats after the insert — lets the client update the UI instantly
-	$stats = tehilim_build_stats_payload( $campaign_id );
+	$stats = tehilim_build_stats_payload( $campaign_id, intval( $ambassador_id ) );
 
 	$response = array(
 		'success'        => true,
@@ -196,7 +196,7 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 /**
  * Build the full stats payload for a campaign (shared by stats + recitation responses)
  */
-function tehilim_build_stats_payload( $campaign_id ) {
+function tehilim_build_stats_payload( $campaign_id, $ambassador_id = 0 ) {
 	global $wpdb;
 
 	$table    = $wpdb->prefix . 'tehilim_recitations';
@@ -213,7 +213,7 @@ function tehilim_build_stats_payload( $campaign_id ) {
 		? array_map( 'intval', $progress['available'] )
 		: range( 1, TEHILIM_CHAPTERS_PER_BOOK );
 
-	return array(
+	$payload = array(
 		'books_done'       => intval( $progress['books_done'] ),
 		'chapters_done'    => $in_book,
 		'total_chapters'   => intval( $progress['total_chapters'] ),
@@ -227,6 +227,13 @@ function tehilim_build_stats_payload( $campaign_id ) {
 		'next_chapter'     => $available[0],
 		'available'        => $available,
 	);
+
+	// Ambassador-scoped tiles/ring for personal pages
+	if ( $ambassador_id > 0 && function_exists( 'tehilim_get_ambassador_stats' ) ) {
+		$payload['ambassador'] = tehilim_get_ambassador_stats( $campaign_id, $ambassador_id );
+	}
+
+	return $payload;
 }
 
 /**
@@ -243,7 +250,7 @@ function tehilim_get_campaign_stats( WP_REST_Request $request ) {
 	// Short cache for stats (30 seconds) since data updates frequently
 	header( 'Cache-Control: public, max-age=30' );
 
-	return tehilim_build_stats_payload( $campaign_id );
+	return tehilim_build_stats_payload( $campaign_id, absint( $request->get_param( 'ambassador_id' ) ) );
 }
 
 /**

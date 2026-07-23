@@ -220,7 +220,7 @@ if ( $campaign && $ambassador ) :
 				<div class="share-card-desc"><?php printf( esc_html__( 'הפיצו את העמוד הזה — כל מי שייכנס דרכו יתרום ליעד של %s.', 'tehilim' ), esc_html( $amb_title ) ); ?></div>
 				<div class="share-link-box">
 					<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B9822B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"></path><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"></path></svg>
-					<span><?php echo esc_html( $amb_url ); ?></span>
+					<span><?php echo esc_html( urldecode( $amb_url ) ); ?></span>
 				</div>
 				<button class="btn-share-whatsapp btn-share" data-share-type="whatsapp" data-share-url="<?php echo esc_url( $amb_url ); ?>" data-share-text="<?php echo esc_attr( $amb_title . ' · ' . $campaign->post_title ); ?>">
 					<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#EFC978" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20a8 8 0 1 0-6.9-4L4 20l4-1.1A8 8 0 0 0 12 20z"></path></svg>

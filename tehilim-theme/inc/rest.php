@@ -107,7 +107,9 @@ function tehilim_verify_turnstile( $token ) {
 	) );
 
 	if ( is_wp_error( $response ) ) {
-		error_log( 'Turnstile verification error: ' . $response->get_error_message() );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'Tehilim: CAPTCHA verification error: ' . $response->get_error_message() );
+		}
 		return false;
 	}
 
@@ -158,9 +160,14 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 	), array( '%d', '%d', '%d', '%s' ) );
 
 	if ( $wpdb->last_error ) {
-		error_log( 'Tehilim DB error: ' . $wpdb->last_error );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'Tehilim: Database error during recitation insert: ' . $wpdb->last_error );
+		}
 		return new WP_Error( 'db_error', 'Failed to record recitation', array( 'status' => 500 ) );
 	}
+
+	// Clear campaign caches to ensure fresh stats
+	tehilim_clear_campaign_caches( $campaign_id );
 
 	$next_chapter = $chapter_number === 150 ? 1 : $chapter_number + 1;
 	$response = array(
@@ -264,12 +271,17 @@ function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
 	) );
 
 	if ( is_wp_error( $ambassador_id ) ) {
-		error_log( 'Ambassador creation error: ' . $ambassador_id->get_error_message() );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'Tehilim: Ambassador creation error: ' . $ambassador_id->get_error_message() );
+		}
 		return new WP_Error( 'create_failed', 'Failed to create ambassador', array( 'status' => 500 ) );
 	}
 
 	update_post_meta( $ambassador_id, 'campaign_id', $campaign_id );
 	update_post_meta( $ambassador_id, 'email', $email );
+
+	// Clear campaign caches to include new ambassador
+	tehilim_clear_campaign_caches( $campaign_id );
 
 	$campaign_slug = get_post_field( 'post_name', $campaign_id );
 	$ambassador_slug = get_post_field( 'post_name', $ambassador_id );

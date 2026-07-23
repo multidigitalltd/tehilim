@@ -8,6 +8,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Clear campaign-related caches
+ */
+function tehilim_clear_campaign_caches( $campaign_id ) {
+	delete_transient( 'tehilim_progress_' . $campaign_id );
+	for ( $i = 1; $i <= 100; $i++ ) {
+		delete_transient( 'tehilim_ambassadors_' . $campaign_id . '_' . $i );
+	}
+}
+
+/**
  * Register meta fields for campaign CPT
  */
 function tehilim_register_campaign_meta() {
@@ -65,6 +75,13 @@ add_action( 'init', 'tehilim_register_ambassador_meta' );
  * Get campaign progress
  */
 function tehilim_get_campaign_progress( $campaign_id ) {
+	$cache_key = 'tehilim_progress_' . $campaign_id;
+	$cached = get_transient( $cache_key );
+
+	if ( false !== $cached ) {
+		return $cached;
+	}
+
 	global $wpdb;
 
 	$table = $wpdb->prefix . 'tehilim_recitations';
@@ -82,19 +99,30 @@ function tehilim_get_campaign_progress( $campaign_id ) {
 
 	$progress_percent = min( 100, intdiv( $chapters_done * 100, $goal_books * 150 ) );
 
-	return array(
+	$result = array(
 		'books_done'       => $books_done,
 		'chapters_done'    => $chapters_in_book,
 		'total_chapters'   => $chapters_done,
 		'goal_books'       => $goal_books,
 		'progress_percent' => $progress_percent,
 	);
+
+	set_transient( $cache_key, $result, 300 );
+
+	return $result;
 }
 
 /**
  * Get top ambassadors for campaign
  */
 function tehilim_get_top_ambassadors( $campaign_id, $limit = 3 ) {
+	$cache_key = 'tehilim_ambassadors_' . $campaign_id . '_' . $limit;
+	$cached = get_transient( $cache_key );
+
+	if ( false !== $cached ) {
+		return $cached;
+	}
+
 	global $wpdb;
 
 	$table = $wpdb->prefix . 'tehilim_recitations';
@@ -121,6 +149,8 @@ function tehilim_get_top_ambassadors( $campaign_id, $limit = 3 ) {
 			);
 		}
 	}
+
+	set_transient( $cache_key, $ambassadors, 300 );
 
 	return $ambassadors;
 }

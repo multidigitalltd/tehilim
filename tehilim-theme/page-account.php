@@ -171,6 +171,9 @@ foreach ( $campaigns as $c ) {
 									<div class="account-pending-info">
 										<b><?php echo esc_html( $req['name'] ); ?></b>
 										<span dir="ltr"><?php echo esc_html( $req['email'] ); ?></span>
+										<?php if ( ! empty( $req['goal'] ) ) : ?>
+											<span class="account-pending-goal"><?php printf( esc_html__( 'יעד: %d ספרים', 'tehilim' ), (int) $req['goal'] ); ?></span>
+										<?php endif; ?>
 										<span><?php echo esc_html( date_i18n( 'j.n.Y', strtotime( $req['date'] ) ) ); ?></span>
 									</div>
 									<div class="account-pending-actions">

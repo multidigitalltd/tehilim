@@ -576,6 +576,10 @@ function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
 	update_post_meta( $ambassador_id, 'campaign_id', $campaign_id );
 	update_post_meta( $ambassador_id, 'email', $email );
 
+	// Ambassador's personal goal (whole books they commit to recruit)
+	$amb_goal = isset( $params['goal_books'] ) ? max( 1, min( 100, absint( $params['goal_books'] ) ) ) : 1;
+	update_post_meta( $ambassador_id, 'goal_books', $amb_goal );
+
 	// Assign a stable avatar color from the design palette
 	$palette = array( '#C05A3A', '#D9A441', '#8A6B4A', '#B08968' );
 	update_post_meta( $ambassador_id, 'avatar_color', $palette[ $ambassador_id % 4 ] );
@@ -588,10 +592,11 @@ function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
 			$organizer_email,
 			sprintf( 'בקשת שגריר חדשה בקמפיין "%s"', $campaign->post_title ),
 			sprintf(
-				"%s (%s) מבקש/ת להצטרף כשגריר/ה לקמפיין \"%s\".\n\nלאישור או דחייה של הבקשה היכנסו לאזור האישי:\n%s",
+				"%s (%s) מבקש/ת להצטרף כשגריר/ה לקמפיין \"%s\" עם יעד אישי של %d ספרים.\n\nלאישור או דחייה של הבקשה היכנסו לאזור האישי:\n%s",
 				$name,
 				$email,
 				$campaign->post_title,
+				$amb_goal,
 				$account_url
 			)
 		);

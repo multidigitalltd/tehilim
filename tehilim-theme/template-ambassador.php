@@ -38,7 +38,13 @@ if ( $campaign && $ambassador ) :
 	$chapters_per_book = defined( 'TEHILIM_CHAPTERS_PER_BOOK' ) ? TEHILIM_CHAPTERS_PER_BOOK : 150;
 	$in_book           = intval( $progress['chapters_done'] );
 	$remaining_in_book = max( 0, $chapters_per_book - $in_book );
-	$goal_chapters     = max( 1, intval( $progress['goal_books'] ) * $chapters_per_book );
+
+	// Personal goal: what the ambassador committed to (campaign goal fallback)
+	$amb_goal_books = intval( get_post_meta( $amb_id, 'goal_books', true ) );
+	if ( $amb_goal_books < 1 ) {
+		$amb_goal_books = max( 1, intval( $progress['goal_books'] ) );
+	}
+	$goal_chapters = $amb_goal_books * $chapters_per_book;
 
 	// Occasion
 	$occasions     = get_the_terms( $campaign_id, 'occasion' );

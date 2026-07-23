@@ -247,10 +247,13 @@
 			submitBtn.disabled = true;
 			submitBtn.textContent = 'שולחים…';
 
+			var goalField = form.querySelector( 'input[name="goal_books"]' );
+
 			this.apiPost( 'ambassadors/join', {
 				campaign_id: campaignId,
 				name: nameInput.value.trim(),
 				email: emailInput.value.trim(),
+				goal_books: goalField ? ( parseInt( goalField.value, 10 ) || 1 ) : 1,
 			} )
 				.then( function() {
 					self.renderJoinPending( form );

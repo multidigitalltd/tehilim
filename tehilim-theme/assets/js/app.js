@@ -650,6 +650,17 @@
 			emailInput.placeholder = 'אימייל';
 			emailInput.className = 'reader-name-input';
 
+			var goalInput = document.createElement( 'input' );
+			goalInput.type = 'number';
+			goalInput.name = 'goal_books';
+			goalInput.required = true;
+			goalInput.min = '1';
+			goalInput.max = '100';
+			goalInput.value = '1';
+			goalInput.placeholder = 'יעד ספרים';
+			goalInput.title = 'כמה ספרי תהילים שלמים תגייסו';
+			goalInput.className = 'reader-name-input tehilim-join-goal';
+
 			var submit = document.createElement( 'button' );
 			submit.type = 'submit';
 			submit.className = 'btn-reader-said';
@@ -657,6 +668,7 @@
 
 			form.appendChild( nameInput );
 			form.appendChild( emailInput );
+			form.appendChild( goalInput );
 			form.appendChild( submit );
 
 			var cta = trigger.closest( '.ambassador-cta' ) || trigger.parentElement;

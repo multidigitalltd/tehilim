@@ -76,6 +76,13 @@ function tehilim_register_ambassador_meta() {
 		'show_in_rest'   => true,
 		'auth_callback'  => '__return_true',
 	) );
+
+	register_post_meta( 'ambassador', 'goal_books', array(
+		'type'           => 'integer',
+		'single'         => true,
+		'show_in_rest'   => true,
+		'auth_callback'  => '__return_true',
+	) );
 }
 add_action( 'init', 'tehilim_register_ambassador_meta' );
 
@@ -265,8 +272,13 @@ function tehilim_get_ambassador_stats( $campaign_id, $ambassador_id ) {
 		}
 	}
 
-	$progress      = tehilim_get_campaign_progress( $campaign_id );
-	$goal_chapters = max( 1, intval( $progress['goal_books'] ) * TEHILIM_CHAPTERS_PER_BOOK );
+	// Personal goal: the books the ambassador committed to; campaign goal as fallback
+	$amb_goal_books = intval( get_post_meta( $ambassador_id, 'goal_books', true ) );
+	if ( $amb_goal_books < 1 ) {
+		$progress       = tehilim_get_campaign_progress( $campaign_id );
+		$amb_goal_books = max( 1, intval( $progress['goal_books'] ) );
+	}
+	$goal_chapters = $amb_goal_books * TEHILIM_CHAPTERS_PER_BOOK;
 
 	return array(
 		'chapters'          => $chapters,
@@ -298,6 +310,7 @@ function tehilim_get_pending_ambassadors( $campaign_id ) {
 			'id'    => $post->ID,
 			'name'  => $post->post_title,
 			'email' => get_post_meta( $post->ID, 'email', true ),
+			'goal'  => intval( get_post_meta( $post->ID, 'goal_books', true ) ),
 			'date'  => $post->post_date,
 		);
 	}

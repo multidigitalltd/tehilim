@@ -385,7 +385,7 @@ function tehilim_settings_page() {
 				כדי שהאתר ייראה חי ופעיל מהרגע הראשון. אפשר למחוק את הכל בלחיצה בכל שלב.
 			</p>
 			<p><strong>מצב נוכחי:</strong> <?php echo esc_html( $demo_count ); ?> קמפיינים של תוכן דמו באתר.</p>
-			<form method="POST" style="display: flex; gap: 10px;" onsubmit="this.querySelectorAll('button').forEach(function(b){b.disabled=true;b.textContent='רגע…';});">
+			<form method="POST" style="display: flex; gap: 10px;" onsubmit="var f=this;setTimeout(function(){f.querySelectorAll('button').forEach(function(b){b.disabled=true;});f.insertAdjacentHTML('beforeend','<em style=\'align-self:center\'>יוצרים… זה יכול לקחת עד דקה</em>');},0);">
 				<?php wp_nonce_field( 'tehilim_demo_nonce' ); ?>
 				<button type="submit" name="tehilim_demo_action" value="seed" class="button button-primary">יצירת 30 קמפיינים פעילים</button>
 				<?php if ( $demo_count ) : ?>

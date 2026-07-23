@@ -154,7 +154,10 @@ add_filter( 'template_include', 'tehilim_template_router' );
  * Covers LiteSpeed, WP Super Cache, W3TC and standard HTTP caches.
  */
 function tehilim_no_cache_live_pages() {
-	$is_live = is_singular( 'campaign' ) || is_singular( 'ambassador' ) || get_query_var( 'ambassador' );
+	// Live counters + login-state-dependent pages (create/login/account show
+	// different content per visitor — a cached logged-out copy breaks them)
+	$is_live = is_singular( 'campaign' ) || is_singular( 'ambassador' ) || get_query_var( 'ambassador' )
+		|| is_page( array( 'create', 'login', 'account' ) );
 	if ( ! $is_live || headers_sent() ) {
 		return;
 	}

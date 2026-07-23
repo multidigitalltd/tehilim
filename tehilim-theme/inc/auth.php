@@ -53,6 +53,50 @@ function tehilim_account_page_url() {
 }
 
 /**
+ * JS-readable login-state cookie: cached pages are the same HTML for
+ * everyone, so the header swaps its buttons client-side based on this.
+ */
+function tehilim_set_login_cookie() {
+	setcookie( 'tehilim_li', '1', time() + 14 * DAY_IN_SECONDS, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, is_ssl(), false );
+}
+add_action( 'wp_login', 'tehilim_set_login_cookie', 5 );
+
+function tehilim_clear_login_cookie() {
+	setcookie( 'tehilim_li', '', time() - HOUR_IN_SECONDS, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, is_ssl(), false );
+}
+add_action( 'wp_logout', 'tehilim_clear_login_cookie' );
+
+/**
+ * Keep the cookie in sync (covers Google sign-in, expired cookies, etc.)
+ */
+function tehilim_sync_login_cookie() {
+	if ( headers_sent() ) {
+		return;
+	}
+	$has_cookie = isset( $_COOKIE['tehilim_li'] ) && '1' === $_COOKIE['tehilim_li'];
+	if ( is_user_logged_in() && ! $has_cookie ) {
+		tehilim_set_login_cookie();
+	} elseif ( ! is_user_logged_in() && $has_cookie ) {
+		tehilim_clear_login_cookie();
+	}
+}
+add_action( 'init', 'tehilim_sync_login_cookie', 1 );
+
+/**
+ * Cache-safe logout endpoint: wp_logout_url() nonces baked into cached
+ * pages belong to the anonymous variant and fail, so the header uses this.
+ */
+function tehilim_handle_logout() {
+	if ( is_user_logged_in() ) {
+		wp_logout();
+	}
+	wp_safe_redirect( home_url( '/' ) );
+	exit;
+}
+add_action( 'admin_post_tehilim_logout', 'tehilim_handle_logout' );
+add_action( 'admin_post_nopriv_tehilim_logout', 'tehilim_handle_logout' );
+
+/**
  * After login, send visitors back to the page they came from — never to
  * the WordPress dashboard. Admins/editors keep normal behavior.
  */

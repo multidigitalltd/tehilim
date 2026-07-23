@@ -167,12 +167,62 @@ function tehilim_get_praise_verses() {
 		array( 'text' => 'כָּל הָאוֹמֵר תְּהִלָּה לְדָוִד בְּכָל יוֹם שָׁלוֹשׁ פְּעָמִים — מֻבְטָח לוֹ שֶׁהוּא בֶּן הָעוֹלָם הַבָּא.', 'source' => 'ברכות ד׳ ע״ב' ),
 	);
 
+	// Admin-edited verses (settings page): one per line, "text | source"
+	$custom = tehilim_parse_quote_lines( get_option( 'tehilim_praise_verses_raw', '' ), array( 'text', 'source' ) );
+	if ( $custom ) {
+		$verses = $custom;
+	}
+
 	/**
 	 * Allow customization of the praise verses shown in the no-image hero.
 	 *
 	 * @param array $verses List of { text, source } pairs.
 	 */
 	return apply_filters( 'tehilim_praise_verses', $verses );
+}
+
+/**
+ * Parse admin textarea lines into quote arrays. Line format: part1 | part2 | part3
+ */
+function tehilim_parse_quote_lines( $raw, $keys ) {
+	if ( ! $raw ) {
+		return array();
+	}
+
+	$out = array();
+	foreach ( preg_split( '/\r\n|\r|\n/', (string) $raw ) as $line ) {
+		$line = trim( $line );
+		if ( '' === $line ) {
+			continue;
+		}
+		$parts = array_map( 'trim', explode( '|', $line ) );
+		if ( '' === $parts[0] ) {
+			continue;
+		}
+		$item = array();
+		foreach ( $keys as $i => $key ) {
+			$item[ $key ] = isset( $parts[ $i ] ) ? sanitize_text_field( $parts[ $i ] ) : '';
+		}
+		$out[] = $item;
+	}
+
+	return $out;
+}
+
+/**
+ * Homepage "דברי חכמינו" quotes — admin-editable with built-in defaults.
+ * Line format in the option: quote | author | source
+ */
+function tehilim_get_home_quotes() {
+	$defaults = array(
+		array( 'text' => 'כל הקורא בספר תהילים — מעלה עליו הכתוב כאילו עוסק בכל התורה כולה.', 'name' => 'מדרש שוחר טוב', 'title' => 'מדרש תהילים, מזמור א׳' ),
+		array( 'text' => 'אם היו יודעים בני אדם את מעלת אמירת תהילים — היו אומרים אותם בכל עת ובכל שעה.', 'name' => 'רבי נחמן מברסלב', 'title' => 'ליקוטי מוהר״ן' ),
+		array( 'text' => 'אין לך דבר המעורר את רחמי שמים כאמירת תהילים בציבור מתוך לב שלם.', 'name' => 'החפץ חיים', 'title' => 'ר׳ ישראל מאיר הכהן זצ״ל' ),
+	);
+
+	$custom = tehilim_parse_quote_lines( get_option( 'tehilim_home_quotes_raw', '' ), array( 'text', 'name', 'title' ) );
+
+	return $custom ? $custom : $defaults;
 }
 
 /**

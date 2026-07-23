@@ -233,6 +233,14 @@ function tehilim_settings_page() {
 		update_option( 'tehilim_site_description', sanitize_text_field( $_POST['site_description'] ?? '' ) );
 		update_option( 'tehilim_enable_turnstile', isset( $_POST['enable_turnstile'] ) ? 1 : 0 );
 
+		// Quotes: store the raw textarea (lines are parsed + sanitized on read)
+		if ( isset( $_POST['home_quotes_raw'] ) ) {
+			update_option( 'tehilim_home_quotes_raw', sanitize_textarea_field( wp_unslash( $_POST['home_quotes_raw'] ) ) );
+		}
+		if ( isset( $_POST['praise_verses_raw'] ) ) {
+			update_option( 'tehilim_praise_verses_raw', sanitize_textarea_field( wp_unslash( $_POST['praise_verses_raw'] ) ) );
+		}
+
 		// Google credentials: never wipe on an empty field — an admin saving an
 		// unrelated setting must not disable Google sign-in. Explicit disconnect only.
 		if ( ! empty( $_POST['google_disconnect'] ) ) {
@@ -346,6 +354,34 @@ function tehilim_settings_page() {
 								ניתוק חשבון Google (מחיקת המפתחות)
 							</label>
 						<?php endif; ?>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row">
+						<label for="home_quotes_raw">ציטוטים בדף הבית</label>
+					</th>
+					<td>
+						<textarea name="home_quotes_raw" id="home_quotes_raw" rows="5" class="widefat" style="max-width: 560px" dir="rtl" placeholder="הציטוט | שם המחבר | המקור"><?php echo esc_textarea( get_option( 'tehilim_home_quotes_raw', '' ) ); ?></textarea>
+						<p class="description">
+							סקשן "דברי חכמינו" בדף הבית. שורה לכל ציטוט בפורמט:
+							<code>הציטוט | שם המחבר | המקור</code>.
+							השאירו ריק לציטוטי ברירת המחדל.
+						</p>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row">
+						<label for="praise_verses_raw">פסוקי שבח בעמוד קמפיין</label>
+					</th>
+					<td>
+						<textarea name="praise_verses_raw" id="praise_verses_raw" rows="5" class="widefat" style="max-width: 560px" dir="rtl" placeholder="הפסוק | המקור"><?php echo esc_textarea( get_option( 'tehilim_praise_verses_raw', '' ) ); ?></textarea>
+						<p class="description">
+							הפסוקים המתחלפים שמוצגים בעמוד קמפיין כשאין לו תמונה. שורה לכל פסוק בפורמט:
+							<code>הפסוק | המקור</code>.
+							השאירו ריק לפסוקי ברירת המחדל.
+						</p>
 					</td>
 				</tr>
 

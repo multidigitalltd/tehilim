@@ -336,41 +336,23 @@ get_header();
 		</div>
 
 		<div class="testimonials-grid">
-			<div class="testimonial-card">
-				<div class="quote-mark">”</div>
-				<p class="testimonial-text">כל הקורא בספר תהילים — מעלה עליו הכתוב כאילו עוסק בכל התורה כולה.</p>
-				<div class="testimonial-author">
-					<div class="author-avatar">מ</div>
-					<div>
-						<div class="author-name">מדרש שוחר טוב</div>
-						<div class="author-title">מדרש תהילים, מזמור א׳</div>
+			<?php foreach ( tehilim_get_home_quotes() as $tehilim_quote ) :
+				$tehilim_q_initial = function_exists( 'mb_substr' ) ? mb_substr( $tehilim_quote['name'], 0, 1, 'UTF-8' ) : substr( $tehilim_quote['name'], 0, 1 );
+				?>
+				<div class="testimonial-card">
+					<div class="quote-mark">”</div>
+					<p class="testimonial-text"><?php echo esc_html( $tehilim_quote['text'] ); ?></p>
+					<div class="testimonial-author">
+						<div class="author-avatar"><?php echo esc_html( $tehilim_q_initial ); ?></div>
+						<div>
+							<div class="author-name"><?php echo esc_html( $tehilim_quote['name'] ); ?></div>
+							<?php if ( ! empty( $tehilim_quote['title'] ) ) : ?>
+								<div class="author-title"><?php echo esc_html( $tehilim_quote['title'] ); ?></div>
+							<?php endif; ?>
+						</div>
 					</div>
 				</div>
-			</div>
-
-			<div class="testimonial-card">
-				<div class="quote-mark">”</div>
-				<p class="testimonial-text">אם היו יודעים בני אדם את מעלת אמירת תהילים — היו אומרים אותם בכל עת ובכל שעה.</p>
-				<div class="testimonial-author">
-					<div class="author-avatar">נ</div>
-					<div>
-						<div class="author-name">רבי נחמן מברסלב</div>
-						<div class="author-title">ליקוטי מוהר״ן</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="testimonial-card">
-				<div class="quote-mark">”</div>
-				<p class="testimonial-text">אין לך דבר המעורר את רחמי שמים כאמירת תהילים בציבור מתוך לב שלם.</p>
-				<div class="testimonial-author">
-					<div class="author-avatar">ח</div>
-					<div>
-						<div class="author-name">החפץ חיים</div>
-						<div class="author-title">ר׳ ישראל מאיר הכהן זצ״ל</div>
-					</div>
-				</div>
-			</div>
+			<?php endforeach; ?>
 		</div>
 
 		<div class="carousel-buttons">

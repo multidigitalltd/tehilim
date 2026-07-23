@@ -3,11 +3,21 @@
  * Header Template - Tehilim
  */
 ?><!DOCTYPE html>
-<html <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?> class="<?php echo is_user_logged_in() ? 'tehilim-in' : ''; ?>">
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<?php wp_head(); ?>
+	<script>
+	/* Cached pages are identical for everyone — correct the header's login
+	   state from the JS-readable cookie before first paint. */
+	( function() {
+		try {
+			var li = document.cookie.indexOf( 'tehilim_li=1' ) !== -1;
+			document.documentElement.classList.toggle( 'tehilim-in', li );
+		} catch ( e ) {}
+	} )();
+	</script>
 </head>
 <body <?php body_class(); ?> dir="rtl">
 <?php wp_body_open(); ?>
@@ -32,18 +42,19 @@
 			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>"><?php esc_html_e( 'אודות', 'tehilim' ); ?></a>
 		</nav>
 
-		<!-- Action Buttons -->
+		<!-- Action Buttons: both variants rendered; CSS + cookie pick one -->
 		<div class="header-actions">
-			<?php if ( is_user_logged_in() ) : ?>
-				<a class="btn-login" href="<?php echo esc_url( tehilim_account_page_url() ); ?>" title="<?php echo esc_attr( wp_get_current_user()->display_name ); ?>"><?php esc_html_e( 'האזור האישי', 'tehilim' ); ?></a>
-				<a class="btn-login btn-logout" href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>"><?php esc_html_e( 'התנתקות', 'tehilim' ); ?></a>
-			<?php else : ?>
+			<span class="auth-out">
 				<?php
 				// Send the visitor back to the page they are on right now
 				$tehilim_current = home_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/' );
 				?>
 				<a class="btn-login" href="<?php echo esc_url( tehilim_login_page_url( $tehilim_current ) ); ?>"><?php esc_html_e( 'התחברות', 'tehilim' ); ?></a>
-			<?php endif; ?>
+			</span>
+			<span class="auth-in">
+				<a class="btn-login" href="<?php echo esc_url( tehilim_account_page_url() ); ?>"><?php esc_html_e( 'האזור האישי', 'tehilim' ); ?></a>
+				<a class="btn-login btn-logout" href="<?php echo esc_url( admin_url( 'admin-post.php?action=tehilim_logout' ) ); ?>"><?php esc_html_e( 'התנתקות', 'tehilim' ); ?></a>
+			</span>
 			<a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="btn-create-primary"><?php esc_html_e( 'צור קמפיין', 'tehilim' ); ?></a>
 		</div>
 	</div>

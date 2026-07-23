@@ -146,7 +146,7 @@ get_header();
 			<div class="stat-divider"></div>
 			<div class="stat-item">
 				<div class="stat-value" data-site-stat="campaigns">128</div>
-				<div class="stat-label">קמפיינים פעילים</div>
+				<div class="stat-label">קמפיינים</div>
 			</div>
 		</div>
 	</section>

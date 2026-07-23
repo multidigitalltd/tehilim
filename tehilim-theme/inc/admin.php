@@ -61,12 +61,17 @@ function tehilim_settings_page() {
 
 		update_option( 'tehilim_site_description', sanitize_text_field( $_POST['site_description'] ?? '' ) );
 		update_option( 'tehilim_enable_turnstile', isset( $_POST['enable_turnstile'] ) ? 1 : 0 );
+		update_option( 'tehilim_google_client_id', sanitize_text_field( $_POST['google_client_id'] ?? '' ) );
+		if ( ! empty( $_POST['google_client_secret'] ) ) {
+			update_option( 'tehilim_google_client_secret', sanitize_text_field( $_POST['google_client_secret'] ) );
+		}
 
 		echo '<div class="notice notice-success"><p>ההגדרות נשמרו!</p></div>';
 	}
 
 	$description = get_option( 'tehilim_site_description', '' );
 	$enable_turnstile = get_option( 'tehilim_enable_turnstile', 0 );
+	$google_client_id = get_option( 'tehilim_google_client_id', '' );
 	?>
 	<div class="wrap">
 		<h1>הגדרות תהילים</h1>
@@ -136,6 +141,28 @@ function tehilim_settings_page() {
 				</tr>
 
 				<tr>
+					<th scope="row">
+						<label for="google_client_id">התחברות עם Google</label>
+					</th>
+					<td>
+						<input type="text" name="google_client_id" id="google_client_id" class="widefat" style="max-width:400px" value="<?php echo esc_attr( $google_client_id ); ?>" placeholder="Client ID (....apps.googleusercontent.com)" dir="ltr">
+						<br><br>
+						<input type="password" name="google_client_secret" id="google_client_secret" class="widefat" style="max-width:400px" value="" placeholder="Client Secret (<?php echo get_option( 'tehilim_google_client_secret' ) ? 'מוגדר — השאירו ריק כדי לא לשנות' : 'לא מוגדר'; ?>" dir="ltr" autocomplete="new-password">
+						<p class="description">
+							צרו OAuth Client ב-<a href="https://console.cloud.google.com/apis/credentials" target="_blank">Google Cloud Console</a>
+							והגדירו Redirect URI:<br>
+							<code dir="ltr"><?php echo esc_html( admin_url( 'admin-post.php?action=tehilim_google_callback' ) ); ?></code><br>
+							סטטוס:
+							<?php if ( function_exists( 'tehilim_google_enabled' ) && tehilim_google_enabled() ) : ?>
+								<span style="color: green;">✓ פעיל — כפתור Google מוצג בעמוד ההתחברות</span>
+							<?php else : ?>
+								<span style="color: orange;">✗ לא מוגדר — הכפתור מוסתר</span>
+							<?php endif; ?>
+						</p>
+					</td>
+				</tr>
+
+				<tr>
 					<th scope="row">מצב מסד הנתונים</th>
 					<td>
 						<?php
@@ -173,6 +200,8 @@ function tehilim_settings_page() {
 function tehilim_register_settings() {
 	register_setting( 'tehilim_settings', 'tehilim_site_description' );
 	register_setting( 'tehilim_settings', 'tehilim_enable_turnstile' );
+	register_setting( 'tehilim_settings', 'tehilim_google_client_id' );
+	register_setting( 'tehilim_settings', 'tehilim_google_client_secret' );
 }
 add_action( 'admin_init', 'tehilim_register_settings' );
 

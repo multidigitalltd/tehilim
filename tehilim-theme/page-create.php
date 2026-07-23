@@ -1,8 +1,26 @@
 <?php
 /**
  * Campaign Creation Page — exact design match (create.html)
+ * Requires a logged-in user (also enforced server-side in the REST endpoint).
  */
 get_header();
+
+if ( ! is_user_logged_in() ) :
+	?>
+	<div class="login-page page-anim">
+		<div class="login-card">
+			<div class="login-icon">
+				<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFF3E4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+			</div>
+			<h1 class="login-title"><?php esc_html_e( 'נדרשת התחברות', 'tehilim' ); ?></h1>
+			<p class="login-subtitle"><?php esc_html_e( 'כדי לפתוח קמפיין חדש יש להתחבר לחשבון — כך תוכלו לנהל את הקמפיין, לאשר שגרירים ולעקוב אחרי ההתקדמות.', 'tehilim' ); ?></p>
+			<a class="btn-create-submit login-cta" href="<?php echo esc_url( tehilim_login_page_url( get_permalink() ) ); ?>"><?php esc_html_e( 'להתחברות', 'tehilim' ); ?></a>
+		</div>
+	</div>
+	<?php
+	get_footer();
+	return;
+endif;
 
 $occasions = get_terms( array(
 	'taxonomy'   => 'occasion',
@@ -41,7 +59,32 @@ if ( is_wp_error( $occasions ) ) {
 		<input class="create-input" type="text" id="dedication_name" name="dedication_name" required placeholder="<?php esc_attr_e( 'לדוגמה: משה בן חיה', 'tehilim' ); ?>">
 
 		<div class="create-label"><?php esc_html_e( 'שם המארגן / הקבוצה', 'tehilim' ); ?></div>
-		<input class="create-input last" type="text" id="organizer_name" name="organizer_name" required placeholder="<?php esc_attr_e( 'לדוגמה: משפחת כהן', 'tehilim' ); ?>">
+		<input class="create-input" type="text" id="organizer_name" name="organizer_name" required placeholder="<?php esc_attr_e( 'לדוגמה: משפחת כהן', 'tehilim' ); ?>">
+
+		<div class="create-label"><?php esc_html_e( 'תמונת הקמפיין', 'tehilim' ); ?></div>
+		<div class="create-image" data-mode="upload">
+			<div class="create-image-modes">
+				<button type="button" class="create-image-mode active" data-image-mode="upload"><?php esc_html_e( 'העלאת תמונה', 'tehilim' ); ?></button>
+				<button type="button" class="create-image-mode" data-image-mode="none"><?php esc_html_e( 'ללא תמונה (פסוקי שבח)', 'tehilim' ); ?></button>
+			</div>
+
+			<div class="create-image-upload">
+				<input type="file" id="campaign_image" name="campaign_image" accept="image/jpeg,image/png,image/webp" hidden>
+				<label for="campaign_image" class="create-image-drop">
+					<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#B9822B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v13"></path></svg>
+					<span class="create-image-drop-title"><?php esc_html_e( 'גררו לכאן תמונת הנצחה / לוגו הקמפיין', 'tehilim' ); ?></span>
+					<span class="create-image-drop-sub"><?php esc_html_e( 'או לחצו לבחירה · JPG / PNG / WEBP · עד 3MB', 'tehilim' ); ?></span>
+				</label>
+				<div class="create-image-preview" hidden>
+					<img alt="" class="create-image-preview-img">
+					<button type="button" class="create-image-remove"><?php esc_html_e( 'הסרת התמונה', 'tehilim' ); ?></button>
+				</div>
+			</div>
+
+			<div class="create-image-nonote" hidden>
+				<?php esc_html_e( 'בעמוד הקמפיין יוצגו פסוקים נבחרים בשבח אמירת תהילים במקום תמונה.', 'tehilim' ); ?>
+			</div>
+		</div>
 
 		<div class="create-goal">
 			<div class="create-goal-label"><?php esc_html_e( 'יעד הקמפיין', 'tehilim' ); ?></div>
@@ -83,6 +126,81 @@ if ( is_wp_error( $occasions ) ) {
 			var v = parseInt( range.value, 10 ) || 0;
 			if ( valEl ) { valEl.textContent = v; }
 			if ( chapEl ) { chapEl.textContent = ( v * 150 ).toLocaleString( 'en-US' ); }
+		} );
+	}
+
+	// Campaign image: upload / no-image toggle + preview
+	var imageWrap = form.querySelector( '.create-image' );
+	if ( imageWrap ) {
+		var MAX_BYTES = 3 * 1024 * 1024;
+		var fileInput = imageWrap.querySelector( '#campaign_image' );
+		var uploadBox = imageWrap.querySelector( '.create-image-upload' );
+		var noNote = imageWrap.querySelector( '.create-image-nonote' );
+		var dropLabel = imageWrap.querySelector( '.create-image-drop' );
+		var preview = imageWrap.querySelector( '.create-image-preview' );
+		var previewImg = imageWrap.querySelector( '.create-image-preview-img' );
+		var removeBtn = imageWrap.querySelector( '.create-image-remove' );
+		var modeButtons = imageWrap.querySelectorAll( '.create-image-mode' );
+
+		function setMode( mode ) {
+			imageWrap.dataset.mode = mode;
+			modeButtons.forEach( function( b ) {
+				b.classList.toggle( 'active', b.dataset.imageMode === mode );
+			} );
+			uploadBox.hidden = ( mode !== 'upload' );
+			noNote.hidden = ( mode === 'upload' );
+			if ( mode === 'none' ) { clearImage(); }
+		}
+
+		function clearImage() {
+			fileInput.value = '';
+			form.dataset.imageData = '';
+			preview.hidden = true;
+			dropLabel.hidden = false;
+			previewImg.removeAttribute( 'src' );
+		}
+
+		modeButtons.forEach( function( b ) {
+			b.addEventListener( 'click', function() { setMode( b.dataset.imageMode ); } );
+		} );
+
+		removeBtn.addEventListener( 'click', clearImage );
+
+		fileInput.addEventListener( 'change', function() {
+			var file = fileInput.files && fileInput.files[ 0 ];
+			if ( ! file ) { return; }
+			if ( ! /^image\/(jpeg|png|webp)$/.test( file.type ) ) {
+				window.alert( 'סוג קובץ לא נתמך. יש להעלות JPG, PNG או WEBP.' );
+				clearImage();
+				return;
+			}
+			if ( file.size > MAX_BYTES ) {
+				window.alert( 'הקובץ גדול מדי (עד 3MB).' );
+				clearImage();
+				return;
+			}
+			var reader = new FileReader();
+			reader.onload = function( ev ) {
+				form.dataset.imageData = ev.target.result; // data URL for the REST body
+				previewImg.src = ev.target.result;
+				preview.hidden = false;
+				dropLabel.hidden = true;
+			};
+			reader.readAsDataURL( file );
+		} );
+
+		// Drag & drop onto the label
+		[ 'dragover', 'dragenter' ].forEach( function( evt ) {
+			dropLabel.addEventListener( evt, function( e ) { e.preventDefault(); dropLabel.classList.add( 'dragging' ); } );
+		} );
+		[ 'dragleave', 'drop' ].forEach( function( evt ) {
+			dropLabel.addEventListener( evt, function( e ) { e.preventDefault(); dropLabel.classList.remove( 'dragging' ); } );
+		} );
+		dropLabel.addEventListener( 'drop', function( e ) {
+			if ( e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[ 0 ] ) {
+				fileInput.files = e.dataTransfer.files;
+				fileInput.dispatchEvent( new Event( 'change' ) );
+			}
 		} );
 	}
 } )();

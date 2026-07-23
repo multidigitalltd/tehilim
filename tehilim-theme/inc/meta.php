@@ -134,6 +134,30 @@ function tehilim_get_campaign_progress( $campaign_id ) {
 }
 
 /**
+ * Curated verses in praise of saying Tehilim — shown in the campaign hero
+ * when the campaign has no featured image ("no image" mode).
+ *
+ * @return array<int, array{text:string, source:string}>
+ */
+function tehilim_get_praise_verses() {
+	$verses = array(
+		array( 'text' => 'מִי יְמַלֵּל גְּבוּרוֹת ה׳, יַשְׁמִיעַ כָּל תְּהִלָּתוֹ.', 'source' => 'תהלים ק״ו' ),
+		array( 'text' => 'טוֹב לְהֹדוֹת לַה׳, וּלְזַמֵּר לְשִׁמְךָ עֶלְיוֹן.', 'source' => 'תהלים צ״ב' ),
+		array( 'text' => 'הַלְלוּיָהּ כִּי טוֹב זַמְּרָה אֱלֹהֵינוּ, כִּי נָעִים נָאוָה תְהִלָּה.', 'source' => 'תהלים קמ״ז' ),
+		array( 'text' => 'כֹּל הַנְּשָׁמָה תְּהַלֵּל יָהּ, הַלְלוּיָהּ.', 'source' => 'תהלים ק״נ' ),
+		array( 'text' => 'וַאֲנִי תְפִלָּתִי לְךָ ה׳ עֵת רָצוֹן, אֱלֹהִים בְּרׇב חַסְדֶּךָ.', 'source' => 'תהלים ס״ט' ),
+		array( 'text' => 'כָּל הָאוֹמֵר תְּהִלָּה לְדָוִד בְּכָל יוֹם שָׁלוֹשׁ פְּעָמִים — מֻבְטָח לוֹ שֶׁהוּא בֶּן הָעוֹלָם הַבָּא.', 'source' => 'ברכות ד׳ ע״ב' ),
+	);
+
+	/**
+	 * Allow customization of the praise verses shown in the no-image hero.
+	 *
+	 * @param array $verses List of { text, source } pairs.
+	 */
+	return apply_filters( 'tehilim_praise_verses', $verses );
+}
+
+/**
  * Chapters not yet recited in the current communal book cycle.
  */
 function tehilim_get_available_chapters( $campaign_id ) {

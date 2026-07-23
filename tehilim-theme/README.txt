@@ -54,6 +54,15 @@ GitHub: https://github.com/multidigitalltd/tehilim
 
 == Changelog ==
 
+= 2.3.0 =
+- Campaign image: creation form now offers "upload image" (with drag & drop, preview, JPG/PNG/WEBP up to 3MB) or "no image" mode
+- No-image mode shows a rotating panel of curated verses in praise of saying Tehilim in the campaign hero (instead of a static placeholder)
+- REST campaign-create endpoint accepts an optional base64 image, strictly validated (mime + size) and set as the featured image
+- Campaign creation now requires login (enforced server-side + styled gate on the create page); campaigns are attributed to their creator
+- New themed login page (/login/, auto-created on activation) with password login, remember-me, lost-password, and registration links
+- Sign in with Google (OAuth 2.0, server-side flow): configure Client ID/Secret in Tehilim Settings or wp-config constants; auto-creates subscriber accounts from verified Google emails
+- wp_login_url() now points to the themed page; failed logins return to it with a styled error
+
 = 2.2.0 =
 - Full Psalms text (all 150 chapters, 2,527 verses, menukad) now bundled locally in the theme (assets/data/tehilim.json) — no external API dependency, matching the design's text style (nikud without cantillation, Hashem abbreviation, punctuation)
 - Smart chapter assignment: the reader offers chapters that were NOT yet said in the current communal book; a book completes only when all 150 chapters are covered

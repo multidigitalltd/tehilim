@@ -34,7 +34,11 @@
 
 		<!-- Action Buttons -->
 		<div class="header-actions">
-			<button class="btn-login"><?php esc_html_e( 'התחברות', 'tehilim' ); ?></button>
+			<?php if ( is_user_logged_in() ) : ?>
+				<a class="btn-login" href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>" title="<?php echo esc_attr( wp_get_current_user()->display_name ); ?>"><?php esc_html_e( 'התנתקות', 'tehilim' ); ?></a>
+			<?php else : ?>
+				<a class="btn-login" href="<?php echo esc_url( tehilim_login_page_url( home_url( '/create/' ) ) ); ?>"><?php esc_html_e( 'התחברות', 'tehilim' ); ?></a>
+			<?php endif; ?>
 			<a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="btn-create-primary"><?php esc_html_e( 'צור קמפיין', 'tehilim' ); ?></a>
 		</div>
 	</div>

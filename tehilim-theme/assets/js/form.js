@@ -92,6 +92,7 @@
 				invalid_params: 'אנא מלאו את כל השדות הנדרשים.',
 				invalid_length: 'השם חייב להכיל בין 2 ל-100 תווים.',
 				create_failed: 'יצירת הקמפיין נכשלה בשרת. נסו שוב.',
+				login_required: 'יש להתחבר כדי לפתוח קמפיין. מעבירים אתכם להתחברות…',
 				rest_no_route: 'נקודת הקצה לא נמצאה — ודאו שערכת הנושא פעילה ורעננו קישורים קבועים.',
 			};
 			if ( data && map[ data.code ] ) {
@@ -188,6 +189,11 @@
 				goal_books: parseInt( goalInput && goalInput.value, 10 ) || 1,
 			};
 
+			// Optional campaign image (data URL captured by page-create.php)
+			if ( form.dataset.imageData ) {
+				body.image_data = form.dataset.imageData;
+			}
+
 			// Turnstile token (when the widget is rendered on the page)
 			var turnstileInput = form.querySelector( '[name="cf-turnstile-response"]' );
 			if ( turnstileInput && turnstileInput.value ) {
@@ -209,6 +215,11 @@
 					submitBtn.disabled = false;
 					submitBtn.textContent = original;
 					self.showMessage( form, self.restError( err, 'שגיאה ביצירת הקמפיין. נסו שוב.' ), true );
+					if ( err && err.code === 'login_required' && window.tehilim && window.tehilim.login_url ) {
+						window.setTimeout( function() {
+							window.location.href = window.tehilim.login_url;
+						}, 1400 );
+					}
 				} );
 		},
 	};

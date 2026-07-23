@@ -280,6 +280,12 @@ function tehilim_get_next_chapter_endpoint( WP_REST_Request $request ) {
  * Handle campaign creation endpoint
  */
 function tehilim_handle_campaign_create( WP_REST_Request $request ) {
+	// Campaign creation requires a logged-in user (enforced server-side;
+	// the create page also gates the form behind login).
+	if ( ! is_user_logged_in() ) {
+		return new WP_Error( 'login_required', 'Login required to create a campaign', array( 'status' => 401 ) );
+	}
+
 	if ( ! tehilim_check_rate_limit( 'campaign_create', 3, TEHILIM_RATE_LIMIT_WINDOW ) ) {
 		return new WP_Error( 'rate_limit', 'Too many requests', array( 'status' => 429 ) );
 	}
@@ -319,6 +325,7 @@ function tehilim_handle_campaign_create( WP_REST_Request $request ) {
 		'post_type'   => 'campaign',
 		'post_title'  => $dedication_name,
 		'post_status' => 'publish',
+		'post_author' => get_current_user_id(),
 	), true );
 
 	if ( is_wp_error( $campaign_id ) ) {
@@ -332,6 +339,12 @@ function tehilim_handle_campaign_create( WP_REST_Request $request ) {
 	update_post_meta( $campaign_id, 'goal_books', $goal_books );
 	update_post_meta( $campaign_id, 'organizer_name', $organizer_name );
 
+	// Optional campaign image (data URL). Invalid images are ignored silently —
+	// the campaign still succeeds and falls back to the praise-verses hero.
+	if ( ! empty( $params['image_data'] ) && is_string( $params['image_data'] ) ) {
+		tehilim_attach_image_from_data_url( $campaign_id, $params['image_data'] );
+	}
+
 	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
 	header( 'Pragma: no-cache' );
 
@@ -340,6 +353,69 @@ function tehilim_handle_campaign_create( WP_REST_Request $request ) {
 		'campaign_id'  => $campaign_id,
 		'campaign_url' => esc_url_raw( get_permalink( $campaign_id ) ),
 	);
+}
+
+/**
+ * Decode a base64 data URL and attach it as the campaign's featured image.
+ * Strictly validates mime type and size. Returns attachment ID or false.
+ */
+function tehilim_attach_image_from_data_url( $campaign_id, $data_url ) {
+	if ( ! preg_match( '#^data:image/(jpeg|png|webp);base64,#', $data_url, $m ) ) {
+		return false;
+	}
+
+	$ext     = ( 'jpeg' === $m[1] ) ? 'jpg' : $m[1];
+	$b64     = substr( $data_url, strpos( $data_url, ',' ) + 1 );
+	$decoded = base64_decode( $b64, true );
+
+	if ( false === $decoded || strlen( $decoded ) > 3 * 1024 * 1024 || strlen( $decoded ) < 64 ) {
+		return false;
+	}
+
+	// Confirm the bytes really are an image of the claimed type
+	$finfo = function_exists( 'finfo_open' ) ? finfo_open( FILEINFO_MIME_TYPE ) : false;
+	if ( $finfo ) {
+		$real = finfo_buffer( $finfo, $decoded );
+		finfo_close( $finfo );
+		if ( 'image/' . $m[1] !== $real ) {
+			return false;
+		}
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+
+	$filename = 'campaign-' . $campaign_id . '-' . wp_generate_password( 6, false ) . '.' . $ext;
+	$upload   = wp_upload_bits( $filename, null, $decoded );
+
+	if ( ! empty( $upload['error'] ) ) {
+		return false;
+	}
+
+	// Re-validate the written file through WordPress's own checker
+	$check = wp_check_filetype_and_ext( $upload['file'], $upload['file'] );
+	if ( empty( $check['type'] ) || 0 !== strpos( $check['type'], 'image/' ) ) {
+		@unlink( $upload['file'] );
+		return false;
+	}
+
+	$attachment_id = wp_insert_attachment( array(
+		'post_mime_type' => $check['type'],
+		'post_title'     => get_the_title( $campaign_id ),
+		'post_content'   => '',
+		'post_status'    => 'inherit',
+	), $upload['file'], $campaign_id );
+
+	if ( is_wp_error( $attachment_id ) || ! $attachment_id ) {
+		@unlink( $upload['file'] );
+		return false;
+	}
+
+	wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $upload['file'] ) );
+	set_post_thumbnail( $campaign_id, $attachment_id );
+
+	return $attachment_id;
 }
 
 /**

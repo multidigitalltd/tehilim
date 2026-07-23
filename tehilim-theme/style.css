@@ -3,7 +3,7 @@ Theme Name: Tehilim
 Theme URI: https://github.com/multidigitalltd/tehilim
 Author: Multi Digital
 Description: Community Psalms campaign platform
-Version: 2.2.0
+Version: 2.3.0
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: tehilim
@@ -1745,6 +1745,85 @@ a.btn-dashboard-secondary:active {
   border: 2px dashed #D9C09A;
 }
 
+/* No-image mode: verses in praise of saying Tehilim */
+.campaign-hero-image.is-verses {
+  border: 1px solid #EFE1CC;
+  background:
+    radial-gradient(120% 100% at 85% 0%, rgba(217, 164, 65, 0.14) 0%, transparent 55%),
+    linear-gradient(150deg, #FFFDF8, #FBF3E4);
+}
+
+.hero-verses {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 28px;
+}
+
+.hero-verses-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #B9822B;
+  font-weight: 800;
+  font-size: 13.5px;
+  letter-spacing: -0.2px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #F0E7D6;
+}
+
+.hero-verses-stage {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-verse {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8px 6px;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+}
+
+.hero-verse.active {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.hero-verse blockquote {
+  margin: 0 0 14px;
+  font-family: 'Frank Ruhl Libre', 'Asimon', serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.75;
+  color: #2E2318;
+  max-width: 30ch;
+}
+
+.hero-verse figcaption {
+  font-weight: 700;
+  font-size: 13px;
+  color: #A9773A;
+}
+
+/* Static fallback when JS/animation is off: show only the first verse */
+@media (prefers-reduced-motion: reduce) {
+  .hero-verse { transition: none; }
+}
+
 .campaign-layout {
   max-width: 1200px;
   margin: 0 auto;
@@ -2483,6 +2562,283 @@ a.btn-dashboard-secondary:active {
 
 .create-input.last {
   margin-bottom: 26px;
+}
+
+/* ========== Login Page ========== */
+.login-page {
+  min-height: calc(100vh - 74px - 300px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 64px 32px 90px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  background: #FFFFFF;
+  border: 1px solid #EFE1CC;
+  border-radius: 26px;
+  padding: 38px 34px;
+  box-shadow: 0 10px 30px rgba(70, 50, 25, 0.06);
+  text-align: center;
+}
+
+.login-icon {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 18px;
+  border-radius: 16px;
+  background: linear-gradient(140deg, #C86A45, #A5442A);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px -4px rgba(169, 75, 46, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.login-title {
+  font-family: 'Asimon', 'Assistant', sans-serif;
+  font-weight: 900;
+  font-size: 30px;
+  margin: 0 0 8px;
+  color: #2E2318;
+}
+
+.login-subtitle {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: #6B5D4C;
+  margin: 0 0 24px;
+}
+
+.login-msg {
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14.5px;
+  margin-bottom: 18px;
+  text-align: right;
+}
+
+.login-msg.error {
+  background: #FBEAE4;
+  border: 1px solid #E8C4B4;
+  color: #A03C22;
+}
+
+.login-msg.ok {
+  background: #EAF3EC;
+  border: 1px solid #CFE6D5;
+  color: #4E8B5E;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 13px;
+  border: 1.5px solid #E0CDB0;
+  background: #FFFCF6;
+  color: #2E2318;
+  font-weight: 700;
+  font-size: 15.5px;
+}
+
+.btn-google:hover {
+  background: #F6EEDF;
+  border-color: #D9C09A;
+  color: #2E2318;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 20px 0;
+  color: #A9927A;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #F0E7D6;
+}
+
+.login-form {
+  text-align: right;
+}
+
+.login-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 0 20px;
+  font-size: 14px;
+}
+
+.login-remember {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #6B5D4C;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-remember input {
+  accent-color: #C05A3A;
+  width: 16px;
+  height: 16px;
+}
+
+.login-forgot {
+  font-weight: 600;
+  font-size: 13.5px;
+}
+
+.login-register {
+  margin: 20px 0 0;
+  font-size: 14.5px;
+  color: #6B5D4C;
+}
+
+.login-register a {
+  font-weight: 700;
+}
+
+.login-cta {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+
+a.login-cta:hover {
+  color: #FFF7F2;
+}
+
+.btn-login {
+  display: inline-block;
+  text-align: center;
+}
+
+a.btn-login:hover {
+  color: #2E2318;
+  background: #F6EEDF;
+}
+
+@media (max-width: 620px) {
+  .login-page {
+    padding: 34px 18px 60px;
+  }
+
+  .login-card {
+    padding: 28px 22px;
+  }
+}
+
+/* Campaign image: upload / no-image toggle */
+.create-image {
+  margin-bottom: 22px;
+}
+
+.create-image-modes {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.create-image-mode {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #E5D3B4;
+  background: #FFFCF6;
+  color: #6B5D4C;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.create-image-mode.active {
+  border-color: var(--primary);
+  background: rgba(192, 90, 58, 0.08);
+  color: #A94B2E;
+}
+
+.create-image-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  text-align: center;
+  padding: 28px 20px;
+  border-radius: 16px;
+  border: 2px dashed #D9C09A;
+  background: linear-gradient(135deg, #FFFDF8, #FBF3E4);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.create-image-drop:hover,
+.create-image-drop.dragging {
+  border-color: var(--primary);
+  background: rgba(217, 164, 65, 0.1);
+}
+
+.create-image-drop-title {
+  font-weight: 800;
+  font-size: 15px;
+  color: #9C7B4E;
+}
+
+.create-image-drop-sub {
+  font-size: 12.5px;
+  color: #A9927A;
+}
+
+.create-image-preview {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.create-image-preview-img {
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+  display: block;
+}
+
+.create-image-remove {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: rgba(46, 35, 24, 0.78);
+  color: #FFF7F2;
+  font-weight: 700;
+  font-size: 12.5px;
+  backdrop-filter: blur(4px);
+}
+
+.create-image-nonote {
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: #FBF3E4;
+  border: 1px dashed #D9C4A3;
+  color: #B9822B;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .create-goal {

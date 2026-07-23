@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const TEHILIM_VERSION = '2.2.0';
+const TEHILIM_VERSION = '2.3.0';
 
 /**
  * Theme Setup
@@ -40,6 +40,7 @@ function tehilim_enqueue_assets() {
 		'nonce'             => wp_create_nonce( 'wp_rest' ),
 		// Full menukad Psalms text bundled with the theme (150 chapters)
 		'text_url'          => add_query_arg( 'ver', $version, $theme_uri . '/assets/data/tehilim.json' ),
+		'login_url'         => tehilim_login_page_url( home_url( '/create/' ) ),
 		'turnstile_site_key' => defined( 'TURNSTILE_SITE_KEY' ) ? TURNSTILE_SITE_KEY : '',
 	) );
 }
@@ -51,6 +52,7 @@ add_action( 'wp_enqueue_scripts', 'tehilim_enqueue_assets' );
 require_once get_template_directory() . '/inc/cpt.php';
 require_once get_template_directory() . '/inc/meta.php';
 require_once get_template_directory() . '/inc/rest.php';
+require_once get_template_directory() . '/inc/auth.php';
 
 if ( is_admin() ) {
 	require_once get_template_directory() . '/inc/admin.php';

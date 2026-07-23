@@ -65,11 +65,27 @@ if ( have_posts() ) :
 					<p class="campaign-hero-desc"><?php echo esc_html( wp_strip_all_tags( get_the_content() ) ); ?></p>
 				<?php endif; ?>
 			</div>
-			<div class="campaign-hero-image">
+			<div class="campaign-hero-image<?php echo has_post_thumbnail() ? '' : ' is-verses'; ?>">
 				<?php if ( has_post_thumbnail() ) : ?>
 					<?php the_post_thumbnail( 'large' ); ?>
 				<?php else : ?>
-					<div class="campaign-hero-image-placeholder"><?php esc_html_e( 'גררו לכאן תמונת הנצחה / לוגו הקמפיין', 'tehilim' ); ?></div>
+					<?php
+					$praise_verses = tehilim_get_praise_verses();
+					?>
+					<div class="hero-verses" role="group" aria-label="<?php esc_attr_e( 'פסוקים בשבח אמירת תהילים', 'tehilim' ); ?>">
+						<div class="hero-verses-head">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B9822B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5M12 6v13"></path></svg>
+							<span><?php esc_html_e( 'בשבח אמירת תהילים', 'tehilim' ); ?></span>
+						</div>
+						<div class="hero-verses-stage">
+							<?php foreach ( $praise_verses as $vi => $verse ) : ?>
+								<figure class="hero-verse<?php echo 0 === $vi ? ' active' : ''; ?>">
+									<blockquote><?php echo esc_html( $verse['text'] ); ?></blockquote>
+									<figcaption><?php echo esc_html( $verse['source'] ); ?></figcaption>
+								</figure>
+							<?php endforeach; ?>
+						</div>
+					</div>
 				<?php endif; ?>
 			</div>
 		</div>

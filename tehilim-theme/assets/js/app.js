@@ -23,9 +23,26 @@
 			this.setupEventListeners();
 			this.initReader();
 			this.startStatsPolling();
+			this.initPraiseVerses();
 			if ( this.turnstileSiteKey && document.querySelector( '.btn-say-chapter' ) ) {
 				this.loadTurnstile();
 			}
+		},
+
+		/* Rotate the "praise of Tehilim" verses in the no-image hero */
+		initPraiseVerses: function() {
+			var verses = document.querySelectorAll( '.hero-verse' );
+			if ( verses.length < 2 ) { return; }
+			if ( window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches ) {
+				return; // keep the first verse static
+			}
+			var idx = 0;
+			window.setInterval( function() {
+				if ( document.hidden ) { return; }
+				verses[ idx ].classList.remove( 'active' );
+				idx = ( idx + 1 ) % verses.length;
+				verses[ idx ].classList.add( 'active' );
+			}, 6000 );
 		},
 
 		/* ============ Utilities ============ */

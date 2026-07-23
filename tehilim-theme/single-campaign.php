@@ -68,6 +68,14 @@ if ( have_posts() ) :
 				<?php if ( get_the_content() ) : ?>
 					<p class="campaign-hero-desc"><?php echo esc_html( wp_strip_all_tags( get_the_content() ) ); ?></p>
 				<?php endif; ?>
+
+				<div class="amb-hero-actions campaign-hero-actions">
+					<button class="btn-amb-join"><?php esc_html_e( 'הצטרפו ואמרו תהילים', 'tehilim' ); ?></button>
+					<button class="btn-amb-share btn-share-modal" data-share-url="<?php echo esc_url( $share_url ); ?>" data-share-text="<?php echo esc_attr( $share_text ); ?>">
+						<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#EFC978" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20a8 8 0 1 0-6.9-4L4 20l4-1.1A8 8 0 0 0 12 20z"></path></svg>
+						<?php esc_html_e( 'שתפו הלאה', 'tehilim' ); ?>
+					</button>
+				</div>
 			</div>
 			<div class="campaign-hero-image<?php echo has_post_thumbnail() ? '' : ' is-verses'; ?>">
 				<?php if ( has_post_thumbnail() ) : ?>

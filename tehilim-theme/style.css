@@ -1,0 +1,64 @@
+/*
+Theme Name: Tehilim
+Theme URI: https://github.com/multidigitalltd/tehilim
+Author: Multi Digital
+Description: Community Psalms campaign platform
+Version: 2.0.0
+Requires at least: 6.3
+Requires PHP: 7.4
+Text Domain: tehilim
+Domain Path: /languages
+*/
+
+:root {
+  --primary: #C05A3A;
+  --gold: #D9A441;
+  --text: #2E2318;
+  --text-muted: #7A6B58;
+  --border: #EADCC6;
+  --bg-card: #FFFCF6;
+  --bg-page: #FAF4EA;
+  --radius: 18px;
+  --radius-sm: 12px;
+  --shadow-soft: 0 10px 30px rgba(70, 50, 25, 0.07);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-page);
+  color: var(--text);
+  font-family: 'Assistant', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

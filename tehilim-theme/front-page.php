@@ -1,44 +1,65 @@
 <?php
 /**
- * Front Page (Homepage)
+ * Front Page - Tehilim Home (Hebrew RTL Design)
  */
 get_header();
 ?>
 
 <main class="site-main">
-	<!-- Hero Section -->
+	<!-- HERO SECTION -->
 	<section class="hero">
-		<div class="container">
-			<div class="hero-content">
-				<h1><?php esc_html_e( 'Tehilim Together', 'tehilim' ); ?></h1>
-				<p><?php esc_html_e( 'Join a community saying Psalms for meaningful causes', 'tehilim' ); ?></p>
-				<a href="<?php echo esc_url( home_url( '/campaigns' ) ); ?>" class="btn btn-primary">
-					<?php esc_html_e( 'Explore Campaigns', 'tehilim' ); ?>
-				</a>
+		<div class="hero-grid">
+			<!-- Left: Text Content -->
+			<div style="animation: floatIn .6s ease both;">
+				<h1>מתאחדים סביב<br>קריאת תהילים משותפת<br><span class="highlight">לברכה, לרפואה ולישועה</span></h1>
+				<p style="font-size: 18.5px; line-height: 1.65; color: #6B5D4C; max-width: 480px; margin: 0 0 32px;">בחרו מטרה, הזמינו שגרירים ועקבו בזמן אמת אחרי כל פרק — עד שהקהילה כולה משלימה יחד אלפי פרקי תהילים.</p>
+
+				<div style="display: flex; flex-wrap: wrap; gap: 13px; align-items: center; margin-bottom: 28px;">
+					<a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 9px; padding: 16px 30px; border-radius: 15px; font-size: 16.5px; font-weight: 800;">
+						צרו קמפיין
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFF7F2" stroke-width="2.4" stroke-linecap="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+					</a>
+					<a href="<?php echo esc_url( home_url( '/campaigns/' ) ); ?>" class="btn btn-secondary" style="padding: 15px 26px; border-radius: 15px;">גלו קמפיינים</a>
+				</div>
+
+				<!-- Social Proof -->
+				<div style="display: flex; align-items: center; gap: 12px;">
+					<div style="display: flex; align-items: center;">
+						<div style="z-index: 4; width: 33px; height: 33px; border-radius: 50%; background: linear-gradient(135deg, #C05A3A, #A94B2E); border: 2px solid #FBEFDF; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 12px;">ר</div>
+						<div style="margin-right: -10px; width: 33px; height: 33px; border-radius: 50%; background: linear-gradient(135deg, #D9A441, #B9822B); border: 2px solid #FBEFDF; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 12px;">ש</div>
+						<div style="margin-right: -10px; width: 33px; height: 33px; border-radius: 50%; background: #8A6B4A; border: 2px solid #FBEFDF; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 12px;">י</div>
+						<div style="margin-right: -10px; width: 33px; height: 33px; border-radius: 50%; background: #EFE0C6; border: 2px solid #FBEFDF; display: flex; align-items: center; justify-content: center; color: #A9773A; font-weight: 800; font-size: 11px;">+83</div>
+					</div>
+					<div style="font-size: 14px; color: #7A6B58;">כבר <b style="color: #3A2C1C;">4,280</b> אומרים תהילים ב־<b style="color: #3A2C1C;">128</b> קמפיינים</div>
+				</div>
+			</div>
+
+			<!-- Right: Campaign Card Preview (Placeholder) -->
+			<div style="position: relative; min-height: 400px; animation: floatIn .72s ease both; display: none;">
+				<!-- Card will be shown on wider screens via CSS -->
 			</div>
 		</div>
-	</section>
 
-	<!-- Stats Bar -->
-	<section class="stats-bar">
-		<div class="container">
-			<div class="stats-grid">
-				<div class="stat-item">
-					<strong class="stat-number">10,000+</strong>
-					<span class="stat-label"><?php esc_html_e( 'Chapters Said', 'tehilim' ); ?></span>
-				</div>
-				<div class="stat-item">
-					<strong class="stat-number">500+</strong>
-					<span class="stat-label"><?php esc_html_e( 'Active Campaigns', 'tehilim' ); ?></span>
-				</div>
-				<div class="stat-item">
-					<strong class="stat-number">2,000+</strong>
-					<span class="stat-label"><?php esc_html_e( 'Community Members', 'tehilim' ); ?></span>
-				</div>
-				<div class="stat-item">
-					<strong class="stat-number">50+</strong>
-					<span class="stat-label"><?php esc_html_e( 'Causes Supported', 'tehilim' ); ?></span>
-				</div>
+		<!-- STATS STRIP -->
+		<div class="stats-strip">
+			<div class="stat">
+				<div class="stat-value">4,280</div>
+				<div class="stat-label">משתתפים</div>
+			</div>
+			<div class="stat-divider"></div>
+			<div class="stat">
+				<div class="stat-value">46,800</div>
+				<div class="stat-label">פרקי תהילים נאמרו</div>
+			</div>
+			<div class="stat-divider"></div>
+			<div class="stat">
+				<div class="stat-value">312</div>
+				<div class="stat-label">ספרים הושלמו</div>
+			</div>
+			<div class="stat-divider"></div>
+			<div class="stat">
+				<div class="stat-value">128</div>
+				<div class="stat-label">קמפיינים פעילים</div>
 			</div>
 		</div>
 	</section>

@@ -10,6 +10,33 @@ Text Domain: tehilim
 Domain Path: /languages
 */
 
+/* Fonts */
+@font-face {
+  font-family: 'Asimon';
+  src: url('./assets/fonts/asimon-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Asimon';
+  src: url('./assets/fonts/asimon-medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Asimon';
+  src: url('./assets/fonts/asimon-bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Frank Ruhl Libre';
+  src: url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;700&display=swap');
+}
+
 :root {
   --primary: #C05A3A;
   --gold: #D9A441;
@@ -31,7 +58,7 @@ body {
   margin: 0;
   background: var(--bg-page);
   color: var(--text);
-  font-family: 'Assistant', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Asimon', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   direction: rtl;
   text-align: right;
 }
@@ -388,6 +415,17 @@ p {
   margin-bottom: 2rem;
 }
 
+/* Recent Campaigns Section */
+.recent-campaigns {
+  padding: 4rem 0;
+  background: var(--bg-card);
+}
+
+.recent-campaigns h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
 /* Campaigns Grid */
 .campaigns-grid {
   display: grid;
@@ -678,6 +716,22 @@ p {
 
 .share-card .btn:last-child {
   margin-bottom: 0;
+}
+
+/* Activity Section */
+.activity-section {
+  padding: 4rem 0;
+}
+
+.activity-section h2 {
+  margin-bottom: 2rem;
+}
+
+.activity-feed {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
 }
 
 /* Archive Header */

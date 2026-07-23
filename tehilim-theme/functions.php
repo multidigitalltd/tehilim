@@ -44,4 +44,5 @@ add_action( 'wp_enqueue_scripts', 'tehilim_enqueue_assets' );
  * Includes
  */
 require_once get_template_directory() . '/inc/cpt.php';
+require_once get_template_directory() . '/inc/meta.php';
 require_once get_template_directory() . '/inc/rest.php';

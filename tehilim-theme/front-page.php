@@ -49,17 +49,50 @@ get_header();
 			<h2><?php esc_html_e( 'How It Works', 'tehilim' ); ?></h2>
 			<div class="cards-grid">
 				<div class="card">
-					<h3><?php esc_html_e( 'Create', 'tehilim' ); ?></h3>
-					<p><?php esc_html_e( 'Start a campaign for a cause or person in need', 'tehilim' ); ?></p>
+					<h3>1. <?php esc_html_e( 'Create', 'tehilim' ); ?></h3>
+					<p><?php esc_html_e( 'Start a campaign for a cause or person in need. Choose the occasion, set your goal, and invite others to participate.', 'tehilim' ); ?></p>
 				</div>
 				<div class="card">
-					<h3><?php esc_html_e( 'Invite', 'tehilim' ); ?></h3>
-					<p><?php esc_html_e( 'Share with friends and community members', 'tehilim' ); ?></p>
+					<h3>2. <?php esc_html_e( 'Invite', 'tehilim' ); ?></h3>
+					<p><?php esc_html_e( 'Share your personal link with friends and community members. Track who has joined and their progress in real-time.', 'tehilim' ); ?></p>
 				</div>
 				<div class="card">
-					<h3><?php esc_html_e( 'Recite', 'tehilim' ); ?></h3>
-					<p><?php esc_html_e( 'Say chapters together in this sacred space', 'tehilim' ); ?></p>
+					<h3>3. <?php esc_html_e( 'Recite', 'tehilim' ); ?></h3>
+					<p><?php esc_html_e( 'Say chapters of Tehilim together in this sacred space. Every chapter brings the community closer to the goal.', 'tehilim' ); ?></p>
 				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Recent Campaigns -->
+	<section class="recent-campaigns">
+		<div class="container">
+			<h2><?php esc_html_e( 'Active Campaigns', 'tehilim' ); ?></h2>
+			<div class="campaigns-grid">
+				<?php
+				$recent = get_posts( array(
+					'post_type'      => 'campaign',
+					'posts_per_page' => 6,
+					'post_status'    => 'publish',
+					'orderby'        => 'date',
+					'order'          => 'DESC',
+				) );
+
+				if ( $recent ) {
+					foreach ( $recent as $post ) {
+						setup_postdata( $post );
+						get_template_part( 'template-parts/campaign-card' );
+					}
+					wp_reset_postdata();
+				} else {
+					echo '<p>' . esc_html__( 'No campaigns yet. Be the first to create one!', 'tehilim' ) . '</p>';
+				}
+				?>
+			</div>
+			<div style="text-align: center; margin-top: 2rem;">
+				<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>" class="btn btn-secondary">
+					<?php esc_html_e( 'View All Campaigns', 'tehilim' ); ?>
+				</a>
 			</div>
 		</div>
 	</section>

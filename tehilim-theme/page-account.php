@@ -202,6 +202,9 @@ foreach ( $campaigns as $c ) {
 							<?php endforeach; ?>
 						</select>
 
+						<label class="create-label" for="edit_ded_<?php echo esc_attr( $c->ID ); ?>"><?php esc_html_e( 'הקדשה (לא חובה)', 'tehilim' ); ?></label>
+						<input class="create-input" type="text" id="edit_ded_<?php echo esc_attr( $c->ID ); ?>" name="dedication_text" maxlength="200" value="<?php echo esc_attr( get_post_meta( $c->ID, 'dedication_text', true ) ); ?>" placeholder="<?php esc_attr_e( 'לדוגמה: לרפואה שלמה בתוך שאר חולי ישראל', 'tehilim' ); ?>">
+
 						<label class="create-label" for="edit_desc_<?php echo esc_attr( $c->ID ); ?>"><?php esc_html_e( 'תיאור (לא חובה)', 'tehilim' ); ?></label>
 						<textarea class="create-input account-edit-desc" id="edit_desc_<?php echo esc_attr( $c->ID ); ?>" name="description" rows="3"><?php echo esc_textarea( $c->post_content ); ?></textarea>
 

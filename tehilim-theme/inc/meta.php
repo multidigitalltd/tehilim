@@ -42,6 +42,13 @@ function tehilim_register_campaign_meta() {
 		'show_in_rest'   => true,
 		'auth_callback'  => '__return_true',
 	) );
+
+	register_post_meta( 'campaign', 'dedication_text', array(
+		'type'           => 'string',
+		'single'         => true,
+		'show_in_rest'   => true,
+		'auth_callback'  => '__return_true',
+	) );
 }
 add_action( 'init', 'tehilim_register_campaign_meta' );
 
@@ -92,7 +99,7 @@ function tehilim_get_campaign_progress( $campaign_id ) {
 	// the 150 chapters has been said; the current cycle offers the chapters
 	// that were not yet said in it.
 	$rows = $wpdb->get_results( $wpdb->prepare(
-		"SELECT chapter_number, COUNT(*) AS cnt FROM `%i` WHERE campaign_id = %d GROUP BY chapter_number",
+		"SELECT chapter_number, COUNT(*) AS cnt FROM %i WHERE campaign_id = %d GROUP BY chapter_number",
 		$table,
 		$campaign_id
 	) );
@@ -193,7 +200,7 @@ function tehilim_get_top_ambassadors( $campaign_id, $limit = 3 ) {
 
 	$counts = array();
 	$rows   = $wpdb->get_results( $wpdb->prepare(
-		"SELECT ambassador_id, COUNT(*) as count FROM `%i`
+		"SELECT ambassador_id, COUNT(*) as count FROM %i
 		 WHERE campaign_id = %d AND ambassador_id IS NOT NULL
 		 GROUP BY ambassador_id",
 		$table,
@@ -232,14 +239,14 @@ function tehilim_get_ambassador_stats( $campaign_id, $ambassador_id ) {
 	$table = $wpdb->prefix . 'tehilim_recitations';
 
 	$chapters = (int) $wpdb->get_var( $wpdb->prepare(
-		"SELECT COUNT(*) FROM `%i` WHERE campaign_id = %d AND ambassador_id = %d",
+		"SELECT COUNT(*) FROM %i WHERE campaign_id = %d AND ambassador_id = %d",
 		$table,
 		$campaign_id,
 		$ambassador_id
 	) );
 
 	$reciters = (int) $wpdb->get_var( $wpdb->prepare(
-		"SELECT COUNT(DISTINCT reciter_name) FROM `%i` WHERE campaign_id = %d AND ambassador_id = %d AND reciter_name IS NOT NULL AND reciter_name <> ''",
+		"SELECT COUNT(DISTINCT reciter_name) FROM %i WHERE campaign_id = %d AND ambassador_id = %d AND reciter_name IS NOT NULL AND reciter_name <> ''",
 		$table,
 		$campaign_id,
 		$ambassador_id
@@ -318,7 +325,7 @@ function tehilim_get_campaign_participants( $campaign_id ) {
 	$table = $wpdb->prefix . 'tehilim_recitations';
 
 	$count = (int) $wpdb->get_var( $wpdb->prepare(
-		"SELECT COUNT(DISTINCT reciter_name) FROM `%i` WHERE campaign_id = %d AND reciter_name IS NOT NULL AND reciter_name <> ''",
+		"SELECT COUNT(DISTINCT reciter_name) FROM %i WHERE campaign_id = %d AND reciter_name IS NOT NULL AND reciter_name <> ''",
 		$table,
 		$campaign_id
 	) );
@@ -337,7 +344,7 @@ function tehilim_get_recent_recitations( $campaign_id, $limit = 10 ) {
 	$table = $wpdb->prefix . 'tehilim_recitations';
 
 	$results = $wpdb->get_results( $wpdb->prepare(
-		"SELECT id, campaign_id, ambassador_id, chapter_number, reciter_name, created_at FROM `%i`
+		"SELECT id, campaign_id, ambassador_id, chapter_number, reciter_name, created_at FROM %i
 		 WHERE campaign_id = %d
 		 ORDER BY created_at DESC
 		 LIMIT %d",

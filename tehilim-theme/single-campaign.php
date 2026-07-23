@@ -58,6 +58,13 @@ if ( have_posts() ) :
 					</div>
 				<?php endif; ?>
 				<h1 class="campaign-hero-title"><?php the_title(); ?></h1>
+				<?php $dedication_text = get_post_meta( $campaign_id, 'dedication_text', true ); ?>
+				<?php if ( $dedication_text ) : ?>
+					<div class="campaign-dedication">
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C05A3A" stroke-width="1.9"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.6 2 5 5.5 5c2 0 3.4 1.1 4.5 2.6C11 6.1 12.5 5 14.5 5 18 5 19.6 8.6 22 11.7 19.5 16.3 12 21 12 21z"></path></svg>
+						<?php echo esc_html( $dedication_text ); ?>
+					</div>
+				<?php endif; ?>
 				<?php if ( get_the_content() ) : ?>
 					<p class="campaign-hero-desc"><?php echo esc_html( wp_strip_all_tags( get_the_content() ) ); ?></p>
 				<?php endif; ?>

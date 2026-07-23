@@ -61,6 +61,9 @@ if ( is_wp_error( $occasions ) ) {
 		<div class="create-label"><?php esc_html_e( 'שם המארגן / הקבוצה', 'tehilim' ); ?></div>
 		<input class="create-input" type="text" id="organizer_name" name="organizer_name" required placeholder="<?php esc_attr_e( 'לדוגמה: משפחת כהן', 'tehilim' ); ?>">
 
+		<div class="create-label"><?php esc_html_e( 'הקדשה (לא חובה)', 'tehilim' ); ?></div>
+		<input class="create-input" type="text" id="dedication_text" name="dedication_text" maxlength="200" placeholder="<?php esc_attr_e( 'לדוגמה: לרפואה שלמה בתוך שאר חולי ישראל', 'tehilim' ); ?>">
+
 		<div class="create-label"><?php esc_html_e( 'תמונת הקמפיין', 'tehilim' ); ?></div>
 		<div class="create-image" data-mode="upload">
 			<div class="create-image-modes">

@@ -89,6 +89,7 @@
 				goal_books: parseInt( ( form.querySelector( '[name="goal_books"]' ) || {} ).value, 10 ) || 1,
 				occasion: ( form.querySelector( '[name="occasion"]' ) || {} ).value || '',
 				description: ( form.querySelector( '[name="description"]' ) || {} ).value || '',
+				dedication_text: ( form.querySelector( '[name="dedication_text"]' ) || {} ).value || '',
 			};
 
 			var removeBox = form.querySelector( '[name="remove_image"]' );
@@ -308,6 +309,11 @@
 				organizer_name: organizerInput.value.trim(),
 				goal_books: parseInt( goalInput && goalInput.value, 10 ) || 1,
 			};
+
+			var dedicationText = form.querySelector( 'input[name="dedication_text"]' );
+			if ( dedicationText && dedicationText.value.trim() ) {
+				body.dedication_text = dedicationText.value.trim();
+			}
 
 			// Optional campaign image (data URL captured by page-create.php)
 			if ( form.dataset.imageData ) {

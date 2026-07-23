@@ -54,8 +54,8 @@ if ( $amb_posts ) {
 
 		global $wpdb;
 		$rec_table    = $wpdb->prefix . 'tehilim_recitations';
-		$amb_chapters = $campaign_id ? (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `%i` WHERE campaign_id = %d AND ambassador_id = %d", $rec_table, $campaign_id, $amb_id ) ) : 0;
-		$amb_reciters = $campaign_id ? (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(DISTINCT reciter_name) FROM `%i` WHERE campaign_id = %d AND ambassador_id = %d AND reciter_name IS NOT NULL AND reciter_name <> ''", $rec_table, $campaign_id, $amb_id ) ) : 0;
+		$amb_chapters = $campaign_id ? (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE campaign_id = %d AND ambassador_id = %d", $rec_table, $campaign_id, $amb_id ) ) : 0;
+		$amb_reciters = $campaign_id ? (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(DISTINCT reciter_name) FROM %i WHERE campaign_id = %d AND ambassador_id = %d AND reciter_name IS NOT NULL AND reciter_name <> ''", $rec_table, $campaign_id, $amb_id ) ) : 0;
 		$amb_ring     = min( 100, round( $amb_chapters / $goal_chapters * 100 ) );
 
 		$amb_rank          = '—';

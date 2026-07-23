@@ -203,7 +203,7 @@ function tehilim_build_stats_payload( $campaign_id, $ambassador_id = 0 ) {
 	$progress = tehilim_get_campaign_progress( $campaign_id );
 
 	$total_ambassadors = (int) $wpdb->get_var( $wpdb->prepare(
-		"SELECT COUNT(DISTINCT ambassador_id) FROM `%i` WHERE campaign_id = %d AND ambassador_id IS NOT NULL",
+		"SELECT COUNT(DISTINCT ambassador_id) FROM %i WHERE campaign_id = %d AND ambassador_id IS NOT NULL",
 		$table,
 		$campaign_id
 	) );
@@ -339,6 +339,10 @@ function tehilim_handle_campaign_create( WP_REST_Request $request ) {
 	update_post_meta( $campaign_id, 'goal_books', $goal_books );
 	update_post_meta( $campaign_id, 'organizer_name', $organizer_name );
 
+	if ( ! empty( $params['dedication_text'] ) ) {
+		update_post_meta( $campaign_id, 'dedication_text', mb_substr( sanitize_text_field( $params['dedication_text'] ), 0, 200 ) );
+	}
+
 	// Optional campaign image (data URL). Invalid images are ignored silently —
 	// the campaign still succeeds and falls back to the praise-verses hero.
 	if ( ! empty( $params['image_data'] ) && is_string( $params['image_data'] ) ) {
@@ -397,6 +401,10 @@ function tehilim_handle_campaign_update( WP_REST_Request $request ) {
 	if ( isset( $params['goal_books'] ) ) {
 		$goal = max( 1, min( 100, absint( $params['goal_books'] ) ) );
 		update_post_meta( $campaign_id, 'goal_books', $goal );
+	}
+
+	if ( isset( $params['dedication_text'] ) ) {
+		update_post_meta( $campaign_id, 'dedication_text', mb_substr( sanitize_text_field( $params['dedication_text'] ), 0, 200 ) );
 	}
 
 	if ( ! empty( $params['occasion'] ) ) {

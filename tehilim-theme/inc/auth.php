@@ -45,6 +45,14 @@ function tehilim_login_page_url( $redirect = '' ) {
 }
 
 /**
+ * URL of the personal area page.
+ */
+function tehilim_account_page_url() {
+	$page = get_page_by_path( 'account' );
+	return $page ? get_permalink( $page ) : home_url( '/' );
+}
+
+/**
  * Point wp_login_url() at the themed page so every login link lands there.
  */
 function tehilim_filter_login_url( $login_url, $redirect ) {
@@ -77,8 +85,9 @@ add_action( 'wp_login_failed', 'tehilim_login_failed_redirect' );
  */
 function tehilim_ensure_theme_pages() {
 	$pages = array(
-		'create' => 'יצירת קמפיין',
-		'login'  => 'התחברות',
+		'create'  => 'יצירת קמפיין',
+		'login'   => 'התחברות',
+		'account' => 'האזור האישי',
 	);
 
 	foreach ( $pages as $slug => $title ) {

@@ -54,6 +54,15 @@ GitHub: https://github.com/multidigitalltd/tehilim
 
 == Changelog ==
 
+= 2.4.0 =
+- Personal area (/account/, auto-created): greeting header with avatar, aggregate stats (campaigns, chapters, books, ambassadors), and a management card per campaign
+- Per-campaign management: progress bar + live stats, view/copy-link actions, and an inline edit panel — dedication name, goal, occasion, description, replace/remove image (removal switches the hero to praise verses)
+- New owner-only REST endpoint POST /campaigns/{id}/update (author or editor capability required)
+- Header button for signed-in users now leads to the personal area (logout moved into the page)
+
+= 2.3.1 =
+- Normalize legacy English occasion term names to Hebrew
+
 = 2.3.0 =
 - Campaign image: creation form now offers "upload image" (with drag & drop, preview, JPG/PNG/WEBP up to 3MB) or "no image" mode
 - No-image mode shows a rotating panel of curated verses in praise of saying Tehilim in the campaign hero (instead of a static placeholder)

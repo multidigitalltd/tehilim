@@ -24,7 +24,82 @@
 					e.preventDefault();
 					self.handleCampaignCreate( e.target );
 				}
+				if ( e.target.matches( '.form-campaign-edit' ) ) {
+					e.preventDefault();
+					self.handleCampaignEdit( e.target );
+				}
 			} );
+
+			// Personal area: toggle a campaign's edit panel
+			document.addEventListener( 'click', function( e ) {
+				var toggle = e.target.closest( '[data-edit-toggle]' );
+				if ( toggle ) {
+					var card = toggle.closest( '.account-camp' );
+					var panel = card && card.querySelector( '.form-campaign-edit' );
+					if ( panel ) { panel.hidden = ! panel.hidden; }
+				}
+			} );
+
+			// Personal area: image file selection inside an edit panel
+			document.addEventListener( 'change', function( e ) {
+				if ( e.target.matches( '.edit-image-input' ) ) {
+					self.readEditImage( e.target );
+				}
+			} );
+		},
+
+		readEditImage: function( input ) {
+			var form = input.closest( 'form' );
+			var nameEl = form.querySelector( '.account-edit-imagename' );
+			var file = input.files && input.files[ 0 ];
+			if ( ! form || ! file ) { return; }
+			if ( ! /^image\/(jpeg|png|webp)$/.test( file.type ) || file.size > 3 * 1024 * 1024 ) {
+				this.showMessage( form, 'קובץ לא נתמך או גדול מ-3MB (JPG/PNG/WEBP).', true );
+				input.value = '';
+				return;
+			}
+			var reader = new FileReader();
+			reader.onload = function( ev ) {
+				form.dataset.imageData = ev.target.result;
+				if ( nameEl ) { nameEl.textContent = file.name; }
+			};
+			reader.readAsDataURL( file );
+		},
+
+		handleCampaignEdit: function( form ) {
+			var self = this;
+			var campaignId = parseInt( form.dataset.campaignId, 10 );
+			var submitBtn = form.querySelector( 'button[type="submit"]' );
+			if ( ! campaignId ) { return; }
+
+			var body = {
+				dedication_name: ( form.querySelector( '[name="dedication_name"]' ) || {} ).value || '',
+				goal_books: parseInt( ( form.querySelector( '[name="goal_books"]' ) || {} ).value, 10 ) || 1,
+				occasion: ( form.querySelector( '[name="occasion"]' ) || {} ).value || '',
+				description: ( form.querySelector( '[name="description"]' ) || {} ).value || '',
+			};
+
+			var removeBox = form.querySelector( '[name="remove_image"]' );
+			if ( removeBox && removeBox.checked ) {
+				body.remove_image = true;
+			} else if ( form.dataset.imageData ) {
+				body.image_data = form.dataset.imageData;
+			}
+
+			var original = submitBtn.textContent;
+			submitBtn.disabled = true;
+			submitBtn.textContent = 'שומרים…';
+
+			this.apiPost( 'campaigns/' + campaignId + '/update', body )
+				.then( function() {
+					self.showMessage( form, 'השינויים נשמרו! מרעננים…' );
+					window.setTimeout( function() { window.location.reload(); }, 900 );
+				} )
+				.catch( function( err ) {
+					submitBtn.disabled = false;
+					submitBtn.textContent = original;
+					self.showMessage( form, self.restError( err, 'שמירת השינויים נכשלה. נסו שוב.' ), true );
+				} );
 		},
 
 		/**

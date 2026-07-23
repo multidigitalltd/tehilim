@@ -70,6 +70,12 @@ function tehilim_register_rest_routes() {
 		'permission_callback' => '__return_true',
 	) );
 
+	register_rest_route( 'tehilim/v1', '/campaigns/(?P<id>\d+)/update', array(
+		'methods'             => 'POST',
+		'callback'            => 'tehilim_handle_campaign_update',
+		'permission_callback' => 'is_user_logged_in',
+	) );
+
 	register_rest_route( 'tehilim/v1', '/ambassadors/join', array(
 		'methods'             => 'POST',
 		'callback'            => 'tehilim_handle_ambassador_join',
@@ -347,6 +353,78 @@ function tehilim_handle_campaign_create( WP_REST_Request $request ) {
 
 	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
 	header( 'Pragma: no-cache' );
+
+	return array(
+		'success'      => true,
+		'campaign_id'  => $campaign_id,
+		'campaign_url' => esc_url_raw( get_permalink( $campaign_id ) ),
+	);
+}
+
+/**
+ * Handle campaign update endpoint (owner-only, from the personal area)
+ */
+function tehilim_handle_campaign_update( WP_REST_Request $request ) {
+	$campaign_id = absint( $request->get_param( 'id' ) );
+	$campaign    = get_post( $campaign_id );
+
+	if ( ! $campaign || 'campaign' !== $campaign->post_type ) {
+		return new WP_Error( 'not_found', 'Campaign not found', array( 'status' => 404 ) );
+	}
+
+	// Only the campaign owner (or an editor/admin) may manage it
+	$is_owner = intval( $campaign->post_author ) === get_current_user_id();
+	if ( ! $is_owner && ! current_user_can( 'edit_post', $campaign_id ) ) {
+		return new WP_Error( 'forbidden', 'You cannot manage this campaign', array( 'status' => 403 ) );
+	}
+
+	$params  = $request->get_json_params();
+	$updates = array( 'ID' => $campaign_id );
+
+	if ( isset( $params['dedication_name'] ) ) {
+		$title = sanitize_text_field( $params['dedication_name'] );
+		if ( mb_strlen( $title ) < 2 || mb_strlen( $title ) > 100 ) {
+			return new WP_Error( 'invalid_length', 'Name must be between 2 and 100 characters', array( 'status' => 400 ) );
+		}
+		$updates['post_title'] = $title;
+	}
+
+	if ( isset( $params['description'] ) ) {
+		$updates['post_content'] = wp_kses_post( mb_substr( (string) $params['description'], 0, 2000 ) );
+	}
+
+	if ( count( $updates ) > 1 ) {
+		$result = wp_update_post( $updates, true );
+		if ( is_wp_error( $result ) ) {
+			return new WP_Error( 'update_failed', 'Failed to update campaign', array( 'status' => 500 ) );
+		}
+	}
+
+	if ( isset( $params['goal_books'] ) ) {
+		$goal = max( 1, min( 100, absint( $params['goal_books'] ) ) );
+		update_post_meta( $campaign_id, 'goal_books', $goal );
+	}
+
+	if ( ! empty( $params['occasion'] ) ) {
+		$occasion = sanitize_text_field( $params['occasion'] );
+		$term     = is_numeric( $occasion )
+			? get_term( absint( $occasion ), 'occasion' )
+			: get_term_by( 'slug', $occasion, 'occasion' );
+		if ( $term && ! is_wp_error( $term ) ) {
+			wp_set_object_terms( $campaign_id, $term->term_id, 'occasion' );
+		}
+	}
+
+	// Image management: replace, or remove (falls back to the verses hero)
+	if ( ! empty( $params['remove_image'] ) ) {
+		delete_post_thumbnail( $campaign_id );
+	} elseif ( ! empty( $params['image_data'] ) && is_string( $params['image_data'] ) ) {
+		tehilim_attach_image_from_data_url( $campaign_id, $params['image_data'] );
+	}
+
+	tehilim_clear_campaign_caches( $campaign_id );
+
+	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
 
 	return array(
 		'success'      => true,

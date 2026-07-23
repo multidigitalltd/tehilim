@@ -3,7 +3,7 @@ Theme Name: Tehilim
 Theme URI: https://github.com/multidigitalltd/tehilim
 Author: Multi Digital
 Description: Community Psalms campaign platform
-Version: 2.3.1
+Version: 2.4.0
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: tehilim
@@ -2562,6 +2562,361 @@ a.btn-dashboard-secondary:active {
 
 .create-input.last {
   margin-bottom: 26px;
+}
+
+/* ========== Personal Area ========== */
+.account-page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 46px 32px 74px;
+}
+
+.account-hero {
+  background: #FFFFFF;
+  border: 1px solid #EFE1CC;
+  border-radius: 26px;
+  padding: 30px 34px;
+  box-shadow: 0 10px 30px rgba(70, 50, 25, 0.06);
+  margin-bottom: 34px;
+}
+
+.account-hero-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.account-user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.account-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  background: linear-gradient(140deg, #C86A45, #A5442A);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFF7F2;
+  font-weight: 800;
+  font-size: 24px;
+  box-shadow: 0 6px 16px -4px rgba(169, 75, 46, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  flex-shrink: 0;
+}
+
+.account-title {
+  font-family: 'Asimon', 'Assistant', sans-serif;
+  font-weight: 900;
+  font-size: 28px;
+  margin: 0;
+  color: #2E2318;
+}
+
+.account-sub {
+  font-size: 14.5px;
+  color: #7A6B58;
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.account-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-account-secondary {
+  display: inline-block;
+  padding: 11px 20px;
+  border-radius: 12px;
+  border: 1.5px solid #EADCC6;
+  background: #FFFCF6;
+  color: #6B5D4C;
+  font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+}
+
+.btn-account-secondary:hover {
+  background: #F6EEDF;
+  border-color: #D9C09A;
+  color: #2E2318;
+}
+
+.account-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 26px;
+  padding-top: 24px;
+  border-top: 1px solid #F0E7D6;
+}
+
+.account-stat {
+  flex: 1;
+  text-align: center;
+}
+
+.account-stat-num {
+  font-family: 'Asimon', 'Assistant', sans-serif;
+  font-weight: 900;
+  font-size: 27px;
+  color: #2E2318;
+  line-height: 1;
+}
+
+.account-stat-label {
+  font-size: 12.5px;
+  color: #7A6B58;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.account-stat-divider {
+  width: 1px;
+  height: 38px;
+  background: #EADCC6;
+}
+
+.account-section-title {
+  font-family: 'Asimon', 'Assistant', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  color: #2E2318;
+  margin: 0 0 18px;
+}
+
+.account-empty {
+  background: #FFFFFF;
+  border: 2px dashed #D9C09A;
+  border-radius: 22px;
+  padding: 44px 30px;
+  text-align: center;
+  color: #6B5D4C;
+}
+
+.account-empty-title {
+  font-weight: 800;
+  font-size: 19px;
+  color: #2E2318;
+  margin: 12px 0 6px;
+}
+
+.account-empty p {
+  margin: 0 0 18px;
+  font-size: 15px;
+}
+
+.account-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.account-camp {
+  background: #FFFFFF;
+  border: 1px solid #EADCC6;
+  border-radius: 22px;
+  padding: 24px 26px;
+  box-shadow: 0 8px 22px rgba(70, 50, 25, 0.06);
+}
+
+.account-camp-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.account-camp-title {
+  font-weight: 800;
+  font-size: 20px;
+  color: #2E2318;
+}
+
+.account-camp-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 5px;
+  font-size: 13px;
+  color: #7A6B58;
+}
+
+.account-camp-occ {
+  display: inline-flex;
+  background: #FBF3E4;
+  border: 1px solid #EED9B2;
+  color: #B9822B;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.account-camp-percent {
+  font-family: 'Asimon', 'Assistant', sans-serif;
+  font-weight: 900;
+  font-size: 26px;
+  color: #A94B2E;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.account-camp-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin: 12px 0 16px;
+  font-size: 13.5px;
+  color: #6B5D4C;
+  font-weight: 600;
+}
+
+.account-camp-stats b {
+  color: #2E2318;
+  font-weight: 800;
+}
+
+.account-camp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.btn-account-view,
+.btn-account-share,
+.btn-account-edit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1.5px solid #E5D3B4;
+  background: #FFFCF6;
+  color: #2E2318;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-account-view:hover,
+.btn-account-share:hover,
+.btn-account-edit:hover {
+  background: #F6EEDF;
+  border-color: #D9C09A;
+  color: #2E2318;
+}
+
+.btn-account-edit {
+  border-color: #C05A3A;
+  color: #A94B2E;
+  background: rgba(192, 90, 58, 0.06);
+}
+
+.btn-account-edit:hover {
+  background: rgba(192, 90, 58, 0.12);
+  border-color: #A94B2E;
+  color: #A94B2E;
+}
+
+.account-edit {
+  margin-top: 18px;
+  padding-top: 20px;
+  border-top: 1px dashed #E5D3B4;
+}
+
+.account-edit-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 0 16px;
+}
+
+.account-edit-desc {
+  resize: vertical;
+  font-family: inherit;
+}
+
+.account-edit-imagerow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.account-edit-imagebtn {
+  cursor: pointer;
+}
+
+.account-edit-imagename {
+  font-size: 12.5px;
+  color: #7A6B58;
+  direction: ltr;
+}
+
+.account-edit-remove {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13.5px;
+  color: #6B5D4C;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.account-edit-remove input {
+  accent-color: #C05A3A;
+  width: 15px;
+  height: 15px;
+}
+
+.account-edit-save {
+  max-width: 260px;
+}
+
+@media (max-width: 900px) {
+  .account-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 24px;
+  }
+
+  .account-stat-divider {
+    display: none;
+  }
+
+  .account-edit-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .account-page {
+    padding: 30px 18px 56px;
+  }
+
+  .account-hero {
+    padding: 24px 20px;
+  }
+
+  .account-camp {
+    padding: 20px 18px;
+  }
+
+  .account-camp-actions .btn-account-view,
+  .account-camp-actions .btn-account-share,
+  .account-camp-actions .btn-account-edit {
+    flex: 1;
+  }
 }
 
 /* ========== Login Page ========== */

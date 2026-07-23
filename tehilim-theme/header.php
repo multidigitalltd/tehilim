@@ -35,7 +35,7 @@
 		<!-- Action Buttons -->
 		<div class="header-actions">
 			<?php if ( is_user_logged_in() ) : ?>
-				<a class="btn-login" href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>" title="<?php echo esc_attr( wp_get_current_user()->display_name ); ?>"><?php esc_html_e( 'התנתקות', 'tehilim' ); ?></a>
+				<a class="btn-login" href="<?php echo esc_url( tehilim_account_page_url() ); ?>" title="<?php echo esc_attr( wp_get_current_user()->display_name ); ?>"><?php esc_html_e( 'האזור האישי', 'tehilim' ); ?></a>
 			<?php else : ?>
 				<a class="btn-login" href="<?php echo esc_url( tehilim_login_page_url( home_url( '/create/' ) ) ); ?>"><?php esc_html_e( 'התחברות', 'tehilim' ); ?></a>
 			<?php endif; ?>

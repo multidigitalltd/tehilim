@@ -195,6 +195,8 @@ function tehilim_parse_quote_lines( $raw, $keys ) {
 		if ( '' === $line ) {
 			continue;
 		}
+		// Accept lookalike separators (Hebrew paseq ׀, fullwidth ｜, divides ∣)
+		$line  = str_replace( array( '׀', '｜', '∣', '¦' ), '|', $line );
 		$parts = array_map( 'trim', explode( '|', $line ) );
 		if ( '' === $parts[0] ) {
 			continue;

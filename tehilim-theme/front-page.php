@@ -342,15 +342,17 @@ get_header();
 				<div class="testimonial-card">
 					<div class="quote-mark">”</div>
 					<p class="testimonial-text"><?php echo esc_html( $tehilim_quote['text'] ); ?></p>
-					<div class="testimonial-author">
-						<div class="author-avatar"><?php echo esc_html( $tehilim_q_initial ); ?></div>
-						<div>
-							<div class="author-name"><?php echo esc_html( $tehilim_quote['name'] ); ?></div>
-							<?php if ( ! empty( $tehilim_quote['title'] ) ) : ?>
-								<div class="author-title"><?php echo esc_html( $tehilim_quote['title'] ); ?></div>
-							<?php endif; ?>
+					<?php if ( ! empty( $tehilim_quote['name'] ) ) : ?>
+						<div class="testimonial-author">
+							<div class="author-avatar"><?php echo esc_html( $tehilim_q_initial ); ?></div>
+							<div>
+								<div class="author-name"><?php echo esc_html( $tehilim_quote['name'] ); ?></div>
+								<?php if ( ! empty( $tehilim_quote['title'] ) ) : ?>
+									<div class="author-title"><?php echo esc_html( $tehilim_quote['title'] ); ?></div>
+								<?php endif; ?>
+							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 				</div>
 			<?php endforeach; ?>
 		</div>

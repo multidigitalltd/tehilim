@@ -148,18 +148,39 @@ add_rewrite_rule(
 ```
 
 ### 3c. Custom Table `wp_tehilim_recitations`
+**Important**: Use `$wpdb->prefix` in runtime code; table name built via `$wpdb->prefix . 'tehilim_recitations'`.
+
 ```sql
-CREATE TABLE wp_tehilim_recitations (
+CREATE TABLE {$WPDB_PREFIX}tehilim_recitations (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   campaign_id BIGINT UNSIGNED NOT NULL,
   ambassador_id BIGINT UNSIGNED,
   chapter_number INT UNSIGNED NOT NULL,
   reciter_name VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (campaign_id) REFERENCES wp_posts(ID) ON DELETE CASCADE,
+  FOREIGN KEY (campaign_id) REFERENCES {$WPDB_PREFIX}posts(ID) ON DELETE CASCADE,
   INDEX (campaign_id),
   INDEX (ambassador_id)
 );
+```
+
+**Runtime creation** (in `inc/cpt.php` or activation hook):
+```php
+$wpdb->query( $wpdb->prepare( 
+  "CREATE TABLE IF NOT EXISTS `%i` (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    campaign_id BIGINT UNSIGNED NOT NULL,
+    ambassador_id BIGINT UNSIGNED,
+    chapter_number INT UNSIGNED NOT NULL,
+    reciter_name VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (campaign_id) REFERENCES `%i`(ID) ON DELETE CASCADE,
+    INDEX (campaign_id),
+    INDEX (ambassador_id)
+  )",
+  $wpdb->prefix . 'tehilim_recitations',
+  $wpdb->posts
+) );
 ```
 
 **Commit**: "Register CPT, taxonomy, rewrite rules, recitations table"
@@ -212,19 +233,29 @@ CREATE TABLE wp_tehilim_recitations (
 - Same reader as campaign, but recitations count to ambassador
 - Leaderboard highlights the ambassador
 
-### 5c. `inc/rest.php` — Endpoints
+### 5c. `inc/rest.php` — Endpoints & Rate-Limiting
+**Security**: All public mutation endpoints require rate-limiting (IP-based; see Phase 7e).
+
 ```
 POST /wp-json/tehilim/v1/recitations
-  → { campaign_id, ambassador_id?, reciter_name?, cf_turnstile_response }
-  → returns { chapter_number (next), success }
+  → { campaign_id, chapter_number, ambassador_id?, reciter_name?, cf_turnstile_response }
+  ← returns { chapter_number (next), success }
+  Note: chapter_number is the chapter being marked as read (required for audit trail)
 
 GET /wp-json/tehilim/v1/campaigns/{id}/stats
   → { books_done, chapters_done, participants, ambassadors }
 
 POST /wp-json/tehilim/v1/ambassadors/join
   → { campaign_id, name, email }
-  → returns { ambassador_id, personal_url }
+  ← returns { ambassador_id, personal_url }
+  Note: Rate-limit to 1 per IP per hour to prevent signup spam
 ```
+
+**Rate-Limiting Implementation**:
+- Use transient-based IP counter: `tehilim_rl_{endpoint}_{ip_hash}`
+- Mutation endpoints: max 10 requests per hour per IP (recitations), 1 per hour (join)
+- Return HTTP 429 with `Retry-After` header when exceeded
+- Whitelist authenticated users (rate limit does not apply to logged-in requests)
 
 ### 5d. `assets/js/app.js`
 - Reader logic: fetch chapter text, display, handle "said" button
@@ -298,6 +329,12 @@ If `TURNSTILE_SITE_KEY` env var set:
 - Verify nonces on form submissions
 - Escape output (`esc_html`, `esc_attr`, `esc_url`)
 - Turnstile verification server-side (never client-only)
+- **IP-based rate-limiting** on mutation endpoints:
+  - `POST /recitations`: max 10/hour per IP (allows personal use)
+  - `POST /ambassadors/join`: max 1/hour per IP (prevents signup spam)
+  - Use WordPress transients for state storage
+  - Return HTTP 429 with `Retry-After` header
+  - Exempt authenticated users
 
 **Commit**: "Polish: responsive, RTL, a11y, security"
 
@@ -352,7 +389,7 @@ If `TURNSTILE_SITE_KEY` env var set:
 - [ ] RTL (all templates `dir="rtl"`)
 - [ ] Responsive (4 breakpoints tested)
 - [ ] A11y (WCAG AA contrast, focus, reduced-motion)
-- [ ] Security (nonces, sanitize, escape, Turnstile verify)
+- [ ] Security (nonces, sanitize, escape, Turnstile verify, rate-limiting on mutation endpoints)
 
 ---
 

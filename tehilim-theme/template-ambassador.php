@@ -177,7 +177,7 @@ if ( $campaign && $ambassador ) :
 					<input class="reader-name-input" type="text" value="" placeholder="<?php esc_attr_e( 'שמכם (לא חובה)', 'tehilim' ); ?>">
 					<button class="btn-reader-said btn-say-chapter" data-campaign-id="<?php echo esc_attr( $campaign_id ); ?>" data-ambassador-id="<?php echo esc_attr( $amb_id ); ?>" data-chapter-number="100">
 						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFF7F2" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
-						<?php esc_html_e( 'סימנתי שאמרתי', 'tehilim' ); ?>
+						<?php esc_html_e( 'סמן שקראתי', 'tehilim' ); ?>
 					</button>
 				</div>
 			</div>

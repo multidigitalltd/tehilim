@@ -14,7 +14,37 @@ function tehilim_register_rest_routes() {
 	register_rest_route( 'tehilim/v1', '/recitations', array(
 		'methods'             => 'POST',
 		'callback'            => 'tehilim_handle_recitation',
-		'permission_callback' => '__return_true',
+		'permission_callback' => function() {
+			return is_user_logged_in() || true; // Allow unauthenticated for public campaigns
+		},
+		'args'                => array(
+			'campaign_id'            => array(
+				'required'          => true,
+				'type'              => 'integer',
+				'validate_callback' => function( $value ) {
+					return is_numeric( $value ) && $value > 0;
+				},
+			),
+			'chapter_number'         => array(
+				'required'          => true,
+				'type'              => 'integer',
+				'validate_callback' => function( $value ) {
+					return is_numeric( $value ) && $value >= 1 && $value <= 150;
+				},
+			),
+			'ambassador_id'          => array(
+				'required'          => false,
+				'type'              => 'integer',
+				'validate_callback' => function( $value ) {
+					return empty( $value ) || ( is_numeric( $value ) && $value > 0 );
+				},
+			),
+			'cf_turnstile_response'  => array(
+				'required'          => false,
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+			),
+		),
 	) );
 
 	register_rest_route( 'tehilim/v1', '/campaigns/(?P<id>\d+)/stats', array(
@@ -58,6 +88,35 @@ function tehilim_check_rate_limit( $endpoint, $limit = 10, $window = 3600 ) {
 }
 
 /**
+ * Verify Turnstile token (if enabled)
+ */
+function tehilim_verify_turnstile( $token ) {
+	if ( ! defined( 'TURNSTILE_SITE_KEY' ) || ! defined( 'TURNSTILE_SECRET_KEY' ) ) {
+		return true; // Turnstile disabled
+	}
+
+	if ( empty( $token ) ) {
+		return false;
+	}
+
+	$response = wp_remote_post( 'https://challenges.cloudflare.com/turnstile/v0/siteverify', array(
+		'body' => array(
+			'secret'   => TURNSTILE_SECRET_KEY,
+			'response' => sanitize_text_field( $token ),
+		),
+	) );
+
+	if ( is_wp_error( $response ) ) {
+		error_log( 'Turnstile verification error: ' . $response->get_error_message() );
+		return false;
+	}
+
+	$body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+	return isset( $body['success'] ) && $body['success'];
+}
+
+/**
  * Handle recitation endpoint
  */
 function tehilim_handle_recitation( WP_REST_Request $request ) {
@@ -71,22 +130,34 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 	$chapter_number = isset( $params['chapter_number'] ) ? absint( $params['chapter_number'] ) : 0;
 	$ambassador_id = isset( $params['ambassador_id'] ) ? absint( $params['ambassador_id'] ) : null;
 	$reciter_name = isset( $params['reciter_name'] ) ? sanitize_text_field( $params['reciter_name'] ) : '';
+	$turnstile_response = isset( $params['cf_turnstile_response'] ) ? sanitize_text_field( $params['cf_turnstile_response'] ) : '';
 
 	if ( ! $campaign_id || ! $chapter_number || $chapter_number < 1 || $chapter_number > 150 ) {
 		return new WP_Error( 'invalid_params', 'Invalid campaign_id or chapter_number', array( 'status' => 400 ) );
+	}
+
+	// Verify Turnstile if configured
+	if ( ! tehilim_verify_turnstile( $turnstile_response ) ) {
+		return new WP_Error( 'turnstile_failed', 'CAPTCHA verification failed', array( 'status' => 403 ) );
+	}
+
+	// Verify campaign exists
+	if ( ! get_post( $campaign_id ) ) {
+		return new WP_Error( 'campaign_not_found', 'Campaign not found', array( 'status' => 404 ) );
 	}
 
 	global $wpdb;
 	$table = $wpdb->prefix . 'tehilim_recitations';
 
 	$wpdb->insert( $table, array(
-		'campaign_id'   => $campaign_id,
-		'ambassador_id' => $ambassador_id,
+		'campaign_id'    => $campaign_id,
+		'ambassador_id'  => $ambassador_id,
 		'chapter_number' => $chapter_number,
-		'reciter_name'  => $reciter_name,
+		'reciter_name'   => $reciter_name,
 	), array( '%d', '%d', '%d', '%s' ) );
 
 	if ( $wpdb->last_error ) {
+		error_log( 'Tehilim DB error: ' . $wpdb->last_error );
 		return new WP_Error( 'db_error', 'Failed to record recitation', array( 'status' => 500 ) );
 	}
 
@@ -155,11 +226,22 @@ function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
 	$name = isset( $params['name'] ) ? sanitize_text_field( $params['name'] ) : '';
 	$email = isset( $params['email'] ) ? sanitize_email( $params['email'] ) : '';
 
+	// Validate input
 	if ( ! $campaign_id || ! $name || ! $email ) {
 		return new WP_Error( 'invalid_params', 'Missing required fields', array( 'status' => 400 ) );
 	}
 
-	if ( ! get_post( $campaign_id ) ) {
+	if ( ! is_email( $email ) ) {
+		return new WP_Error( 'invalid_email', 'Invalid email address', array( 'status' => 400 ) );
+	}
+
+	if ( strlen( $name ) < 2 || strlen( $name ) > 100 ) {
+		return new WP_Error( 'invalid_name', 'Name must be between 2 and 100 characters', array( 'status' => 400 ) );
+	}
+
+	// Verify campaign exists
+	$campaign = get_post( $campaign_id );
+	if ( ! $campaign || 'campaign' !== $campaign->post_type ) {
 		return new WP_Error( 'not_found', 'Campaign not found', array( 'status' => 404 ) );
 	}
 
@@ -167,19 +249,29 @@ function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
 		'post_type'   => 'ambassador',
 		'post_title'  => $name,
 		'post_status' => 'publish',
+		'post_parent' => $campaign_id,
 	) );
 
 	if ( is_wp_error( $ambassador_id ) ) {
+		error_log( 'Ambassador creation error: ' . $ambassador_id->get_error_message() );
 		return new WP_Error( 'create_failed', 'Failed to create ambassador', array( 'status' => 500 ) );
 	}
 
 	update_post_meta( $ambassador_id, 'campaign_id', $campaign_id );
 	update_post_meta( $ambassador_id, 'email', $email );
 
-	$personal_url = home_url( '/c/' . get_post_field( 'post_name', $campaign_id ) . '/' . get_post_field( 'post_name', $ambassador_id ) );
+	$campaign_slug = get_post_field( 'post_name', $campaign_id );
+	$ambassador_slug = get_post_field( 'post_name', $ambassador_id );
+
+	if ( ! $campaign_slug || ! $ambassador_slug ) {
+		return new WP_Error( 'slug_error', 'Failed to generate URLs', array( 'status' => 500 ) );
+	}
+
+	$personal_url = home_url( '/c/' . $campaign_slug . '/' . $ambassador_slug );
 
 	return array(
+		'success'       => true,
 		'ambassador_id' => $ambassador_id,
-		'personal_url'  => $personal_url,
+		'personal_url'  => esc_url( $personal_url ),
 	);
 }

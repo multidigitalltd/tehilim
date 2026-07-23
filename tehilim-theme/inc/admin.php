@@ -225,7 +225,12 @@ function tehilim_admin_footer() {
 			if (adminBar) {
 				let li = document.createElement('li');
 				li.id = 'wp-admin-bar-tehilim-export';
-				li.innerHTML = '<a class="ab-item" href="?post_type=campaign&action=tehilim_export" target="_blank">📥 Export Recitations</a>';
+				let link = document.createElement('a');
+				link.className = 'ab-item';
+				link.href = '?post_type=campaign&action=tehilim_export';
+				link.target = '_blank';
+				link.textContent = '📥 Export Recitations';
+				li.appendChild(link);
 				adminBar.appendChild(li);
 			}
 		});

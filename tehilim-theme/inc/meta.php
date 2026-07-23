@@ -134,7 +134,7 @@ function tehilim_get_recent_recitations( $campaign_id, $limit = 10 ) {
 	$table = $wpdb->prefix . 'tehilim_recitations';
 
 	$results = $wpdb->get_results( $wpdb->prepare(
-		"SELECT * FROM `%i`
+		"SELECT id, campaign_id, ambassador_id, chapter_number, reciter_name, created_at FROM `%i`
 		 WHERE campaign_id = %d
 		 ORDER BY created_at DESC
 		 LIMIT %d",

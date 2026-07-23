@@ -15,7 +15,7 @@ function tehilim_register_rest_routes() {
 		'methods'             => 'POST',
 		'callback'            => 'tehilim_handle_recitation',
 		'permission_callback' => function() {
-			return is_user_logged_in() || true; // Allow unauthenticated for public campaigns
+			return true; // Public campaigns allow unauthenticated recitations; rate-limiting + CAPTCHA enforce security
 		},
 		'args'                => array(
 			'campaign_id'            => array(
@@ -141,8 +141,9 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 		return new WP_Error( 'turnstile_failed', 'CAPTCHA verification failed', array( 'status' => 403 ) );
 	}
 
-	// Verify campaign exists
-	if ( ! get_post( $campaign_id ) ) {
+	// Verify campaign exists and is published
+	$campaign = get_post( $campaign_id );
+	if ( ! $campaign || 'campaign' !== $campaign->post_type || 'publish' !== $campaign->post_status ) {
 		return new WP_Error( 'campaign_not_found', 'Campaign not found', array( 'status' => 404 ) );
 	}
 
@@ -162,11 +163,16 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 	}
 
 	$next_chapter = $chapter_number === 150 ? 1 : $chapter_number + 1;
-
-	return array(
+	$response = array(
 		'success'        => true,
 		'chapter_number' => $next_chapter,
 	);
+
+	// No caching for write operations; add security headers
+	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+	header( 'Pragma: no-cache' );
+
+	return $response;
 }
 
 /**
@@ -204,12 +210,17 @@ function tehilim_get_campaign_stats( WP_REST_Request $request ) {
 	$books_done = intdiv( $total_chapters, 150 );
 	$chapters_done = $total_chapters % 150;
 
-	return array(
+	$response = array(
 		'books_done'     => $books_done,
 		'chapters_done'  => $chapters_done,
 		'participants'   => $total_recitations,
 		'ambassadors'    => $total_ambassadors,
 	);
+
+	// Short cache for stats (30 seconds) since data updates frequently
+	header( 'Cache-Control: public, max-age=30' );
+
+	return $response;
 }
 
 /**
@@ -269,9 +280,15 @@ function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
 
 	$personal_url = home_url( '/c/' . $campaign_slug . '/' . $ambassador_slug );
 
-	return array(
+	$response = array(
 		'success'       => true,
 		'ambassador_id' => $ambassador_id,
 		'personal_url'  => esc_url( $personal_url ),
 	);
+
+	// No caching for write operations
+	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+	header( 'Pragma: no-cache' );
+
+	return $response;
 }

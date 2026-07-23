@@ -8,6 +8,179 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Seed 30 lively demo campaigns: ambassadors, chapters, books, activity history.
+ * Everything is tagged with _tehilim_demo meta so it can be removed cleanly.
+ */
+function tehilim_seed_demo_content() {
+	if ( function_exists( 'set_time_limit' ) ) {
+		set_time_limit( 180 );
+	}
+
+	global $wpdb;
+	$table = $wpdb->prefix . 'tehilim_recitations';
+	tehilim_create_recitations_table( true );
+
+	$first_names_m = array( 'משה', 'דוד', 'יוסף', 'אברהם', 'יעקב', 'שלמה', 'חיים', 'מאיר', 'אליהו', 'ישראל', 'נתן', 'עקיבא', 'רפאל', 'שמעון', 'בנימין' );
+	$first_names_f = array( 'שרה', 'רבקה', 'רחל', 'לאה', 'מרים', 'חנה', 'אסתר', 'חיה', 'דבורה', 'תמר', 'יעל', 'נעמי', 'ברכה', 'שושנה', 'אילנה' );
+	$mothers       = array( 'שרה', 'רבקה', 'רחל', 'לאה', 'מרים', 'חנה', 'אסתר', 'חיה', 'פנינה', 'גילה', 'ברכה', 'שושנה' );
+	$organizers    = array( 'משפחת כהן', 'משפחת לוי', 'קהילת אהבת ישראל', 'בית הכנסת המרכזי', 'סמינר בנות חיל', 'ישיבת אור התורה', 'משפחת אזולאי', 'קהילת שערי תפילה', 'משפחת פרץ', 'חברות תהילים שכונתי', 'משפחת ביטון', 'כולל זכרון משה' );
+	$amb_names     = array( 'ריקי לוי', 'שרה כהן', 'דוד פרץ', 'מיכל אזולאי', 'יוסי ביטון', 'רחלי מזרחי', 'אבי דהן', 'נעמה שלום', 'שמעון עמר', 'טליה ברק', 'אליהו חדד', 'אפרת גבאי', 'מוישי קליין', 'חני רוזן', 'יעקב אוחיון' );
+	$reciters      = array( 'שירה', 'יעל', 'משה', 'רבקה', 'דוד', 'אסתר', 'חיים', 'תמר', 'יוסף', 'נעמי', 'אילה', 'בני', 'רות', 'עדי', 'מלכה', 'צבי', 'הדס', 'איתן' );
+
+	$occasion_config = array(
+		'refua'   => array( 'ded' => 'לרפואה שלמה בתוך שאר חולי ישראל', 'prefix' => true ),
+		'iluy'    => array( 'ded' => 'לעילוי נשמתו הטהורה', 'prefix' => true ),
+		'zivug'   => array( 'ded' => 'לזיווג הגון במהרה', 'prefix' => true ),
+		'parnasa' => array( 'ded' => 'לפרנסה טובה בשפע וברווח', 'prefix' => true ),
+		'zchut'   => array( 'ded' => 'לזכות ולהצלחה בכל מעשי ידיו', 'prefix' => true ),
+		'event'   => array( 'ded' => 'לרגל השמחה הקרובה בשעה טובה', 'prefix' => false ),
+	);
+	$occasion_slugs = array_keys( $occasion_config );
+
+	$author_id = get_current_user_id();
+	$created   = 0;
+
+	for ( $i = 0; $i < 30; $i++ ) {
+		$is_f   = (bool) wp_rand( 0, 1 );
+		$first  = $is_f ? $first_names_f[ wp_rand( 0, count( $first_names_f ) - 1 ) ] : $first_names_m[ wp_rand( 0, count( $first_names_m ) - 1 ) ];
+		$mother = $mothers[ wp_rand( 0, count( $mothers ) - 1 ) ];
+		$title  = $first . ( $is_f ? ' בת ' : ' בן ' ) . $mother;
+
+		$slug_key = $occasion_slugs[ wp_rand( 0, count( $occasion_slugs ) - 1 ) ];
+
+		$campaign_id = wp_insert_post( array(
+			'post_type'   => 'campaign',
+			'post_title'  => $title,
+			'post_status' => 'publish',
+			'post_author' => $author_id,
+			'post_date'   => gmdate( 'Y-m-d H:i:s', time() - wp_rand( 5, 60 ) * DAY_IN_SECONDS ),
+		) );
+
+		if ( is_wp_error( $campaign_id ) || ! $campaign_id ) {
+			continue;
+		}
+		$created++;
+
+		$term = get_term_by( 'slug', $slug_key, 'occasion' );
+		if ( $term ) {
+			wp_set_object_terms( $campaign_id, $term->term_id, 'occasion' );
+		}
+
+		update_post_meta( $campaign_id, 'goal_books', wp_rand( 5, 36 ) );
+		update_post_meta( $campaign_id, 'organizer_name', $organizers[ wp_rand( 0, count( $organizers ) - 1 ) ] );
+		update_post_meta( $campaign_id, 'dedication_text', $occasion_config[ $slug_key ]['ded'] );
+		update_post_meta( $campaign_id, '_tehilim_demo', 1 );
+
+		// 2-5 approved ambassadors, each with a personal goal
+		$amb_ids   = array();
+		$amb_count = wp_rand( 2, 5 );
+		$pool      = $amb_names;
+		shuffle( $pool );
+		$palette = array( '#C05A3A', '#D9A441', '#8A6B4A', '#B08968' );
+
+		for ( $a = 0; $a < $amb_count; $a++ ) {
+			$amb_id = wp_insert_post( array(
+				'post_type'   => 'ambassador',
+				'post_title'  => $pool[ $a ],
+				'post_status' => 'publish',
+				'post_parent' => $campaign_id,
+				'post_author' => $author_id,
+			) );
+			if ( $amb_id && ! is_wp_error( $amb_id ) ) {
+				update_post_meta( $amb_id, 'campaign_id', $campaign_id );
+				update_post_meta( $amb_id, 'email', 'demo' . $amb_id . '@example.com' );
+				update_post_meta( $amb_id, 'avatar_color', $palette[ $amb_id % 4 ] );
+				update_post_meta( $amb_id, 'goal_books', wp_rand( 1, 4 ) );
+				update_post_meta( $amb_id, '_tehilim_demo', 1 );
+				$amb_ids[] = $amb_id;
+			}
+		}
+
+		// Progress: 0-2 complete books + a partial book (varied so the archive looks alive)
+		$books_done = wp_rand( 0, 100 ) < 40 ? wp_rand( 1, 2 ) : 0;
+		$partial    = wp_rand( 12, 140 );
+
+		$rows = array();
+		for ( $b = 0; $b < $books_done; $b++ ) {
+			for ( $ch = 1; $ch <= TEHILIM_CHAPTERS_PER_BOOK; $ch++ ) {
+				$rows[] = $ch;
+			}
+		}
+		$partial_chapters = array_slice( range( 1, TEHILIM_CHAPTERS_PER_BOOK ), 0, $partial );
+		shuffle( $partial_chapters );
+		$rows = array_merge( $rows, $partial_chapters );
+
+		// Batched inserts (200 per statement)
+		$values = array();
+		foreach ( $rows as $ch ) {
+			$amb   = ( $amb_ids && wp_rand( 0, 100 ) < 65 ) ? $amb_ids[ wp_rand( 0, count( $amb_ids ) - 1 ) ] : 'NULL';
+			$named = wp_rand( 0, 100 ) < 55;
+			$name  = $named ? $reciters[ wp_rand( 0, count( $reciters ) - 1 ) ] : '';
+			$vk    = $named ? '' : 'demo' . wp_rand( 100000, 999999 ) . wp_rand( 100000, 999999 );
+			$when  = gmdate( 'Y-m-d H:i:s', time() - wp_rand( 0, 45 * DAY_IN_SECONDS ) );
+
+			$values[] = $wpdb->prepare(
+				'(%d, ' . ( 'NULL' === $amb ? 'NULL' : '%d' ) . ', %d, %s, %s, %s)',
+				...( 'NULL' === $amb
+					? array( $campaign_id, $ch, $name, $vk, $when )
+					: array( $campaign_id, $amb, $ch, $name, $vk, $when ) )
+			);
+
+			if ( count( $values ) >= 200 ) {
+				$wpdb->query( "INSERT INTO `{$table}` (campaign_id, ambassador_id, chapter_number, reciter_name, visitor_key, created_at) VALUES " . implode( ',', $values ) );
+				$values = array();
+			}
+		}
+		if ( $values ) {
+			$wpdb->query( "INSERT INTO `{$table}` (campaign_id, ambassador_id, chapter_number, reciter_name, visitor_key, created_at) VALUES " . implode( ',', $values ) );
+		}
+
+		tehilim_clear_campaign_caches( $campaign_id );
+	}
+
+	delete_transient( 'tehilim_site_stats' );
+
+	return $created;
+}
+
+/**
+ * Remove everything the seeder created (campaigns, ambassadors, recitations).
+ */
+function tehilim_delete_demo_content() {
+	global $wpdb;
+	$table = $wpdb->prefix . 'tehilim_recitations';
+
+	$demo_campaigns = get_posts( array(
+		'post_type'      => 'campaign',
+		'post_status'    => 'any',
+		'posts_per_page' => -1,
+		'meta_key'       => '_tehilim_demo',
+		'fields'         => 'ids',
+	) );
+
+	foreach ( $demo_campaigns as $cid ) {
+		$wpdb->delete( $table, array( 'campaign_id' => $cid ), array( '%d' ) );
+		tehilim_clear_campaign_caches( $cid );
+		wp_delete_post( $cid, true );
+	}
+
+	$demo_ambs = get_posts( array(
+		'post_type'      => 'ambassador',
+		'post_status'    => 'any',
+		'posts_per_page' => -1,
+		'meta_key'       => '_tehilim_demo',
+		'fields'         => 'ids',
+	) );
+	foreach ( $demo_ambs as $aid ) {
+		wp_delete_post( $aid, true );
+	}
+
+	delete_transient( 'tehilim_site_stats' );
+
+	return count( $demo_campaigns );
+}
+
+/**
  * Register admin menu
  */
 function tehilim_register_admin_menu() {
@@ -42,7 +215,19 @@ function tehilim_settings_page() {
 		wp_die( 'Unauthorized' );
 	}
 
-	if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+	// Demo content actions (separate form, own nonce)
+	if ( isset( $_POST['tehilim_demo_action'] ) ) {
+		check_admin_referer( 'tehilim_demo_nonce' );
+		if ( 'seed' === $_POST['tehilim_demo_action'] ) {
+			$n = tehilim_seed_demo_content();
+			echo '<div class="notice notice-success"><p>נוצרו ' . esc_html( $n ) . ' קמפיינים פעילים עם שגרירים והתקדמות! <a href="' . esc_url( get_post_type_archive_link( 'campaign' ) ) . '" target="_blank">צפו בארכיון</a></p></div>';
+		} elseif ( 'delete' === $_POST['tehilim_demo_action'] ) {
+			$n = tehilim_delete_demo_content();
+			echo '<div class="notice notice-success"><p>נמחקו ' . esc_html( $n ) . ' קמפיינים של תוכן דמו על כל הנתונים שלהם.</p></div>';
+		}
+	}
+
+	if ( $_SERVER['REQUEST_METHOD'] === 'POST' && ! isset( $_POST['tehilim_demo_action'] ) ) {
 		check_admin_referer( 'tehilim_settings_nonce' );
 
 		update_option( 'tehilim_site_description', sanitize_text_field( $_POST['site_description'] ?? '' ) );
@@ -181,6 +366,33 @@ function tehilim_settings_page() {
 
 			<?php submit_button(); ?>
 		</form>
+
+		<hr style="margin: 40px 0;">
+
+		<div style="max-width: 600px; background: #fff; border: 1px solid #EADCC6; border-radius: 8px; padding: 18px 22px;">
+			<h2 style="margin-top: 0;">תוכן דמו — אתר פעיל</h2>
+			<?php
+			$demo_count = count( get_posts( array(
+				'post_type'      => 'campaign',
+				'post_status'    => 'any',
+				'posts_per_page' => -1,
+				'meta_key'       => '_tehilim_demo',
+				'fields'         => 'ids',
+			) ) );
+			?>
+			<p>
+				יצירת <strong>30 קמפיינים פעילים</strong> עם שגרירים מאושרים, פרקים שנאמרו, ספרים שהושלמו והיסטוריית פעילות —
+				כדי שהאתר ייראה חי ופעיל מהרגע הראשון. אפשר למחוק את הכל בלחיצה בכל שלב.
+			</p>
+			<p><strong>מצב נוכחי:</strong> <?php echo esc_html( $demo_count ); ?> קמפיינים של תוכן דמו באתר.</p>
+			<form method="POST" style="display: flex; gap: 10px;" onsubmit="this.querySelectorAll('button').forEach(function(b){b.disabled=true;b.textContent='רגע…';});">
+				<?php wp_nonce_field( 'tehilim_demo_nonce' ); ?>
+				<button type="submit" name="tehilim_demo_action" value="seed" class="button button-primary">יצירת 30 קמפיינים פעילים</button>
+				<?php if ( $demo_count ) : ?>
+					<button type="submit" name="tehilim_demo_action" value="delete" class="button" onclick="return confirm('למחוק את כל תוכן הדמו? הפעולה אינה הפיכה.');">מחיקת כל תוכן הדמו</button>
+				<?php endif; ?>
+			</form>
+		</div>
 
 		<hr style="margin: 40px 0;">
 

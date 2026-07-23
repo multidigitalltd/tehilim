@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const TEHILIM_VERSION = '2.0.1';
+const TEHILIM_VERSION = '2.0.2';
 
 /**
  * Theme Setup
@@ -29,7 +29,6 @@ function tehilim_enqueue_assets() {
 
 	wp_enqueue_style( 'google-fonts', 'https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Assistant:wght@400;500;600;700;800&display=swap', array(), $version );
 	wp_enqueue_style( 'tehilim-style', $theme_uri . '/style.css', array( 'google-fonts' ), $version );
-	wp_enqueue_style( 'tehilim-theme', $theme_uri . '/assets/css/theme.css', array( 'tehilim-style' ), $version );
 
 	wp_enqueue_script( 'tehilim-app', $theme_uri . '/assets/js/app.js', array(), $version, true );
 	wp_enqueue_script( 'tehilim-form', $theme_uri . '/assets/js/form.js', array(), $version, true );

@@ -1,90 +1,91 @@
 <?php
 /**
- * Campaign Creation Page
+ * Campaign Creation Page — exact design match (create.html)
  */
 get_header();
+
+$occasions = get_terms( array(
+	'taxonomy'   => 'occasion',
+	'hide_empty' => false,
+) );
+if ( is_wp_error( $occasions ) ) {
+	$occasions = array();
+}
 ?>
 
-<main class="site-main">
-	<div class="container">
-		<div class="create-campaign-wrapper">
-			<header class="create-header">
-				<h1>צרו קמפיין</h1>
-				<p>הפעילו קמפיין כדי לאחד את הקהילה בקריאת תהילים</p>
-				<div class="create-info">
-					<h3>למה ליצור קמפיין?</h3>
-					<ul>
-						<li>אחדו קהילה לתפילה וגדילה רוחנית</li>
-						<li>עקבו אחרי ההתקדמות המשותפת לעבר מטרה משמעותית</li>
-						<li>שתפו קישורים אישיים עם שגרירים</li>
-						<li>יצרו השפעה ארוכת טווח דרך התבטאות משותפות</li>
-					</ul>
-				</div>
-			</header>
-
-			<form class="form-campaign-create">
-				<!-- Occasion Selector -->
-				<div class="form-group">
-					<label for="occasion">למה קמפיין זה?</label>
-					<select id="occasion" name="occasion" required>
-						<option value="">בחרו סיבה</option>
-						<?php
-						$occasions = get_terms( array(
-							'taxonomy'   => 'occasion',
-							'hide_empty' => false,
-						) );
-
-						foreach ( $occasions as $occasion ) {
-							?>
-							<option value="<?php echo esc_attr( $occasion->term_id ); ?>">
-								<?php echo esc_html( $occasion->name ); ?>
-							</option>
-							<?php
-						}
-						?>
-					</select>
-				</div>
-
-				<!-- Dedication Name -->
-				<div class="form-group">
-					<label for="dedication_name">שם להקדיש את זה</label>
-					<input type="text" id="dedication_name" name="dedication_name" required placeholder="למשל: שרה בת דוד">
-				</div>
-
-				<!-- Organizer Name -->
-				<div class="form-group">
-					<label for="organizer_name">שמך</label>
-					<input type="text" id="organizer_name" name="organizer_name" required placeholder="שמך">
-				</div>
-
-				<!-- Goal Books -->
-				<div class="form-group">
-					<label for="goal_books">
-						מטרה (ספרי תהילים)
-						<output for="goal_books">1</output>
-					</label>
-					<input type="range" id="goal_books" name="goal_books" min="1" max="100" value="1">
-				</div>
-
-				<!-- Turnstile (if configured) -->
-				<?php if ( defined( 'TURNSTILE_SITE_KEY' ) && TURNSTILE_SITE_KEY ) : ?>
-					<div class="form-group">
-						<div class="cf-turnstile" data-sitekey="<?php echo esc_attr( TURNSTILE_SITE_KEY ); ?>"></div>
-					</div>
-				<?php endif; ?>
-
-				<button type="submit" class="btn btn-primary">
-					צרו קמפיין
-				</button>
-			</form>
-		</div>
+<form class="form-campaign-create create-page">
+	<div class="create-header">
+		<h1 class="create-title"><?php esc_html_e( 'פתיחת קמפיין תהילים', 'tehilim' ); ?></h1>
+		<p class="create-subtitle"><?php esc_html_e( 'שני שלבים קצרים והקמפיין שלכם באוויר.', 'tehilim' ); ?></p>
 	</div>
-</main>
+
+	<div class="create-card">
+		<div class="create-label first"><?php esc_html_e( 'מטרת הקריאה', 'tehilim' ); ?></div>
+
+		<!-- Hidden select keeps form.js (select[name="occasion"]) working; chips drive it -->
+		<label class="sr-only" for="occasion"><?php esc_html_e( 'מטרת הקריאה', 'tehilim' ); ?></label>
+		<select class="sr-only" id="occasion" name="occasion" required>
+			<option value=""><?php esc_html_e( 'בחרו סיבה', 'tehilim' ); ?></option>
+			<?php foreach ( $occasions as $occasion ) : ?>
+				<option value="<?php echo esc_attr( $occasion->term_id ); ?>"><?php echo esc_html( $occasion->name ); ?></option>
+			<?php endforeach; ?>
+		</select>
+
+		<div class="occasion-chips">
+			<?php foreach ( $occasions as $occasion ) : ?>
+				<button type="button" class="occasion-chip" data-occasion="<?php echo esc_attr( $occasion->term_id ); ?>"><?php echo esc_html( $occasion->name ); ?></button>
+			<?php endforeach; ?>
+		</div>
+
+		<div class="create-label"><?php esc_html_e( 'שם לרפואה / לזכות', 'tehilim' ); ?></div>
+		<input class="create-input" type="text" id="dedication_name" name="dedication_name" required placeholder="<?php esc_attr_e( 'לדוגמה: משה בן חיה', 'tehilim' ); ?>">
+
+		<div class="create-label"><?php esc_html_e( 'שם המארגן / הקבוצה', 'tehilim' ); ?></div>
+		<input class="create-input last" type="text" id="organizer_name" name="organizer_name" required placeholder="<?php esc_attr_e( 'לדוגמה: משפחת כהן', 'tehilim' ); ?>">
+
+		<div class="create-goal">
+			<div class="create-goal-label"><?php esc_html_e( 'יעד הקמפיין', 'tehilim' ); ?></div>
+			<div class="create-goal-value" id="goal_value">10</div>
+			<div class="create-goal-sub"><?php esc_html_e( 'ספרי תהילים', 'tehilim' ); ?> · <span id="goal_chapters">1,500</span> <?php esc_html_e( 'פרקים', 'tehilim' ); ?></div>
+			<input class="create-goal-range" type="range" id="goal_books" name="goal_books" min="1" max="100" value="10">
+		</div>
+
+		<?php if ( defined( 'TURNSTILE_SITE_KEY' ) && TURNSTILE_SITE_KEY ) : ?>
+			<div class="cf-turnstile" data-sitekey="<?php echo esc_attr( TURNSTILE_SITE_KEY ); ?>" style="margin-bottom:20px"></div>
+		<?php endif; ?>
+
+		<button type="submit" class="btn-create-submit"><?php esc_html_e( 'יצירת הקמפיין', 'tehilim' ); ?></button>
+	</div>
+</form>
 
 <script>
-document.getElementById('goal_books').addEventListener('input', function(e) {
-	document.querySelector('output[for="goal_books"]').textContent = e.target.value;
-});
+( function() {
+	var form = document.querySelector( '.form-campaign-create' );
+	if ( ! form ) { return; }
+
+	// Occasion chips <-> hidden select
+	var select = form.querySelector( 'select[name="occasion"]' );
+	var chips = form.querySelectorAll( '.occasion-chip' );
+	chips.forEach( function( chip ) {
+		chip.addEventListener( 'click', function() {
+			chips.forEach( function( c ) { c.classList.remove( 'active' ); } );
+			chip.classList.add( 'active' );
+			if ( select ) { select.value = chip.dataset.occasion; }
+		} );
+	} );
+
+	// Goal slider display
+	var range = form.querySelector( '#goal_books' );
+	var valEl = form.querySelector( '#goal_value' );
+	var chapEl = form.querySelector( '#goal_chapters' );
+	if ( range ) {
+		range.addEventListener( 'input', function() {
+			var v = parseInt( range.value, 10 ) || 0;
+			if ( valEl ) { valEl.textContent = v; }
+			if ( chapEl ) { chapEl.textContent = ( v * 150 ).toLocaleString( 'en-US' ); }
+		} );
+	}
+} )();
 </script>
 
 <?php

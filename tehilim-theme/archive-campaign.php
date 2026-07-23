@@ -19,7 +19,14 @@ get_header();
 			<?php esc_html_e( 'כל הקמפיינים', 'tehilim' ); ?>
 		</h1>
 		<p style="font-size: 18px; color: #6B5D4C; margin: 0;">
-			<?php esc_html_e( 'גלו קמפיינים פעילים והצטרפו לומר תהילים יחד', 'tehilim' ); ?>
+			<?php
+			global $wp_query;
+			$campaign_total = (int) $wp_query->found_posts;
+			printf(
+				esc_html__( 'גלו קמפיינים פעילים והצטרפו לומר תהילים יחד · %d קמפיינים', 'tehilim' ),
+				$campaign_total
+			);
+			?>
 		</p>
 	</div>
 

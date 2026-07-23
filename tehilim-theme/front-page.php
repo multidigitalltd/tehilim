@@ -188,7 +188,7 @@ get_header();
 	</section>
 
 	<!-- How It Works Section -->
-	<section class="how-it-works">
+	<section class="how-it-works" id="how-it-works">
 		<div class="section-header">
 			<h2>איך זה עובד?</h2>
 			<p>שלוש פעולות פשוטות. כל השאר מתגלגל מעצמו.</p>

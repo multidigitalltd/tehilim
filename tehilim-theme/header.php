@@ -27,9 +27,9 @@
 
 		<!-- Navigation Links -->
 		<nav class="header-nav" role="navigation" aria-label="<?php esc_attr_e( 'Primary Navigation', 'tehilim' ); ?>">
-			<a href="#how-it-works"><?php esc_html_e( 'איך זה עובד', 'tehilim' ); ?></a>
+			<a href="<?php echo esc_url( home_url( '/#how-it-works' ) ); ?>"><?php esc_html_e( 'איך זה עובד', 'tehilim' ); ?></a>
 			<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'קמפיינים', 'tehilim' ); ?></a>
-			<a href="#about"><?php esc_html_e( 'אודות', 'tehilim' ); ?></a>
+			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>"><?php esc_html_e( 'אודות', 'tehilim' ); ?></a>
 		</nav>
 
 		<!-- Action Buttons -->

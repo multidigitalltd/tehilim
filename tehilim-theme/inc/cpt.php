@@ -23,7 +23,7 @@ function tehilim_register_campaign_cpt() {
 		'show_in_rest'       => true,
 		'supports'           => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
 		'rewrite'            => array( 'slug' => 'campaigns', 'with_front' => false ),
-		'menu_icon'          => 'dashicons-book',
+		'show_in_menu'       => 'tehilim-settings',
 		'capability_type'    => 'post',
 	) );
 }
@@ -39,7 +39,7 @@ function tehilim_register_ambassador_cpt() {
 		'show_in_rest'    => true,
 		'supports'        => array( 'title', 'custom-fields' ),
 		'rewrite'         => array( 'slug' => 'ambassadors', 'with_front' => false ),
-		'menu_icon'       => 'dashicons-people',
+		'show_in_menu'    => 'tehilim-settings',
 		'capability_type' => 'post',
 	) );
 }

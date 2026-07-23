@@ -21,6 +21,8 @@ function tehilim_register_admin_menu() {
 		50
 	);
 
+	// Rename the auto-added first submenu to "הגדרות"; the campaign/ambassador
+	// screens nest here automatically via each CPT's show_in_menu.
 	add_submenu_page(
 		'tehilim-settings',
 		'הגדרות',
@@ -28,22 +30,6 @@ function tehilim_register_admin_menu() {
 		'manage_options',
 		'tehilim-settings',
 		'tehilim_settings_page'
-	);
-
-	add_submenu_page(
-		'tehilim-settings',
-		'מנהל קמפיינים',
-		'קמפיינים',
-		'manage_options',
-		'edit.php?post_type=campaign'
-	);
-
-	add_submenu_page(
-		'tehilim-settings',
-		'מנהל שגרירים',
-		'שגרירים',
-		'manage_options',
-		'edit.php?post_type=ambassador'
 	);
 }
 add_action( 'admin_menu', 'tehilim_register_admin_menu' );

@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const TEHILIM_VERSION = '2.1.0';
+const TEHILIM_VERSION = '2.1.1';
 
 /**
  * Theme Setup
@@ -35,7 +35,9 @@ function tehilim_enqueue_assets() {
 
 	wp_localize_script( 'tehilim-app', 'tehilim', array(
 		'api_url'           => rest_url( 'tehilim/v1/' ),
-		'nonce'             => wp_create_nonce( 'tehilim_nonce' ),
+		// REST cookie-auth nonce MUST be for the 'wp_rest' action — any other
+		// action makes WordPress reject the request with 403 when the header is sent.
+		'nonce'             => wp_create_nonce( 'wp_rest' ),
 		'turnstile_site_key' => defined( 'TURNSTILE_SITE_KEY' ) ? TURNSTILE_SITE_KEY : '',
 	) );
 }

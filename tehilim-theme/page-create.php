@@ -24,7 +24,7 @@ if ( is_wp_error( $occasions ) ) {
 
 		<!-- Hidden select keeps form.js (select[name="occasion"]) working; chips drive it -->
 		<label class="sr-only" for="occasion"><?php esc_html_e( 'מטרת הקריאה', 'tehilim' ); ?></label>
-		<select class="sr-only" id="occasion" name="occasion" required>
+		<select class="sr-only" id="occasion" name="occasion" aria-required="true" tabindex="-1">
 			<option value=""><?php esc_html_e( 'בחרו סיבה', 'tehilim' ); ?></option>
 			<?php foreach ( $occasions as $occasion ) : ?>
 				<option value="<?php echo esc_attr( $occasion->term_id ); ?>"><?php echo esc_html( $occasion->name ); ?></option>

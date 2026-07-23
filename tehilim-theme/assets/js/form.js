@@ -27,6 +27,41 @@
 			} );
 		},
 
+		/**
+		 * POST helper: JSON-parse-safe, retries once without the nonce header
+		 * if WordPress rejects it as stale (cached pages serve old nonces).
+		 */
+		apiPost: function( path, body, withNonce ) {
+			var self = this;
+			var useNonce = ( withNonce !== false ) && !! this.nonce;
+			var headers = { 'Content-Type': 'application/json' };
+			if ( useNonce ) {
+				headers[ 'X-WP-Nonce' ] = this.nonce;
+			}
+
+			return fetch( this.apiUrl + path, {
+				method: 'POST',
+				headers: headers,
+				body: JSON.stringify( body ),
+			} ).then( function( r ) {
+				return r.text().then( function( text ) {
+					var data;
+					try {
+						data = JSON.parse( text );
+					} catch ( e ) {
+						data = { code: 'http_' + r.status };
+					}
+					if ( ! r.ok ) {
+						if ( useNonce && data && ( data.code === 'rest_cookie_invalid_nonce' || data.code === 'rest_forbidden' ) ) {
+							return self.apiPost( path, body, false );
+						}
+						throw data;
+					}
+					return data;
+				} );
+			} );
+		},
+
 		/* Inline message box (replaces alert) */
 		showMessage: function( form, text, isError ) {
 			var box = form.querySelector( '.tehilim-form-msg' );
@@ -56,8 +91,15 @@
 				invalid_occasion: 'בחרו מטרת קריאה מהרשימה.',
 				invalid_params: 'אנא מלאו את כל השדות הנדרשים.',
 				invalid_length: 'השם חייב להכיל בין 2 ל-100 תווים.',
+				create_failed: 'יצירת הקמפיין נכשלה בשרת. נסו שוב.',
+				rest_no_route: 'נקודת הקצה לא נמצאה — ודאו שערכת הנושא פעילה ורעננו קישורים קבועים.',
 			};
-			return ( data && map[ data.code ] ) || fallback;
+			if ( data && map[ data.code ] ) {
+				return map[ data.code ];
+			}
+			// Unmapped error: append the code so the problem is diagnosable
+			var suffix = data && data.code ? ' [' + data.code + ']' : '';
+			return fallback + suffix;
 		},
 
 		/* ============ Ambassador join ============ */
@@ -78,24 +120,11 @@
 			submitBtn.disabled = true;
 			submitBtn.textContent = 'שולחים…';
 
-			fetch( this.apiUrl + 'ambassadors/join', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': this.nonce,
-				},
-				body: JSON.stringify( {
-					campaign_id: campaignId,
-					name: nameInput.value.trim(),
-					email: emailInput.value.trim(),
-				} ),
+			this.apiPost( 'ambassadors/join', {
+				campaign_id: campaignId,
+				name: nameInput.value.trim(),
+				email: emailInput.value.trim(),
 			} )
-				.then( function( r ) {
-					return r.json().then( function( data ) {
-						if ( ! r.ok ) { throw data; }
-						return data;
-					} );
-				} )
 				.then( function( data ) {
 					self.renderJoinSuccess( form, data.personal_url );
 				} )
@@ -169,20 +198,7 @@
 			submitBtn.disabled = true;
 			submitBtn.textContent = 'יוצרים את הקמפיין…';
 
-			fetch( this.apiUrl + 'campaigns', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': this.nonce,
-				},
-				body: JSON.stringify( body ),
-			} )
-				.then( function( r ) {
-					return r.json().then( function( data ) {
-						if ( ! r.ok ) { throw data; }
-						return data;
-					} );
-				} )
+			this.apiPost( 'campaigns', body )
 				.then( function( data ) {
 					self.showMessage( form, 'הקמפיין נוצר בהצלחה! מעבירים אתכם לעמוד הקמפיין…' );
 					window.setTimeout( function() {

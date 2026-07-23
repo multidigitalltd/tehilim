@@ -243,22 +243,7 @@
 				body.cf_turnstile_response = window.turnstile.getResponse( this.turnstileWidgetId ) || '';
 			}
 
-			fetch( this.apiUrl + 'recitations', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': this.nonce,
-				},
-				body: JSON.stringify( body ),
-			} )
-				.then( function( r ) {
-					return r.json().then( function( data ) {
-						if ( ! r.ok ) {
-							throw new Error( ( data && data.code ) || 'HTTP ' + r.status );
-						}
-						return data;
-					} );
-				} )
+			this.apiPost( 'recitations', body )
 				.then( function( data ) {
 					self.showToast( 'פרק ' + self.hebrewNumeral( chapterNumber ) + ' נרשם — תודה!' );
 					if ( data.stats ) {
@@ -273,14 +258,52 @@
 				.catch( function( err ) {
 					button.disabled = false;
 					button.innerHTML = original;
+					var code = ( err && err.code ) || '';
 					var msg = 'לא הצלחנו לרשום את האמירה. נסו שוב.';
-					if ( String( err.message ).indexOf( 'rate_limit' ) !== -1 ) {
+					if ( code === 'rate_limit' ) {
 						msg = 'הגעתם למגבלת האמירות לשעה. נסו שוב מאוחר יותר.';
-					} else if ( String( err.message ).indexOf( 'turnstile' ) !== -1 ) {
+					} else if ( code === 'turnstile_failed' ) {
 						msg = 'אימות האבטחה נכשל. רעננו את העמוד ונסו שוב.';
+					} else if ( code ) {
+						msg += ' [' + code + ']';
 					}
 					self.showToast( msg, true );
 				} );
+		},
+
+		/**
+		 * POST helper: JSON-parse-safe, retries once without the nonce header
+		 * if WordPress rejects it as stale (cached pages serve old nonces).
+		 */
+		apiPost: function( path, body, withNonce ) {
+			var self = this;
+			var useNonce = ( withNonce !== false ) && !! this.nonce;
+			var headers = { 'Content-Type': 'application/json' };
+			if ( useNonce ) {
+				headers[ 'X-WP-Nonce' ] = this.nonce;
+			}
+
+			return fetch( this.apiUrl + path, {
+				method: 'POST',
+				headers: headers,
+				body: JSON.stringify( body ),
+			} ).then( function( r ) {
+				return r.text().then( function( text ) {
+					var data;
+					try {
+						data = JSON.parse( text );
+					} catch ( e ) {
+						data = { code: 'http_' + r.status };
+					}
+					if ( ! r.ok ) {
+						if ( useNonce && data && ( data.code === 'rest_cookie_invalid_nonce' || data.code === 'rest_forbidden' ) ) {
+							return self.apiPost( path, body, false );
+						}
+						throw data;
+					}
+					return data;
+				} );
+			} );
 		},
 
 		/* ============ Live stats ============ */

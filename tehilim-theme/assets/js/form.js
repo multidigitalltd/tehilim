@@ -5,145 +5,200 @@
 ( function() {
 	'use strict';
 
-	const Forms = {
-		apiUrl: window.tehilim?.api_url || '/wp-json/tehilim/v1/',
+	var Forms = {
+		apiUrl: ( window.tehilim && window.tehilim.api_url ) || '/wp-json/tehilim/v1/',
+		nonce: ( window.tehilim && window.tehilim.nonce ) || '',
 
-		/**
-		 * Initialize forms
-		 */
-		init() {
+		init: function() {
 			this.setupEventListeners();
 		},
 
-		/**
-		 * Setup form event listeners
-		 */
-		setupEventListeners() {
-			document.addEventListener( 'submit', ( e ) => {
+		setupEventListeners: function() {
+			var self = this;
+			document.addEventListener( 'submit', function( e ) {
 				if ( e.target.matches( '.form-ambassador-join' ) ) {
 					e.preventDefault();
-					this.handleAmbassadorJoin( e.target );
+					self.handleAmbassadorJoin( e.target );
 				}
 				if ( e.target.matches( '.form-campaign-create' ) ) {
 					e.preventDefault();
-					this.handleCampaignCreate( e.target );
+					self.handleCampaignCreate( e.target );
 				}
 			} );
 		},
 
-		/**
-		 * Handle ambassador join form submission
-		 */
-		async handleAmbassadorJoin( form ) {
-			const campaignId = form.dataset.campaignId;
-			const nameInput = form.querySelector( 'input[name="name"]' );
-			const emailInput = form.querySelector( 'input[name="email"]' );
-			const submitBtn = form.querySelector( 'button[type="submit"]' );
-
-			if ( !campaignId || !nameInput?.value || !emailInput?.value ) {
-				alert( 'אנא מלאו את כל השדות' );
-				return;
+		/* Inline message box (replaces alert) */
+		showMessage: function( form, text, isError ) {
+			var box = form.querySelector( '.tehilim-form-msg' );
+			if ( ! box ) {
+				box = document.createElement( 'div' );
+				box.className = 'tehilim-form-msg';
+				box.setAttribute( 'role', 'alert' );
+				var submitBtn = form.querySelector( 'button[type="submit"]' );
+				( submitBtn ? submitBtn.parentNode : form ).insertBefore( box, submitBtn );
 			}
-
-			submitBtn.disabled = true;
-			submitBtn.innerHTML = 'הצטרפות...';
-
-			try {
-				const response = await fetch( this.apiUrl + 'ambassadors/join', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-WP-Nonce': window.tehilim?.nonce || '',
-					},
-					body: JSON.stringify( {
-						campaign_id: parseInt( campaignId ),
-						name: nameInput.value,
-						email: emailInput.value,
-					} ),
-				} );
-
-				if ( !response.ok ) {
-					const error = await response.json();
-					throw new Error( error.message || 'Failed to join' );
-				}
-
-				const data = await response.json();
-
-				// Copy personal URL to clipboard
-				navigator.clipboard.writeText( data.personal_url );
-
-				alert( `ברוכים הבאים! הקישור האישי שלכם הועתק:\n${data.personal_url}` );
-				form.reset();
-			} catch ( error ) {
-				console.error( 'Join error:', error );
-				alert( `Error: ${error.message}` );
-			} finally {
-				submitBtn.disabled = false;
-				submitBtn.innerHTML = 'הצטרפו כשגריר';
-			}
+			box.style.cssText = [
+				'margin:0 0 14px', 'padding:12px 16px', 'border-radius:12px',
+				'font-weight:600', 'font-size:14.5px', 'line-height:1.55',
+				isError
+					? 'background:#FBEAE4;border:1px solid #E8C4B4;color:#A03C22'
+					: 'background:#EAF3EC;border:1px solid #CFE6D5;color:#4E8B5E',
+			].join( ';' );
+			box.textContent = text;
+			box.scrollIntoView( { behavior: 'smooth', block: 'nearest' } );
 		},
 
-		/**
-		 * Handle campaign creation form submission
-		 */
-		async handleCampaignCreate( form ) {
-			const occasionSelect = form.querySelector( 'select[name="occasion"]' );
-			const dedicationInput = form.querySelector( 'input[name="dedication_name"]' );
-			const organizerInput = form.querySelector( 'input[name="organizer_name"]' );
-			const goalInput = form.querySelector( 'input[name="goal_books"]' );
-			const submitBtn = form.querySelector( 'button[type="submit"]' );
+		restError: function( data, fallback ) {
+			var map = {
+				rate_limit: 'הגעתם למגבלת הבקשות. נסו שוב בעוד שעה.',
+				turnstile_failed: 'אימות האבטחה נכשל. רעננו את העמוד ונסו שוב.',
+				invalid_email: 'כתובת האימייל אינה תקינה.',
+				invalid_occasion: 'בחרו מטרת קריאה מהרשימה.',
+				invalid_params: 'אנא מלאו את כל השדות הנדרשים.',
+				invalid_length: 'השם חייב להכיל בין 2 ל-100 תווים.',
+			};
+			return ( data && map[ data.code ] ) || fallback;
+		},
 
-			if ( !occasionSelect?.value || !dedicationInput?.value || !organizerInput?.value ) {
-				alert( 'אנא מלאו את כל השדות הנדרשים' );
+		/* ============ Ambassador join ============ */
+
+		handleAmbassadorJoin: function( form ) {
+			var self = this;
+			var campaignId = parseInt( form.dataset.campaignId, 10 );
+			var nameInput = form.querySelector( 'input[name="name"]' );
+			var emailInput = form.querySelector( 'input[name="email"]' );
+			var submitBtn = form.querySelector( 'button[type="submit"]' );
+
+			if ( ! campaignId || ! nameInput.value.trim() || ! emailInput.value.trim() ) {
+				this.showMessage( form, 'אנא מלאו שם ואימייל.', true );
 				return;
 			}
 
+			var original = submitBtn.textContent;
 			submitBtn.disabled = true;
-			submitBtn.innerHTML = 'יוצרים...';
+			submitBtn.textContent = 'שולחים…';
 
-			try {
-				const formData = new FormData( form );
-				const response = await wp.apiRequest( {
-					path: '/wp/v2/campaign',
-					method: 'POST',
-					data: {
-						title: dedicationInput.value,
-						status: 'draft',
-						meta: {
-							organizer_name: organizerInput.value,
-							goal_books: parseInt( goalInput?.value || 1 ),
-						},
-					},
+			fetch( this.apiUrl + 'ambassadors/join', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-WP-Nonce': this.nonce,
+				},
+				body: JSON.stringify( {
+					campaign_id: campaignId,
+					name: nameInput.value.trim(),
+					email: emailInput.value.trim(),
+				} ),
+			} )
+				.then( function( r ) {
+					return r.json().then( function( data ) {
+						if ( ! r.ok ) { throw data; }
+						return data;
+					} );
+				} )
+				.then( function( data ) {
+					self.renderJoinSuccess( form, data.personal_url );
+				} )
+				.catch( function( err ) {
+					submitBtn.disabled = false;
+					submitBtn.textContent = original;
+					self.showMessage( form, self.restError( err, 'ההצטרפות נכשלה. נסו שוב.' ), true );
 				} );
+		},
 
-				if ( response.id ) {
-					// Add occasion taxonomy
-					if ( wp?.apiRequest ) {
-						await wp.apiRequest( {
-							path: `/wp/v2/campaign/${response.id}`,
-							method: 'POST',
-							data: {
-								occasion: [ parseInt( occasionSelect.value ) ],
-							},
-						} );
-					}
+		renderJoinSuccess: function( form, personalUrl ) {
+			form.textContent = '';
+			form.style.cssText = 'display:flex;flex-direction:column;gap:10px';
 
-					alert( 'קמפיין נוצר! בדקו את הדוא"ל שלכם להמשך השלבים.' );
-					window.location.href = `/campaigns/${response.id}`;
-				}
-			} catch ( error ) {
-				console.error( 'Create campaign error:', error );
-				alert( 'שגיאה ביצירת קמפיין. נסו שוב.' );
-			} finally {
-				submitBtn.disabled = false;
-				submitBtn.innerHTML = 'צרו קמפיין';
+			var title = document.createElement( 'div' );
+			title.style.cssText = 'font-weight:800;font-size:16px;color:#4E8B5E';
+			title.textContent = 'ברוכים הבאים! זה הקישור האישי שלכם:';
+
+			var linkBox = document.createElement( 'div' );
+			linkBox.style.cssText = 'padding:12px 16px;border-radius:12px;background:#FBF3E4;border:1px dashed #D9C4A3;color:#B9822B;font-weight:700;font-size:13.5px;word-break:break-all;direction:ltr;text-align:left';
+			linkBox.textContent = personalUrl;
+
+			var copyBtn = document.createElement( 'button' );
+			copyBtn.type = 'button';
+			copyBtn.className = 'btn-reader-said';
+			copyBtn.textContent = 'העתקת הקישור';
+			copyBtn.addEventListener( 'click', function() {
+				navigator.clipboard.writeText( personalUrl ).then( function() {
+					copyBtn.textContent = '✓ הועתק';
+				} );
+			} );
+
+			form.appendChild( title );
+			form.appendChild( linkBox );
+			form.appendChild( copyBtn );
+		},
+
+		/* ============ Campaign creation ============ */
+
+		handleCampaignCreate: function( form ) {
+			var self = this;
+			var occasionSelect = form.querySelector( 'select[name="occasion"]' );
+			var dedicationInput = form.querySelector( 'input[name="dedication_name"]' );
+			var organizerInput = form.querySelector( 'input[name="organizer_name"]' );
+			var goalInput = form.querySelector( 'input[name="goal_books"]' );
+			var submitBtn = form.querySelector( 'button[type="submit"]' );
+
+			if ( ! occasionSelect.value ) {
+				this.showMessage( form, 'בחרו את מטרת הקריאה.', true );
+				return;
 			}
+			if ( ! dedicationInput.value.trim() || ! organizerInput.value.trim() ) {
+				this.showMessage( form, 'אנא מלאו את כל השדות הנדרשים.', true );
+				return;
+			}
+
+			var body = {
+				occasion: occasionSelect.value,
+				dedication_name: dedicationInput.value.trim(),
+				organizer_name: organizerInput.value.trim(),
+				goal_books: parseInt( goalInput && goalInput.value, 10 ) || 1,
+			};
+
+			// Turnstile token (when the widget is rendered on the page)
+			var turnstileInput = form.querySelector( '[name="cf-turnstile-response"]' );
+			if ( turnstileInput && turnstileInput.value ) {
+				body.cf_turnstile_response = turnstileInput.value;
+			}
+
+			var original = submitBtn.textContent;
+			submitBtn.disabled = true;
+			submitBtn.textContent = 'יוצרים את הקמפיין…';
+
+			fetch( this.apiUrl + 'campaigns', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-WP-Nonce': this.nonce,
+				},
+				body: JSON.stringify( body ),
+			} )
+				.then( function( r ) {
+					return r.json().then( function( data ) {
+						if ( ! r.ok ) { throw data; }
+						return data;
+					} );
+				} )
+				.then( function( data ) {
+					self.showMessage( form, 'הקמפיין נוצר בהצלחה! מעבירים אתכם לעמוד הקמפיין…' );
+					window.setTimeout( function() {
+						window.location.href = data.campaign_url;
+					}, 900 );
+				} )
+				.catch( function( err ) {
+					submitBtn.disabled = false;
+					submitBtn.textContent = original;
+					self.showMessage( form, self.restError( err, 'שגיאה ביצירת הקמפיין. נסו שוב.' ), true );
+				} );
 		},
 	};
 
-	// Initialize on DOM ready
 	if ( document.readyState === 'loading' ) {
-		document.addEventListener( 'DOMContentLoaded', () => Forms.init() );
+		document.addEventListener( 'DOMContentLoaded', function() { Forms.init(); } );
 	} else {
 		Forms.init();
 	}

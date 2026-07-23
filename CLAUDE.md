@@ -152,13 +152,60 @@ Get campaign progress statistics.
 {
   "books_done": 2,
   "chapters_done": 45,
+  "total_chapters": 345,
+  "goal_books": 5,
+  "progress_percent": 46,
   "participants": 18,
-  "ambassadors": 3
+  "ambassadors": 3,
+  "current_book": 3,
+  "in_book": 45,
+  "remaining_in_book": 105,
+  "next_chapter": 46
 }
 ```
 
 **Errors**:
 - 404: Campaign not found
+
+**Notes**: `books_done` is based on total recitation count (`COUNT(*)`) so multi-book goals track correctly. The same payload is returned inside the `stats` key of the `POST /recitations` response for instant client-side UI updates.
+
+### `GET /campaigns/{id}/next-chapter`
+
+Get the next suggested chapter for communal sequential reading.
+
+**Response** (200 OK):
+```json
+{
+  "chapter_number": 46,
+  "stats": { "...same payload as /stats..." }
+}
+```
+
+### `POST /campaigns`
+
+Create a new campaign (used by the creation form).
+
+**Request Body**:
+```json
+{
+  "occasion": "refua",          // term slug or term_id
+  "dedication_name": "משה בן חיה",
+  "organizer_name": "משפחת כהן",
+  "goal_books": 10,
+  "cf_turnstile_response": "token_..."  // required if Turnstile enabled
+}
+```
+
+**Response** (200 OK):
+```json
+{
+  "success": true,
+  "campaign_id": 123,
+  "campaign_url": "https://site.com/campaigns/campaign-slug/"
+}
+```
+
+**Errors**: 400 (missing/invalid fields, unknown occasion), 403 (Turnstile), 429 (> 3/hour per IP), 500
 
 ### `POST /ambassadors/join`
 
@@ -330,18 +377,22 @@ Adjust in `style.css` or add new breakpoints as needed.
 ### `assets/js/app.js`
 
 Handles:
-- **Reader Logic**: Chapter display, next/previous/random navigation
-- **"I Said" Button**: AJAX recitation submission with Turnstile integration
-- **Stats Polling**: Polls `/campaigns/{id}/stats` every 10 seconds
-- **Sharing**: WhatsApp, clipboard, native share API
+- **Reader Logic**: On load, asks `GET /campaigns/{id}/next-chapter` for the communal next chapter, then fetches the full punctuated (menukad) chapter text from the public Sefaria API (`https://www.sefaria.org/api/texts/Psalms.{n}`) with per-session caching and a graceful fallback message if unreachable. Chapter titles and verse numbers are rendered as Hebrew numerals (gematria: ק׳, ט״ו, קי״ט…).
+- **Navigation**: `.btn-random` (random 1–150), `.btn-next` (sequential), `.btn-pick` (direct chapter choice)
+- **"I Said" Button** (`.btn-say-chapter`): AJAX recitation submission including `reciter_name` from `.reader-name-input` and Turnstile token when enabled; on success shows a design-styled toast, applies the fresh `stats` payload from the response to the progress UI, and auto-loads the next chapter
+- **Stats Polling**: Polls `/campaigns/{id}/stats` every 10 seconds (paused while the tab is hidden) and live-updates the progress card, reader subtitle, and ambassador overview
+- **Ambassador CTA** (`.btn-ambassador-cta` / `.btn-amb-join`): reveals an inline join form wired to `form.js`
+- **Sharing**: WhatsApp, clipboard (with toast feedback), native share API
+- Event delegation uses `closest()` so clicks on SVG icons inside buttons work
 
 **Global**: `window.TehilimApp` (for manual initialization if needed)
 
 ### `assets/js/form.js`
 
 Handles:
-- **Campaign Creation Form**: Validates occasion, dedicatee, goal; submits via REST or direct post
-- **Ambassador Signup**: Collects name + email; calls `/ambassadors/join` endpoint; displays personal URL
+- **Campaign Creation Form**: Validates occasion/dedicatee/organizer, submits to `POST /tehilim/v1/campaigns`, shows inline styled success/error messages (no `alert()`), redirects to the new campaign URL
+- **Ambassador Signup**: Collects name + email; calls `/ambassadors/join`; renders the personal URL inline with a copy button
+- Hebrew error messages mapped from REST error codes (`rate_limit`, `turnstile_failed`, `invalid_email`, …)
 
 **Global**: `window.TehilimForms` (for manual initialization if needed)
 

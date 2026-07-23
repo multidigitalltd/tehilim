@@ -39,6 +39,11 @@ function tehilim_register_rest_routes() {
 					return empty( $value ) || ( is_numeric( $value ) && $value > 0 );
 				},
 			),
+			'reciter_name'           => array(
+				'required'          => false,
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+			),
 			'cf_turnstile_response'  => array(
 				'required'          => false,
 				'type'              => 'string',
@@ -50,6 +55,18 @@ function tehilim_register_rest_routes() {
 	register_rest_route( 'tehilim/v1', '/campaigns/(?P<id>\d+)/stats', array(
 		'methods'             => 'GET',
 		'callback'            => 'tehilim_get_campaign_stats',
+		'permission_callback' => '__return_true',
+	) );
+
+	register_rest_route( 'tehilim/v1', '/campaigns/(?P<id>\d+)/next-chapter', array(
+		'methods'             => 'GET',
+		'callback'            => 'tehilim_get_next_chapter_endpoint',
+		'permission_callback' => '__return_true',
+	) );
+
+	register_rest_route( 'tehilim/v1', '/campaigns', array(
+		'methods'             => 'POST',
+		'callback'            => 'tehilim_handle_campaign_create',
 		'permission_callback' => '__return_true',
 	) );
 
@@ -131,7 +148,7 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 	$campaign_id = isset( $params['campaign_id'] ) ? absint( $params['campaign_id'] ) : 0;
 	$chapter_number = isset( $params['chapter_number'] ) ? absint( $params['chapter_number'] ) : 0;
 	$ambassador_id = isset( $params['ambassador_id'] ) ? absint( $params['ambassador_id'] ) : null;
-	$reciter_name = isset( $params['reciter_name'] ) ? sanitize_text_field( $params['reciter_name'] ) : '';
+	$reciter_name = isset( $params['reciter_name'] ) ? mb_substr( sanitize_text_field( $params['reciter_name'] ), 0, 100 ) : '';
 	$turnstile_response = isset( $params['cf_turnstile_response'] ) ? sanitize_text_field( $params['cf_turnstile_response'] ) : '';
 
 	if ( ! $campaign_id || ! $chapter_number || $chapter_number < 1 || $chapter_number > TEHILIM_CHAPTERS_PER_BOOK ) {
@@ -169,10 +186,13 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 	// Clear campaign caches to ensure fresh stats
 	tehilim_clear_campaign_caches( $campaign_id );
 
-	$next_chapter = $chapter_number === TEHILIM_CHAPTERS_PER_BOOK ? 1 : $chapter_number + 1;
+	// Fresh stats after the insert — lets the client update the UI instantly
+	$stats = tehilim_build_stats_payload( $campaign_id );
+
 	$response = array(
 		'success'        => true,
-		'chapter_number' => $next_chapter,
+		'chapter_number' => $stats['next_chapter'],
+		'stats'          => $stats,
 	);
 
 	// No caching for write operations; add security headers
@@ -183,51 +203,140 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 }
 
 /**
- * Get campaign stats
+ * Build the full stats payload for a campaign (shared by stats + recitation responses)
  */
-function tehilim_get_campaign_stats( WP_REST_Request $request ) {
+function tehilim_build_stats_payload( $campaign_id ) {
 	global $wpdb;
 
-	$campaign_id = absint( $request->get_param( 'id' ) );
+	$table    = $wpdb->prefix . 'tehilim_recitations';
+	$progress = tehilim_get_campaign_progress( $campaign_id );
 
-	if ( ! get_post( $campaign_id ) ) {
-		return new WP_Error( 'not_found', 'Campaign not found', array( 'status' => 404 ) );
-	}
-
-	$table = $wpdb->prefix . 'tehilim_recitations';
-
-	$total_chapters = $wpdb->get_var( $wpdb->prepare(
-		"SELECT COUNT(DISTINCT chapter_number) FROM `%i` WHERE campaign_id = %d",
-		$table,
-		$campaign_id
-	) );
-
-	$total_recitations = $wpdb->get_var( $wpdb->prepare(
-		"SELECT COUNT(*) FROM `%i` WHERE campaign_id = %d",
-		$table,
-		$campaign_id
-	) );
-
-	$total_ambassadors = $wpdb->get_var( $wpdb->prepare(
+	$total_ambassadors = (int) $wpdb->get_var( $wpdb->prepare(
 		"SELECT COUNT(DISTINCT ambassador_id) FROM `%i` WHERE campaign_id = %d AND ambassador_id IS NOT NULL",
 		$table,
 		$campaign_id
 	) );
 
-	$books_done = intdiv( $total_chapters, 150 );
-	$chapters_done = $total_chapters % 150;
+	$total_chapters = intval( $progress['total_chapters'] );
+	$in_book        = $total_chapters % TEHILIM_CHAPTERS_PER_BOOK;
 
-	$response = array(
-		'books_done'     => $books_done,
-		'chapters_done'  => $chapters_done,
-		'participants'   => $total_recitations,
-		'ambassadors'    => $total_ambassadors,
+	return array(
+		'books_done'       => intval( $progress['books_done'] ),
+		'chapters_done'    => $in_book,
+		'total_chapters'   => $total_chapters,
+		'goal_books'       => intval( $progress['goal_books'] ),
+		'progress_percent' => intval( $progress['progress_percent'] ),
+		'participants'     => tehilim_get_campaign_participants( $campaign_id ),
+		'ambassadors'      => $total_ambassadors,
+		'current_book'     => intval( $progress['books_done'] ) + 1,
+		'in_book'          => $in_book,
+		'remaining_in_book' => TEHILIM_CHAPTERS_PER_BOOK - $in_book,
+		'next_chapter'     => ( $total_chapters % TEHILIM_CHAPTERS_PER_BOOK ) + 1,
 	);
+}
+
+/**
+ * Get campaign stats
+ */
+function tehilim_get_campaign_stats( WP_REST_Request $request ) {
+	$campaign_id = absint( $request->get_param( 'id' ) );
+
+	$campaign = get_post( $campaign_id );
+	if ( ! $campaign || 'campaign' !== $campaign->post_type ) {
+		return new WP_Error( 'not_found', 'Campaign not found', array( 'status' => 404 ) );
+	}
 
 	// Short cache for stats (30 seconds) since data updates frequently
 	header( 'Cache-Control: public, max-age=30' );
 
-	return $response;
+	return tehilim_build_stats_payload( $campaign_id );
+}
+
+/**
+ * Get next suggested chapter for a campaign
+ */
+function tehilim_get_next_chapter_endpoint( WP_REST_Request $request ) {
+	$campaign_id = absint( $request->get_param( 'id' ) );
+
+	$campaign = get_post( $campaign_id );
+	if ( ! $campaign || 'campaign' !== $campaign->post_type ) {
+		return new WP_Error( 'not_found', 'Campaign not found', array( 'status' => 404 ) );
+	}
+
+	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+
+	$stats = tehilim_build_stats_payload( $campaign_id );
+
+	return array(
+		'chapter_number' => $stats['next_chapter'],
+		'stats'          => $stats,
+	);
+}
+
+/**
+ * Handle campaign creation endpoint
+ */
+function tehilim_handle_campaign_create( WP_REST_Request $request ) {
+	if ( ! tehilim_check_rate_limit( 'campaign_create', 3, TEHILIM_RATE_LIMIT_WINDOW ) ) {
+		return new WP_Error( 'rate_limit', 'Too many requests', array( 'status' => 429 ) );
+	}
+
+	$params = $request->get_json_params();
+
+	$occasion        = isset( $params['occasion'] ) ? sanitize_text_field( $params['occasion'] ) : '';
+	$dedication_name = isset( $params['dedication_name'] ) ? sanitize_text_field( $params['dedication_name'] ) : '';
+	$organizer_name  = isset( $params['organizer_name'] ) ? sanitize_text_field( $params['organizer_name'] ) : '';
+	$goal_books      = isset( $params['goal_books'] ) ? absint( $params['goal_books'] ) : 0;
+	$turnstile       = isset( $params['cf_turnstile_response'] ) ? sanitize_text_field( $params['cf_turnstile_response'] ) : '';
+
+	if ( ! $occasion || ! $dedication_name || ! $organizer_name ) {
+		return new WP_Error( 'invalid_params', 'Missing required fields', array( 'status' => 400 ) );
+	}
+
+	if ( mb_strlen( $dedication_name ) < 2 || mb_strlen( $dedication_name ) > 100 || mb_strlen( $organizer_name ) < 2 || mb_strlen( $organizer_name ) > 100 ) {
+		return new WP_Error( 'invalid_length', 'Names must be between 2 and 100 characters', array( 'status' => 400 ) );
+	}
+
+	$goal_books = max( 1, min( 100, $goal_books ?: 1 ) );
+
+	if ( ! tehilim_verify_turnstile( $turnstile ) ) {
+		return new WP_Error( 'turnstile_failed', 'CAPTCHA verification failed', array( 'status' => 403 ) );
+	}
+
+	// Resolve occasion term (accepts term_id or slug)
+	$term = is_numeric( $occasion )
+		? get_term( absint( $occasion ), 'occasion' )
+		: get_term_by( 'slug', $occasion, 'occasion' );
+
+	if ( ! $term || is_wp_error( $term ) ) {
+		return new WP_Error( 'invalid_occasion', 'Occasion not found', array( 'status' => 400 ) );
+	}
+
+	$campaign_id = wp_insert_post( array(
+		'post_type'   => 'campaign',
+		'post_title'  => $dedication_name,
+		'post_status' => 'publish',
+	), true );
+
+	if ( is_wp_error( $campaign_id ) ) {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'Tehilim: Campaign creation error: ' . $campaign_id->get_error_message() );
+		}
+		return new WP_Error( 'create_failed', 'Failed to create campaign', array( 'status' => 500 ) );
+	}
+
+	wp_set_object_terms( $campaign_id, $term->term_id, 'occasion' );
+	update_post_meta( $campaign_id, 'goal_books', $goal_books );
+	update_post_meta( $campaign_id, 'organizer_name', $organizer_name );
+
+	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+	header( 'Pragma: no-cache' );
+
+	return array(
+		'success'      => true,
+		'campaign_id'  => $campaign_id,
+		'campaign_url' => esc_url_raw( get_permalink( $campaign_id ) ),
+	);
 }
 
 /**
@@ -280,8 +389,22 @@ function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
 	update_post_meta( $ambassador_id, 'campaign_id', $campaign_id );
 	update_post_meta( $ambassador_id, 'email', $email );
 
+	// Assign a stable avatar color from the design palette
+	$palette = array( '#C05A3A', '#D9A441', '#8A6B4A', '#B08968' );
+	update_post_meta( $ambassador_id, 'avatar_color', $palette[ $ambassador_id % 4 ] );
+
 	// Clear campaign caches to include new ambassador
 	tehilim_clear_campaign_caches( $campaign_id );
+
+	// Notify the campaign organizer (best-effort; never blocks the response)
+	$organizer_email = get_post_meta( $campaign_id, 'organizer_email', true );
+	if ( $organizer_email && is_email( $organizer_email ) ) {
+		wp_mail(
+			$organizer_email,
+			sprintf( 'שגריר/ה חדש/ה בקמפיין "%s"', $campaign->post_title ),
+			sprintf( "%s הצטרף/ה כשגריר/ה לקמפיין שלך.\n\nלצפייה בקמפיין: %s", $name, get_permalink( $campaign_id ) )
+		);
+	}
 
 	$campaign_slug = get_post_field( 'post_name', $campaign_id );
 	$ambassador_slug = get_post_field( 'post_name', $ambassador_id );

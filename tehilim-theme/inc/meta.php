@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function tehilim_clear_campaign_caches( $campaign_id ) {
 	delete_transient( 'tehilim_progress_' . $campaign_id );
+	delete_transient( 'tehilim_participants_' . $campaign_id );
 	for ( $i = 1; $i <= 100; $i++ ) {
 		delete_transient( 'tehilim_ambassadors_' . $campaign_id . '_' . $i );
 	}
@@ -87,8 +88,10 @@ function tehilim_get_campaign_progress( $campaign_id ) {
 	$table = $wpdb->prefix . 'tehilim_recitations';
 	$goal_books = intval( get_post_meta( $campaign_id, 'goal_books', true ) ?: 1 );
 
+	// Communal count: every recitation advances the campaign (books repeat,
+	// so COUNT(*) — not DISTINCT — is the correct basis for multi-book goals).
 	$chapters_done = $wpdb->get_var( $wpdb->prepare(
-		"SELECT COUNT(DISTINCT chapter_number) FROM `%i` WHERE campaign_id = %d",
+		"SELECT COUNT(*) FROM `%i` WHERE campaign_id = %d",
 		$table,
 		$campaign_id
 	) );
@@ -97,7 +100,7 @@ function tehilim_get_campaign_progress( $campaign_id ) {
 	$books_done = intdiv( $chapters_done, TEHILIM_CHAPTERS_PER_BOOK );
 	$chapters_in_book = $chapters_done % TEHILIM_CHAPTERS_PER_BOOK;
 
-	$progress_percent = min( 100, intdiv( $chapters_done * 100, $goal_books * TEHILIM_CHAPTERS_PER_BOOK ) );
+	$progress_percent = min( 100, intdiv( $chapters_done * 100, max( 1, $goal_books ) * TEHILIM_CHAPTERS_PER_BOOK ) );
 
 	$result = array(
 		'books_done'       => $books_done,
@@ -153,6 +156,40 @@ function tehilim_get_top_ambassadors( $campaign_id, $limit = 3 ) {
 	set_transient( $cache_key, $ambassadors, 300 );
 
 	return $ambassadors;
+}
+
+/**
+ * Get the next suggested chapter for a campaign.
+ * Sequential communal reading: the book advances one chapter per recitation.
+ */
+function tehilim_get_next_chapter( $campaign_id ) {
+	$progress = tehilim_get_campaign_progress( $campaign_id );
+	return ( intval( $progress['total_chapters'] ) % TEHILIM_CHAPTERS_PER_BOOK ) + 1;
+}
+
+/**
+ * Get participant count (distinct named reciters) for a campaign
+ */
+function tehilim_get_campaign_participants( $campaign_id ) {
+	$cache_key = 'tehilim_participants_' . $campaign_id;
+	$cached    = get_transient( $cache_key );
+
+	if ( false !== $cached ) {
+		return intval( $cached );
+	}
+
+	global $wpdb;
+	$table = $wpdb->prefix . 'tehilim_recitations';
+
+	$count = (int) $wpdb->get_var( $wpdb->prepare(
+		"SELECT COUNT(DISTINCT reciter_name) FROM `%i` WHERE campaign_id = %d AND reciter_name IS NOT NULL AND reciter_name <> ''",
+		$table,
+		$campaign_id
+	) );
+
+	set_transient( $cache_key, $count, 300 );
+
+	return $count;
 }
 
 /**

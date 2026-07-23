@@ -93,6 +93,58 @@ function tehilim_add_rewrite_rules() {
 add_action( 'init', 'tehilim_add_rewrite_rules' );
 
 /**
+ * Register the ambassador query var (without this, WP drops it from the rewrite)
+ */
+function tehilim_register_query_vars( $vars ) {
+	$vars[] = 'ambassador';
+	return $vars;
+}
+add_filter( 'query_vars', 'tehilim_register_query_vars' );
+
+/**
+ * Route referral URLs (/c/{campaign}/{ambassador}) and ambassador permalinks
+ * to the ambassador template.
+ */
+function tehilim_template_router( $template ) {
+	// Referral link: campaign + ambassador query vars present
+	if ( get_query_var( 'ambassador' ) && get_query_var( 'name' ) ) {
+		$referral = get_template_directory() . '/template-ambassador.php';
+		if ( file_exists( $referral ) ) {
+			return $referral;
+		}
+	}
+
+	// Direct ambassador permalink → same personal page (derive vars from the post)
+	if ( is_singular( 'ambassador' ) ) {
+		$referral = get_template_directory() . '/template-ambassador.php';
+		if ( file_exists( $referral ) ) {
+			$ambassador  = get_queried_object();
+			$campaign_id = intval( get_post_meta( $ambassador->ID, 'campaign_id', true ) );
+			if ( $campaign_id ) {
+				set_query_var( 'ambassador', $ambassador->post_name );
+				set_query_var( 'name', get_post_field( 'post_name', $campaign_id ) );
+				return $referral;
+			}
+		}
+	}
+
+	return $template;
+}
+add_filter( 'template_include', 'tehilim_template_router' );
+
+/**
+ * Flush rewrite rules on theme activation (so /c/... works immediately)
+ */
+function tehilim_flush_rewrites_on_activation() {
+	tehilim_register_campaign_cpt();
+	tehilim_register_ambassador_cpt();
+	tehilim_register_occasion_taxonomy();
+	tehilim_add_rewrite_rules();
+	flush_rewrite_rules();
+}
+add_action( 'after_switch_theme', 'tehilim_flush_rewrites_on_activation' );
+
+/**
  * Create recitations table on theme activation
  */
 function tehilim_create_recitations_table() {

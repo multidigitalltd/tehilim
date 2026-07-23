@@ -24,9 +24,46 @@
 			this.initReader();
 			this.startStatsPolling();
 			this.initPraiseVerses();
+			this.initFaq();
+			this.initCarousel();
 			if ( this.turnstileSiteKey && document.querySelector( '.btn-say-chapter' ) ) {
 				this.loadTurnstile();
 			}
+		},
+
+		/* FAQ accordion: one item open at a time, first open by default */
+		initFaq: function() {
+			var items = document.querySelectorAll( '.faq-item' );
+			if ( ! items.length ) { return; }
+			items[ 0 ].classList.add( 'open' );
+			document.addEventListener( 'click', function( e ) {
+				var q = e.target.closest( '.faq-question' );
+				if ( ! q ) { return; }
+				var item = q.closest( '.faq-item' );
+				var wasOpen = item.classList.contains( 'open' );
+				items.forEach( function( it ) { it.classList.remove( 'open' ); } );
+				if ( ! wasOpen ) { item.classList.add( 'open' ); }
+			} );
+		},
+
+		/* Testimonials carousel arrows */
+		initCarousel: function() {
+			var wrap = document.querySelector( '.testimonials-grid' );
+			var btns = document.querySelectorAll( '.carousel-buttons .carousel-btn' );
+			if ( ! wrap || btns.length < 2 ) { return; }
+
+			var idx = 0;
+			function goTo( delta ) {
+				var cards = wrap.children;
+				if ( ! cards.length ) { return; }
+				idx = Math.max( 0, Math.min( cards.length - 1, idx + delta ) );
+				var offset = cards[ idx ].getBoundingClientRect().left - wrap.getBoundingClientRect().left;
+				wrap.scrollBy( { left: offset, behavior: 'smooth' } );
+			}
+
+			// RTL: the right-pointing arrow goes back, left-pointing goes forward
+			btns[ 0 ].addEventListener( 'click', function() { goTo( 1 ); } );
+			btns[ 1 ].addEventListener( 'click', function() { goTo( -1 ); } );
 		},
 
 		/* Rotate the "praise of Tehilim" verses in the no-image hero */

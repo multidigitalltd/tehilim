@@ -55,7 +55,13 @@ $gradient = $gradients[ $campaign_id % count( $gradients ) ];
 ?>
 
 <div class="campaign-card">
-	<div class="campaign-card-header" style="background: <?php echo esc_attr( $gradient ); ?>"></div>
+	<?php if ( has_post_thumbnail() ) : ?>
+		<div class="campaign-card-header has-image">
+			<?php the_post_thumbnail( 'medium_large', array( 'loading' => 'lazy' ) ); ?>
+		</div>
+	<?php else : ?>
+		<div class="campaign-card-header" style="background: <?php echo esc_attr( $gradient ); ?>"></div>
+	<?php endif; ?>
 
 	<div class="campaign-card-body">
 		<div>

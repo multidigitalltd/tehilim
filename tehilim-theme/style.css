@@ -3,7 +3,7 @@ Theme Name: Tehilim
 Theme URI: https://github.com/multidigitalltd/tehilim
 Author: Multi Digital
 Description: Community Psalms campaign platform
-Version: 2.6.1
+Version: 2.7.0
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: tehilim
@@ -1135,17 +1135,21 @@ a.btn-dashboard-secondary:active {
   transition: transform 0.2s;
 }
 
-/* Design: the open item (first, with visible answer) shows a flipped chevron */
-.faq-item:first-child .faq-toggle,
 .faq-item.open .faq-toggle {
   transform: rotate(180deg);
 }
 
 .faq-answer {
+  display: none;
   padding: 0 22px 20px 66px;
   font-size: 15.5px;
   color: var(--text-muted-lighter);
   line-height: 1.65;
+}
+
+.faq-item.open .faq-answer {
+  display: block;
+  animation: floatIn 0.3s ease both;
 }
 
 /* ===== CTA SECTION ===== */
@@ -2962,6 +2966,18 @@ a.btn-dashboard-secondary:active {
   margin: 0;
 }
 
+/* Campaign card with a real featured image */
+.campaign-card-header.has-image {
+  overflow: hidden;
+}
+
+.campaign-card-header.has-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* Social sign-in injected by plugins (Login Me Now etc.) on the login card */
 .login-plugin-slot {
   margin-bottom: 4px;
@@ -4121,5 +4137,126 @@ a.btn-login:hover {
 
   .dashboard-stats {
     flex-wrap: wrap;
+  }
+}
+
+/* ===== Mobile overflow fixes (campaign + ambassador pages) ===== */
+html {
+  overflow-x: hidden; /* body alone doesn't clip when html is the scroller */
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+}
+
+@media (max-width: 620px) {
+  .reader-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .reader-head-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .reader-head-actions .btn-reader-secondary {
+    flex: 1;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  .reader-footer {
+    flex-wrap: wrap;
+  }
+
+  .reader-footer .reader-name-input {
+    flex-basis: 100%;
+    min-width: 0;
+  }
+
+  .reader-footer .btn-reader-other,
+  .reader-footer .btn-reader-said {
+    flex: 1;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  .progress-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .progress-stat {
+    min-width: 0;
+  }
+
+  .amb-stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .amb-stat {
+    min-width: 0;
+  }
+
+  .ambassador-cta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    text-align: right;
+  }
+
+  .btn-ambassador-cta {
+    width: 100%;
+    text-align: center;
+  }
+
+  .campaign-hero-inner,
+  .amb-hero-row {
+    min-width: 0;
+  }
+
+  .campaign-hero-image {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .campaign-layout,
+  .campaign-main,
+  .campaign-sidebar {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .amb-hero-actions {
+    flex-wrap: wrap;
+  }
+
+  .amb-hero-actions .btn-amb-join,
+  .amb-hero-actions .btn-amb-share {
+    flex: 1;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  /* Testimonials become a swipeable strip; the arrows drive it */
+  .testimonials-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .testimonials-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .testimonials-grid .testimonial-card {
+    flex: 0 0 88%;
+    scroll-snap-align: center;
   }
 }

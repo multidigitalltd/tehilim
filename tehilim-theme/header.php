@@ -22,7 +22,7 @@
 					<path d="M12 6.4v12.3" stroke="#F0CE7E" stroke-width="1.7" stroke-linecap="round"></path>
 				</svg>
 			</div>
-			<span><?php bloginfo( 'name' ); ?></span>
+			<span><?php esc_html_e( 'תהילים', 'tehilim' ); ?></span>
 		</a>
 
 		<!-- Navigation Links -->

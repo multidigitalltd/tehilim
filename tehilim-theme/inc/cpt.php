@@ -149,6 +149,30 @@ function tehilim_template_router( $template ) {
 add_filter( 'template_include', 'tehilim_template_router' );
 
 /**
+ * Live pages must never be page-cached: campaign + ambassador pages show
+ * real-time counters, and cached HTML makes them look frozen at old values.
+ * Covers LiteSpeed, WP Super Cache, W3TC and standard HTTP caches.
+ */
+function tehilim_no_cache_live_pages() {
+	$is_live = is_singular( 'campaign' ) || is_singular( 'ambassador' ) || get_query_var( 'ambassador' );
+	if ( ! $is_live || headers_sent() ) {
+		return;
+	}
+
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
+
+	header( 'X-LiteSpeed-Cache-Control: no-cache' );
+	nocache_headers();
+
+	if ( function_exists( 'do_action' ) ) {
+		do_action( 'litespeed_control_set_nocache', 'tehilim live page' );
+	}
+}
+add_action( 'template_redirect', 'tehilim_no_cache_live_pages', 1 );
+
+/**
  * Flush rewrite rules on theme activation (so /c/... works immediately)
  */
 function tehilim_flush_rewrites_on_activation() {

@@ -90,5 +90,26 @@ $messages = array(
 	</div>
 </div>
 
+<script>
+( function() {
+	// Keep only password + Google sign-in: hide plugin "Email Link" buttons
+	function hideEmailLink() {
+		document.querySelectorAll( '.login-card a, .login-card button' ).forEach( function( el ) {
+			if ( /email\s*link/i.test( el.textContent || '' ) ) {
+				el.style.display = 'none';
+			}
+		} );
+	}
+	hideEmailLink();
+	// Plugins may inject after load — watch briefly for late buttons
+	var observer = new MutationObserver( hideEmailLink );
+	var card = document.querySelector( '.login-card' );
+	if ( card ) {
+		observer.observe( card, { childList: true, subtree: true } );
+		setTimeout( function() { observer.disconnect(); }, 4000 );
+	}
+} )();
+</script>
+
 <?php
 get_footer();

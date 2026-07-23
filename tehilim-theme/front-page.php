@@ -124,17 +124,7 @@ get_header();
 					</div>
 				</div>
 
-				<div class="card-badge bottom">
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="#EFC978">
-						<path d="M6 3h12v4a4 4 0 0 1-3 3.9V13h2v2H7v-2h2v-2.1A4 4 0 0 1 6 7z"></path>
-						<path d="M7 17h10v3H7z"></path>
-					</svg>
-					<div>
-						<div class="badge-title">מובילה: ריקי לוי</div>
-						<div class="badge-subtitle">210 פרקים גויסו</div>
-					</div>
-				</div>
-			</div>
+		</div>
 		</div>
 
 		<!-- Stats Bar -->
@@ -429,6 +419,9 @@ get_header();
 						</svg>
 					</span>
 				</button>
+				<div class="faq-answer">
+					לא. זו פלטפורמה קהילתית: פותחים קמפיין סביב מטרה, מזמינים שגרירים, וכל הקהילה אומרת יחד — עם מעקב חי אחרי כל פרק, לוח שגרירים ופיד פעילות.
+				</div>
 			</div>
 
 			<div class="faq-item">
@@ -441,6 +434,9 @@ get_header();
 						</svg>
 					</span>
 				</button>
+				<div class="faq-answer">
+					בכל לחיצה על "סימנתי שאמרתי" נרשם פרק אחד לקמפיין. ספר תהילים נחשב מושלם רק כשכל 150 הפרקים נאמרו — ואז מתחיל ספר חדש, עד השלמת היעד.
+				</div>
 			</div>
 
 			<div class="faq-item">
@@ -453,6 +449,9 @@ get_header();
 						</svg>
 					</span>
 				</button>
+				<div class="faq-answer">
+					שגריר מקבל עמוד אישי וקישור משלו, משתף אותם עם הסביבה שלו — וכל פרק שנאמר דרך הקישור נזקף לזכותו בלוח השגרירים של הקמפיין.
+				</div>
 			</div>
 
 			<div class="faq-item">
@@ -465,6 +464,9 @@ get_header();
 						</svg>
 					</span>
 				</button>
+				<div class="faq-answer">
+					כמובן. בכל קמפיין יש כפתור שיתוף ל-WhatsApp והעתקת קישור בלחיצה אחת — לקבוצות, לסטטוס ולכל מקום שתרצו.
+				</div>
 			</div>
 
 			<div class="faq-item">
@@ -477,6 +479,9 @@ get_header();
 						</svg>
 					</span>
 				</button>
+				<div class="faq-answer">
+					פחות משתי דקות: בוחרים מטרה, כותבים למי מוקדש, קובעים יעד — והקמפיין באוויר ומוכן לשיתוף.
+				</div>
 			</div>
 
 			<div class="faq-item">
@@ -489,6 +494,9 @@ get_header();
 						</svg>
 					</span>
 				</button>
+				<div class="faq-answer">
+					כן. אנחנו שומרים רק את הפרטים הנחוצים לקמפיין, כתובות אימייל לעולם אינן מוצגות בפומבי, וכל התקשורת עם האתר מאובטחת.
+				</div>
 			</div>
 		</div>
 	</section>

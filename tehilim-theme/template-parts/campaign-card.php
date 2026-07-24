@@ -6,9 +6,17 @@
 $campaign_id = get_the_ID();
 
 $progress = tehilim_get_campaign_progress( $campaign_id );
-$percent  = intval( $progress['progress_percent'] );
 $books    = intval( $progress['books_done'] );
 $goal     = intval( $progress['goal_books'] );
+
+// Progress bar is chapter-based: total chapters said vs the goal in chapters
+// (goal books × 150), so it moves with every single פרק — not per book.
+$chapters_per_book = defined( 'TEHILIM_CHAPTERS_PER_BOOK' ) ? TEHILIM_CHAPTERS_PER_BOOK : 150;
+$chapters_said     = intval( $progress['total_chapters'] );
+$goal_chapters     = max( 1, $goal * $chapters_per_book );
+$percent           = $chapters_said > 0
+	? max( 1, min( 100, (int) ceil( $chapters_said * 100 / $goal_chapters ) ) )
+	: 0;
 
 // Badge state (matches design thresholds)
 if ( $percent >= 100 ) {

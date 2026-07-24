@@ -248,7 +248,8 @@ if ( have_posts() ) :
 						foreach ( $recitations as $index => $rec ) :
 							$name    = $rec->reciter_name ? $rec->reciter_name : __( 'משתתף אנונימי', 'tehilim' );
 							$chapter = tehilim_hebrew_numeral( intval( $rec->chapter_number ) );
-							$when    = date_i18n( 'j.n.Y, H:i', strtotime( $rec->created_at ) );
+							// created_at is stored in GMT — convert to the site's timezone
+							$when    = wp_date( 'j.n.Y, H:i', strtotime( $rec->created_at . ' UTC' ) );
 							$dot     = ( 0 === $index ) ? 'gold' : 'primary';
 							?>
 							<div class="activity-item">

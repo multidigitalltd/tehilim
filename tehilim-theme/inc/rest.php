@@ -162,8 +162,11 @@ function tehilim_handle_recitation( WP_REST_Request $request ) {
 		'chapter_number' => $chapter_number,
 		'reciter_name'   => $reciter_name,
 		'visitor_key'    => $visitor_key,
+		// Store an explicit GMT timestamp so the feed can convert to the
+		// site's timezone (the DB default CURRENT_TIMESTAMP is server-tz).
+		'created_at'     => current_time( 'mysql', true ),
 	);
-	$formats = array( '%d', '%d', '%d', '%s', '%s' );
+	$formats = array( '%d', '%d', '%d', '%s', '%s', '%s' );
 
 	$inserted = $wpdb->insert( $table, $row, $formats );
 

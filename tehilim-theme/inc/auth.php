@@ -124,6 +124,18 @@ function tehilim_login_redirect_filter( $redirect_to, $requested, $user ) {
 add_filter( 'login_redirect', 'tehilim_login_redirect_filter', 99, 3 );
 
 /**
+ * Hide the WordPress admin bar for regular members — only editors/admins
+ * (who actually use wp-admin) keep it. Keeps the front-end clean.
+ */
+function tehilim_hide_admin_bar_for_members( $show ) {
+	if ( is_user_logged_in() && ! current_user_can( 'edit_posts' ) ) {
+		return false;
+	}
+	return $show;
+}
+add_filter( 'show_admin_bar', 'tehilim_hide_admin_bar_for_members' );
+
+/**
  * Regular members never belong in wp-admin: any flow (or plugin) that lands
  * them on the dashboard bounces to the personal area instead.
  */

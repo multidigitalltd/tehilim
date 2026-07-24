@@ -14,16 +14,16 @@ get_header();
 				<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B9822B" stroke-width="2" stroke-linecap="round">
 					<path d="M4 7h16M4 12h16M4 17h10"></path>
 				</svg>
-				<?php esc_html_e( 'ארכיון הקמפיינים', 'tehilim' ); ?>
+				<?php esc_html_e( 'ארכיון קבוצות התהילים', 'tehilim' ); ?>
 			</div>
 
-			<h1><?php esc_html_e( 'כל הקמפיינים', 'tehilim' ); ?></h1>
+			<h1><?php esc_html_e( 'כל קבוצות התהילים', 'tehilim' ); ?></h1>
 			<p>
 				<?php
 				global $wp_query;
 				$campaign_total = (int) $wp_query->found_posts;
 				printf(
-					esc_html__( 'גלו קמפיינים פעילים והצטרפו לומר תהילים יחד · %d קמפיינים', 'tehilim' ),
+					esc_html__( 'גלו קבוצות תהילים פעילות והצטרפו לומר תהילים יחד · %d קבוצות תהילים', 'tehilim' ),
 					$campaign_total
 				);
 				?>
@@ -39,7 +39,7 @@ get_header();
 					get_template_part( 'template-parts/campaign-card' );
 				}
 			} else {
-				echo '<div style="grid-column: 1/-1; text-align: center; padding: 60px 32px;"><p style="font-size: 18px; color: #6B5D4C; margin: 0;">' . esc_html__( 'אין קמפיינים עדיין.', 'tehilim' ) . '</p></div>';
+				echo '<div style="grid-column: 1/-1; text-align: center; padding: 60px 32px;"><p style="font-size: 18px; color: #6B5D4C; margin: 0;">' . esc_html__( 'אין קבוצות תהילים עדיין.', 'tehilim' ) . '</p></div>';
 			}
 			?>
 		</div>

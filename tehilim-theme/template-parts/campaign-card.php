@@ -100,15 +100,17 @@ $gradient = $gradients[ $campaign_id % count( $gradients ) ];
 			<div class="progress-text">
 				<?php
 				printf(
-					esc_html__( 'ספרים הושלמו · נאמרו %s פרקים', 'tehilim' ),
-					esc_html( number_format_i18n( intval( $progress['total_chapters'] ) ) )
+					esc_html__( 'נאמרו %1$s פרקים · הושלמו %2$s מתוך %3$s ספרים', 'tehilim' ),
+					esc_html( number_format_i18n( intval( $progress['total_chapters'] ) ) ),
+					esc_html( number_format_i18n( $books ) ),
+					esc_html( number_format_i18n( $goal ) )
 				);
 				?>
 			</div>
 		</div>
 
 		<a href="<?php the_permalink(); ?>" class="btn-card-action">
-			<span><?php esc_html_e( 'כניסה לקמפיין', 'tehilim' ); ?></span>
+			<span><?php esc_html_e( 'כניסה לקבוצה', 'tehilim' ); ?></span>
 			<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
 				<path d="M19 12H5M11 18l-6-6 6-6"></path>
 			</svg>

@@ -169,7 +169,7 @@ add_action( 'wp_login_failed', 'tehilim_login_failed_redirect' );
  */
 function tehilim_ensure_theme_pages() {
 	$pages = array(
-		'create'  => 'יצירת קמפיין',
+		'create'  => 'יצירת קבוצת תהילים',
 		'login'   => 'התחברות',
 		'account' => 'האזור האישי',
 		'about'   => 'אודות',

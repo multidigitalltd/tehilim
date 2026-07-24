@@ -84,13 +84,13 @@ if ( $campaign && $ambassador ) :
 		<div class="amb-hero-inner">
 			<a class="back-link" href="<?php echo esc_url( $campaign_url ); ?>">
 				<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#8A6B4A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
-				<?php esc_html_e( 'לעמוד הקמפיין המלא', 'tehilim' ); ?>
+				<?php esc_html_e( 'לעמוד הקבוצה המלא', 'tehilim' ); ?>
 			</a>
 			<div class="amb-hero-row">
 				<div class="amb-hero-text">
 					<div class="campaign-badge">
 						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B9822B" stroke-width="1.9"><circle cx="9" cy="8" r="3"></circle><path d="M3 19c0-3 2.7-5.5 6-5.5S15 16 15 19M17 5a3 3 0 0 1 0 6M21 19c0-2.3-1.4-4.3-3.5-5"></path></svg>
-						<?php esc_html_e( 'הוזמנתם על ידי שגריר/ה בקמפיין', 'tehilim' ); ?>
+						<?php esc_html_e( 'הוזמנתם על ידי שגריר/ה בקבוצה', 'tehilim' ); ?>
 					</div>
 					<div class="amb-hero-name-row">
 						<div class="amb-hero-avatar"><?php echo esc_html( $initial ); ?></div>
@@ -103,7 +103,7 @@ if ( $campaign && $ambassador ) :
 						<?php
 						printf(
 							/* translators: 1: campaign name, 2: occasion */
-							esc_html__( 'לקמפיין התהילים למען %1$s%2$s.', 'tehilim' ),
+							esc_html__( 'לקבוצת התהילים למען %1$s%2$s.', 'tehilim' ),
 							'<b>' . esc_html( $campaign->post_title ) . '</b>',
 							$occasion_name ? ' — ' . esc_html( $occasion_name ) : ''
 						);
@@ -201,8 +201,8 @@ if ( $campaign && $ambassador ) :
 			<!-- Campaign overview -->
 			<div class="amb-overview">
 				<div class="amb-overview-head">
-					<div class="amb-overview-title"><?php esc_html_e( 'התמונה הגדולה · הקמפיין כולו', 'tehilim' ); ?></div>
-					<a class="amb-overview-link" href="<?php echo esc_url( $campaign_url ); ?>"><?php esc_html_e( 'לעמוד הקמפיין ←', 'tehilim' ); ?></a>
+					<div class="amb-overview-title"><?php esc_html_e( 'התמונה הגדולה · הקבוצה כולו', 'tehilim' ); ?></div>
+					<a class="amb-overview-link" href="<?php echo esc_url( $campaign_url ); ?>"><?php esc_html_e( 'לעמוד הקבוצה ←', 'tehilim' ); ?></a>
 				</div>
 				<div class="amb-overview-progresshead">
 					<div class="amb-overview-percent"><?php echo esc_html( $progress['progress_percent'] ); ?>%</div>
@@ -277,7 +277,7 @@ else :
 	?>
 	<div class="create-page" style="text-align:center">
 		<h1 class="create-title"><?php esc_html_e( 'הקישור אינו תקין', 'tehilim' ); ?></h1>
-		<p class="create-subtitle"><?php esc_html_e( 'קמפיין או שגריר לא נמצאו.', 'tehilim' ); ?></p>
+		<p class="create-subtitle"><?php esc_html_e( 'קבוצת תהילים או שגריר לא נמצאו.', 'tehilim' ); ?></p>
 	</div>
 	<?php
 endif;

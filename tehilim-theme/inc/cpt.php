@@ -17,12 +17,14 @@ const TEHILIM_RATE_LIMIT_AMBASSADOR = 5;
  */
 function tehilim_register_campaign_cpt() {
 	register_post_type( 'campaign', array(
-		'label'              => 'קמפיינים',
+		'label'              => 'קבוצות תהילים',
 		'public'             => true,
-		'has_archive'        => true,
+		'has_archive'        => 'campaigns', // archive stays at /campaigns/
 		'show_in_rest'       => true,
 		'supports'           => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
-		'rewrite'            => array( 'slug' => 'campaigns', 'with_front' => false ),
+		// Short permalinks: /c/{slug}. The two-segment referral rule
+		// (/c/{campaign}/{ambassador}) is registered 'top' so both coexist.
+		'rewrite'            => array( 'slug' => 'c', 'with_front' => false ),
 		'show_in_menu'       => 'tehilim-settings',
 		'capability_type'    => 'post',
 	) );
@@ -101,6 +103,14 @@ function tehilim_add_rewrite_rules() {
 	add_rewrite_rule(
 		'^c/([^/]+)/([^/]+)/?$',
 		'index.php?post_type=campaign&name=$matches[1]&ambassador=$matches[2]',
+		'top'
+	);
+
+	// Legacy campaign URLs (/campaigns/{slug}) keep working; WordPress's
+	// canonical redirect then 301s them to the new /c/{slug} permalink.
+	add_rewrite_rule(
+		'^campaigns/(?!page/|feed/)([^/]+)/?$',
+		'index.php?post_type=campaign&name=$matches[1]',
 		'top'
 	);
 }
@@ -202,9 +212,9 @@ function tehilim_notify_campaign_approved( $new_status, $old_status, $post ) {
 	if ( $owner_email ) {
 		wp_mail(
 			$owner_email,
-			sprintf( 'הקמפיין "%s" אושר ועלה לאוויר!', $post->post_title ),
+			sprintf( 'הקבוצה "%s" אושר ועלה לאוויר!', $post->post_title ),
 			sprintf(
-				"בשורה טובה — מנהל האתר אישר את הקמפיין שלכם והוא כבר באוויר!\n\nעמוד הקמפיין (העתיקו ושתפו עם כולם):\n%s\n\nניהול הקמפיין באזור האישי:\n%s\n\nשיהיה בהצלחה — שהתפילות יתקבלו!",
+				"בשורה טובה — מנהל האתר אישר את הקבוצה שלכם והוא כבר באוויר!\n\nעמוד הקבוצה (העתיקו ושתפו עם כולם):\n%s\n\nניהול הקבוצה באזור האישי:\n%s\n\nשיהיה בהצלחה — שהתפילות יתקבלו!",
 				get_permalink( $post->ID ),
 				function_exists( 'tehilim_account_page_url' ) ? tehilim_account_page_url() : home_url( '/' )
 			)

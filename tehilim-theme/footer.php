@@ -48,8 +48,8 @@
 		<div>
 			<h4><?php esc_html_e( 'המוצר', 'tehilim' ); ?></h4>
 			<ul class="footer-col">
-				<li><a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'גלו קמפיינים', 'tehilim' ); ?></a></li>
-				<li><a href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php esc_html_e( 'פתחו קמפיין', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'גלו קבוצות תהילים', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php esc_html_e( 'פתחו קבוצת תהילים', 'tehilim' ); ?></a></li>
 				<li><a href="<?php echo esc_url( is_user_logged_in() ? tehilim_account_page_url() : tehilim_login_page_url( home_url( '/account/' ) ) ); ?>"><?php esc_html_e( 'האזור שלי', 'tehilim' ); ?></a></li>
 			</ul>
 		</div>

@@ -30,7 +30,7 @@ $messages = array(
 			<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 6.4C10.2 5 7.4 4.5 4.6 5v12.3c2.8-.5 5.6 0 7.4 1.4 1.8-1.4 4.6-1.9 7.4-1.4V5c-2.8-.5-5.6 0-7.4 1.4Z" stroke="#FFF3E4" stroke-width="1.7" stroke-linejoin="round"></path><path d="M12 6.4v12.3" stroke="#F0CE7E" stroke-width="1.7" stroke-linecap="round"></path></svg>
 		</div>
 		<h1 class="login-title"><?php esc_html_e( 'התחברות לתהילים', 'tehilim' ); ?></h1>
-		<p class="login-subtitle"><?php esc_html_e( 'התחברו כדי לפתוח קמפיין ולנהל אותו.', 'tehilim' ); ?></p>
+		<p class="login-subtitle"><?php esc_html_e( 'התחברו כדי לפתוח קבוצת תהילים ולנהל אותו.', 'tehilim' ); ?></p>
 
 		<?php if ( $flag && isset( $messages[ $flag ] ) ) : ?>
 			<div class="login-msg <?php echo esc_attr( $messages[ $flag ][0] ); ?>" role="alert"><?php echo esc_html( $messages[ $flag ][1] ); ?></div>

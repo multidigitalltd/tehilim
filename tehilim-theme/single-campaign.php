@@ -194,9 +194,9 @@ if ( have_posts() ) :
 				<div>
 					<div class="ambassador-cta-title">
 						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EFC978" stroke-width="1.9"><circle cx="9" cy="8" r="3"></circle><path d="M3 19c0-3 2.7-5.5 6-5.5S15 16 15 19M17 5a3 3 0 0 1 0 6M21 19c0-2.3-1.4-4.3-3.5-5"></path></svg>
-						<?php esc_html_e( 'הצטרפו כשגריר/ה לקמפיין', 'tehilim' ); ?>
+						<?php esc_html_e( 'הצטרפו כשגריר/ה לקבוצה', 'tehilim' ); ?>
 					</div>
-					<div class="ambassador-cta-desc"><?php esc_html_e( 'התחייבו על מספר ספרים שלמים שתאמרו, ובעל הקמפיין יאשר את הצטרפותכם. תקבלו קישור אישי ומיני-דשבורד.', 'tehilim' ); ?></div>
+					<div class="ambassador-cta-desc"><?php esc_html_e( 'התחייבו על מספר ספרים שלמים שתאמרו, ובעל הקבוצה יאשר את הצטרפותכם. תקבלו קישור אישי ומיני-דשבורד.', 'tehilim' ); ?></div>
 				</div>
 				<button class="btn-ambassador-cta"><?php esc_html_e( 'הגישו בקשה להיות שגריר', 'tehilim' ); ?></button>
 			</div>
@@ -274,7 +274,7 @@ if ( have_posts() ) :
 			<div class="share-card">
 				<div class="share-card-title">
 					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="1.9"><circle cx="18" cy="5" r="2.6"></circle><circle cx="6" cy="12" r="2.6"></circle><circle cx="18" cy="19" r="2.6"></circle><path d="M8.3 10.7l7.4-4.4M8.3 13.3l7.4 4.4"></path></svg>
-					<?php esc_html_e( 'שתפו את הקמפיין', 'tehilim' ); ?>
+					<?php esc_html_e( 'שתפו את הקבוצה', 'tehilim' ); ?>
 				</div>
 				<button class="btn-share-whatsapp btn-share" data-share-type="whatsapp" data-share-url="<?php echo esc_url( $share_url ); ?>" data-share-text="<?php echo esc_attr( $share_text ); ?>">
 					<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#EFC978" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20a8 8 0 1 0-6.9-4L4 20l4-1.1A8 8 0 0 0 12 20z"></path></svg>

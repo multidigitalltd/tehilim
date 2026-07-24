@@ -76,7 +76,7 @@ if ( $amb_posts ) {
 
 		<a class="back-link" href="<?php echo esc_url( $campaign_url ); ?>">
 			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8A6B4A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
-			<?php esc_html_e( 'חזרה לקמפיין', 'tehilim' ); ?>
+			<?php esc_html_e( 'חזרה לקבוצה', 'tehilim' ); ?>
 		</a>
 
 		<div class="dashboard-card">
@@ -91,7 +91,7 @@ if ( $amb_posts ) {
 				<?php
 				if ( $campaign ) {
 					printf(
-						esc_html__( 'שגריר/ה בקמפיין · %1$s%2$s', 'tehilim' ),
+						esc_html__( 'שגריר/ה בקבוצה · %1$s%2$s', 'tehilim' ),
 						esc_html( $campaign->post_title ),
 						$occasion_name ? ' (' . esc_html( $occasion_name ) . ')' : ''
 					);
@@ -132,8 +132,8 @@ if ( $amb_posts ) {
 		</div>
 		<div class="dashboard-card">
 			<div class="dashboard-name"><?php echo esc_html( $current_user->display_name ); ?></div>
-			<div class="dashboard-sub"><?php esc_html_e( 'הצטרפו כשגריר לאחד הקמפיינים כדי לקבל אזור אישי.', 'tehilim' ); ?></div>
-			<a class="btn-dashboard-secondary" href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'גלו קמפיינים ←', 'tehilim' ); ?></a>
+			<div class="dashboard-sub"><?php esc_html_e( 'הצטרפו כשגריר לאחד קבוצות התהילים כדי לקבל אזור אישי.', 'tehilim' ); ?></div>
+			<a class="btn-dashboard-secondary" href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'גלו קבוצות תהילים ←', 'tehilim' ); ?></a>
 		</div>
 
 	<?php endif; ?>

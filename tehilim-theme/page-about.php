@@ -29,13 +29,13 @@ $site_stats = function_exists( 'tehilim_get_site_stats' ) ? tehilim_get_site_sta
 	<section class="about-block about-block-highlight">
 		<h2><?php esc_html_e( 'הכוח של תהילים ביחד', 'tehilim' ); ?></h2>
 		<p><?php esc_html_e( 'חז״ל לימדו אותנו שאין דבר שעומד בפני רחמי שמים כמו אמירת תהילים בציבור. המדרש אומר: "כל הקורא בספר תהילים — מעלה עליו הכתוב כאילו עוסק בכל התורה כולה". וכשאומרים יחד — כל פרק בודד הופך לחלק מספר שלם, וכל אומר יחיד הופך לחלק מציבור.', 'tehilim' ); ?></p>
-		<p><?php esc_html_e( 'כאן כל פרק נספר, כל ספר שמושלם נזקף לזכות מי שהקמפיין הוקדש עבורו, וכל המשתתפים רואים יחד את התמונה הגדולה נבנית — פרק אחר פרק.', 'tehilim' ); ?></p>
+		<p><?php esc_html_e( 'כאן כל פרק נספר, כל ספר שמושלם נזקף לזכות מי שהקבוצה הוקדש עבורו, וכל המשתתפים רואים יחד את התמונה הגדולה נבנית — פרק אחר פרק.', 'tehilim' ); ?></p>
 	</section>
 
 	<!-- How -->
 	<section class="about-block">
 		<h2><?php esc_html_e( 'איך זה עובד', 'tehilim' ); ?></h2>
-		<p><?php esc_html_e( 'פותחים קמפיין לכל מטרה — רפואה, עליית נשמה, זיווג, פרנסה, זכות או אירוע. מזמינים שגרירים שמגייסים את הסביבה שלהם, וכל אחד שנכנס מקבל פרק פנוי מתוך הספר הנוכחי. המערכת עוקבת בזמן אמת: אילו פרקים נאמרו, כמה ספרים הושלמו, ומי השתתף.', 'tehilim' ); ?></p>
+		<p><?php esc_html_e( 'פותחים קבוצת תהילים לכל מטרה — רפואה, עליית נשמה, זיווג, פרנסה, זכות או אירוע. מזמינים שגרירים שמגייסים את הסביבה שלהם, וכל אחד שנכנס מקבל פרק פנוי מתוך הספר הנוכחי. המערכת עוקבת בזמן אמת: אילו פרקים נאמרו, כמה ספרים הושלמו, ומי השתתף.', 'tehilim' ); ?></p>
 		<p><?php esc_html_e( 'הטקסט המלא והמנוקד של כל 150 פרקי התהילים זמין ישירות באתר — אפשר לומר מכל מקום, בכל רגע, גם מהנייד.', 'tehilim' ); ?></p>
 	</section>
 
@@ -56,7 +56,7 @@ $site_stats = function_exists( 'tehilim_get_site_stats' ) ? tehilim_get_site_sta
 		</div>
 		<div class="about-stat">
 			<div class="about-stat-num" data-site-stat="campaigns"><?php echo esc_html( number_format_i18n( $site_stats['campaigns'] ) ); ?></div>
-			<div class="about-stat-label"><?php esc_html_e( 'קמפיינים', 'tehilim' ); ?></div>
+			<div class="about-stat-label"><?php esc_html_e( 'קבוצות תהילים', 'tehilim' ); ?></div>
 		</div>
 	</section>
 	<?php endif; ?>
@@ -64,10 +64,10 @@ $site_stats = function_exists( 'tehilim_get_site_stats' ) ? tehilim_get_site_sta
 	<!-- CTA -->
 	<section class="about-cta">
 		<h2><?php esc_html_e( 'הצטרפו אלינו', 'tehilim' ); ?></h2>
-		<p><?php esc_html_e( 'פתחו קמפיין למי שיקר לכם, או הצטרפו לקמפיין קיים ואמרו פרק — כי ביחד אפשר להפוך עולמות.', 'tehilim' ); ?></p>
+		<p><?php esc_html_e( 'פתחו קבוצת תהילים למי שיקר לכם, או הצטרפו לקבוצה קיים ואמרו פרק — כי ביחד אפשר להפוך עולמות.', 'tehilim' ); ?></p>
 		<div class="about-cta-actions">
-			<a class="btn-create-primary" href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php esc_html_e( 'פתיחת קמפיין', 'tehilim' ); ?></a>
-			<a class="btn-account-secondary" href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'גלו קמפיינים', 'tehilim' ); ?></a>
+			<a class="btn-create-primary" href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php esc_html_e( 'פתיחת קבוצת תהילים', 'tehilim' ); ?></a>
+			<a class="btn-account-secondary" href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'גלו קבוצות תהילים', 'tehilim' ); ?></a>
 		</div>
 	</section>
 </div>

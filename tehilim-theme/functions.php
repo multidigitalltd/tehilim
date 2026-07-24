@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const TEHILIM_VERSION = '2.12.7';
+const TEHILIM_VERSION = '2.13.0';
 
 /**
  * Theme Setup
@@ -62,4 +62,5 @@ require_once get_template_directory() . '/inc/auth.php';
 
 if ( is_admin() ) {
 	require_once get_template_directory() . '/inc/admin.php';
+	require_once get_template_directory() . '/inc/updater.php';
 }

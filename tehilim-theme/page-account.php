@@ -56,11 +56,11 @@ foreach ( $campaigns as $c ) {
 				<div class="account-avatar"><?php echo esc_html( $initial ); ?></div>
 				<div>
 					<h1 class="account-title"><?php printf( esc_html__( 'שלום, %s', 'tehilim' ), esc_html( $user->display_name ) ); ?></h1>
-					<div class="account-sub"><?php esc_html_e( 'האזור האישי · ניהול הקמפיינים שלכם', 'tehilim' ); ?></div>
+					<div class="account-sub"><?php esc_html_e( 'האזור האישי · ניהול קבוצות התהילים שלכם', 'tehilim' ); ?></div>
 				</div>
 			</div>
 			<div class="account-actions">
-				<a class="btn-create-primary" href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php esc_html_e( '+ קמפיין חדש', 'tehilim' ); ?></a>
+				<a class="btn-create-primary" href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php esc_html_e( '+ קבוצת תהילים חדשה', 'tehilim' ); ?></a>
 				<a class="btn-account-secondary" href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>"><?php esc_html_e( 'התנתקות', 'tehilim' ); ?></a>
 			</div>
 		</div>
@@ -69,7 +69,7 @@ foreach ( $campaigns as $c ) {
 		<div class="account-stats">
 			<div class="account-stat">
 				<div class="account-stat-num"><?php echo esc_html( number_format_i18n( count( $campaigns ) ) ); ?></div>
-				<div class="account-stat-label"><?php esc_html_e( 'קמפיינים', 'tehilim' ); ?></div>
+				<div class="account-stat-label"><?php esc_html_e( 'קבוצות תהילים', 'tehilim' ); ?></div>
 			</div>
 			<div class="account-stat-divider"></div>
 			<div class="account-stat">
@@ -91,14 +91,14 @@ foreach ( $campaigns as $c ) {
 
 	<!-- Campaigns -->
 	<section class="account-main">
-		<h2 class="account-section-title"><?php printf( esc_html__( 'הקמפיינים שלי (%d)', 'tehilim' ), count( $campaigns ) ); ?></h2>
+		<h2 class="account-section-title"><?php printf( esc_html__( 'קבוצות התהילים שלי (%d)', 'tehilim' ), count( $campaigns ) ); ?></h2>
 
 		<?php if ( ! $campaigns ) : ?>
 			<div class="account-empty">
 				<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#B9822B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5M12 6v13"></path></svg>
-				<div class="account-empty-title"><?php esc_html_e( 'עוד לא פתחתם קמפיין', 'tehilim' ); ?></div>
-				<p><?php esc_html_e( 'פתחו קמפיין ראשון, הזמינו שגרירים ועקבו מכאן אחרי כל פרק שנאמר.', 'tehilim' ); ?></p>
-				<a class="btn-create-primary" href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php esc_html_e( 'פתיחת קמפיין ראשון', 'tehilim' ); ?></a>
+				<div class="account-empty-title"><?php esc_html_e( 'עוד לא פתחתם קבוצת תהילים', 'tehilim' ); ?></div>
+				<p><?php esc_html_e( 'פתחו קבוצת תהילים ראשון, הזמינו שגרירים ועקבו מכאן אחרי כל פרק שנאמר.', 'tehilim' ); ?></p>
+				<a class="btn-create-primary" href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php esc_html_e( 'פתיחת קבוצת תהילים ראשון', 'tehilim' ); ?></a>
 			</div>
 		<?php endif; ?>
 
@@ -153,12 +153,12 @@ foreach ( $campaigns as $c ) {
 								</a>
 							<?php endforeach; ?>
 						<?php else : ?>
-							<div class="account-amblist-empty"><?php esc_html_e( 'עדיין אין שגרירים מאושרים בקמפיין הזה.', 'tehilim' ); ?></div>
+							<div class="account-amblist-empty"><?php esc_html_e( 'עדיין אין שגרירים מאושרים בקבוצה הזה.', 'tehilim' ); ?></div>
 						<?php endif; ?>
 					</div>
 
 					<div class="account-camp-actions">
-						<a class="btn-account-view" href="<?php echo esc_url( $c_url ); ?>"><?php esc_html_e( 'לעמוד הקמפיין', 'tehilim' ); ?></a>
+						<a class="btn-account-view" href="<?php echo esc_url( $c_url ); ?>"><?php esc_html_e( 'לעמוד הקבוצה', 'tehilim' ); ?></a>
 						<button type="button" class="btn-account-share btn-share" data-share-type="copy" data-share-url="<?php echo esc_url( $c_url ); ?>"><?php esc_html_e( 'העתקת קישור', 'tehilim' ); ?></button>
 						<button type="button" class="btn-account-edit" data-edit-toggle><?php esc_html_e( 'ניהול ועריכה', 'tehilim' ); ?></button>
 					</div>

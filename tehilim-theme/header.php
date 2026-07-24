@@ -48,7 +48,7 @@
 		<!-- Navigation Links -->
 		<nav class="header-nav" role="navigation" aria-label="<?php esc_attr_e( 'Primary Navigation', 'tehilim' ); ?>">
 			<a href="<?php echo esc_url( home_url( '/#how-it-works' ) ); ?>"><?php esc_html_e( 'איך זה עובד', 'tehilim' ); ?></a>
-			<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'קמפיינים', 'tehilim' ); ?></a>
+			<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'קבוצות תהילים', 'tehilim' ); ?></a>
 			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>"><?php esc_html_e( 'אודות', 'tehilim' ); ?></a>
 		</nav>
 
@@ -65,7 +65,7 @@
 				<a class="btn-login" href="<?php echo esc_url( tehilim_account_page_url() ); ?>"><?php esc_html_e( 'האזור האישי', 'tehilim' ); ?></a>
 				<a class="btn-login btn-logout" href="<?php echo esc_url( admin_url( 'admin-post.php?action=tehilim_logout' ) ); ?>"><?php esc_html_e( 'התנתקות', 'tehilim' ); ?></a>
 			</span>
-			<a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="btn-create-primary"><?php esc_html_e( 'צור קמפיין', 'tehilim' ); ?></a>
+			<a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="btn-create-primary"><?php esc_html_e( 'צור קבוצת תהילים', 'tehilim' ); ?></a>
 		</div>
 	</div>
 </header>

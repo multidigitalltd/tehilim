@@ -220,10 +220,10 @@ function tehilim_settings_page() {
 		check_admin_referer( 'tehilim_demo_nonce' );
 		if ( 'seed' === $_POST['tehilim_demo_action'] ) {
 			$n = tehilim_seed_demo_content();
-			echo '<div class="notice notice-success"><p>נוצרו ' . esc_html( $n ) . ' קמפיינים פעילים עם שגרירים והתקדמות! <a href="' . esc_url( get_post_type_archive_link( 'campaign' ) ) . '" target="_blank">צפו בארכיון</a></p></div>';
+			echo '<div class="notice notice-success"><p>נוצרו ' . esc_html( $n ) . ' קבוצות תהילים פעילות עם שגרירים והתקדמות! <a href="' . esc_url( get_post_type_archive_link( 'campaign' ) ) . '" target="_blank">צפו בארכיון</a></p></div>';
 		} elseif ( 'delete' === $_POST['tehilim_demo_action'] ) {
 			$n = tehilim_delete_demo_content();
-			echo '<div class="notice notice-success"><p>נמחקו ' . esc_html( $n ) . ' קמפיינים של תוכן דמו על כל הנתונים שלהם.</p></div>';
+			echo '<div class="notice notice-success"><p>נמחקו ' . esc_html( $n ) . ' קבוצות תהילים של תוכן דמו על כל הנתונים שלהם.</p></div>';
 		}
 	}
 
@@ -278,7 +278,7 @@ function tehilim_settings_page() {
 				$total_chapters = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(DISTINCT chapter_number) FROM {$wpdb->prefix}tehilim_recitations" ) );
 				?>
 				<p>
-					<strong><?php echo esc_html( $total_campaigns ); ?></strong> קמפיינים פעילים<br>
+					<strong><?php echo esc_html( $total_campaigns ); ?></strong> קבוצות תהילים פעילות<br>
 					<strong><?php echo esc_html( $total_ambassadors ); ?></strong> שגרירים<br>
 					<strong><?php echo esc_html( $total_recitations ); ?></strong> אמירות<br>
 					<strong><?php echo esc_html( intdiv( $total_chapters, TEHILIM_CHAPTERS_PER_BOOK ) ); ?></strong> ספרים שהושלמו
@@ -373,12 +373,12 @@ function tehilim_settings_page() {
 
 				<tr>
 					<th scope="row">
-						<label for="praise_verses_raw">פסוקי שבח בעמוד קמפיין</label>
+						<label for="praise_verses_raw">פסוקי שבח בעמוד קבוצת תהילים</label>
 					</th>
 					<td>
 						<textarea name="praise_verses_raw" id="praise_verses_raw" rows="5" class="widefat" style="max-width: 560px" dir="rtl" placeholder="הפסוק | המקור"><?php echo esc_textarea( get_option( 'tehilim_praise_verses_raw', '' ) ); ?></textarea>
 						<p class="description">
-							הפסוקים המתחלפים שמוצגים בעמוד קמפיין כשאין לו תמונה. שורה לכל פסוק בפורמט:
+							הפסוקים המתחלפים שמוצגים בעמוד קבוצת תהילים כשאין לו תמונה. שורה לכל פסוק בפורמט:
 							<code>הפסוק | המקור</code>.
 							השאירו ריק לפסוקי ברירת המחדל.
 						</p>
@@ -417,13 +417,13 @@ function tehilim_settings_page() {
 			) ) );
 			?>
 			<p>
-				יצירת <strong>30 קמפיינים פעילים</strong> עם שגרירים מאושרים, פרקים שנאמרו, ספרים שהושלמו והיסטוריית פעילות —
+				יצירת <strong>30 קבוצות תהילים פעילות</strong> עם שגרירים מאושרים, פרקים שנאמרו, ספרים שהושלמו והיסטוריית פעילות —
 				כדי שהאתר ייראה חי ופעיל מהרגע הראשון. אפשר למחוק את הכל בלחיצה בכל שלב.
 			</p>
-			<p><strong>מצב נוכחי:</strong> <?php echo esc_html( $demo_count ); ?> קמפיינים של תוכן דמו באתר.</p>
+			<p><strong>מצב נוכחי:</strong> <?php echo esc_html( $demo_count ); ?> קבוצות תהילים של תוכן דמו באתר.</p>
 			<form method="POST" style="display: flex; gap: 10px;" onsubmit="var f=this;setTimeout(function(){f.querySelectorAll('button').forEach(function(b){b.disabled=true;});f.insertAdjacentHTML('beforeend','<em style=\'align-self:center\'>יוצרים… זה יכול לקחת עד דקה</em>');},0);">
 				<?php wp_nonce_field( 'tehilim_demo_nonce' ); ?>
-				<button type="submit" name="tehilim_demo_action" value="seed" class="button button-primary">יצירת 30 קמפיינים פעילים</button>
+				<button type="submit" name="tehilim_demo_action" value="seed" class="button button-primary">יצירת 30 קבוצות תהילים פעילות</button>
 				<?php if ( $demo_count ) : ?>
 					<button type="submit" name="tehilim_demo_action" value="delete" class="button" onclick="return confirm('למחוק את כל תוכן הדמו? הפעולה אינה הפיכה.');">מחיקת כל תוכן הדמו</button>
 				<?php endif; ?>

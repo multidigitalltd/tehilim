@@ -368,9 +368,9 @@ function tehilim_handle_campaign_create( WP_REST_Request $request ) {
 	if ( $admin_email && is_email( $admin_email ) ) {
 		wp_mail(
 			$admin_email,
-			sprintf( 'קמפיין חדש ממתין לאישור: "%s"', $dedication_name ),
+			sprintf( 'קבוצת תהילים חדשה ממתין לאישור: "%s"', $dedication_name ),
 			sprintf(
-				"קמפיין חדש נוצר באתר וממתין לאישורך.\n\nשם ההקדשה: %s\nמארגן: %s\nיעד: %d ספרים\n\nלאישור ופרסום:\n%s\n\nלכל הקמפיינים הממתינים:\n%s",
+				"קבוצת תהילים חדשה נוצר באתר וממתין לאישורך.\n\nשם ההקדשה: %s\nמארגן: %s\nיעד: %d ספרים\n\nלאישור ופרסום:\n%s\n\nלכל קבוצות התהילים הממתינים:\n%s",
 				$dedication_name,
 				$organizer_name,
 				$goal_books,
@@ -609,9 +609,9 @@ function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
 		$account_url = function_exists( 'tehilim_account_page_url' ) ? tehilim_account_page_url() : admin_url();
 		wp_mail(
 			$organizer_email,
-			sprintf( 'בקשת שגריר חדשה בקמפיין "%s"', $campaign->post_title ),
+			sprintf( 'בקשת שגריר חדשה בקבוצה "%s"', $campaign->post_title ),
 			sprintf(
-				"%s (%s) מבקש/ת להצטרף כשגריר/ה לקמפיין \"%s\" עם יעד אישי של %d ספרים.\n\nלאישור או דחייה של הבקשה היכנסו לאזור האישי:\n%s",
+				"%s (%s) מבקש/ת להצטרף כשגריר/ה לקבוצה \"%s\" עם יעד אישי של %d ספרים.\n\nלאישור או דחייה של הבקשה היכנסו לאזור האישי:\n%s",
 				$name,
 				$email,
 				$campaign->post_title,
@@ -701,12 +701,12 @@ function tehilim_handle_ambassador_moderate( WP_REST_Request $request ) {
 	// Email the ambassador: their personal page + a ready-to-share link
 	$amb_email = get_post_meta( $ambassador_id, 'email', true );
 	if ( $amb_email && is_email( $amb_email ) ) {
-		$share_text = sprintf( 'הצטרפו אליי לאמירת תהילים בקמפיין "%s": %s', $campaign->post_title, $personal_url );
+		$share_text = sprintf( 'הצטרפו אליי לאמירת תהילים בקבוצה "%s": %s', $campaign->post_title, $personal_url );
 		wp_mail(
 			$amb_email,
-			sprintf( 'אושרתם כשגריר/ה בקמפיין "%s"!', $campaign->post_title ),
+			sprintf( 'אושרתם כשגריר/ה בקבוצה "%s"!', $campaign->post_title ),
 			sprintf(
-				"מזל טוב! מנהל הקמפיין אישר את הצטרפותכם כשגריר/ה.\n\nהעמוד האישי שלכם:\n%s\n\nקישור מוכן לשיתוף (העתיקו ושלחו לחברים):\n%s\n\nכל פרק שייאמר דרך הקישור שלכם נזקף לזכותכם בלוח השגרירים.",
+				"מזל טוב! מנהל הקבוצה אישר את הצטרפותכם כשגריר/ה.\n\nהעמוד האישי שלכם:\n%s\n\nקישור מוכן לשיתוף (העתיקו ושלחו לחברים):\n%s\n\nכל פרק שייאמר דרך הקישור שלכם נזקף לזכותכם בלוח השגרירים.",
 				$personal_url,
 				$share_text
 			)

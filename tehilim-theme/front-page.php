@@ -29,13 +29,13 @@ get_header();
 
 				<div class="hero-cta-group">
 					<a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="btn-hero-primary">
-						צרו קמפיין
+						צרו קבוצת תהילים
 						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFF7F2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
 							<path d="M19 12H5M11 18l-6-6 6-6"></path>
 						</svg>
 					</a>
 					<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>" class="btn-hero-secondary">
-						גלו קמפיינים
+						גלו קבוצות תהילים
 					</a>
 				</div>
 
@@ -48,7 +48,7 @@ get_header();
 						<div class="avatar avatar-count">+83</div>
 					</div>
 					<div class="proof-text">
-						כבר <strong data-site-stat="participants">4,280</strong> אומרים תהילים ב־<strong data-site-stat="campaigns">128</strong> קמפיינים
+						כבר <strong data-site-stat="participants">4,280</strong> אומרים תהילים ב־<strong data-site-stat="campaigns">128</strong> קבוצות תהילים
 					</div>
 				</div>
 			</div>
@@ -64,7 +64,7 @@ get_header();
 							<div class="card-avatar">מ</div>
 							<div>
 								<div class="card-title">משה בן חיה</div>
-								<div class="card-subtitle">קמפיין לזיווג הגון</div>
+								<div class="card-subtitle">קבוצת תהילים לזיווג הגון</div>
 							</div>
 						</div>
 						<div class="status-badge">
@@ -146,7 +146,7 @@ get_header();
 			<div class="stat-divider"></div>
 			<div class="stat-item">
 				<div class="stat-value" data-site-stat="campaigns">128</div>
-				<div class="stat-label">קמפיינים</div>
+				<div class="stat-label">קבוצות תהילים</div>
 			</div>
 		</div>
 	</section>
@@ -154,7 +154,7 @@ get_header();
 	<!-- Recent Campaigns Section -->
 	<section class="section">
 		<div class="section-header">
-			<h2>קמפיינים שעלו לאחרונה</h2>
+			<h2>קבוצות תהילים שעלו לאחרונה</h2>
 			<p>הצטרפו לקהילות שכבר התחילו לומר תהילים יחד.</p>
 		</div>
 
@@ -175,14 +175,14 @@ get_header();
 				endforeach;
 				wp_reset_postdata();
 			else :
-				echo '<div style="grid-column: 1/-1; text-align: center; padding: 40px;"><p>אין קמפיינים עדיין. בואו להיות הראשונים!</p></div>';
+				echo '<div style="grid-column: 1/-1; text-align: center; padding: 40px;"><p>אין קבוצות תהילים עדיין. בואו להיות הראשונים!</p></div>';
 			endif;
 			?>
 		</div>
 
 		<div style="text-align: center;">
 			<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>" class="btn-all-campaigns">
-				לכל הקמפיינים
+				לכל קבוצות התהילים
 			</a>
 		</div>
 	</section>
@@ -202,8 +202,8 @@ get_header();
 						<path d="M12 5v14M5 12h14"></path>
 					</svg>
 				</div>
-				<h3>פותחים קמפיין</h3>
-				<p>שם, מטרה ויעד. שתי דקות והקמפיין באוויר.</p>
+				<h3>פותחים קבוצת תהילים</h3>
+				<p>שם, מטרה ויעד. שתי דקות והקבוצה באוויר.</p>
 			</div>
 
 			<div class="step-card">
@@ -235,7 +235,7 @@ get_header();
 	<!-- Features Section -->
 	<section class="features">
 		<div class="section-header">
-			<h2>כל מה שצריך לקמפיין מנצח</h2>
+			<h2>כל מה שצריך לקבוצה מנצח</h2>
 		</div>
 
 		<div class="features-grid">
@@ -278,7 +278,7 @@ get_header();
 						<circle cx="12" cy="12" r="1.4" fill="#A94B2E"></circle>
 					</svg>
 				</div>
-				<h3>קמפיין לכל מטרה</h3>
+				<h3>קבוצת תהילים לכל מטרה</h3>
 				<p>רפואה, ישועה, זיווג, פרנסה, עילוי נשמה ועוד.</p>
 			</div>
 
@@ -322,7 +322,7 @@ get_header();
 					</svg>
 				</div>
 				<h3>שיתוף בוואטסאפ</h3>
-				<p>כפתור אחד, והקמפיין מגיע לכל קבוצה וכל איש קשר.</p>
+				<p>כפתור אחד, והקבוצה מגיע לכל קבוצה וכל איש קשר.</p>
 			</div>
 		</div>
 	</section>
@@ -375,7 +375,7 @@ get_header();
 	<section class="faq-section" id="faq">
 		<div class="faq-badge">שאלות ותשובות</div>
 		<h2>שאלות נפוצות</h2>
-		<p>כל מה שצריך לדעת לפני שפותחים קמפיין.</p>
+		<p>כל מה שצריך לדעת לפני שפותחים קבוצת תהילים.</p>
 
 		<div class="faq-list">
 			<div class="faq-item">
@@ -404,7 +404,7 @@ get_header();
 					</span>
 				</button>
 				<div class="faq-answer">
-					לא. זו פלטפורמה קהילתית: פותחים קמפיין סביב מטרה, מזמינים שגרירים, וכל הקהילה אומרת יחד — עם מעקב חי אחרי כל פרק, לוח שגרירים ופיד פעילות.
+					לא. זו פלטפורמה קהילתית: פותחים קבוצת תהילים סביב מטרה, מזמינים שגרירים, וכל הקהילה אומרת יחד — עם מעקב חי אחרי כל פרק, לוח שגרירים ופיד פעילות.
 				</div>
 			</div>
 
@@ -419,7 +419,7 @@ get_header();
 					</span>
 				</button>
 				<div class="faq-answer">
-					בכל לחיצה על "סמן שקראתי" נרשם פרק אחד לקמפיין. ספר תהילים נחשב מושלם רק כשכל 150 הפרקים נאמרו — ואז מתחיל ספר חדש, עד השלמת היעד.
+					בכל לחיצה על "סמן שקראתי" נרשם פרק אחד לקבוצה. ספר תהילים נחשב מושלם רק כשכל 150 הפרקים נאמרו — ואז מתחיל ספר חדש, עד השלמת היעד.
 				</div>
 			</div>
 
@@ -434,14 +434,14 @@ get_header();
 					</span>
 				</button>
 				<div class="faq-answer">
-					שגריר מקבל עמוד אישי וקישור משלו, משתף אותם עם הסביבה שלו — וכל פרק שנאמר דרך הקישור נזקף לזכותו בלוח השגרירים של הקמפיין.
+					שגריר מקבל עמוד אישי וקישור משלו, משתף אותם עם הסביבה שלו — וכל פרק שנאמר דרך הקישור נזקף לזכותו בלוח השגרירים של הקבוצה.
 				</div>
 			</div>
 
 			<div class="faq-item">
 				<button class="faq-question">
 					<span class="faq-number">05</span>
-					<span class="faq-text">האם ניתן לשתף את הקמפיין?</span>
+					<span class="faq-text">האם ניתן לשתף את הקבוצה?</span>
 					<span class="faq-toggle">
 						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
 							<path d="M6 9l6 6 6-6"></path>
@@ -449,14 +449,14 @@ get_header();
 					</span>
 				</button>
 				<div class="faq-answer">
-					כמובן. בכל קמפיין יש כפתור שיתוף ל-WhatsApp והעתקת קישור בלחיצה אחת — לקבוצות, לסטטוס ולכל מקום שתרצו.
+					כמובן. בכל קבוצת תהילים יש כפתור שיתוף ל-WhatsApp והעתקת קישור בלחיצה אחת — לקבוצות, לסטטוס ולכל מקום שתרצו.
 				</div>
 			</div>
 
 			<div class="faq-item">
 				<button class="faq-question">
 					<span class="faq-number">06</span>
-					<span class="faq-text">כמה זמן לוקח לפתוח קמפיין?</span>
+					<span class="faq-text">כמה זמן לוקח לפתוח קבוצת תהילים?</span>
 					<span class="faq-toggle">
 						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
 							<path d="M6 9l6 6 6-6"></path>
@@ -464,7 +464,7 @@ get_header();
 					</span>
 				</button>
 				<div class="faq-answer">
-					פחות משתי דקות: בוחרים מטרה, כותבים למי מוקדש, קובעים יעד — והקמפיין באוויר ומוכן לשיתוף.
+					פחות משתי דקות: בוחרים מטרה, כותבים למי מוקדש, קובעים יעד — והקבוצה באוויר ומוכן לשיתוף.
 				</div>
 			</div>
 
@@ -479,7 +479,7 @@ get_header();
 					</span>
 				</button>
 				<div class="faq-answer">
-					כן. אנחנו שומרים רק את הפרטים הנחוצים לקמפיין, כתובות אימייל לעולם אינן מוצגות בפומבי, וכל התקשורת עם האתר מאובטחת.
+					כן. אנחנו שומרים רק את הפרטים הנחוצים לקבוצה, כתובות אימייל לעולם אינן מוצגות בפומבי, וכל התקשורת עם האתר מאובטחת.
 				</div>
 			</div>
 		</div>
@@ -504,18 +504,18 @@ get_header();
 						</svg>
 						חינם · ללא הרשמה · תוך דקות
 					</div>
-					<h2>צרו קמפיין תהילים <span style="color: #E9B75A;">משלכם</span></h2>
+					<h2>צרו קבוצת תהילים <span style="color: #E9B75A;">משלכם</span></h2>
 					<p>אחדו סביבכם משפחה, חברים וקהילה סביב יעד תהילים משותף — בחרו מטרה, הזמינו שגרירים, ועקבו אחרי כל פרק בזמן אמת.</p>
 
 					<div style="display: flex; flex-wrap: wrap; gap: 13px; align-items: center;">
 						<a href="<?php echo esc_url( home_url( '/create/' ) ); ?>" class="btn-cta-primary">
-							צרו קמפיין עכשיו
+							צרו קבוצת תהילים עכשיו
 							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2A1B0C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
 								<path d="M19 12H5M11 18l-6-6 6-6"></path>
 							</svg>
 						</a>
 						<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>" class="btn-cta-secondary">
-							גלו קמפיינים קיימים
+							גלו קבוצות תהילים קיימות
 						</a>
 					</div>
 
@@ -527,7 +527,7 @@ get_header();
 							<div class="cta-avatar cta-avatar-4">+</div>
 						</div>
 						<div class="cta-stats">
-							<strong data-site-stat="participants">4,280</strong> אומרים תהילים ב־<strong data-site-stat="campaigns">128</strong> קמפיינים פעילים
+							<strong data-site-stat="participants">4,280</strong> אומרים תהילים ב־<strong data-site-stat="campaigns">128</strong> קבוצות תהילים פעילות
 						</div>
 					</div>
 				</div>

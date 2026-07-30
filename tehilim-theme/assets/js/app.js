@@ -374,7 +374,7 @@
 
 			var sub = document.createElement( 'div' );
 			sub.className = 'tehilim-modal-sub';
-			sub.textContent = 'הפרקים המודגשים עדיין לא נאמרו בספר הנוכחי';
+			sub.textContent = 'הפרקים בזהב כבר נאמרו בספר הנוכחי · השאר עדיין פנויים';
 
 			var grid = document.createElement( 'div' );
 			grid.className = 'tehilim-picker-grid';
@@ -392,7 +392,8 @@
 					var cell = document.createElement( 'button' );
 					cell.type = 'button';
 					cell.className = 'tehilim-picker-cell';
-					if ( openSet[ num ] ) { cell.classList.add( 'is-open' ); }
+					// A chapter NOT in the open set has already been said this cycle
+					if ( ! openSet[ num ] ) { cell.classList.add( 'is-said' ); }
 					if ( num === self.currentChapter ) { cell.classList.add( 'is-current' ); }
 					cell.textContent = self.hebrewNumeral( num );
 					cell.title = 'פרק ' + self.hebrewNumeral( num );

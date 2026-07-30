@@ -3,7 +3,7 @@ Theme Name: Tehilim
 Theme URI: https://github.com/multidigitalltd/tehilim
 Author: Multi Digital
 Description: Community Psalms campaign platform
-Version: 2.14.1
+Version: 2.14.2
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: tehilim
@@ -4844,21 +4844,32 @@ html.tehilim-in .auth-out {
   color: #2E2318;
 }
 
-.tehilim-picker-cell.is-open {
-  background: #FBF3E4;
-  border-color: #EED9B2;
-  color: #B9822B;
+/* Already-said chapters: dark gold */
+.tehilim-picker-cell.is-said {
+  background: linear-gradient(135deg, #B9822B, #9A6A1F);
+  border-color: #9A6A1F;
+  color: #FFF7E8;
   font-weight: 800;
 }
 
-.tehilim-picker-cell.is-open:hover {
-  background: #F5E7C8;
+.tehilim-picker-cell.is-said:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #A9741F, #8A5D18);
+  color: #FFF7E8;
 }
 
+/* Current chapter: distinct primary outline ring */
 .tehilim-picker-cell.is-current {
-  background: linear-gradient(135deg, #C05A3A, #A94B2E);
-  border-color: #A94B2E;
-  color: #FFF7F2;
+  background: #FFFCF6;
+  border: 2px solid var(--primary);
+  color: #A94B2E;
+  font-weight: 800;
+  box-shadow: 0 0 0 3px rgba(192, 90, 58, 0.16);
+}
+
+.tehilim-picker-cell.is-current:hover {
+  background: #FFFCF6;
+  color: #A94B2E;
 }
 
 @media (max-width: 480px) {

@@ -342,14 +342,82 @@
 			return pool[ Math.floor( Math.random() * pool.length ) ];
 		},
 
+		/* Styled chapter picker: a grid of all 150 chapters in Hebrew numerals,
+		   open ones highlighted */
 		pickChapter: function() {
-			var open = ( this.available && this.available.length ) ? ' פרקים פנויים: ' + this.available.slice( 0, 12 ).join( ', ' ) + ( this.available.length > 12 ? '…' : '' ) : '';
-			var input = window.prompt( 'בחרו פרק (1–150).' + open, String( this.currentChapter || 1 ) );
-			if ( input === null ) { return; }
-			var n = parseInt( input, 10 );
-			if ( n >= 1 && n <= CHAPTERS ) {
-				this.loadChapter( n );
+			var self = this;
+			var existing = document.querySelector( '.tehilim-modal-overlay' );
+			if ( existing ) { existing.remove(); }
+
+			var openSet = {};
+			if ( this.available && this.available.length ) {
+				this.available.forEach( function( c ) { openSet[ c ] = true; } );
 			}
+
+			var overlay = document.createElement( 'div' );
+			overlay.className = 'tehilim-modal-overlay';
+
+			var modal = document.createElement( 'div' );
+			modal.className = 'tehilim-modal tehilim-picker';
+			modal.setAttribute( 'role', 'dialog' );
+			modal.setAttribute( 'aria-label', 'בחירת פרק' );
+
+			var close = document.createElement( 'button' );
+			close.type = 'button';
+			close.className = 'tehilim-modal-close';
+			close.setAttribute( 'aria-label', 'סגירה' );
+			close.textContent = '✕';
+
+			var title = document.createElement( 'div' );
+			title.className = 'tehilim-modal-title';
+			title.textContent = 'בחירת פרק';
+
+			var sub = document.createElement( 'div' );
+			sub.className = 'tehilim-modal-sub';
+			sub.textContent = 'הפרקים המודגשים עדיין לא נאמרו בספר הנוכחי';
+
+			var grid = document.createElement( 'div' );
+			grid.className = 'tehilim-picker-grid';
+
+			function shut() {
+				overlay.remove();
+				document.removeEventListener( 'keydown', onKey );
+			}
+			function onKey( ev ) {
+				if ( 'Escape' === ev.key ) { shut(); }
+			}
+
+			for ( var n = 1; n <= CHAPTERS; n++ ) {
+				( function( num ) {
+					var cell = document.createElement( 'button' );
+					cell.type = 'button';
+					cell.className = 'tehilim-picker-cell';
+					if ( openSet[ num ] ) { cell.classList.add( 'is-open' ); }
+					if ( num === self.currentChapter ) { cell.classList.add( 'is-current' ); }
+					cell.textContent = self.hebrewNumeral( num );
+					cell.title = 'פרק ' + self.hebrewNumeral( num );
+					cell.addEventListener( 'click', function() {
+						shut();
+						self.loadChapter( num );
+						var rb = document.querySelector( '.reader-body' );
+						if ( rb ) { rb.scrollIntoView( { behavior: 'smooth', block: 'start' } ); }
+					} );
+					grid.appendChild( cell );
+				} )( n );
+			}
+
+			modal.appendChild( close );
+			modal.appendChild( title );
+			modal.appendChild( sub );
+			modal.appendChild( grid );
+			overlay.appendChild( modal );
+			document.body.appendChild( overlay );
+
+			close.addEventListener( 'click', shut );
+			overlay.addEventListener( 'click', function( ev ) {
+				if ( ev.target === overlay ) { shut(); }
+			} );
+			document.addEventListener( 'keydown', onKey );
 		},
 
 		/* Local bundled Psalms text (all 150 chapters, menukad) */

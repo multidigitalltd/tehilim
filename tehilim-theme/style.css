@@ -3,7 +3,7 @@ Theme Name: Tehilim
 Theme URI: https://github.com/multidigitalltd/tehilim
 Author: Multi Digital
 Description: Community Psalms campaign platform
-Version: 2.13.5
+Version: 2.14.0
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: tehilim
@@ -4803,5 +4803,66 @@ html.tehilim-in .auth-out {
 @media (max-width: 900px) {
   .campaign-hero-image.is-verses {
     display: none;
+  }
+}
+
+/* Chapter picker modal */
+.tehilim-picker {
+  max-width: 440px;
+}
+
+.tehilim-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 7px;
+  margin-top: 16px;
+  max-height: 52vh;
+  overflow-y: auto;
+  padding: 2px;
+}
+
+.tehilim-picker-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-page);
+  color: #7A6B58;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Frank Ruhl Libre', 'Asimon', serif;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.tehilim-picker-cell:hover {
+  transform: translateY(-1px);
+  border-color: #D9C09A;
+  background: #F6EEDF;
+  color: #2E2318;
+}
+
+.tehilim-picker-cell.is-open {
+  background: #FBF3E4;
+  border-color: #EED9B2;
+  color: #B9822B;
+  font-weight: 800;
+}
+
+.tehilim-picker-cell.is-open:hover {
+  background: #F5E7C8;
+}
+
+.tehilim-picker-cell.is-current {
+  background: linear-gradient(135deg, #C05A3A, #A94B2E);
+  border-color: #A94B2E;
+  color: #FFF7F2;
+}
+
+@media (max-width: 480px) {
+  .tehilim-picker-grid {
+    grid-template-columns: repeat(5, 1fr);
   }
 }

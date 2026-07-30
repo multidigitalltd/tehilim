@@ -1,0 +1,85 @@
+<?php
+/**
+ * Footer Template - Tehilim
+ */
+?>
+
+<footer class="site-footer">
+	<div class="footer-wrapper">
+		<!-- Brand Column -->
+		<div>
+			<div class="footer-brand">
+				<?php
+				$tehilim_footer_logo_id = get_theme_mod( 'custom_logo' );
+				if ( $tehilim_footer_logo_id ) :
+					echo wp_get_attachment_image( $tehilim_footer_logo_id, 'medium', false, array(
+						'class' => 'footer-logo-img',
+						'alt'   => esc_attr( get_bloginfo( 'name' ) ),
+					) );
+				else :
+					?>
+					<div class="footer-logo">
+						<svg width="21" height="21" viewBox="0 0 24 24" fill="none">
+							<path d="M12 6.4C10.2 5 7.4 4.5 4.6 5v12.3c2.8-.5 5.6 0 7.4 1.4 1.8-1.4 4.6-1.9 7.4-1.4V5c-2.8-.5-5.6 0-7.4 1.4Z" stroke="#FFF3E4" stroke-width="1.7" stroke-linejoin="round"></path>
+							<path d="M12 6.4v12.3" stroke="#F0CE7E" stroke-width="1.7" stroke-linecap="round"></path>
+						</svg>
+					</div>
+					<span class="footer-brand-name"><?php esc_html_e( 'תהילים', 'tehilim' ); ?></span>
+				<?php endif; ?>
+			</div>
+			<p class="footer-description">
+				<?php
+				$tehilim_footer_desc = get_bloginfo( 'description' );
+				if ( ! $tehilim_footer_desc ) {
+					$tehilim_footer_desc = __( 'פלטפורמה חינמית לאיחוד קהילות סביב אמירת תהילים — כי יחד מגיעים רחוק יותר.', 'tehilim' );
+				}
+				echo esc_html( $tehilim_footer_desc );
+				?>
+			</p>
+			<div class="footer-heart">
+				<svg width="13" height="13" viewBox="0 0 24 24" fill="#C05A3A">
+					<path d="M12 21s-7.5-4.7-10-9.3C.4 8.6 2 5 5.5 5c2 0 3.4 1.1 4.5 2.6C11 6.1 12.5 5 14.5 5 18 5 19.6 8.6 22 11.7 19.5 16.3 12 21 12 21z"></path>
+				</svg>
+				<?php esc_html_e( 'נבנה באהבה לעם ישראל', 'tehilim' ); ?>
+			</div>
+		</div>
+
+		<!-- Product Links -->
+		<div>
+			<h4><?php esc_html_e( 'המוצר', 'tehilim' ); ?></h4>
+			<ul class="footer-col">
+				<li><a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'גלו קבוצות תהילים', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php esc_html_e( 'פתחו קבוצת תהילים', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( is_user_logged_in() ? tehilim_account_page_url() : tehilim_login_page_url( home_url( '/account/' ) ) ); ?>"><?php esc_html_e( 'האזור שלי', 'tehilim' ); ?></a></li>
+			</ul>
+		</div>
+
+		<!-- About Links -->
+		<div>
+			<h4><?php esc_html_e( 'אודות', 'tehilim' ); ?></h4>
+			<ul class="footer-col">
+				<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>"><?php esc_html_e( 'אודות הפלטפורמה', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/#faq' ) ); ?>"><?php esc_html_e( 'שאלות נפוצות', 'tehilim' ); ?></a></li>
+			</ul>
+		</div>
+
+		<!-- Resources Links -->
+		<div>
+			<h4><?php esc_html_e( 'משאבים', 'tehilim' ); ?></h4>
+			<ul class="footer-col">
+				<li><a href="<?php echo esc_url( home_url( '/terms/' ) ); ?>"><?php esc_html_e( 'תקנון האתר', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/privacy/' ) ); ?>"><?php esc_html_e( 'מדיניות פרטיות', 'tehilim' ); ?></a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="footer-bottom">
+		<div class="footer-copyright">
+			&copy; <?php echo esc_html( date( 'Y' ) . ' ' . get_bloginfo( 'name' ) ); ?> · <?php esc_html_e( 'כל הזכויות שמורות.', 'tehilim' ); ?>
+		</div>
+	</div>
+</footer>
+
+<?php wp_footer(); ?>
+</body>
+</html>

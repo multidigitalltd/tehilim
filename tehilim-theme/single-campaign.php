@@ -196,9 +196,9 @@ if ( have_posts() ) :
 						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EFC978" stroke-width="1.9"><circle cx="9" cy="8" r="3"></circle><path d="M3 19c0-3 2.7-5.5 6-5.5S15 16 15 19M17 5a3 3 0 0 1 0 6M21 19c0-2.3-1.4-4.3-3.5-5"></path></svg>
 						<?php esc_html_e( 'הצטרפו כשגריר/ה לקבוצה', 'tehilim' ); ?>
 					</div>
-					<div class="ambassador-cta-desc"><?php esc_html_e( 'התחייבו על מספר ספרים שלמים שתאמרו, ובעל הקבוצה יאשר את הצטרפותכם. תקבלו קישור אישי ומיני-דשבורד.', 'tehilim' ); ?></div>
+					<div class="ambassador-cta-desc"><?php esc_html_e( 'רוצים לזכות ולגייס עוד פרקי תהילים? קחו יעד וקבלו קישור אישי להפצה.', 'tehilim' ); ?></div>
 				</div>
-				<button class="btn-ambassador-cta"><?php esc_html_e( 'הגישו בקשה להיות שגריר', 'tehilim' ); ?></button>
+				<button class="btn-ambassador-cta"><?php esc_html_e( 'לפתיחת שגריר', 'tehilim' ); ?></button>
 			</div>
 
 			<!-- Ambassadors list -->

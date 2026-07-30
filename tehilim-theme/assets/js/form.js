@@ -44,6 +44,11 @@
 					self.handleAmbassadorModerate( moderate );
 				}
 
+				var del = e.target.closest( '[data-delete-campaign]' );
+				if ( del ) {
+					self.handleCampaignDelete( del );
+				}
+
 				var ambToggle = e.target.closest( '[data-amblist-toggle]' );
 				if ( ambToggle ) {
 					var ambCard = ambToggle.closest( '.account-camp' );
@@ -192,6 +197,41 @@
 			// Unmapped error: append the code so the problem is diagnosable
 			var suffix = data && data.code ? ' [' + data.code + ']' : '';
 			return fallback + suffix;
+		},
+
+		/* ============ Campaign deletion (personal area) ============ */
+
+		handleCampaignDelete: function( button ) {
+			var self = this;
+			var campaignId = parseInt( button.dataset.campaignId, 10 );
+			var title = button.dataset.campaignTitle || 'הקבוצה';
+			if ( ! campaignId ) { return; }
+
+			if ( ! window.confirm( 'למחוק לצמיתות את "' + title + '"?\nכל השגרירים, הפרקים והנתונים של הקבוצה יימחקו. פעולה זו אינה הפיכה.' ) ) {
+				return;
+			}
+
+			var original = button.textContent;
+			button.disabled = true;
+			button.textContent = 'מוחקים…';
+
+			this.apiPost( 'campaigns/' + campaignId + '/delete', {} )
+				.then( function( data ) {
+					var card = button.closest( '.account-camp' );
+					if ( card ) {
+						card.style.transition = 'opacity .3s ease';
+						card.style.opacity = '0';
+					}
+					window.setTimeout( function() {
+						window.location.href = ( data && data.account_url ) ? data.account_url : window.location.href;
+						window.location.reload();
+					}, 350 );
+				} )
+				.catch( function( err ) {
+					button.disabled = false;
+					button.textContent = original;
+					window.alert( self.restError( err, 'מחיקת הקבוצה נכשלה. נסו שוב.' ) );
+				} );
 		},
 
 		/* ============ Ambassador moderation (personal area) ============ */

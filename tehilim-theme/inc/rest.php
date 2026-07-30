@@ -46,6 +46,12 @@ function tehilim_register_rest_routes() {
 		'permission_callback' => 'is_user_logged_in',
 	) );
 
+	register_rest_route( 'tehilim/v1', '/campaigns/(?P<id>\d+)/delete', array(
+		'methods'             => 'POST',
+		'callback'            => 'tehilim_handle_campaign_delete',
+		'permission_callback' => 'is_user_logged_in',
+	) );
+
 	register_rest_route( 'tehilim/v1', '/site-stats', array(
 		'methods'             => 'GET',
 		'callback'            => 'tehilim_get_site_stats_endpoint',
@@ -467,6 +473,53 @@ function tehilim_handle_campaign_update( WP_REST_Request $request ) {
 		'success'      => true,
 		'campaign_id'  => $campaign_id,
 		'campaign_url' => esc_url_raw( get_permalink( $campaign_id ) ),
+	);
+}
+
+/**
+ * Delete a campaign (owner-only) — removes its ambassadors and recitations too.
+ */
+function tehilim_handle_campaign_delete( WP_REST_Request $request ) {
+	$campaign_id = absint( $request->get_param( 'id' ) );
+	$campaign    = get_post( $campaign_id );
+
+	if ( ! $campaign || 'campaign' !== $campaign->post_type ) {
+		return new WP_Error( 'not_found', 'Campaign not found', array( 'status' => 404 ) );
+	}
+
+	$is_owner = intval( $campaign->post_author ) === get_current_user_id();
+	if ( ! $is_owner && ! current_user_can( 'delete_post', $campaign_id ) ) {
+		return new WP_Error( 'forbidden', 'You cannot delete this campaign', array( 'status' => 403 ) );
+	}
+
+	global $wpdb;
+	$table = $wpdb->prefix . 'tehilim_recitations';
+
+	// Remove recitations
+	$wpdb->delete( $table, array( 'campaign_id' => $campaign_id ), array( '%d' ) );
+
+	// Remove this campaign's ambassadors
+	$ambassadors = get_posts( array(
+		'post_type'      => 'ambassador',
+		'post_status'    => 'any',
+		'posts_per_page' => -1,
+		'fields'         => 'ids',
+		'meta_key'       => 'campaign_id',
+		'meta_value'     => $campaign_id,
+	) );
+	foreach ( $ambassadors as $amb_id ) {
+		wp_delete_post( $amb_id, true );
+	}
+
+	tehilim_clear_campaign_caches( $campaign_id );
+	wp_delete_post( $campaign_id, true );
+	delete_transient( 'tehilim_site_stats' );
+
+	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+
+	return array(
+		'success'     => true,
+		'account_url' => esc_url_raw( function_exists( 'tehilim_account_page_url' ) ? tehilim_account_page_url() : home_url( '/' ) ),
 	);
 }
 

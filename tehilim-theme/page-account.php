@@ -228,7 +228,10 @@ foreach ( $campaigns as $c ) {
 							<?php endif; ?>
 						</div>
 
-						<button type="submit" class="btn-create-submit account-edit-save"><?php esc_html_e( 'שמירת שינויים', 'tehilim' ); ?></button>
+						<div class="account-edit-actions">
+							<button type="submit" class="btn-create-submit account-edit-save"><?php esc_html_e( 'שמירת שינויים', 'tehilim' ); ?></button>
+							<button type="button" class="btn-delete-campaign" data-delete-campaign data-campaign-id="<?php echo esc_attr( $c->ID ); ?>" data-campaign-title="<?php echo esc_attr( $c->post_title ); ?>"><?php esc_html_e( 'מחיקת הקבוצה', 'tehilim' ); ?></button>
+						</div>
 					</form>
 				</div>
 			<?php endforeach; ?>

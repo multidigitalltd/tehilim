@@ -677,9 +677,8 @@
 			if ( fill ) { fill.style.width = stats.progress_percent + '%'; }
 
 			var metaSpans = document.querySelectorAll( '.progress-overview-meta span' );
-			if ( metaSpans.length >= 2 ) {
-				metaSpans[ 0 ].textContent = fmt( stats.books_done ) + ' ספרים הושלמו';
-				metaSpans[ 1 ].textContent = fmt( stats.goal_books ) + ' מתוך היעד';
+			if ( metaSpans.length >= 1 ) {
+				metaSpans[ 0 ].textContent = 'הושלמו ' + fmt( stats.books_done ) + ' ספרים מתוך יעד של ' + fmt( stats.goal_books ) + ' ספרים';
 			}
 
 			var nums = document.querySelectorAll( '.campaign-stats .progress-stat-num' );

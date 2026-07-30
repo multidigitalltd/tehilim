@@ -166,8 +166,7 @@ if ( have_posts() ) :
 					<div class="progress-track-fill" style="width:<?php echo esc_attr( $progress['progress_percent'] ); ?>%"></div>
 				</div>
 				<div class="progress-overview-meta">
-					<span><?php printf( esc_html__( '%d ספרים הושלמו', 'tehilim' ), (int) $progress['books_done'] ); ?></span>
-					<span><?php printf( esc_html__( '%d מתוך היעד', 'tehilim' ), (int) $progress['goal_books'] ); ?></span>
+					<span><?php printf( esc_html__( 'הושלמו %1$d ספרים מתוך יעד של %2$d ספרים', 'tehilim' ), (int) $progress['books_done'], (int) $progress['goal_books'] ); ?></span>
 				</div>
 				<div class="progress-stats-grid campaign-stats">
 					<div class="progress-stat">

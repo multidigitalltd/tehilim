@@ -210,7 +210,8 @@ if ( have_posts() ) :
 					</div>
 					<div class="ambassadors-card-count"><?php printf( esc_html__( '%d שגרירים', 'tehilim' ), $ambassadors_count ); ?></div>
 				</div>
-				<div class="ambassadors-card-desc"><?php esc_html_e( 'כל שגריר מגייס את החוג שלו לאמירת תהילים. לחצו על שגריר לצפייה בעמוד האישי שלו.', 'tehilim' ); ?></div>
+				<div class="ambassadors-card-desc"><?php esc_html_e( 'לחצו על שגריר לצפייה בעמוד שלו.', 'tehilim' ); ?></div>
+				<button class="btn-ambassador-cta ambassadors-join-btn btn-amb-join"><?php esc_html_e( 'הצטרפו כשגריר', 'tehilim' ); ?></button>
 				<div class="ambassadors-list">
 					<?php if ( $ambassadors ) : ?>
 						<?php foreach ( $ambassadors as $i => $amb ) :
@@ -233,7 +234,7 @@ if ( have_posts() ) :
 							</a>
 						<?php endforeach; ?>
 					<?php else : ?>
-						<div class="ambassadors-card-desc"><?php esc_html_e( 'עדיין אין שגרירים. היו הראשונים להצטרף!', 'tehilim' ); ?></div>
+						<div class="ambassadors-card-desc"><?php esc_html_e( 'עדיין אין שגרירים — היו הראשונים!', 'tehilim' ); ?></div>
 					<?php endif; ?>
 				</div>
 			</div>

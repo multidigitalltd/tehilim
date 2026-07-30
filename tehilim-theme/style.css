@@ -3,7 +3,7 @@ Theme Name: Tehilim
 Theme URI: https://github.com/multidigitalltd/tehilim
 Author: Multi Digital
 Description: Community Psalms campaign platform
-Version: 2.14.2
+Version: 2.14.3
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: tehilim
@@ -4876,4 +4876,104 @@ html.tehilim-in .auth-out {
   .tehilim-picker-grid {
     grid-template-columns: repeat(5, 1fr);
   }
+}
+
+/* ============================================================
+   Global interaction feedback — hover lift + press on every
+   button, link-button and interactive chip/cell (was static)
+   ============================================================ */
+.btn-hero-primary, .btn-hero-secondary, .btn-create-primary, .btn-create-submit,
+.btn-card-action, .btn-cta-primary, .btn-cta-secondary, .btn-all-campaigns,
+.btn-reader-said, .btn-reader-secondary, .btn-reader-other,
+.btn-amb-join, .btn-amb-share, .btn-ambassador-cta,
+.btn-account-view, .btn-account-share, .btn-account-edit,
+.btn-account-secondary, .btn-login, .btn-google, .btn-light,
+.btn-pending-approve, .btn-pending-reject,
+.btn-share-whatsapp, .btn-share-copy,
+.filter-chip, .occasion-chip, .create-image-mode,
+.carousel-btn, .tehilim-modal-close, .btn-dashboard-secondary,
+.account-camp-ambbtn, .btn-card, .btn, .btn-secondary {
+  transition: transform .16s ease, box-shadow .2s ease, background .2s ease,
+              border-color .2s ease, color .18s ease, opacity .18s ease;
+  will-change: transform;
+}
+
+/* Hover: gentle lift + soft shadow */
+.btn-hero-primary:hover, .btn-hero-secondary:hover, .btn-create-primary:hover,
+.btn-create-submit:hover, .btn-card-action:hover, .btn-cta-primary:hover,
+.btn-cta-secondary:hover, .btn-all-campaigns:hover, .btn-reader-said:hover,
+.btn-reader-secondary:hover, .btn-reader-other:hover, .btn-amb-join:hover,
+.btn-amb-share:hover, .btn-ambassador-cta:hover, .btn-account-view:hover,
+.btn-account-share:hover, .btn-account-edit:hover, .btn-account-secondary:hover,
+.btn-login:hover, .btn-google:hover, .btn-light:hover, .btn-pending-approve:hover,
+.btn-pending-reject:hover, .btn-share-whatsapp:hover, .btn-share-copy:hover,
+.btn-dashboard-secondary:hover, .btn:hover, .btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -10px rgba(120, 70, 35, 0.35);
+}
+
+/* Chips lift a touch less */
+.filter-chip:hover, .occasion-chip:hover, .create-image-mode:hover,
+.account-camp-ambbtn:hover {
+  transform: translateY(-1px);
+}
+
+/* Carousel / close: scale */
+.carousel-btn:hover, .tehilim-modal-close:hover {
+  transform: scale(1.08);
+}
+
+/* Press feedback on everything clickable */
+.btn-hero-primary:active, .btn-hero-secondary:active, .btn-create-primary:active,
+.btn-create-submit:active, .btn-card-action:active, .btn-cta-primary:active,
+.btn-cta-secondary:active, .btn-all-campaigns:active, .btn-reader-said:active,
+.btn-reader-secondary:active, .btn-reader-other:active, .btn-amb-join:active,
+.btn-amb-share:active, .btn-ambassador-cta:active, .btn-account-view:active,
+.btn-account-share:active, .btn-account-edit:active, .btn-account-secondary:active,
+.btn-login:active, .btn-google:active, .btn-light:active, .btn-pending-approve:active,
+.btn-pending-reject:active, .btn-share-whatsapp:active, .btn-share-copy:active,
+.filter-chip:active, .occasion-chip:active, .create-image-mode:active,
+.carousel-btn:active, .tehilim-modal-close:active, .btn-dashboard-secondary:active,
+.account-camp-ambbtn:active, .btn:active, .btn-secondary:active,
+.tehilim-picker-cell:active, .faq-question:active {
+  transform: scale(.96);
+  box-shadow: none;
+}
+
+/* Cards react to hover too */
+.campaign-card, .step-card, .feature-item, .testimonial-card, .account-camp {
+  transition: transform .2s ease, box-shadow .22s ease;
+}
+
+.campaign-card:hover, .step-card:hover, .feature-item:hover, .testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 42px rgba(70, 50, 25, 0.14);
+}
+
+/* Disabled buttons never animate */
+button:disabled, .btn:disabled {
+  transform: none !important;
+  box-shadow: none !important;
+  opacity: .7;
+  cursor: default;
+}
+
+/* Respect reduced-motion: keep color feedback, drop movement */
+@media (prefers-reduced-motion: reduce) {
+  .btn-hero-primary, .btn-hero-secondary, .btn-create-primary, .btn-create-submit,
+  .btn-card-action, .btn-cta-primary, .btn-cta-secondary, .btn-all-campaigns,
+  .btn-reader-said, .btn-reader-secondary, .btn-reader-other, .btn-amb-join,
+  .btn-amb-share, .btn-ambassador-cta, .btn-account-view, .btn-account-share,
+  .btn-account-edit, .btn-account-secondary, .btn-login, .btn-google, .btn-light,
+  .btn-pending-approve, .btn-pending-reject, .btn-share-whatsapp, .btn-share-copy,
+  .filter-chip, .occasion-chip, .carousel-btn, .campaign-card, .step-card,
+  .feature-item, .testimonial-card {
+    transform: none !important;
+  }
+}
+
+/* Join button inside the ambassadors card */
+.ambassadors-join-btn {
+  display: inline-flex;
+  margin: 4px 0 16px;
 }

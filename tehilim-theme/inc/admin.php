@@ -140,6 +140,12 @@ function tehilim_seed_demo_content() {
 
 	delete_transient( 'tehilim_site_stats' );
 
+	// Turn on the auto-growth cron for the demo campaigns
+	update_option( 'tehilim_demo_active', 1 );
+	if ( function_exists( 'tehilim_sync_demo_cron' ) ) {
+		tehilim_sync_demo_cron();
+	}
+
 	return $created;
 }
 
@@ -176,6 +182,12 @@ function tehilim_delete_demo_content() {
 	}
 
 	delete_transient( 'tehilim_site_stats' );
+
+	// Stop the auto-growth cron — no demo content left
+	update_option( 'tehilim_demo_active', 0 );
+	if ( function_exists( 'tehilim_sync_demo_cron' ) ) {
+		tehilim_sync_demo_cron();
+	}
 
 	return count( $demo_campaigns );
 }
@@ -418,7 +430,7 @@ function tehilim_settings_page() {
 			?>
 			<p>
 				יצירת <strong>30 קבוצות תהילים פעילות</strong> עם שגרירים מאושרים, פרקים שנאמרו, ספרים שהושלמו והיסטוריית פעילות —
-				כדי שהאתר ייראה חי ופעיל מהרגע הראשון. אפשר למחוק את הכל בלחיצה בכל שלב.
+				כדי שהאתר ייראה חי ופעיל מהרגע הראשון. לאחר היצירה, הפרקים והספרים בקבוצות הדמו <strong>ימשיכו לגדול אוטומטית</strong> (כל כ-15 דקות) כל עוד תוכן הדמו קיים. אפשר למחוק את הכל בלחיצה בכל שלב.
 			</p>
 			<p><strong>מצב נוכחי:</strong> <?php echo esc_html( $demo_count ); ?> קבוצות תהילים של תוכן דמו באתר.</p>
 			<form method="POST" style="display: flex; gap: 10px;" onsubmit="var f=this;setTimeout(function(){f.querySelectorAll('button').forEach(function(b){b.disabled=true;});f.insertAdjacentHTML('beforeend','<em style=\'align-self:center\'>יוצרים… זה יכול לקחת עד דקה</em>');},0);">

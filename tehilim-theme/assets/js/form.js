@@ -295,8 +295,8 @@
 				email: emailInput.value.trim(),
 				goal_books: goalField ? ( parseInt( goalField.value, 10 ) || 1 ) : 1,
 			} )
-				.then( function() {
-					self.renderJoinPending( form );
+				.then( function( data ) {
+					self.renderJoinSuccess( form, data && data.personal_url );
 				} )
 				.catch( function( err ) {
 					submitBtn.disabled = false;
@@ -305,10 +305,10 @@
 				} );
 		},
 
-		/* Styled "request sent" confirmation replacing the join form */
-		renderJoinPending: function( form ) {
+		/* Styled success — ambassador is live, show the personal link */
+		renderJoinSuccess: function( form, personalUrl ) {
 			form.textContent = '';
-			form.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:8px;background:#EAF3EC;border:1px solid #CFE6D5;border-radius:16px;padding:22px 24px;text-align:center';
+			form.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:10px;background:#EAF3EC;border:1px solid #CFE6D5;border-radius:16px;padding:22px 24px;text-align:center';
 
 			var icon = document.createElement( 'div' );
 			icon.style.cssText = 'width:44px;height:44px;border-radius:50%;background:#4E8B5E;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:800';
@@ -316,15 +316,39 @@
 
 			var title = document.createElement( 'div' );
 			title.style.cssText = 'font-weight:800;font-size:17px;color:#2E2318';
-			title.textContent = 'הבקשה נשלחה למנהל הקמפיין!';
-
-			var sub = document.createElement( 'div' );
-			sub.style.cssText = 'font-size:14px;color:#4E8B5E;font-weight:600;line-height:1.6;max-width:420px';
-			sub.textContent = 'לאחר שהבקשה תאושר, יישלח אליכם מייל עם הקישור לעמוד האישי שלכם וקישור מוכן לשיתוף.';
+			title.textContent = 'נרשמתם כשגריר/ה! העמוד האישי שלכם מוכן.';
 
 			form.appendChild( icon );
 			form.appendChild( title );
-			form.appendChild( sub );
+
+			if ( personalUrl ) {
+				var linkBox = document.createElement( 'div' );
+				linkBox.style.cssText = 'padding:11px 14px;border-radius:12px;background:#FBF3E4;border:1px dashed #D9C4A3;color:#B9822B;font-weight:700;font-size:13px;word-break:break-all;direction:ltr;text-align:left;width:100%;box-sizing:border-box';
+				linkBox.textContent = personalUrl;
+				form.appendChild( linkBox );
+
+				var actions = document.createElement( 'div' );
+				actions.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;justify-content:center';
+
+				var copyBtn = document.createElement( 'button' );
+				copyBtn.type = 'button';
+				copyBtn.className = 'btn-reader-said';
+				copyBtn.textContent = 'העתקת הקישור';
+				copyBtn.addEventListener( 'click', function() {
+					navigator.clipboard.writeText( personalUrl ).then( function() {
+						copyBtn.textContent = '✓ הועתק';
+					} );
+				} );
+
+				var goBtn = document.createElement( 'a' );
+				goBtn.href = personalUrl;
+				goBtn.className = 'btn-reader-other';
+				goBtn.textContent = 'לעמוד האישי שלי';
+
+				actions.appendChild( copyBtn );
+				actions.appendChild( goBtn );
+				form.appendChild( actions );
+			}
 		},
 
 		/* ============ Campaign creation ============ */
@@ -375,17 +399,10 @@
 
 			this.apiPost( 'campaigns', body )
 				.then( function( data ) {
-					if ( data.pending ) {
-						self.showMessage( form, 'הקמפיין מוכן וממתין לאישור מנהל! תקבלו מייל ברגע שהוא יאושר ויעלה לאוויר. מעבירים אתכם לאזור האישי…' );
-						window.setTimeout( function() {
-							window.location.href = data.account_url || '/';
-						}, 2600 );
-						return;
-					}
-					self.showMessage( form, 'הקמפיין נוצר בהצלחה! מעבירים אתכם לעמוד הקמפיין…' );
+					self.showMessage( form, 'הקבוצה נפתחה בהצלחה ועלתה לאוויר! מעבירים אתכם לעמוד הקבוצה…' );
 					window.setTimeout( function() {
-						window.location.href = data.campaign_url;
-					}, 900 );
+						window.location.href = data.campaign_url || data.account_url || '/';
+					}, 1000 );
 				} )
 				.catch( function( err ) {
 					submitBtn.disabled = false;

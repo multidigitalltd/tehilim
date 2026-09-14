@@ -285,3 +285,126 @@ function tehilim_create_recitations_table( $force = false ) {
 	}
 }
 add_action( 'init', 'tehilim_create_recitations_table' );
+
+/**
+ * ============================================================
+ * Live demo activity — keeps the seeded demo campaigns growing
+ * on their own so the site always looks active. Only touches
+ * campaigns tagged _tehilim_demo. Scheduled while demo content
+ * exists (option tehilim_demo_active), cleared when it is removed.
+ * ============================================================
+ */
+
+/**
+ * Add a ~15-minute cron interval.
+ */
+function tehilim_cron_intervals( $schedules ) {
+	if ( ! isset( $schedules['tehilim_15min'] ) ) {
+		$schedules['tehilim_15min'] = array(
+			'interval' => 15 * MINUTE_IN_SECONDS,
+			'display'  => 'כל 15 דקות (תהילים)',
+		);
+	}
+	return $schedules;
+}
+add_filter( 'cron_schedules', 'tehilim_cron_intervals' );
+
+/**
+ * Ensure the demo-activity event is scheduled iff demo content is active.
+ */
+function tehilim_sync_demo_cron() {
+	$active    = (bool) get_option( 'tehilim_demo_active', 0 );
+	$scheduled = (bool) wp_next_scheduled( 'tehilim_demo_activity' );
+
+	if ( $active && ! $scheduled ) {
+		wp_schedule_event( time() + 60, 'tehilim_15min', 'tehilim_demo_activity' );
+	} elseif ( ! $active && $scheduled ) {
+		wp_clear_scheduled_hook( 'tehilim_demo_activity' );
+	}
+}
+add_action( 'init', 'tehilim_sync_demo_cron', 30 );
+
+/**
+ * Cron tick: sprinkle new recitations across the demo campaigns so their
+ * chapter and book counters keep rising.
+ */
+function tehilim_demo_activity_tick() {
+	if ( ! get_option( 'tehilim_demo_active', 0 ) ) {
+		return;
+	}
+
+	global $wpdb;
+	$table = $wpdb->prefix . 'tehilim_recitations';
+
+	$demo_campaigns = get_posts( array(
+		'post_type'      => 'campaign',
+		'post_status'    => 'publish',
+		'posts_per_page' => -1,
+		'fields'         => 'ids',
+		'meta_key'       => '_tehilim_demo',
+		'meta_value'     => 1,
+	) );
+
+	if ( ! $demo_campaigns ) {
+		return;
+	}
+
+	$reciters = array( 'שירה', 'יעל', 'משה', 'רבקה', 'דוד', 'אסתר', 'חיים', 'תמר', 'יוסף', 'נעמי', 'אילה', 'בני', 'רות', 'עדי', 'מלכה', 'צבי', 'הדס', 'איתן', 'מרים', 'אליהו' );
+
+	// Touch a random subset each tick (up to 12 campaigns)
+	shuffle( $demo_campaigns );
+	$batch = array_slice( $demo_campaigns, 0, min( 12, count( $demo_campaigns ) ) );
+
+	foreach ( $batch as $campaign_id ) {
+		$available = function_exists( 'tehilim_get_available_chapters' )
+			? tehilim_get_available_chapters( $campaign_id )
+			: range( 1, TEHILIM_CHAPTERS_PER_BOOK );
+		if ( ! $available ) {
+			$available = range( 1, TEHILIM_CHAPTERS_PER_BOOK );
+		}
+
+		// Approved demo ambassadors for this campaign
+		$amb_ids = get_posts( array(
+			'post_type'      => 'ambassador',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'meta_key'       => 'campaign_id',
+			'meta_value'     => $campaign_id,
+		) );
+
+		// 2–7 fresh recitations this tick
+		$adds = wp_rand( 2, 7 );
+		for ( $i = 0; $i < $adds; $i++ ) {
+			$chapter = $available[ wp_rand( 0, count( $available ) - 1 ) ];
+			$amb     = ( $amb_ids && wp_rand( 0, 100 ) < 65 ) ? $amb_ids[ wp_rand( 0, count( $amb_ids ) - 1 ) ] : null;
+			$named   = wp_rand( 0, 100 ) < 55;
+
+			$wpdb->insert(
+				$table,
+				array(
+					'campaign_id'    => $campaign_id,
+					'ambassador_id'  => $amb,
+					'chapter_number' => $chapter,
+					'reciter_name'   => $named ? $reciters[ wp_rand( 0, count( $reciters ) - 1 ) ] : '',
+					'visitor_key'    => $named ? '' : 'demo' . wp_rand( 100000, 999999 ) . wp_rand( 100000, 999999 ),
+					'created_at'     => current_time( 'mysql', true ),
+				),
+				array( '%d', '%d', '%d', '%s', '%s', '%s' )
+			);
+		}
+
+		tehilim_clear_campaign_caches( $campaign_id );
+	}
+
+	delete_transient( 'tehilim_site_stats' );
+}
+add_action( 'tehilim_demo_activity', 'tehilim_demo_activity_tick' );
+
+/**
+ * Clear the demo cron if the theme is switched away.
+ */
+function tehilim_clear_demo_cron_on_switch() {
+	wp_clear_scheduled_hook( 'tehilim_demo_activity' );
+}
+add_action( 'switch_theme', 'tehilim_clear_demo_cron_on_switch' );

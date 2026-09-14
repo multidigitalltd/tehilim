@@ -343,11 +343,11 @@ function tehilim_handle_campaign_create( WP_REST_Request $request ) {
 		return new WP_Error( 'invalid_occasion', 'Occasion not found', array( 'status' => 400 ) );
 	}
 
-	// New campaigns await site-admin approval before going live
+	// Campaigns go live immediately — no admin approval required
 	$campaign_id = wp_insert_post( array(
 		'post_type'   => 'campaign',
 		'post_title'  => $dedication_name,
-		'post_status' => 'pending',
+		'post_status' => 'publish',
 		'post_author' => get_current_user_id(),
 	), true );
 
@@ -372,31 +372,33 @@ function tehilim_handle_campaign_create( WP_REST_Request $request ) {
 		tehilim_attach_image_from_data_url( $campaign_id, $params['image_data'] );
 	}
 
-	// Notify the site admin that a campaign awaits approval
+	// Notify the site admin that a new campaign was created (FYI only)
 	$admin_email = get_option( 'admin_email' );
 	if ( $admin_email && is_email( $admin_email ) ) {
 		wp_mail(
 			$admin_email,
-			sprintf( 'קבוצת תהילים חדשה ממתין לאישור: "%s"', $dedication_name ),
+			sprintf( 'קבוצת תהילים חדשה נפתחה: "%s"', $dedication_name ),
 			sprintf(
-				"קבוצת תהילים חדשה נוצר באתר וממתין לאישורך.\n\nשם ההקדשה: %s\nמארגן: %s\nיעד: %d ספרים\n\nלאישור ופרסום:\n%s\n\nלכל קבוצות התהילים הממתינים:\n%s",
+				"קבוצת תהילים חדשה נפתחה באתר ועלתה לאוויר.\n\nשם ההקדשה: %s\nמארגן: %s\nיעד: %d ספרים\n\nלצפייה:\n%s",
 				$dedication_name,
 				$organizer_name,
 				$goal_books,
-				admin_url( 'post.php?post=' . $campaign_id . '&action=edit' ),
-				admin_url( 'edit.php?post_status=pending&post_type=campaign' )
+				get_permalink( $campaign_id )
 			)
 		);
 	}
+
+	tehilim_clear_campaign_caches( $campaign_id );
+	delete_transient( 'tehilim_site_stats' );
 
 	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
 	header( 'Pragma: no-cache' );
 
 	return array(
-		'success'     => true,
-		'pending'     => true,
-		'campaign_id' => $campaign_id,
-		'account_url' => esc_url_raw( function_exists( 'tehilim_account_page_url' ) ? tehilim_account_page_url() : home_url( '/' ) ),
+		'success'      => true,
+		'campaign_id'  => $campaign_id,
+		'campaign_url' => esc_url_raw( get_permalink( $campaign_id ) ),
+		'account_url'  => esc_url_raw( function_exists( 'tehilim_account_page_url' ) ? tehilim_account_page_url() : home_url( '/' ) ),
 	);
 }
 
@@ -633,11 +635,11 @@ function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
 		return new WP_Error( 'already_requested', 'A request for this email already exists', array( 'status' => 409 ) );
 	}
 
-	// The request awaits the campaign owner's approval
+	// Ambassadors go live immediately — no owner approval required
 	$ambassador_id = wp_insert_post( array(
 		'post_type'   => 'ambassador',
 		'post_title'  => $name,
-		'post_status' => 'pending',
+		'post_status' => 'publish',
 		'post_parent' => $campaign_id,
 	) );
 
@@ -659,27 +661,39 @@ function tehilim_handle_ambassador_join( WP_REST_Request $request ) {
 	$palette = array( '#C05A3A', '#D9A441', '#8A6B4A', '#B08968' );
 	update_post_meta( $ambassador_id, 'avatar_color', $palette[ $ambassador_id % 4 ] );
 
-	// Notify the campaign organizer that a request awaits approval
-	$organizer_email = tehilim_campaign_owner_email( $campaign_id );
-	if ( $organizer_email ) {
-		$account_url = function_exists( 'tehilim_account_page_url' ) ? tehilim_account_page_url() : admin_url();
+	tehilim_clear_campaign_caches( $campaign_id );
+	delete_transient( 'tehilim_site_stats' );
+
+	// Personal referral URL — live right away
+	$personal_url = home_url( '/c/' . $campaign->post_name . '/' . get_post_field( 'post_name', $ambassador_id ) );
+
+	// Email the ambassador their personal page + a ready-to-share link
+	if ( is_email( $email ) ) {
+		$share_text = sprintf( 'הצטרפו אליי לאמירת תהילים בקבוצה "%s": %s', $campaign->post_title, $personal_url );
 		wp_mail(
-			$organizer_email,
-			sprintf( 'בקשת שגריר חדשה בקבוצה "%s"', $campaign->post_title ),
+			$email,
+			sprintf( 'נרשמתם כשגריר/ה בקבוצה "%s"!', $campaign->post_title ),
 			sprintf(
-				"%s (%s) מבקש/ת להצטרף כשגריר/ה לקבוצה \"%s\" עם יעד אישי של %d ספרים.\n\nלאישור או דחייה של הבקשה היכנסו לאזור האישי:\n%s",
-				$name,
-				$email,
-				$campaign->post_title,
-				$amb_goal,
-				$account_url
+				"ברוכים הבאים! העמוד האישי שלכם מוכן.\n\nהעמוד האישי שלכם:\n%s\n\nקישור מוכן לשיתוף (העתיקו ושלחו לחברים):\n%s\n\nכל פרק שייאמר דרך הקישור שלכם נזקף לזכותכם בלוח השגרירים.",
+				$personal_url,
+				$share_text
 			)
 		);
 	}
 
+	// Notify the campaign organizer (FYI)
+	$organizer_email = tehilim_campaign_owner_email( $campaign_id );
+	if ( $organizer_email && $organizer_email !== $email ) {
+		wp_mail(
+			$organizer_email,
+			sprintf( 'שגריר/ה חדש/ה בקבוצה "%s"', $campaign->post_title ),
+			sprintf( "%s (%s) הצטרפ/ה כשגריר/ה לקבוצה \"%s\" עם יעד של %d ספרים.", $name, $email, $campaign->post_title, $amb_goal )
+		);
+	}
+
 	$response = array(
-		'success' => true,
-		'pending' => true,
+		'success'      => true,
+		'personal_url' => esc_url_raw( $personal_url ),
 	);
 
 	// No caching for write operations

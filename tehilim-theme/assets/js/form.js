@@ -104,6 +104,14 @@
 				body.image_data = form.dataset.imageData;
 			}
 
+			// Manual count override — only applied when the box is ticked
+			var adjustBox = form.querySelector( '[name="adjust_counts"]' );
+			if ( adjustBox && adjustBox.checked ) {
+				body.adjust_counts = true;
+				body.set_books = parseInt( ( form.querySelector( '[name="set_books"]' ) || {} ).value, 10 ) || 0;
+				body.set_in_book = parseInt( ( form.querySelector( '[name="set_in_book"]' ) || {} ).value, 10 ) || 0;
+			}
+
 			var original = submitBtn.textContent;
 			submitBtn.disabled = true;
 			submitBtn.textContent = 'שומרים…';

@@ -3,7 +3,7 @@ Theme Name: Tehilim
 Theme URI: https://github.com/multidigitalltd/tehilim
 Author: Multi Digital
 Description: Community Psalms campaign platform
-Version: 2.16.0
+Version: 2.17.0
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: tehilim
@@ -5025,4 +5025,49 @@ button:disabled, .btn:disabled {
   background: #FBEAE4;
   border-color: #D89A85;
   color: #A03C22;
+}
+
+/* Manual count override in the personal-area edit panel */
+.account-adjust {
+  margin: 4px 0 20px;
+  padding: 16px 18px;
+  background: var(--bg-page);
+  border: 1px solid #F0E4D0;
+  border-radius: 14px;
+}
+
+.account-adjust-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 14.5px;
+  color: #2E2318;
+  cursor: pointer;
+}
+
+.account-adjust-toggle input {
+  accent-color: #C05A3A;
+  width: 16px;
+  height: 16px;
+}
+
+.account-adjust-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+  margin-top: 12px;
+}
+
+.account-adjust-note {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  color: #7A6B58;
+  line-height: 1.5;
+}
+
+@media (max-width: 620px) {
+  .account-adjust-fields {
+    grid-template-columns: 1fr;
+  }
 }

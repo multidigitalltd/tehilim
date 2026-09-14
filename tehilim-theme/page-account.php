@@ -214,6 +214,24 @@ foreach ( $campaigns as $c ) {
 						<label class="create-label" for="edit_desc_<?php echo esc_attr( $c->ID ); ?>"><?php esc_html_e( 'תיאור (לא חובה)', 'tehilim' ); ?></label>
 						<textarea class="create-input account-edit-desc" id="edit_desc_<?php echo esc_attr( $c->ID ); ?>" name="description" rows="3"><?php echo esc_textarea( $c->post_content ); ?></textarea>
 
+						<div class="account-adjust">
+							<label class="account-adjust-toggle">
+								<input type="checkbox" name="adjust_counts" value="1">
+								<?php esc_html_e( 'עדכון ידני של מספר הפרקים והספרים שנאמרו', 'tehilim' ); ?>
+							</label>
+							<div class="account-adjust-fields">
+								<div>
+									<label class="create-label first" for="edit_books_<?php echo esc_attr( $c->ID ); ?>"><?php esc_html_e( 'ספרים שהושלמו', 'tehilim' ); ?></label>
+									<input class="create-input" type="number" id="edit_books_<?php echo esc_attr( $c->ID ); ?>" name="set_books" min="0" max="10000" value="<?php echo esc_attr( (int) $p['books_done'] ); ?>">
+								</div>
+								<div>
+									<label class="create-label first" for="edit_inbook_<?php echo esc_attr( $c->ID ); ?>"><?php esc_html_e( 'פרקים בספר הנוכחי (0–149)', 'tehilim' ); ?></label>
+									<input class="create-input" type="number" id="edit_inbook_<?php echo esc_attr( $c->ID ); ?>" name="set_in_book" min="0" max="149" value="<?php echo esc_attr( (int) $p['chapters_done'] ); ?>">
+								</div>
+							</div>
+							<p class="account-adjust-note"><?php esc_html_e( 'סמנו את התיבה כדי שהמספרים שכאן יעדכנו את מד ההתקדמות. השאירו ללא סימון כדי לא לשנות אותם.', 'tehilim' ); ?></p>
+						</div>
+
 						<div class="account-edit-imagerow">
 							<label class="btn-account-view account-edit-imagebtn">
 								<input type="file" class="edit-image-input" accept="image/jpeg,image/png,image/webp" hidden>

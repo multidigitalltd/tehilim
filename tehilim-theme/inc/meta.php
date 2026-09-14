@@ -415,6 +415,70 @@ function tehilim_get_pending_ambassadors( $campaign_id ) {
 }
 
 /**
+ * Manually set a campaign's total recorded chapters to $desired by adding
+ * synthetic recitations (filling the least-covered chapters, so completed
+ * books rise correctly) or trimming the newest rows. Used by the owner's
+ * manual count override in the personal area.
+ */
+function tehilim_set_campaign_chapter_count( $campaign_id, $desired ) {
+	global $wpdb;
+	$table   = $wpdb->prefix . 'tehilim_recitations';
+	$desired = max( 0, intval( $desired ) );
+	$current = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE campaign_id = %d", $table, $campaign_id ) );
+
+	if ( $desired === $current ) {
+		return;
+	}
+
+	if ( $desired > $current ) {
+		// Per-chapter counts, so additions fill the lowest chapters first
+		$rows   = $wpdb->get_results( $wpdb->prepare( "SELECT chapter_number, COUNT(*) AS cnt FROM %i WHERE campaign_id = %d GROUP BY chapter_number", $table, $campaign_id ) );
+		$counts = array_fill( 1, TEHILIM_CHAPTERS_PER_BOOK, 0 );
+		foreach ( $rows as $r ) {
+			$ch = intval( $r->chapter_number );
+			if ( $ch >= 1 && $ch <= TEHILIM_CHAPTERS_PER_BOOK ) {
+				$counts[ $ch ] = intval( $r->cnt );
+			}
+		}
+
+		$add    = $desired - $current;
+		$now    = current_time( 'mysql', true );
+		$values = array();
+		for ( $i = 0; $i < $add; $i++ ) {
+			// pick the chapter with the current minimum count
+			$min_ch  = 1;
+			$min_val = $counts[1];
+			foreach ( $counts as $ch => $val ) {
+				if ( $val < $min_val ) {
+					$min_val = $val;
+					$min_ch  = $ch;
+				}
+			}
+			$counts[ $min_ch ]++;
+			$values[] = $wpdb->prepare( '(%d, NULL, %d, %s, %s, %s)', $campaign_id, $min_ch, '', '', $now );
+
+			if ( count( $values ) >= 200 ) {
+				$wpdb->query( "INSERT INTO `{$table}` (campaign_id, ambassador_id, chapter_number, reciter_name, visitor_key, created_at) VALUES " . implode( ',', $values ) ); // phpcs:ignore
+				$values = array();
+			}
+		}
+		if ( $values ) {
+			$wpdb->query( "INSERT INTO `{$table}` (campaign_id, ambassador_id, chapter_number, reciter_name, visitor_key, created_at) VALUES " . implode( ',', $values ) ); // phpcs:ignore
+		}
+	} else {
+		// Trim the newest rows down to the desired total
+		$remove = $current - $desired;
+		$ids    = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM %i WHERE campaign_id = %d ORDER BY id DESC LIMIT %d", $table, $campaign_id, $remove ) );
+		if ( $ids ) {
+			$ids = array_map( 'intval', $ids );
+			$wpdb->query( "DELETE FROM `{$table}` WHERE id IN (" . implode( ',', $ids ) . ')' ); // phpcs:ignore
+		}
+	}
+
+	tehilim_clear_campaign_caches( $campaign_id );
+}
+
+/**
  * Get the next suggested chapter for a campaign:
  * the first chapter that was not yet said in the current book cycle.
  */

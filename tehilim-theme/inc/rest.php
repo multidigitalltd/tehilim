@@ -467,7 +467,16 @@ function tehilim_handle_campaign_update( WP_REST_Request $request ) {
 		tehilim_attach_image_from_data_url( $campaign_id, $params['image_data'] );
 	}
 
+	// Manual override of the recorded chapter/book count (explicit opt-in)
+	if ( ! empty( $params['adjust_counts'] ) ) {
+		$set_books   = isset( $params['set_books'] ) ? max( 0, min( 10000, absint( $params['set_books'] ) ) ) : 0;
+		$set_in_book = isset( $params['set_in_book'] ) ? max( 0, min( TEHILIM_CHAPTERS_PER_BOOK - 1, absint( $params['set_in_book'] ) ) ) : 0;
+		$desired     = $set_books * TEHILIM_CHAPTERS_PER_BOOK + $set_in_book;
+		tehilim_set_campaign_chapter_count( $campaign_id, $desired );
+	}
+
 	tehilim_clear_campaign_caches( $campaign_id );
+	delete_transient( 'tehilim_site_stats' );
 
 	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
 

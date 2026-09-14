@@ -214,10 +214,11 @@ foreach ( $campaigns as $c ) {
 						<label class="create-label" for="edit_desc_<?php echo esc_attr( $c->ID ); ?>"><?php esc_html_e( 'תיאור (לא חובה)', 'tehilim' ); ?></label>
 						<textarea class="create-input account-edit-desc" id="edit_desc_<?php echo esc_attr( $c->ID ); ?>" name="description" rows="3"><?php echo esc_textarea( $c->post_content ); ?></textarea>
 
+						<?php if ( current_user_can( 'manage_options' ) ) : ?>
 						<div class="account-adjust">
 							<label class="account-adjust-toggle">
 								<input type="checkbox" name="adjust_counts" value="1">
-								<?php esc_html_e( 'עדכון ידני של מספר הפרקים והספרים שנאמרו', 'tehilim' ); ?>
+								<?php esc_html_e( 'עדכון ידני של מספר הפרקים והספרים (מנהל אתר בלבד)', 'tehilim' ); ?>
 							</label>
 							<div class="account-adjust-fields">
 								<div>
@@ -231,6 +232,7 @@ foreach ( $campaigns as $c ) {
 							</div>
 							<p class="account-adjust-note"><?php esc_html_e( 'סמנו את התיבה כדי שהמספרים שכאן יעדכנו את מד ההתקדמות. השאירו ללא סימון כדי לא לשנות אותם.', 'tehilim' ); ?></p>
 						</div>
+						<?php endif; ?>
 
 						<div class="account-edit-imagerow">
 							<label class="btn-account-view account-edit-imagebtn">

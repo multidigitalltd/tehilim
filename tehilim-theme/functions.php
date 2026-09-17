@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const TEHILIM_VERSION = '2.20.0';
+const TEHILIM_VERSION = '2.21.0';
 
 /**
  * Theme Setup
@@ -66,5 +66,6 @@ require_once get_template_directory() . '/inc/members.php';
 
 if ( is_admin() ) {
 	require_once get_template_directory() . '/inc/admin.php';
+	require_once get_template_directory() . '/inc/prayers-admin.php';
 	require_once get_template_directory() . '/inc/updater.php';
 }

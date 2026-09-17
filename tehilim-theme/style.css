@@ -3,7 +3,7 @@ Theme Name: Tehilim
 Theme URI: https://github.com/multidigitalltd/tehilim
 Author: Multi Digital
 Description: Community Psalms campaign platform
-Version: 2.18.0
+Version: 2.19.0
 Requires at least: 6.3
 Requires PHP: 7.4
 Text Domain: tehilim
@@ -5375,5 +5375,97 @@ button:disabled, .btn:disabled {
   }
   .members-form {
     width: 100%;
+  }
+}
+
+/* Prayers search + category icons (archive redesign) */
+.prayers-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 620px;
+  margin: 26px auto 0;
+  background: #FFFFFF;
+  border: 1.5px solid #E5D3B4;
+  border-radius: 999px;
+  padding: 6px 6px 6px 20px;
+  box-shadow: 0 10px 30px -14px rgba(70, 50, 25, 0.25);
+}
+
+.prayers-search svg {
+  flex-shrink: 0;
+}
+
+.prayers-search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 15.5px;
+  color: #2E2318;
+  padding: 8px 4px;
+}
+
+.prayers-search button {
+  flex-shrink: 0;
+  padding: 11px 24px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #C05A3A, #A94B2E);
+  color: #FFF7F2;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.prayer-cat-card {
+  align-items: flex-start;
+}
+
+.prayer-cat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 15px;
+  background: linear-gradient(140deg, #FBF3E4, #F3E4C7);
+  color: #A94B2E;
+  border: 1px solid #EED9B2;
+  margin-bottom: 14px;
+}
+
+.prayer-cat-card:hover .prayer-cat-icon {
+  background: linear-gradient(140deg, #C05A3A, #A94B2E);
+  color: #FFF7F2;
+  border-color: #A94B2E;
+}
+
+.prayers-results h2 {
+  font-family: 'Asimon', 'Assistant', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  color: #2E2318;
+  margin: 0 0 20px;
+}
+
+.prayers-noresults {
+  background: #FBF3E4;
+  border: 1px dashed #D9C4A3;
+  border-radius: 16px;
+  padding: 22px 24px;
+  color: #6B5D4C;
+  font-size: 15.5px;
+}
+
+@media (max-width: 620px) {
+  .prayers-search {
+    padding: 5px 5px 5px 14px;
+  }
+  .prayers-search button {
+    padding: 10px 16px;
+    font-size: 14px;
   }
 }

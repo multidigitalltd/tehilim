@@ -58,14 +58,19 @@ add_action( 'init', 'tehilim_register_prayer_taxonomy' );
  */
 function tehilim_seed_prayer_categories() {
 	$cats = array(
-		'tefilot-parnasa' => array( 'תפילות לפרנסה', 'אוסף תפילות לפרנסה טובה, לפרנסה בשפע וברווח ובכבוד. תפילות מעומק הלב לפרנסה קלה, להצלחה בעסק ובעבודה ולסייעתא דשמיא בכל מעשי ידיכם.' ),
-		'tefilot-refua'   => array( 'תפילות לרפואה', 'תפילות לרפואה שלמה לחולה, תפילה לרפואת הגוף והנפש ולהחלמה מהירה. פרקי תהילים ותפילות לרפואה בתוך שאר חולי ישראל.' ),
-		'tefilot-zivug'   => array( 'תפילות לזיווג', 'תפילות למציאת זיווג הגון במהרה, תפילה לזיווג לרווקים ולרווקות ולזיווג משמים בזמן הנכון.' ),
-		'tefilot-shalom-bait' => array( 'תפילות לשלום בית', 'תפילות לשלום בית, לאהבה ואחווה בין בני הזוג, ולבניית בית נאמן בישראל מתוך שלווה והרמוניה.' ),
-		'tefilot-yeladim'  => array( 'תפילות לילדים', 'תפילות להצלחת הילדים, לחינוך טוב, ליראת שמים ולנחת מהילדים. תפילת השל״ה ותפילות הורים לזרע של קיימא ולבנים צדיקים.' ),
-		'segulot'          => array( 'סגולות', 'סגולות נבחרות מרבותינו — סגולה לפרנסה, סגולה לרפואה, סגולה לשמירה מעין הרע, סגולה לזיווג וסגולות להצלחה מתוך מקורות אמינים.' ),
-		'brachot'          => array( 'ברכות ותפילות יום־יום', 'ברכות ותפילות לכל יום: ברכת המזון, קריאת שמע שעל המיטה, ברכות הנהנין, תפילת הדרך וברכות לחיים.' ),
-		'tefilot-klaliyot' => array( 'תפילות כלליות', 'תפילות לכלל ישראל — תפילה לשלום עם ישראל, לשלום חיילי צה״ל, לגאולה שלמה ולאחדות בעם.' ),
+		'tefilot-parnasa' => array( 'תפילות לפרנסה', 'אוסף תפילות ופרקי תהילים לפרנסה טובה, לפרנסה בשפע וברווח ובכבוד. פרקים ותפילות מעומק הלב לפרנסה קלה, להצלחה בעסק ובעבודה ולסייעתא דשמיא בכל מעשי ידיכם.' ),
+		'tefilot-refua'   => array( 'תפילות לרפואה', 'תפילות ופרקי תהילים לרפואה שלמה לחולה, לרפואת הגוף והנפש ולהחלמה מהירה, בתוך שאר חולי ישראל.' ),
+		'tefilot-zivug'   => array( 'תפילות לזיווג', 'תפילות ופרקי תהילים למציאת זיווג הגון במהרה, לרווקים ולרווקות ולזיווג משמים בזמן הנכון.' ),
+		'tefilot-shalom-bait' => array( 'תפילות לשלום בית', 'תפילות ופרקי תהילים לשלום בית, לאהבה ואחווה בין בני הזוג ולבניית בית נאמן בישראל מתוך שלווה.' ),
+		'tefilot-yeladim'  => array( 'תפילות לילדים', 'תפילות ופרקי תהילים להצלחת הילדים, לחינוך טוב, ליראת שמים ולנחת. תפילת השל״ה ותפילות הורים לזרע של קיימא.' ),
+		'tefilot-hodaya'   => array( 'תפילות הודיה', 'מזמורי הודיה ושבח לה׳ — פרקי תהילים להודות על הטוב, על הנס ועל החסד, מתוך שמחה והכרת הטוב.' ),
+		'tefilot-shmira'   => array( 'תפילות לשמירה והגנה', 'תפילות ופרקי תהילים לשמירה מכל רע, להגנה מפגע ומעין הרע ולביטחון בה׳ בכל עת.' ),
+		'tefilot-tzara'    => array( 'תפילות לעת צרה', 'תפילות ופרקי תהילים לעת צרה ומצוקה — לישועה, לרחמים ולמענה מהיר מן השמים.' ),
+		'tefilot-hatzlacha' => array( 'תפילות להצלחה', 'תפילות ופרקי תהילים להצלחה בכל דרך — במבחן, במשפט, בעבודה ובכל מעשי ידיכם.' ),
+		'tefilot-yoledet'  => array( 'תפילות להריון וללידה', 'תפילות ופרקי תהילים להריון בריא, ללידה קלה ולזרע של קיימא, ותפילות ליולדת.' ),
+		'segulot'          => array( 'סגולות', 'סגולות נבחרות מרבותינו — פרקי תהילים ותפילות המסוגלים לפרנסה, לרפואה, לשמירה מעין הרע, לזיווג ולהצלחה.' ),
+		'brachot'          => array( 'ברכות ותפילות יום־יום', 'ברכות ותפילות לכל יום: ברכת כהנים, קריאת שמע שעל המיטה, תפילת הדרך וברכות לחיים.' ),
+		'tefilot-klaliyot' => array( 'תפילות לעם ישראל', 'תפילות ופרקי תהילים לכלל ישראל — לשלום העם, לשלום חיילי צה״ל, לגאולה שלמה ולאחדות.' ),
 	);
 
 	foreach ( $cats as $slug => $data ) {
@@ -157,6 +162,117 @@ function tehilim_seed_prayers() {
 	update_option( 'tehilim_prayers_seeded', 1 );
 }
 add_action( 'init', 'tehilim_seed_prayers', 25 );
+
+/**
+ * Load the bundled public-domain Psalms text (150 chapters of verses).
+ */
+function tehilim_load_psalms_data() {
+	static $data = null;
+	if ( null !== $data ) {
+		return $data;
+	}
+	$file = get_template_directory() . '/assets/data/tehilim.json';
+	$data = array();
+	if ( file_exists( $file ) ) {
+		$json = json_decode( file_get_contents( $file ), true );
+		if ( is_array( $json ) ) {
+			$data = $json;
+		}
+	}
+	return $data;
+}
+
+/**
+ * Build HTML for one Psalms chapter (verses with Hebrew-numeral markers).
+ */
+function tehilim_render_psalms_chapter_html( $chapter ) {
+	$data = tehilim_load_psalms_data();
+	$idx  = intval( $chapter ) - 1;
+	if ( ! isset( $data[ $idx ] ) || ! is_array( $data[ $idx ] ) ) {
+		return '';
+	}
+	$out = '<div class="prayer-body">';
+	foreach ( $data[ $idx ] as $i => $verse ) {
+		$num  = function_exists( 'tehilim_hebrew_numeral' ) ? tehilim_hebrew_numeral( $i + 1 ) : ( $i + 1 );
+		$num  = str_replace( array( '׳', '״' ), '', $num );
+		$out .= '<div class="chapter-verse"><span class="chapter-verse-num">' . esc_html( $num ) . '</span>' . esc_html( $verse ) . '</div>';
+	}
+	$out .= '</div>';
+	return $out;
+}
+
+/**
+ * Expanded seeding: one prayer entry per traditional chapter, per cause,
+ * using the bundled public-domain Psalms text. Runs once.
+ */
+function tehilim_seed_prayers_v2() {
+	if ( get_option( 'tehilim_prayers_seed_v2' ) ) {
+		return;
+	}
+
+	// Traditional (widely-published) chapter associations per cause. Framed
+	// as "customary" — the verse text itself is public domain.
+	$map = array(
+		'tefilot-parnasa'     => array( 'label' => 'לפרנסה', 'chapters' => array( 23, 24, 34, 62, 67, 104, 112, 121, 128, 144, 145 ) ),
+		'tefilot-refua'       => array( 'label' => 'לרפואה', 'chapters' => array( 6, 20, 22, 23, 30, 38, 41, 88, 91, 102, 103, 142 ) ),
+		'tefilot-zivug'       => array( 'label' => 'לזיווג', 'chapters' => array( 32, 38, 68, 70, 72, 121, 124 ) ),
+		'tefilot-shalom-bait' => array( 'label' => 'לשלום בית', 'chapters' => array( 45, 46, 121, 127, 128, 130 ) ),
+		'tefilot-yeladim'     => array( 'label' => 'להצלחת הילדים', 'chapters' => array( 20, 121, 126, 127, 128, 144 ) ),
+		'tefilot-hodaya'      => array( 'label' => 'להודיה', 'chapters' => array( 30, 92, 100, 103, 107, 116, 136, 145, 148, 150 ) ),
+		'tefilot-shmira'      => array( 'label' => 'לשמירה', 'chapters' => array( 3, 13, 20, 91, 121, 124, 130 ) ),
+		'tefilot-tzara'       => array( 'label' => 'לעת צרה', 'chapters' => array( 20, 22, 69, 86, 102, 130, 142 ) ),
+		'tefilot-hatzlacha'   => array( 'label' => 'להצלחה', 'chapters' => array( 1, 20, 57, 86, 90, 112, 121 ) ),
+		'tefilot-yoledet'     => array( 'label' => 'להריון וללידה', 'chapters' => array( 20, 100, 112, 126, 128 ) ),
+		'tefilot-klaliyot'    => array( 'label' => 'לעם ישראל', 'chapters' => array( 20, 83, 121, 122, 125, 130, 142, 144 ) ),
+	);
+
+	foreach ( $map as $cat_slug => $info ) {
+		$term = get_term_by( 'slug', $cat_slug, 'prayer_cat' );
+		if ( ! $term ) {
+			continue;
+		}
+		foreach ( $info['chapters'] as $ch ) {
+			$gem   = function_exists( 'tehilim_hebrew_numeral' ) ? tehilim_hebrew_numeral( $ch ) : $ch;
+			$title = sprintf( 'תהילים פרק %s · %s', $gem, $info['label'] );
+
+			// Skip if an identical title already exists
+			if ( get_page_by_title( $title, OBJECT, 'prayer' ) ) {
+				continue;
+			}
+
+			$verses = tehilim_render_psalms_chapter_html( $ch );
+			if ( '' === $verses ) {
+				continue;
+			}
+
+			$intro = sprintf(
+				'נהוג לומר את פרק תהילים %s כתפילה %s. אמירת המזמור בכוונה מעוררת רחמי שמים; מוסיפים לאחריה תפילה אישית מעומק הלב.',
+				$gem,
+				$info['label']
+			);
+			$content = '<p class="prayer-intro-text">' . esc_html( $intro ) . "</p>\n" . $verses;
+
+			$post_id = wp_insert_post( array(
+				'post_type'    => 'prayer',
+				'post_title'   => $title,
+				'post_status'  => 'publish',
+				'post_content' => $content,
+				'post_excerpt' => sprintf( 'פרק תהילים %s — מזמור לאמירה %s, עם הקדמה קצרה.', $gem, $info['label'] ),
+			) );
+
+			if ( $post_id && ! is_wp_error( $post_id ) ) {
+				wp_set_object_terms( $post_id, $term->term_id, 'prayer_cat' );
+				update_post_meta( $post_id, '_tehilim_seeded_prayer', 1 );
+				update_post_meta( $post_id, 'psalms_chapter', $ch );
+			}
+		}
+	}
+
+	update_option( 'tehilim_prayers_seed_v2', 1 );
+	// New content — bump the rewrite flush so category counts refresh
+	delete_option( 'tehilim_prayers_rewrites' );
+}
+add_action( 'init', 'tehilim_seed_prayers_v2', 26 );
 
 /**
  * Flush rewrites once after this module is added (new /prayers, /tefila slugs).

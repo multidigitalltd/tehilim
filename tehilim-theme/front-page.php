@@ -485,6 +485,25 @@ get_header();
 		</div>
 	</section>
 
+	<!-- Tehilim Members Signup -->
+	<section class="members-section" id="members">
+		<div class="members-card">
+			<div class="members-text">
+				<div class="members-badge">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="#B9822B"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.6 2 5 5.5 5c2 0 3.4 1.1 4.5 2.6C11 6.1 12.5 5 14.5 5 18 5 19.6 8.6 22 11.7 19.5 16.3 12 21 12 21z"></path></svg>
+					<?php esc_html_e( 'חברי תהילים', 'tehilim' ); ?>
+				</div>
+				<h2><?php esc_html_e( 'הצטרפו לחברי תהילים', 'tehilim' ); ?></h2>
+				<p><?php esc_html_e( 'השאירו שם ואימייל, וקבלו עדכון בכל פעם שנפתחת קבוצת תהילים חדשה — כדי להירתם ולומר כמה פרקים לרפואה, לישועה ולזכות הרבים. בלי ספאם, אפשר לבטל בכל עת.', 'tehilim' ); ?></p>
+			</div>
+			<form class="form-member-join members-form">
+				<input class="reader-name-input" type="text" name="name" placeholder="<?php esc_attr_e( 'השם שלכם', 'tehilim' ); ?>">
+				<input class="reader-name-input" type="email" name="email" required placeholder="<?php esc_attr_e( 'אימייל', 'tehilim' ); ?>">
+				<button type="submit" class="btn-create-submit"><?php esc_html_e( 'הצטרפות', 'tehilim' ); ?></button>
+			</form>
+		</div>
+	</section>
+
 	<!-- CTA Section -->
 	<section class="cta-section">
 		<div class="cta-container">

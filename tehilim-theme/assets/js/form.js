@@ -28,6 +28,10 @@
 					e.preventDefault();
 					self.handleCampaignEdit( e.target );
 				}
+				if ( e.target.matches( '.form-member-join' ) ) {
+					e.preventDefault();
+					self.handleMemberJoin( e.target );
+				}
 			} );
 
 			// Personal area: toggle a campaign's edit panel
@@ -205,6 +209,43 @@
 			// Unmapped error: append the code so the problem is diagnosable
 			var suffix = data && data.code ? ' [' + data.code + ']' : '';
 			return fallback + suffix;
+		},
+
+		/* ============ Tehilim members signup ============ */
+
+		handleMemberJoin: function( form ) {
+			var self = this;
+			var nameInput = form.querySelector( 'input[name="name"]' );
+			var emailInput = form.querySelector( 'input[name="email"]' );
+			var submitBtn = form.querySelector( 'button[type="submit"]' );
+
+			if ( ! emailInput || ! emailInput.value.trim() ) {
+				self.showMessage( form, 'אנא הזינו אימייל.', true );
+				return;
+			}
+
+			var original = submitBtn.textContent;
+			submitBtn.disabled = true;
+			submitBtn.textContent = 'מצטרפים…';
+
+			this.apiPost( 'members/join', {
+				name: nameInput ? nameInput.value.trim() : '',
+				email: emailInput.value.trim(),
+			} )
+				.then( function() {
+					form.textContent = '';
+					form.style.cssText = 'display:flex;align-items:center;gap:10px;justify-content:center;background:#EAF3EC;border:1px solid #CFE6D5;border-radius:16px;padding:18px 22px;color:#2E2318;font-weight:700;font-size:15.5px';
+					var ok = document.createElement( 'span' );
+					ok.style.cssText = 'width:30px;height:30px;border-radius:50%;background:#4E8B5E;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800';
+					ok.textContent = '✓';
+					form.appendChild( ok );
+					form.appendChild( document.createTextNode( 'הצטרפתם לחברי תהילים! נעדכן אתכם בכל קבוצה חדשה.' ) );
+				} )
+				.catch( function( err ) {
+					submitBtn.disabled = false;
+					submitBtn.textContent = original;
+					self.showMessage( form, self.restError( err, 'ההצטרפות נכשלה. נסו שוב.' ), true );
+				} );
 		},
 
 		/* ============ Campaign deletion (personal area) ============ */

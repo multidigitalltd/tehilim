@@ -444,6 +444,20 @@ function tehilim_settings_page() {
 
 		<hr style="margin: 40px 0;">
 
+		<div style="max-width: 600px; background: #fff; border: 1px solid #EADCC6; border-radius: 8px; padding: 18px 22px;">
+			<h2 style="margin-top: 0;">חברי תהילים</h2>
+			<p>
+				<strong><?php echo esc_html( function_exists( 'tehilim_member_count' ) ? tehilim_member_count() : 0 ); ?></strong>
+				חברים רשומים. הם מקבלים עדכון אוטומטי בכל פעם שנפתחת קבוצת תהילים חדשה.
+			</p>
+			<p>
+				<a class="button" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=tehilim-settings&tehilim_export_members=1' ), 'tehilim_export_members' ) ); ?>">ייצוא רשימה ל-CSV</a>
+				<a class="button" href="<?php echo esc_url( admin_url( 'edit.php?post_type=tmember' ) ); ?>">ניהול החברים</a>
+			</p>
+		</div>
+
+		<hr style="margin: 40px 0;">
+
 		<div style="max-width: 600px;">
 			<h2>תיעוד</h2>
 			<ul>

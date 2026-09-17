@@ -48,6 +48,7 @@
 		<!-- Navigation Links -->
 		<nav class="header-nav" role="navigation" aria-label="<?php esc_attr_e( 'Primary Navigation', 'tehilim' ); ?>">
 			<a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'קבוצות תהילים', 'tehilim' ); ?></a>
+			<a href="<?php echo esc_url( home_url( '/tehilim/' ) ); ?>"><?php esc_html_e( 'ספר תהילים', 'tehilim' ); ?></a>
 			<a href="<?php echo esc_url( get_post_type_archive_link( 'prayer' ) ); ?>"><?php esc_html_e( 'תפילות', 'tehilim' ); ?></a>
 			<a href="<?php echo esc_url( home_url( '/#how-it-works' ) ); ?>"><?php esc_html_e( 'איך זה עובד', 'tehilim' ); ?></a>
 			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>"><?php esc_html_e( 'אודות', 'tehilim' ); ?></a>

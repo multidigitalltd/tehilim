@@ -202,77 +202,150 @@ function tehilim_render_psalms_chapter_html( $chapter ) {
 }
 
 /**
- * Expanded seeding: one prayer entry per traditional chapter, per cause,
- * using the bundled public-domain Psalms text. Runs once.
+ * Migration: the Prayers section must contain actual prayers — not Tehilim
+ * chapters. Remove any earlier chapter-based entries (Psalms belong in the
+ * dedicated /tehilim/ reader) and seed a set of prayers per category.
+ * Prayer texts here are either ancient public-domain liturgy or original
+ * devotional compositions written for this site — never third-party
+ * copyrighted material. Runs once.
  */
-function tehilim_seed_prayers_v2() {
-	if ( get_option( 'tehilim_prayers_seed_v2' ) ) {
+function tehilim_migrate_prayers_content() {
+	if ( get_option( 'tehilim_prayers_v3' ) ) {
 		return;
 	}
 
-	// Traditional (widely-published) chapter associations per cause. Framed
-	// as "customary" — the verse text itself is public domain.
-	$map = array(
-		'tefilot-parnasa'     => array( 'label' => 'לפרנסה', 'chapters' => array( 23, 24, 34, 62, 67, 104, 112, 121, 128, 144, 145 ) ),
-		'tefilot-refua'       => array( 'label' => 'לרפואה', 'chapters' => array( 6, 20, 22, 23, 30, 38, 41, 88, 91, 102, 103, 142 ) ),
-		'tefilot-zivug'       => array( 'label' => 'לזיווג', 'chapters' => array( 32, 38, 68, 70, 72, 121, 124 ) ),
-		'tefilot-shalom-bait' => array( 'label' => 'לשלום בית', 'chapters' => array( 45, 46, 121, 127, 128, 130 ) ),
-		'tefilot-yeladim'     => array( 'label' => 'להצלחת הילדים', 'chapters' => array( 20, 121, 126, 127, 128, 144 ) ),
-		'tefilot-hodaya'      => array( 'label' => 'להודיה', 'chapters' => array( 30, 92, 100, 103, 107, 116, 136, 145, 148, 150 ) ),
-		'tefilot-shmira'      => array( 'label' => 'לשמירה', 'chapters' => array( 3, 13, 20, 91, 121, 124, 130 ) ),
-		'tefilot-tzara'       => array( 'label' => 'לעת צרה', 'chapters' => array( 20, 22, 69, 86, 102, 130, 142 ) ),
-		'tefilot-hatzlacha'   => array( 'label' => 'להצלחה', 'chapters' => array( 1, 20, 57, 86, 90, 112, 121 ) ),
-		'tefilot-yoledet'     => array( 'label' => 'להריון וללידה', 'chapters' => array( 20, 100, 112, 126, 128 ) ),
-		'tefilot-klaliyot'    => array( 'label' => 'לעם ישראל', 'chapters' => array( 20, 83, 121, 122, 125, 130, 142, 144 ) ),
-	);
+	// 1) Remove old chapter-based prayer entries (they belong in /tehilim/)
+	$chapter_prayers = get_posts( array(
+		'post_type'      => 'prayer',
+		'post_status'    => 'any',
+		'posts_per_page' => -1,
+		'fields'         => 'ids',
+		'meta_key'       => 'psalms_chapter',
+	) );
+	foreach ( $chapter_prayers as $pid ) {
+		wp_delete_post( $pid, true );
+	}
 
-	foreach ( $map as $cat_slug => $info ) {
-		$term = get_term_by( 'slug', $cat_slug, 'prayer_cat' );
-		if ( ! $term ) {
+	// 2) Seed real prayers (original + ancient public-domain liturgy)
+	$prayers = tehilim_seed_prayer_set();
+	foreach ( $prayers as $p ) {
+		if ( get_page_by_title( $p['title'], OBJECT, 'prayer' ) ) {
 			continue;
 		}
-		foreach ( $info['chapters'] as $ch ) {
-			$gem   = function_exists( 'tehilim_hebrew_numeral' ) ? tehilim_hebrew_numeral( $ch ) : $ch;
-			$title = sprintf( 'תהילים פרק %s · %s', $gem, $info['label'] );
+		$content = '';
+		if ( ! empty( $p['intro'] ) ) {
+			$content .= '<p class="prayer-intro-text">' . esc_html( $p['intro'] ) . "</p>\n";
+		}
+		$content .= '<div class="prayer-body">' . nl2br( esc_html( $p['body'] ) ) . '</div>';
 
-			// Skip if an identical title already exists
-			if ( get_page_by_title( $title, OBJECT, 'prayer' ) ) {
-				continue;
-			}
-
-			$verses = tehilim_render_psalms_chapter_html( $ch );
-			if ( '' === $verses ) {
-				continue;
-			}
-
-			$intro = sprintf(
-				'נהוג לומר את פרק תהילים %s כתפילה %s. אמירת המזמור בכוונה מעוררת רחמי שמים; מוסיפים לאחריה תפילה אישית מעומק הלב.',
-				$gem,
-				$info['label']
-			);
-			$content = '<p class="prayer-intro-text">' . esc_html( $intro ) . "</p>\n" . $verses;
-
-			$post_id = wp_insert_post( array(
-				'post_type'    => 'prayer',
-				'post_title'   => $title,
-				'post_status'  => 'publish',
-				'post_content' => $content,
-				'post_excerpt' => sprintf( 'פרק תהילים %s — מזמור לאמירה %s, עם הקדמה קצרה.', $gem, $info['label'] ),
-			) );
-
-			if ( $post_id && ! is_wp_error( $post_id ) ) {
+		$post_id = wp_insert_post( array(
+			'post_type'    => 'prayer',
+			'post_title'   => $p['title'],
+			'post_status'  => 'publish',
+			'post_content' => $content,
+			'post_excerpt' => $p['excerpt'],
+		) );
+		if ( $post_id && ! is_wp_error( $post_id ) ) {
+			$term = get_term_by( 'slug', $p['cat'], 'prayer_cat' );
+			if ( $term ) {
 				wp_set_object_terms( $post_id, $term->term_id, 'prayer_cat' );
-				update_post_meta( $post_id, '_tehilim_seeded_prayer', 1 );
-				update_post_meta( $post_id, 'psalms_chapter', $ch );
 			}
+			update_post_meta( $post_id, '_tehilim_seeded_prayer', 1 );
 		}
 	}
 
-	update_option( 'tehilim_prayers_seed_v2', 1 );
-	// New content — bump the rewrite flush so category counts refresh
+	update_option( 'tehilim_prayers_v3', 1 );
 	delete_option( 'tehilim_prayers_rewrites' );
 }
-add_action( 'init', 'tehilim_seed_prayers_v2', 26 );
+add_action( 'init', 'tehilim_migrate_prayers_content', 26 );
+
+/**
+ * The seed prayer set — original devotional compositions + ancient
+ * public-domain liturgy, grouped by category. Filterable so a site can
+ * add its own nuschaot.
+ *
+ * @return array<int, array{title:string,cat:string,excerpt:string,intro:string,body:string}>
+ */
+function tehilim_seed_prayer_set() {
+	$set = array(
+		// ---- פרנסה ----
+		array( 'cat' => 'tefilot-parnasa', 'title' => 'תפילה לפני היציאה לעבודה', 'excerpt' => 'תפילה קצרה לאמירה לפני היום — לסייעתא דשמיא ולהצלחה במעשי הידיים.',
+			'intro' => 'תפילה קצרה לפני תחילת יום העבודה, לבקש סייעתא דשמיא והצלחה.',
+			'body' => "רִבּוֹנוֹ שֶׁל עוֹלָם, הִנְנִי יוֹצֵא לְמַעֲשַׂי. תֵּן בְּיָדַי בְּרָכָה וְהַצְלָחָה, וְשַׁלַּח סִיַּעְתָּא דִשְׁמַיָּא בְּכָל אֲשֶׁר אֶפְנֶה. תֵּן לִי לֵב לָדַעַת שֶׁהַכֹּל מִיָּדְךָ, וְאֶשָּׂא חֵן בְּעֵינֵי כָּל רוֹאַי. אָמֵן." ),
+		array( 'cat' => 'tefilot-parnasa', 'title' => 'תפילה לפרנסה ברווח ולא בצער', 'excerpt' => 'בקשה לפרנסה בשפע וברווח, בכבוד וללא דאגה.',
+			'intro' => 'בקשה שהפרנסה תבוא בכבוד וברווח, ומתוך מנוחת הנפש.',
+			'body' => "אָבִינוּ שֶׁבַּשָּׁמַיִם, זַכֵּנִי לְפַרְנָסָה בְּרֶוַח וְלֹא בְּצַעַר, בְּכָבוֹד וְלֹא בְּבִזָּיוֹן, מִיָּדְךָ הַמְּלֵאָה וְהָרְחָבָה. הָסֵר מִמֶּנִּי דְּאָגָה, וְתֵן בְּלִבִּי בִּטָּחוֹן שָׁלֵם בְּךָ. אָמֵן." ),
+
+		// ---- רפואה ----
+		array( 'cat' => 'tefilot-refua', 'title' => 'תפילה לרפואת הנפש', 'excerpt' => 'תפילה לשלוות הנפש, לרוגע ולחיזוק פנימי.',
+			'intro' => 'תפילה לרפואת הנפש, לרוגע ולחיזוק בעת מצוקה נפשית.',
+			'body' => "רְפָאֵנִי ה׳ וְאֵרָפֵא. הָסֵר מִלִּבִּי עֶצֶב וְדַאֲגָה, וּמַלֵּא אוֹתִי אֱמוּנָה, שַׁלְוָה וְשִׂמְחָה. חַזֵּק אֶת רוּחִי, וְתֵן בִּי כֹּחַ לְהַמְשִׁיךְ מִתּוֹךְ תִּקְוָה. אָמֵן." ),
+		array( 'cat' => 'tefilot-refua', 'title' => 'תפילה קודם ביקור אצל רופא', 'excerpt' => 'בקשה שהרופא יכוון לרפואה ושתבוא החלמה.',
+			'intro' => 'נהוג לבקש רחמים לפני בדיקה או טיפול, שהרופאים יצליחו בדרכם.',
+			'body' => "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹהַי, שֶׁתִּשְׁלַח דְּבַר רְפוּאָה עַל יְדֵי הָרוֹפְאִים, וְתַכְוִינֵם לְרַפְּאֹתֵנִי רְפוּאָה שְׁלֵמָה. כִּי אֵל רוֹפֵא נֶאֱמָן וְרַחֲמָן אָתָּה. אָמֵן." ),
+
+		// ---- זיווג ----
+		array( 'cat' => 'tefilot-zivug', 'title' => 'תפילת הורים לזיווג הבן והבת', 'excerpt' => 'תפילת הורים שבנם או בתם ימצאו את זיווגם ההגון.',
+			'intro' => 'תפילה שנושאים הורים לזיווגם ההגון של ילדיהם.',
+			'body' => "רִבּוֹנוֹ שֶׁל עוֹלָם, זַכֵּה אֶת בְּנֵנוּ/בִּתֵּנוּ לִמְצֹא אֶת זִוּוּגָם הָהָגוּן מְהֵרָה, בְּעֵת רָצוֹן. יִבְנוּ בַּיִת נֶאֱמָן בְּיִשְׂרָאֵל, מִתּוֹךְ אַהֲבָה, אֱמוּנָה וְשָׁלוֹם, וְנִזְכֶּה לְנַחַת. אָמֵן." ),
+
+		// ---- שלום בית ----
+		array( 'cat' => 'tefilot-shalom-bait', 'title' => 'תפילה לשלום בית ולאהבה', 'excerpt' => 'בקשה לאהבה, אחווה ושלום בין בני הזוג.',
+			'intro' => 'תפילה לשלום בית — לחיזוק האהבה והשלום בין בני הזוג.',
+			'body' => "רִבּוֹנוֹ שֶׁל עוֹלָם, הַשְׁכֵּן אַהֲבָה וְאַחֲוָה, שָׁלוֹם וְרֵעוּת בֵּינֵינוּ. תֵּן בְּלִבֵּנוּ סַבְלָנוּת וּמְחִילָה, וְנִזְכֶּה לִבְנוֹת בַּיִת שֶׁל שַׁלְוָה וְשִׂמְחָה, מִשְׁכַּן לִשְׁכִינָתְךָ. אָמֵן." ),
+
+		// ---- ילדים ----
+		array( 'cat' => 'tefilot-yeladim', 'title' => 'תפילת הורים להצלחת הילדים', 'excerpt' => 'תפילה לחינוך טוב, ליראת שמים ולנחת מהילדים.',
+			'intro' => 'תפילה יומית שנושאים הורים להצלחת ילדיהם ולחינוכם.',
+			'body' => "אָבִינוּ שֶׁבַּשָּׁמַיִם, זַכֵּנוּ לְגַדֵּל אֶת יְלָדֵינוּ לְתוֹרָה, לְיִרְאַת שָׁמַיִם וּלְמַעֲשִׂים טוֹבִים. תֵּן בָּהֶם בְּרִיאוּת, חָכְמָה וְלֵב טוֹב, וְנִזְכֶּה לִרְאוֹת בָּהֶם רַק נַחַת. אָמֵן." ),
+		array( 'cat' => 'tefilot-yeladim', 'title' => 'תפילה לפני מבחן', 'excerpt' => 'תפילה קצרה של תלמיד לפני מבחן — ליישוב הדעת ולהצלחה.',
+			'intro' => 'תפילה קצרה לאמירה לפני בחינה, ליישוב הדעת ולהצלחה.',
+			'body' => "רִבּוֹנוֹ שֶׁל עוֹלָם, תֵּן בִּי יִשּׁוּב הַדַּעַת וּמְנוּחַת הַנֶּפֶשׁ. פְּתַח אֶת לִבִּי, וְעָזְרֵנִי לְהַרְאוֹת אֶת אֲשֶׁר לָמַדְתִּי וּלְהַצְלִיחַ. אָמֵן." ),
+
+		// ---- הודיה ----
+		array( 'cat' => 'tefilot-hodaya', 'title' => 'מודה אני', 'excerpt' => 'נוסח "מודה אני" הנאמר עם הקימה בבוקר.',
+			'intro' => 'מודה אני נאמר מיד עם הקימה בבוקר, כהכרת הטוב על החזרת הנשמה.',
+			'body' => "מוֹדֶה אֲנִי לְפָנֶיךָ מֶלֶךְ חַי וְקַיָּם, שֶׁהֶחֱזַרְתָּ בִּי נִשְׁמָתִי בְּחֶמְלָה — רַבָּה אֱמוּנָתֶךָ." ),
+		array( 'cat' => 'tefilot-hodaya', 'title' => 'תפילת הודיה על הטוב', 'excerpt' => 'תפילה להודות לה׳ על החסד ועל הטובה.',
+			'intro' => 'תפילת הודיה קצרה — להכיר טובה ולהודות על החסדים.',
+			'body' => "מוֹדֶה אֲנִי לְפָנֶיךָ ה׳ אֱלֹהַי עַל כָּל הַטּוֹב שֶׁגָּמַלְתָּ עִמָּדִי. עֵינַי נְשׂוּאוֹת אֵלֶיךָ בְּהוֹדָיָה, וְלִבִּי מָלֵא תּוֹדָה עַל חַסְדֶּךָ בְּכָל עֵת. אָמֵן." ),
+
+		// ---- שמירה ----
+		array( 'cat' => 'tefilot-shmira', 'title' => 'תפילה לשמירה מכל רע', 'excerpt' => 'בקשה לשמירה מכל פגע ולהגנה מן השמים.',
+			'intro' => 'תפילה קצרה לשמירה מכל רע ולהגנה בכל הדרכים.',
+			'body' => "שׁוֹמֵר יִשְׂרָאֵל, שְׁמֹר אוֹתִי וְאֶת בְּנֵי בֵיתִי מִכָּל רַע. הָגֵן עָלֵינוּ מִכָּל פֶּגַע וּמִכָּל צָרָה, וְהוֹלִיכֵנוּ לְשָׁלוֹם. בְּצֵל כְּנָפֶיךָ נֶחְסֶה. אָמֵן." ),
+
+		// ---- לעת צרה ----
+		array( 'cat' => 'tefilot-tzara', 'title' => 'תפילה לעת צרה', 'excerpt' => 'בקשת רחמים וישועה בעת מצוקה.',
+			'intro' => 'תפילה מעומק הלב לעת צרה — לבקש ישועה ורחמים.',
+			'body' => "מִן הַמֵּצַר קָרָאתִי יָּהּ, עֲנֵנִי בְמֶרְחָב. רִבּוֹנוֹ שֶׁל עוֹלָם, שְׁמַע אֶת קוֹלִי בְּעֵת צָרָתִי, וּשְׁלַח לִי יְשׁוּעָה וְרַחֲמִים מְהֵרָה. אַל תַּסְתֵּר פָּנֶיךָ מִמֶּנִּי. אָמֵן." ),
+
+		// ---- הצלחה ----
+		array( 'cat' => 'tefilot-hatzlacha', 'title' => 'תפילה להצלחה בכל דרך', 'excerpt' => 'בקשה להצלחה ולסייעתא דשמיא בכל מעשי הידיים.',
+			'intro' => 'תפילה לפני מעשה חשוב — לבקש הצלחה וברכה.',
+			'body' => "יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹהַי, שֶׁתַּצְלִיחַ אֶת דְּרָכַי וְאֶת כָּל מַעֲשֵׂי יָדַי. תֵּן בִּי חָכְמָה וְדַעַת, וְשַׂמְתָּ בְּפִי מִלִּים נְכוֹנוֹת, וְאֶמְצָא חֵן וְשֵׂכֶל טוֹב בְּעֵינֶיךָ וּבְעֵינֵי אָדָם. אָמֵן." ),
+
+		// ---- הריון ולידה ----
+		array( 'cat' => 'tefilot-yoledet', 'title' => 'תפילה להריון בריא וללידה קלה', 'excerpt' => 'תפילה לשמירת ההריון וללידה קלה ובטוחה.',
+			'intro' => 'תפילה לשמירת ההריון ולידה קלה, לבריאות האם והתינוק.',
+			'body' => "רִבּוֹנוֹ שֶׁל עוֹלָם, שְׁמֹר נָא עַל הָעֻבָּר וְעַל אִמּוֹ. תֵּן הֵרָיוֹן בָּרִיא וּשְׁלֵם, וְלֵדָה קַלָּה וּבְטוּחָה בְּעִתָּהּ, וְזַכֵּנוּ לְגַדֵּל אֶת הַיֶּלֶד לְתוֹרָה וּלְמַעֲשִׂים טוֹבִים. אָמֵן." ),
+
+		// ---- עם ישראל ----
+		array( 'cat' => 'tefilot-klaliyot', 'title' => 'תפילה לשלום עם ישראל', 'excerpt' => 'בקשה לשלום, אחדות וישועה לכלל ישראל.',
+			'intro' => 'תפילה לשלום עם ישראל, לאחדות ולישועה.',
+			'body' => "אָבִינוּ שֶׁבַּשָּׁמַיִם, שְׁמֹר נָא עַל עַמְּךָ יִשְׂרָאֵל בְּכָל מְקוֹמוֹת מוֹשְׁבוֹתֵיהֶם. תֵּן שָׁלוֹם וְאַחְדוּת בָּאָרֶץ, וְקָרֵב לִבּוֹת בָּנֶיךָ זֶה לָזֶה. שְׁלַח רְפוּאָה לְחוֹלֵינוּ וּפְדוּת לְכָל הַנְּתוּנִים בְּצָרָה. אָמֵן." ),
+		array( 'cat' => 'tefilot-klaliyot', 'title' => 'תפילה לשלום חיילי צה״ל וכוחות הביטחון', 'excerpt' => 'בקשה לשמירה על החיילים ולשובם לשלום.',
+			'intro' => 'תפילה לשמירה על חיילי צה״ל וכוחות הביטחון.',
+			'body' => "רִבּוֹנוֹ שֶׁל עוֹלָם, שְׁמֹר נָא עַל חַיָּלֵי צְבָא הַהֲגַנָּה לְיִשְׂרָאֵל וְעַל כָּל אַנְשֵׁי כֹּחוֹת הַבִּטָּחוֹן. הָגֵן עֲלֵיהֶם מִכָּל פֶּגַע, חַזֵּק אֶת יְדֵיהֶם, וַהֲשִׁיבֵם לְבָתֵּיהֶם לְשָׁלוֹם וּלְחַיִּים טוֹבִים. אָמֵן." ),
+
+		// ---- ברכות ----
+		array( 'cat' => 'brachot', 'title' => 'שמע ישראל', 'excerpt' => 'פסוק "שמע ישראל" — קבלת עול מלכות שמים.',
+			'intro' => 'פסוק "שמע ישראל" נאמר בקריאת שמע בבוקר ובערב, כקבלת עול מלכות שמים.',
+			'body' => "שְׁמַע יִשְׂרָאֵל, ה׳ אֱלֹהֵינוּ, ה׳ אֶחָד.\nבָּרוּךְ שֵׁם כְּבוֹד מַלְכוּתוֹ לְעוֹלָם וָעֶד." ),
+	);
+
+	return apply_filters( 'tehilim_seed_prayer_set', $set );
+}
 
 /**
  * Flush rewrites once after this module is added (new /prayers, /tefila slugs).

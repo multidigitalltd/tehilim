@@ -51,6 +51,9 @@
 				<li><a href="<?php echo esc_url( get_post_type_archive_link( 'campaign' ) ); ?>"><?php esc_html_e( 'גלו קבוצות תהילים', 'tehilim' ); ?></a></li>
 				<li><a href="<?php echo esc_url( home_url( '/create/' ) ); ?>"><?php esc_html_e( 'פתחו קבוצת תהילים', 'tehilim' ); ?></a></li>
 				<li><a href="<?php echo esc_url( get_post_type_archive_link( 'prayer' ) ); ?>"><?php esc_html_e( 'תפילות', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/tehilim/' ) ); ?>"><?php esc_html_e( 'ספר תהילים המלא', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/tehilim-yomi/' ) ); ?>"><?php esc_html_e( 'תהילים יומי', 'tehilim' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/tehilim-lefi-shem/' ) ); ?>"><?php esc_html_e( 'תהילים לפי שם', 'tehilim' ); ?></a></li>
 				<li><a href="<?php echo esc_url( is_user_logged_in() ? tehilim_account_page_url() : tehilim_login_page_url( home_url( '/account/' ) ) ); ?>"><?php esc_html_e( 'האזור שלי', 'tehilim' ); ?></a></li>
 			</ul>
 		</div>

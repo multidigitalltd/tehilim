@@ -23,6 +23,25 @@ function tehilim_seo_plugin_active() {
 function tehilim_seo_description() {
 	$desc = '';
 
+	// Virtual Tehilim reader pages
+	if ( function_exists( 'tehilim_reader_view' ) ) {
+		$rv = tehilim_reader_view();
+		if ( 'index' === $rv ) {
+			return 'ספר תהילים המלא והמנוקד — כל 150 הפרקים לקריאה באינטרנט, פרק אחר פרק, לרפואה, לפרנסה, לזיווג ולזכות הרבים.';
+		}
+		if ( 'chapter' === $rv ) {
+			$n   = intval( get_query_var( 'tehilim_chapter' ) );
+			$gem = function_exists( 'tehilim_hebrew_numeral' ) ? tehilim_hebrew_numeral( $n ) : $n;
+			return sprintf( 'תהילים פרק %s — הנוסח המלא והמנוקד של המזמור לקריאה ולאמירה. פרק %s מתוך ספר תהילים.', $gem, $gem );
+		}
+		if ( 'yomi' === $rv ) {
+			return 'תהילים יומי — חלוקת ספר תהילים לימי החודש. הפרקים לאמירה בכל יום, כדי להשלים את כל ספר תהילים מדי חודש.';
+		}
+		if ( 'name' === $rv ) {
+			return 'תהילים לפי שם — הזינו שם וקבלו את פסוקי פרק קי״ט לפי אותיות השם, עם אותיות "קרע שטן". מנהג לאמירת תהילים לרפואה ולישועה.';
+		}
+	}
+
 	if ( is_singular( 'campaign' ) ) {
 		$id  = get_queried_object_id();
 		$ded = get_post_meta( $id, 'dedication_text', true );
@@ -164,6 +183,7 @@ function tehilim_seo_json_ld() {
 				'query-input' => 'required name=search_term_string',
 			),
 		);
+		$nodes[] = tehilim_seo_faq_node();
 	} elseif ( is_singular( array( 'prayer', 'campaign' ) ) ) {
 		$id      = get_queried_object_id();
 		$nodes[] = array(
@@ -178,6 +198,30 @@ function tehilim_seo_json_ld() {
 			'author'          => array( '@type' => 'Organization', 'name' => $name ),
 			'publisher'       => array( '@type' => 'Organization', 'name' => $name ),
 		);
+	} elseif ( function_exists( 'tehilim_reader_view' ) ) {
+		$rv = tehilim_reader_view();
+		if ( 'chapter' === $rv ) {
+			$n     = intval( get_query_var( 'tehilim_chapter' ) );
+			$gem   = function_exists( 'tehilim_hebrew_numeral' ) ? tehilim_hebrew_numeral( $n ) : $n;
+			$nodes[] = tehilim_seo_breadcrumb_node( array(
+				array( 'ספר תהילים', $home . 'tehilim/' ),
+				array( 'פרק ' . $gem, $home . 'tehilim/' . $n . '/' ),
+			) );
+		} elseif ( 'index' === $rv ) {
+			$nodes[] = tehilim_seo_breadcrumb_node( array(
+				array( 'ספר תהילים', $home . 'tehilim/' ),
+			) );
+		} elseif ( 'yomi' === $rv ) {
+			$nodes[] = tehilim_seo_breadcrumb_node( array(
+				array( 'ספר תהילים', $home . 'tehilim/' ),
+				array( 'תהילים יומי', $home . 'tehilim-yomi/' ),
+			) );
+		} elseif ( 'name' === $rv ) {
+			$nodes[] = tehilim_seo_breadcrumb_node( array(
+				array( 'ספר תהילים', $home . 'tehilim/' ),
+				array( 'תהילים לפי שם', $home . 'tehilim-lefi-shem/' ),
+			) );
+		}
 	}
 
 	if ( ! $nodes ) {
@@ -185,7 +229,85 @@ function tehilim_seo_json_ld() {
 	}
 
 	foreach ( $nodes as $node ) {
+		if ( ! $node ) {
+			continue;
+		}
 		echo '<script type="application/ld+json">' . wp_json_encode( $node, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
 	}
 }
 add_action( 'wp_head', 'tehilim_seo_json_ld', 2 );
+
+/**
+ * Build a BreadcrumbList JSON-LD node from a list of [ name, url ] pairs.
+ * The site home is prepended automatically as the first crumb.
+ */
+function tehilim_seo_breadcrumb_node( $crumbs ) {
+	$items = array();
+	$pos   = 1;
+	$items[] = array(
+		'@type'    => 'ListItem',
+		'position' => $pos++,
+		'name'     => 'דף הבית',
+		'item'     => home_url( '/' ),
+	);
+	foreach ( $crumbs as $crumb ) {
+		$items[] = array(
+			'@type'    => 'ListItem',
+			'position' => $pos++,
+			'name'     => $crumb[0],
+			'item'     => $crumb[1],
+		);
+	}
+	return array(
+		'@context'        => 'https://schema.org',
+		'@type'           => 'BreadcrumbList',
+		'itemListElement' => $items,
+	);
+}
+
+/**
+ * FAQPage JSON-LD for the home page — high-intent questions people search on
+ * Google around saying Tehilim. Answers are original, factual and concise.
+ */
+function tehilim_seo_faq_node() {
+	$faqs = array(
+		array(
+			'q' => 'כמה פרקים יש בספר תהילים?',
+			'a' => 'בספר תהילים 150 פרקים (מזמורים). נהוג לחלק את כולם לימי החודש או לימות השבוע, כדי לסיים את כל הספר באופן קבוע.',
+		),
+		array(
+			'q' => 'מהו תהילים יומי?',
+			'a' => 'תהילים יומי הוא חלוקת ספר תהילים לימי החודש, כך שאמירת הפרקים של כל יום משלימה את כל הספר מדי חודש. ניתן לראות את חלוקת הפרקים לכל יום בעמוד "תהילים יומי".',
+		),
+		array(
+			'q' => 'מהו תהילים לפי שם ומהן אותיות "קרע שטן"?',
+			'a' => 'מנהג עתיק לאמירת פסוקי פרק קי״ט בתהילים לפי אותיות שמו של אדם, ובסופם אותיות "קרע שטן". נהוג לאמרו לרפואה, לישועה ולזכות אדם מסוים.',
+		),
+		array(
+			'q' => 'אילו פרקי תהילים אומרים לרפואה?',
+			'a' => 'נהוג לומר לרפואה בין השאר את הפרקים ו׳, כ׳, כ״ג, ל׳, מ״א וק״ג, וכן פרק קי״ט לפי אותיות שם החולה. אפשר גם להצטרף לקבוצת תהילים ולומר פרקים יחד לזכות החולה.',
+		),
+		array(
+			'q' => 'איך פותחים קבוצת תהילים משותפת?',
+			'a' => 'באתר ניתן לפתוח קבוצת תהילים בחינם וללא הרשמה: בוחרים את המטרה (רפואה, ישועה, זיווג, פרנסה או לעילוי נשמה), מזמינים משתתפים ושגרירים, וכל פרק שנאמר נזקף לזכות הקבוצה.',
+		),
+	);
+
+	$entities = array();
+	foreach ( $faqs as $f ) {
+		$entities[] = array(
+			'@type'          => 'Question',
+			'name'           => $f['q'],
+			'acceptedAnswer' => array(
+				'@type' => 'Answer',
+				'text'  => $f['a'],
+			),
+		);
+	}
+
+	return array(
+		'@context'   => 'https://schema.org',
+		'@type'      => 'FAQPage',
+		'mainEntity' => $entities,
+	);
+}

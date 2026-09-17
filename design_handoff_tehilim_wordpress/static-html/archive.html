@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תהילים · כל הקמפיינים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Assistant:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+  @font-face { font-family: 'Asimon'; src: url('fonts/asimon-regular.otf') format('opentype'); font-weight: 400; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'Asimon'; src: url('fonts/asimon-medium.otf') format('opentype'); font-weight: 500 600; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'Asimon'; src: url('fonts/asimon-bold.otf') format('opentype'); font-weight: 700 900; font-style: normal; font-display: swap; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FAF4EA; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; transition: transform .16s ease, box-shadow .22s ease, background .22s ease, border-color .2s ease, color .18s ease, opacity .18s ease; }
+  button:active { transform: scale(.96); }
+  input { font-family: inherit; transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+  input:focus { box-shadow: 0 0 0 3px rgba(192,90,58,.14); }
+  a { color: #A94B2E; text-decoration: none; transition: color .18s ease; }
+  a:hover { color: #C05A3A; }
+  a:active { opacity: .65; }
+  button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid #A94B2E; outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; } }
+  /* ===== Responsive (1024 / 900 / 620) ===== */
+  @media (max-width: 1024px) {
+    [style*="grid-template-columns:repeat(4,1fr)"] { grid-template-columns: repeat(2,1fr) !important; }
+    [style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: repeat(2,1fr) !important; }
+    [style*="grid-template-columns:2fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; row-gap: 26px !important; }
+  }
+  @media (max-width: 900px) {
+    [style*="grid-template-columns:1.02fr .98fr"],
+    [style*="grid-template-columns:1.12fr .88fr"],
+    [style*="grid-template-columns:1fr 336px"] { grid-template-columns: 1fr !important; }
+    [style*="gap:50px;align-items:center"] { gap: 34px !important; }
+    [style*="display:flex;gap:44px;align-items:center"] { flex-direction: column !important; align-items: stretch !important; }
+    [style*="width:460px;height:280px"] { width: 100% !important; }
+    [style*="max-width:384px"] { max-width: 100% !important; }
+    [style*="width:320px;flex-shrink:0"] { width: 100% !important; }
+    [style*="position:sticky;top:94px"] { position: static !important; }
+    [style*="align-items:center;gap:30px;font-size:15.5px"] { display: none !important; }
+    [style*="align-items:center;padding:56px"] { padding: 34px !important; }
+    [style*="max-width:940px"] { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 18px 24px !important; justify-content: initial !important; }
+    [style*="width:1px;height:44px"] { display: none !important; }
+    [style*="font-size:52px"] { font-size: 36px !important; letter-spacing: -.4px !important; }
+    [style*="font-size:47px"] { font-size: 32px !important; }
+    [style*="font-size:46px"] { font-size: 32px !important; }
+    [style*="font-size:40px"] { font-size: 28px !important; }
+    [style*="font-size:38px"] { font-size: 27px !important; }
+  }
+  @media (max-width: 620px) {
+    [style*="grid-template-columns:repeat(3,1fr)"],
+    [style*="grid-template-columns:repeat(2,1fr)"] { grid-template-columns: 1fr !important; }
+    [style*="grid-template-columns:repeat(4,1fr)"] { grid-template-columns: 1fr 1fr !important; }
+    [style*="max-width:940px"] { grid-template-columns: 1fr 1fr !important; }
+    [style*="padding:0 32px"] { padding-left: 18px !important; padding-right: 18px !important; }
+    [style*="display:flex;gap:12px;justify-content:center"] { flex-wrap: wrap !important; }
+  }
+  @keyframes floatIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes growbar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes pop { 0% { transform: scale(.85); opacity: 0; } 60% { transform: scale(1.04); } 100% { transform: scale(1); opacity: 1; } }
+
+</style>
+</head>
+<body>
+<div style="direction:rtl;font-family:'Asimon','Assistant',sans-serif;background:#FAF4EA;color:#2E2318;min-height:100vh;width:100%;overflow-x:hidden">
+
+  
+  <div style="position:sticky;top:0;z-index:40;background:rgba(250,244,234,.88);backdrop-filter:blur(10px);border-bottom:1px solid #EADCC6">
+    <div style="max-width:1200px;margin:0 auto;padding:0 32px;height:74px;display:flex;align-items:center;justify-content:space-between">
+      <button style="display:flex;align-items:center;gap:11px">
+        <div style="position:relative;width:42px;height:42px;border-radius:13px;background:linear-gradient(140deg,#C86A45,#A5442A);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px -4px rgba(169,75,46,.5),inset 0 1px 0 rgba(255,255,255,.22)">
+          <svg width="23" height="23" viewbox="0 0 24 24" fill="none"><path d="M12 6.4C10.2 5 7.4 4.5 4.6 5v12.3c2.8-.5 5.6 0 7.4 1.4 1.8-1.4 4.6-1.9 7.4-1.4V5c-2.8-.5-5.6 0-7.4 1.4Z" stroke="#FFF3E4" stroke-width="1.7" stroke-linejoin="round"></path><path d="M12 6.4v12.3" stroke="#F0CE7E" stroke-width="1.7" stroke-linecap="round"></path></svg>
+        </div>
+        <span style="font-family:'Asimon','Assistant',sans-serif;font-weight:800;font-size:23px;color:#2E2318;letter-spacing:-.2px">תהילים</span>
+      </button>
+      <div style="display:flex;align-items:center;gap:30px;font-size:15.5px;font-weight:600;color:#6B5D4C">
+        <button style="color:#6B5D4C;font-weight:600;font-size:15.5px" data-hover-style="color:#A94B2E">איך זה עובד</button>
+        <button style="color:#6B5D4C;font-weight:600;font-size:15.5px" data-hover-style="color:#A94B2E">קמפיינים</button>
+        <button style="color:#6B5D4C;font-weight:600;font-size:15.5px" data-hover-style="color:#A94B2E">אודות</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <button style="padding:10px 18px;border-radius:12px;border:1.5px solid #EADCC6;background:#FFFCF6;font-weight:700;font-size:15px;color:#2E2318">התחברות</button>
+        <button style="padding:11px 20px;border-radius:12px;background:linear-gradient(135deg,#C05A3A,#A94B2E);color:#FFF7F2;font-weight:700;font-size:15px;box-shadow:0 8px 18px rgba(169,75,46,.28)">צור קמפיין</button>
+      </div>
+    </div>
+  </div>
+
+  
+  
+
+  
+  
+  <div style="animation:floatIn .55s cubic-bezier(.2,.7,.2,1) both;max-width:1200px;margin:0 auto;padding:46px 32px 74px">
+    <div style="text-align:center">
+      <div style="display:inline-flex;align-items:center;gap:7px;background:#FBF3E4;border:1px solid #EED9B2;color:#B9822B;font-weight:700;font-size:13px;padding:7px 14px;border-radius:999px;margin-bottom:16px">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#B9822B" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"></path></svg>
+        ארכיון הקמפיינים
+      </div>
+      <h1 style="font-family:'Asimon','Assistant',sans-serif;font-weight:900;font-size:46px;margin:0 0 10px;color:#2E2318">כל הקמפיינים</h1>
+      <p style="font-size:18px;color:#6B5D4C;margin:0">גלו קמפיינים פעילים והצטרפו לומר תהילים יחד · 12 קמפיינים</p>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:30px 0 36px">
+      
+        <button style="padding:10px 16px;border-radius:999px;border:1.5px solid;font-size:14px;font-weight:700;font-family:'Asimon','Assistant',sans-serif;cursor:pointer;background:#C05A3A;color:#FFF7F2;border-color:#C05A3A">הכל</button>
+      
+        <button style="padding:10px 16px;border-radius:999px;border:1.5px solid;font-size:14px;font-weight:700;font-family:'Asimon','Assistant',sans-serif;cursor:pointer;background:#FFFCF6;color:#6B5D4C;border-color:#EADCC6">רפואה שלמה</button>
+      
+        <button style="padding:10px 16px;border-radius:999px;border:1.5px solid;font-size:14px;font-weight:700;font-family:'Asimon','Assistant',sans-serif;cursor:pointer;background:#FFFCF6;color:#6B5D4C;border-color:#EADCC6">עילוי נשמה</button>
+      
+        <button style="padding:10px 16px;border-radius:999px;border:1.5px solid;font-size:14px;font-weight:700;font-family:'Asimon','Assistant',sans-serif;cursor:pointer;background:#FFFCF6;color:#6B5D4C;border-color:#EADCC6">זיווג הגון</button>
+      
+        <button style="padding:10px 16px;border-radius:999px;border:1.5px solid;font-size:14px;font-weight:700;font-family:'Asimon','Assistant',sans-serif;cursor:pointer;background:#FFFCF6;color:#6B5D4C;border-color:#EADCC6">פרנסה טובה</button>
+      
+        <button style="padding:10px 16px;border-radius:999px;border:1.5px solid;font-size:14px;font-weight:700;font-family:'Asimon','Assistant',sans-serif;cursor:pointer;background:#FFFCF6;color:#6B5D4C;border-color:#EADCC6">זכות והצלחה</button>
+      
+        <button style="padding:10px 16px;border-radius:999px;border:1.5px solid;font-size:14px;font-weight:700;font-family:'Asimon','Assistant',sans-serif;cursor:pointer;background:#FFFCF6;color:#6B5D4C;border-color:#EADCC6">שמחה ואירוע</button>
+      
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:right">
+      
+        <div style="background:#FFFFFF;border:1px solid #EADCC6;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(70,50,25,.07);display:flex;flex-direction:column;transition:transform .22s ease,box-shadow .22s ease" data-hover-style="transform:translateY(-5px);box-shadow:0 20px 42px rgba(70,50,25,.14)">
+          <div style="height:186px;background:linear-gradient(160deg,#E7ECF6,#EFEAE0 55%,#F3EAD9)"></div>
+          <div style="padding:22px 22px 20px;display:flex;flex-direction:column;gap:15px">
+            <div>
+              <div style="font-weight:800;font-size:21px;color:#2E2318">משה בן חיה</div>
+              <div style="font-size:13.5px;color:#7A6B58;margin-top:4px">מוקדש · לרפואת</div>
+              <div style="font-size:15px;color:#6B5D4C;font-weight:600;margin-top:2px">רפואה שלמה</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px;color:#2E2318;font-weight:700;font-size:15px">
+                <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5"></path></svg>
+                <span style="direction:ltr">1 / 10</span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12.5px;padding:5px 11px;border-radius:999px;background:#FBF3E4;border:1px solid #EED9B2;color:#B9822B">
+                <span>בעיצומו · 10%</span>
+                
+                <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3-1 4-1 6a3 3 0 0 0 6 0c0 4-2 5-2 7a3 3 0 0 1-6 0c0-3 3-4 3-8 0-1 .5-2 0-2z"></path></svg>
+              </div>
+            </div>
+            <div>
+              <div style="height:9px;border-radius:999px;background:#EFE3CF;position:relative;overflow:hidden">
+                <div style="position:absolute;left:0;top:0;height:100%;width:10%;border-radius:999px;background:linear-gradient(90deg,#C05A3A,#D9A441)"></div>
+              </div>
+              <div style="font-size:12.5px;color:#7A6B58;margin-top:7px">ספרים הושלמו</div>
+            </div>
+            <button style="width:100%;padding:14px;border-radius:13px;border:1.5px solid #E5D3B4;background:#FFFCF6;color:#2E2318;font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px" data-hover-style="background:#F6EEDF;border-color:#D9C09A">
+              <span>כניסה לקמפיין</span>
+              <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+            </button>
+          </div>
+        </div>
+      
+        <div style="background:#FFFFFF;border:1px solid #EADCC6;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(70,50,25,.07);display:flex;flex-direction:column;transition:transform .22s ease,box-shadow .22s ease" data-hover-style="transform:translateY(-5px);box-shadow:0 20px 42px rgba(70,50,25,.14)">
+          <div style="height:186px;background:linear-gradient(160deg,#F6E7E7,#F0E7DE 55%,#F3EAD9)"></div>
+          <div style="padding:22px 22px 20px;display:flex;flex-direction:column;gap:15px">
+            <div>
+              <div style="font-weight:800;font-size:21px;color:#2E2318">רבקה בת לאה</div>
+              <div style="font-size:13.5px;color:#7A6B58;margin-top:4px">מוקדש · לרפואת</div>
+              <div style="font-size:15px;color:#6B5D4C;font-weight:600;margin-top:2px">רפואה שלמה</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px;color:#2E2318;font-weight:700;font-size:15px">
+                <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5"></path></svg>
+                <span style="direction:ltr">5 / 8</span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12.5px;padding:5px 11px;border-radius:999px;background:#FBF3E4;border:1px solid #EED9B2;color:#B9822B">
+                <span>בעיצומו · 63%</span>
+                
+                <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3-1 4-1 6a3 3 0 0 0 6 0c0 4-2 5-2 7a3 3 0 0 1-6 0c0-3 3-4 3-8 0-1 .5-2 0-2z"></path></svg>
+              </div>
+            </div>
+            <div>
+              <div style="height:9px;border-radius:999px;background:#EFE3CF;position:relative;overflow:hidden">
+                <div style="position:absolute;left:0;top:0;height:100%;width:63%;border-radius:999px;background:linear-gradient(90deg,#C05A3A,#D9A441)"></div>
+              </div>
+              <div style="font-size:12.5px;color:#7A6B58;margin-top:7px">ספרים הושלמו</div>
+            </div>
+            <button style="width:100%;padding:14px;border-radius:13px;border:1.5px solid #E5D3B4;background:#FFFCF6;color:#2E2318;font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px" data-hover-style="background:#F6EEDF;border-color:#D9C09A">
+              <span>כניסה לקמפיין</span>
+              <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+            </button>
+          </div>
+        </div>
+      
+        <div style="background:#FFFFFF;border:1px solid #EADCC6;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(70,50,25,.07);display:flex;flex-direction:column;transition:transform .22s ease,box-shadow .22s ease" data-hover-style="transform:translateY(-5px);box-shadow:0 20px 42px rgba(70,50,25,.14)">
+          <div style="height:186px;background:linear-gradient(160deg,#E7F1EA,#EFEADF 55%,#F3EAD9)"></div>
+          <div style="padding:22px 22px 20px;display:flex;flex-direction:column;gap:15px">
+            <div>
+              <div style="font-weight:800;font-size:21px;color:#2E2318">משפחת אזולאי</div>
+              <div style="font-size:13.5px;color:#7A6B58;margin-top:4px">מוקדש · לעילוי נשמת</div>
+              <div style="font-size:15px;color:#6B5D4C;font-weight:600;margin-top:2px">עילוי נשמה</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px;color:#2E2318;font-weight:700;font-size:15px">
+                <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5"></path></svg>
+                <span style="direction:ltr">9 / 10</span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12.5px;padding:5px 11px;border-radius:999px;background:#EAF3EC;border:1px solid #CFE6D5;color:#4E8B5E">
+                <span>כמעט הושלם · 90%</span>
+                <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+                
+              </div>
+            </div>
+            <div>
+              <div style="height:9px;border-radius:999px;background:#EFE3CF;position:relative;overflow:hidden">
+                <div style="position:absolute;left:0;top:0;height:100%;width:90%;border-radius:999px;background:linear-gradient(90deg,#C05A3A,#D9A441)"></div>
+              </div>
+              <div style="font-size:12.5px;color:#7A6B58;margin-top:7px">ספרים הושלמו</div>
+            </div>
+            <button style="width:100%;padding:14px;border-radius:13px;border:1.5px solid #E5D3B4;background:#FFFCF6;color:#2E2318;font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px" data-hover-style="background:#F6EEDF;border-color:#D9C09A">
+              <span>כניסה לקמפיין</span>
+              <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+            </button>
+          </div>
+        </div>
+      
+        <div style="background:#FFFFFF;border:1px solid #EADCC6;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(70,50,25,.07);display:flex;flex-direction:column;transition:transform .22s ease,box-shadow .22s ease" data-hover-style="transform:translateY(-5px);box-shadow:0 20px 42px rgba(70,50,25,.14)">
+          <div style="height:186px;background:linear-gradient(160deg,#ECE7F6,#EFEADF 55%,#F3EAD9)"></div>
+          <div style="padding:22px 22px 20px;display:flex;flex-direction:column;gap:15px">
+            <div>
+              <div style="font-weight:800;font-size:21px;color:#2E2318">דוד בן שרה</div>
+              <div style="font-size:13.5px;color:#7A6B58;margin-top:4px">מוקדש · לזיווג</div>
+              <div style="font-size:15px;color:#6B5D4C;font-weight:600;margin-top:2px">זיווג הגון</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px;color:#2E2318;font-weight:700;font-size:15px">
+                <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5"></path></svg>
+                <span style="direction:ltr">3 / 12</span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12.5px;padding:5px 11px;border-radius:999px;background:#FBF3E4;border:1px solid #EED9B2;color:#B9822B">
+                <span>בעיצומו · 25%</span>
+                
+                <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3-1 4-1 6a3 3 0 0 0 6 0c0 4-2 5-2 7a3 3 0 0 1-6 0c0-3 3-4 3-8 0-1 .5-2 0-2z"></path></svg>
+              </div>
+            </div>
+            <div>
+              <div style="height:9px;border-radius:999px;background:#EFE3CF;position:relative;overflow:hidden">
+                <div style="position:absolute;left:0;top:0;height:100%;width:25%;border-radius:999px;background:linear-gradient(90deg,#C05A3A,#D9A441)"></div>
+              </div>
+              <div style="font-size:12.5px;color:#7A6B58;margin-top:7px">ספרים הושלמו</div>
+            </div>
+            <button style="width:100%;padding:14px;border-radius:13px;border:1.5px solid #E5D3B4;background:#FFFCF6;color:#2E2318;font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px" data-hover-style="background:#F6EEDF;border-color:#D9C09A">
+              <span>כניסה לקמפיין</span>
+              <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+            </button>
+          </div>
+        </div>
+      
+        <div style="background:#FFFFFF;border:1px solid #EADCC6;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(70,50,25,.07);display:flex;flex-direction:column;transition:transform .22s ease,box-shadow .22s ease" data-hover-style="transform:translateY(-5px);box-shadow:0 20px 42px rgba(70,50,25,.14)">
+          <div style="height:186px;background:linear-gradient(160deg,#F6EFDD,#F1E9DC 55%,#F3EAD9)"></div>
+          <div style="padding:22px 22px 20px;display:flex;flex-direction:column;gap:15px">
+            <div>
+              <div style="font-weight:800;font-size:21px;color:#2E2318">קהילת אור החיים</div>
+              <div style="font-size:13.5px;color:#7A6B58;margin-top:4px">מוקדש · לרגל</div>
+              <div style="font-size:15px;color:#6B5D4C;font-weight:600;margin-top:2px">שמחה ואירוע</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px;color:#2E2318;font-weight:700;font-size:15px">
+                <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5"></path></svg>
+                <span style="direction:ltr">15 / 18</span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12.5px;padding:5px 11px;border-radius:999px;background:#EAF3EC;border:1px solid #CFE6D5;color:#4E8B5E">
+                <span>כמעט הושלם · 83%</span>
+                <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+                
+              </div>
+            </div>
+            <div>
+              <div style="height:9px;border-radius:999px;background:#EFE3CF;position:relative;overflow:hidden">
+                <div style="position:absolute;left:0;top:0;height:100%;width:83%;border-radius:999px;background:linear-gradient(90deg,#C05A3A,#D9A441)"></div>
+              </div>
+              <div style="font-size:12.5px;color:#7A6B58;margin-top:7px">ספרים הושלמו</div>
+            </div>
+            <button style="width:100%;padding:14px;border-radius:13px;border:1.5px solid #E5D3B4;background:#FFFCF6;color:#2E2318;font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px" data-hover-style="background:#F6EEDF;border-color:#D9C09A">
+              <span>כניסה לקמפיין</span>
+              <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+            </button>
+          </div>
+        </div>
+      
+        <div style="background:#FFFFFF;border:1px solid #EADCC6;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(70,50,25,.07);display:flex;flex-direction:column;transition:transform .22s ease,box-shadow .22s ease" data-hover-style="transform:translateY(-5px);box-shadow:0 20px 42px rgba(70,50,25,.14)">
+          <div style="height:186px;background:linear-gradient(160deg,#E4F0F1,#EFEADF 55%,#F3EAD9)"></div>
+          <div style="padding:22px 22px 20px;display:flex;flex-direction:column;gap:15px">
+            <div>
+              <div style="font-weight:800;font-size:21px;color:#2E2318">יעקב בן רחל</div>
+              <div style="font-size:13.5px;color:#7A6B58;margin-top:4px">מוקדש · לפרנסת</div>
+              <div style="font-size:15px;color:#6B5D4C;font-weight:600;margin-top:2px">פרנסה טובה</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px;color:#2E2318;font-weight:700;font-size:15px">
+                <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5"></path></svg>
+                <span style="direction:ltr">6 / 15</span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12.5px;padding:5px 11px;border-radius:999px;background:#FBF3E4;border:1px solid #EED9B2;color:#B9822B">
+                <span>בעיצומו · 40%</span>
+                
+                <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3-1 4-1 6a3 3 0 0 0 6 0c0 4-2 5-2 7a3 3 0 0 1-6 0c0-3 3-4 3-8 0-1 .5-2 0-2z"></path></svg>
+              </div>
+            </div>
+            <div>
+              <div style="height:9px;border-radius:999px;background:#EFE3CF;position:relative;overflow:hidden">
+                <div style="position:absolute;left:0;top:0;height:100%;width:40%;border-radius:999px;background:linear-gradient(90deg,#C05A3A,#D9A441)"></div>
+              </div>
+              <div style="font-size:12.5px;color:#7A6B58;margin-top:7px">ספרים הושלמו</div>
+            </div>
+            <button style="width:100%;padding:14px;border-radius:13px;border:1.5px solid #E5D3B4;background:#FFFCF6;color:#2E2318;font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px" data-hover-style="background:#F6EEDF;border-color:#D9C09A">
+              <span>כניסה לקמפיין</span>
+              <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+            </button>
+          </div>
+        </div>
+      
+        <div style="background:#FFFFFF;border:1px solid #EADCC6;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(70,50,25,.07);display:flex;flex-direction:column;transition:transform .22s ease,box-shadow .22s ease" data-hover-style="transform:translateY(-5px);box-shadow:0 20px 42px rgba(70,50,25,.14)">
+          <div style="height:186px;background:linear-gradient(160deg,#E7F1EA,#EFEADF 55%,#F3EAD9)"></div>
+          <div style="padding:22px 22px 20px;display:flex;flex-direction:column;gap:15px">
+            <div>
+              <div style="font-weight:800;font-size:21px;color:#2E2318">חנה בת מרים</div>
+              <div style="font-size:13.5px;color:#7A6B58;margin-top:4px">מוקדש · לרפואת</div>
+              <div style="font-size:15px;color:#6B5D4C;font-weight:600;margin-top:2px">רפואה שלמה</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px;color:#2E2318;font-weight:700;font-size:15px">
+                <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5"></path></svg>
+                <span style="direction:ltr">20 / 20</span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12.5px;padding:5px 11px;border-radius:999px;background:#EAF3EC;border:1px solid #CFE6D5;color:#4E8B5E">
+                <span>הושלם · 100%</span>
+                <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+                
+              </div>
+            </div>
+            <div>
+              <div style="height:9px;border-radius:999px;background:#EFE3CF;position:relative;overflow:hidden">
+                <div style="position:absolute;left:0;top:0;height:100%;width:100%;border-radius:999px;background:linear-gradient(90deg,#C05A3A,#D9A441)"></div>
+              </div>
+              <div style="font-size:12.5px;color:#7A6B58;margin-top:7px">ספרים הושלמו</div>
+            </div>
+            <button style="width:100%;padding:14px;border-radius:13px;border:1.5px solid #E5D3B4;background:#FFFCF6;color:#2E2318;font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px" data-hover-style="background:#F6EEDF;border-color:#D9C09A">
+              <span>כניסה לקמפיין</span>
+              <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+            </button>
+          </div>
+        </div>
+      
+        <div style="background:#FFFFFF;border:1px solid #EADCC6;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(70,50,25,.07);display:flex;flex-direction:column;transition:transform .22s ease,box-shadow .22s ease" data-hover-style="transform:translateY(-5px);box-shadow:0 20px 42px rgba(70,50,25,.14)">
+          <div style="height:186px;background:linear-gradient(160deg,#F6E7E7,#F0E7DE 55%,#F3EAD9)"></div>
+          <div style="padding:22px 22px 20px;display:flex;flex-direction:column;gap:15px">
+            <div>
+              <div style="font-weight:800;font-size:21px;color:#2E2318">משפחת פרץ</div>
+              <div style="font-size:13.5px;color:#7A6B58;margin-top:4px">מוקדש · לזכות</div>
+              <div style="font-size:15px;color:#6B5D4C;font-weight:600;margin-top:2px">זכות והצלחה</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px;color:#2E2318;font-weight:700;font-size:15px">
+                <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5"></path></svg>
+                <span style="direction:ltr">4 / 10</span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12.5px;padding:5px 11px;border-radius:999px;background:#FBF3E4;border:1px solid #EED9B2;color:#B9822B">
+                <span>בעיצומו · 40%</span>
+                
+                <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3-1 4-1 6a3 3 0 0 0 6 0c0 4-2 5-2 7a3 3 0 0 1-6 0c0-3 3-4 3-8 0-1 .5-2 0-2z"></path></svg>
+              </div>
+            </div>
+            <div>
+              <div style="height:9px;border-radius:999px;background:#EFE3CF;position:relative;overflow:hidden">
+                <div style="position:absolute;left:0;top:0;height:100%;width:40%;border-radius:999px;background:linear-gradient(90deg,#C05A3A,#D9A441)"></div>
+              </div>
+              <div style="font-size:12.5px;color:#7A6B58;margin-top:7px">ספרים הושלמו</div>
+            </div>
+            <button style="width:100%;padding:14px;border-radius:13px;border:1.5px solid #E5D3B4;background:#FFFCF6;color:#2E2318;font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px" data-hover-style="background:#F6EEDF;border-color:#D9C09A">
+              <span>כניסה לקמפיין</span>
+              <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+            </button>
+          </div>
+        </div>
+      
+        <div style="background:#FFFFFF;border:1px solid #EADCC6;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(70,50,25,.07);display:flex;flex-direction:column;transition:transform .22s ease,box-shadow .22s ease" data-hover-style="transform:translateY(-5px);box-shadow:0 20px 42px rgba(70,50,25,.14)">
+          <div style="height:186px;background:linear-gradient(160deg,#ECE7F6,#EFEADF 55%,#F3EAD9)"></div>
+          <div style="padding:22px 22px 20px;display:flex;flex-direction:column;gap:15px">
+            <div>
+              <div style="font-weight:800;font-size:21px;color:#2E2318">הרב יוסף בן חנה</div>
+              <div style="font-size:13.5px;color:#7A6B58;margin-top:4px">מוקדש · לעילוי נשמת</div>
+              <div style="font-size:15px;color:#6B5D4C;font-weight:600;margin-top:2px">עילוי נשמה</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px;color:#2E2318;font-weight:700;font-size:15px">
+                <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5"></path></svg>
+                <span style="direction:ltr">30 / 36</span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12.5px;padding:5px 11px;border-radius:999px;background:#EAF3EC;border:1px solid #CFE6D5;color:#4E8B5E">
+                <span>כמעט הושלם · 83%</span>
+                <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+                
+              </div>
+            </div>
+            <div>
+              <div style="height:9px;border-radius:999px;background:#EFE3CF;position:relative;overflow:hidden">
+                <div style="position:absolute;left:0;top:0;height:100%;width:83%;border-radius:999px;background:linear-gradient(90deg,#C05A3A,#D9A441)"></div>
+              </div>
+              <div style="font-size:12.5px;color:#7A6B58;margin-top:7px">ספרים הושלמו</div>
+            </div>
+            <button style="width:100%;padding:14px;border-radius:13px;border:1.5px solid #E5D3B4;background:#FFFCF6;color:#2E2318;font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px" data-hover-style="background:#F6EEDF;border-color:#D9C09A">
+              <span>כניסה לקמפיין</span>
+              <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+            </button>
+          </div>
+        </div>
+      
+        <div style="background:#FFFFFF;border:1px solid #EADCC6;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(70,50,25,.07);display:flex;flex-direction:column;transition:transform .22s ease,box-shadow .22s ease" data-hover-style="transform:translateY(-5px);box-shadow:0 20px 42px rgba(70,50,25,.14)">
+          <div style="height:186px;background:linear-gradient(160deg,#E7ECF6,#EFEAE0 55%,#F3EAD9)"></div>
+          <div style="padding:22px 22px 20px;display:flex;flex-direction:column;gap:15px">
+            <div>
+              <div style="font-weight:800;font-size:21px;color:#2E2318">שירה בת אסתר</div>
+              <div style="font-size:13.5px;color:#7A6B58;margin-top:4px">מוקדש · לזיווג</div>
+              <div style="font-size:15px;color:#6B5D4C;font-weight:600;margin-top:2px">זיווג הגון</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px;color:#2E2318;font-weight:700;font-size:15px">
+                <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5"></path></svg>
+                <span style="direction:ltr">2 / 8</span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12.5px;padding:5px 11px;border-radius:999px;background:#FBF3E4;border:1px solid #EED9B2;color:#B9822B">
+                <span>בעיצומו · 25%</span>
+                
+                <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3-1 4-1 6a3 3 0 0 0 6 0c0 4-2 5-2 7a3 3 0 0 1-6 0c0-3 3-4 3-8 0-1 .5-2 0-2z"></path></svg>
+              </div>
+            </div>
+            <div>
+              <div style="height:9px;border-radius:999px;background:#EFE3CF;position:relative;overflow:hidden">
+                <div style="position:absolute;left:0;top:0;height:100%;width:25%;border-radius:999px;background:linear-gradient(90deg,#C05A3A,#D9A441)"></div>
+              </div>
+              <div style="font-size:12.5px;color:#7A6B58;margin-top:7px">ספרים הושלמו</div>
+            </div>
+            <button style="width:100%;padding:14px;border-radius:13px;border:1.5px solid #E5D3B4;background:#FFFCF6;color:#2E2318;font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px" data-hover-style="background:#F6EEDF;border-color:#D9C09A">
+              <span>כניסה לקמפיין</span>
+              <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+            </button>
+          </div>
+        </div>
+      
+        <div style="background:#FFFFFF;border:1px solid #EADCC6;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(70,50,25,.07);display:flex;flex-direction:column;transition:transform .22s ease,box-shadow .22s ease" data-hover-style="transform:translateY(-5px);box-shadow:0 20px 42px rgba(70,50,25,.14)">
+          <div style="height:186px;background:linear-gradient(160deg,#F6EFDD,#F1E9DC 55%,#F3EAD9)"></div>
+          <div style="padding:22px 22px 20px;display:flex;flex-direction:column;gap:15px">
+            <div>
+              <div style="font-weight:800;font-size:21px;color:#2E2318">קבוצת הנחל</div>
+              <div style="font-size:13.5px;color:#7A6B58;margin-top:4px">מוקדש · לרגל</div>
+              <div style="font-size:15px;color:#6B5D4C;font-weight:600;margin-top:2px">שמחה ואירוע</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px;color:#2E2318;font-weight:700;font-size:15px">
+                <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5"></path></svg>
+                <span style="direction:ltr">7 / 12</span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12.5px;padding:5px 11px;border-radius:999px;background:#FBF3E4;border:1px solid #EED9B2;color:#B9822B">
+                <span>בעיצומו · 58%</span>
+                
+                <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3-1 4-1 6a3 3 0 0 0 6 0c0 4-2 5-2 7a3 3 0 0 1-6 0c0-3 3-4 3-8 0-1 .5-2 0-2z"></path></svg>
+              </div>
+            </div>
+            <div>
+              <div style="height:9px;border-radius:999px;background:#EFE3CF;position:relative;overflow:hidden">
+                <div style="position:absolute;left:0;top:0;height:100%;width:58%;border-radius:999px;background:linear-gradient(90deg,#C05A3A,#D9A441)"></div>
+              </div>
+              <div style="font-size:12.5px;color:#7A6B58;margin-top:7px">ספרים הושלמו</div>
+            </div>
+            <button style="width:100%;padding:14px;border-radius:13px;border:1.5px solid #E5D3B4;background:#FFFCF6;color:#2E2318;font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px" data-hover-style="background:#F6EEDF;border-color:#D9C09A">
+              <span>כניסה לקמפיין</span>
+              <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+            </button>
+          </div>
+        </div>
+      
+        <div style="background:#FFFFFF;border:1px solid #EADCC6;border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(70,50,25,.07);display:flex;flex-direction:column;transition:transform .22s ease,box-shadow .22s ease" data-hover-style="transform:translateY(-5px);box-shadow:0 20px 42px rgba(70,50,25,.14)">
+          <div style="height:186px;background:linear-gradient(160deg,#E4F0F1,#EFEADF 55%,#F3EAD9)"></div>
+          <div style="padding:22px 22px 20px;display:flex;flex-direction:column;gap:15px">
+            <div>
+              <div style="font-weight:800;font-size:21px;color:#2E2318">אליהו בן דינה</div>
+              <div style="font-size:13.5px;color:#7A6B58;margin-top:4px">מוקדש · לרפואת</div>
+              <div style="font-size:15px;color:#6B5D4C;font-weight:600;margin-top:2px">רפואה שלמה</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:7px;color:#2E2318;font-weight:700;font-size:15px">
+                <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6C10 4.5 7 4 4 4.5v13C7 17 10 17.5 12 19M12 6c2-1.5 5-2 8-1.5v13c-3-.5-6 0-8 1.5"></path></svg>
+                <span style="direction:ltr">11 / 14</span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12.5px;padding:5px 11px;border-radius:999px;background:#FBF3E4;border:1px solid #EED9B2;color:#B9822B">
+                <span>בעיצומו · 79%</span>
+                
+                <svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3-1 4-1 6a3 3 0 0 0 6 0c0 4-2 5-2 7a3 3 0 0 1-6 0c0-3 3-4 3-8 0-1 .5-2 0-2z"></path></svg>
+              </div>
+            </div>
+            <div>
+              <div style="height:9px;border-radius:999px;background:#EFE3CF;position:relative;overflow:hidden">
+                <div style="position:absolute;left:0;top:0;height:100%;width:79%;border-radius:999px;background:linear-gradient(90deg,#C05A3A,#D9A441)"></div>
+              </div>
+              <div style="font-size:12.5px;color:#7A6B58;margin-top:7px">ספרים הושלמו</div>
+            </div>
+            <button style="width:100%;padding:14px;border-radius:13px;border:1.5px solid #E5D3B4;background:#FFFCF6;color:#2E2318;font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px" data-hover-style="background:#F6EEDF;border-color:#D9C09A">
+              <span>כניסה לקמפיין</span>
+              <svg width="17" height="17" viewbox="0 0 24 24" fill="none" stroke="#A94B2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+            </button>
+          </div>
+        </div>
+      
+    </div>
+  </div>
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  <div style="background:#F5EADB;border-top:1px solid #EADCC6">
+    <div style="max-width:1200px;margin:0 auto;padding:52px 32px 26px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:38px;height:38px;border-radius:12px;background:linear-gradient(140deg,#C86A45,#A5442A);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px -4px rgba(169,75,46,.5),inset 0 1px 0 rgba(255,255,255,.22)"><svg width="21" height="21" viewbox="0 0 24 24" fill="none"><path d="M12 6.4C10.2 5 7.4 4.5 4.6 5v12.3c2.8-.5 5.6 0 7.4 1.4 1.8-1.4 4.6-1.9 7.4-1.4V5c-2.8-.5-5.6 0-7.4 1.4Z" stroke="#FFF3E4" stroke-width="1.7" stroke-linejoin="round"></path><path d="M12 6.4v12.3" stroke="#F0CE7E" stroke-width="1.7" stroke-linecap="round"></path></svg></div>
+          <span style="font-family:'Asimon','Assistant',sans-serif;font-weight:800;font-size:20px;color:#2E2318;letter-spacing:-.2px">תהילים</span>
+        </div>
+        <p style="font-size:14.5px;color:#6B5D4C;line-height:1.6;max-width:340px;margin:0 0 16px">פלטפורמה חינמית לאיחוד קהילות סביב אמירת תהילים — כי יחד מגיעים רחוק יותר.</p>
+        <div style="display:inline-flex;align-items:center;gap:7px;background:#FBF3E4;border:1px solid #EED9B2;color:#B9822B;font-weight:700;font-size:13px;padding:7px 14px;border-radius:999px">
+          <svg width="13" height="13" viewbox="0 0 24 24" fill="#C05A3A"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.6 2 5 5.5 5c2 0 3.4 1.1 4.5 2.6C11 6.1 12.5 5 14.5 5 18 5 19.6 8.6 22 11.7 19.5 16.3 12 21 12 21z"></path></svg>
+          נבנה באהבה לעם ישראל
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:800;font-size:14px;color:#7A6B58;margin-bottom:14px">המוצר</div>
+        <div style="display:flex;flex-direction:column;gap:11px;font-size:14.5px">
+          <a href="#">גלו קמפיינים</a>
+          <a href="#">פתחו קמפיין</a>
+          <a href="#">האזור שלי</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:800;font-size:14px;color:#7A6B58;margin-bottom:14px">אודות</div>
+        <div style="display:flex;flex-direction:column;gap:11px;font-size:14.5px">
+          <a href="#">אודות הפלטפורמה</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:800;font-size:14px;color:#7A6B58;margin-bottom:14px">משאבים</div>
+        <div style="display:flex;flex-direction:column;gap:11px;font-size:14.5px">
+          <a href="#">שאלות נפוצות</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid #EADCC6"><div style="max-width:1200px;margin:0 auto;padding:20px 32px;font-size:13px;color:#7A6B58;text-align:center">© 2026 תהילים · כל הזכויות שמורות.</div></div>
+  </div>
+
+</div>
+</body>
+</html>

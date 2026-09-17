@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תהילים · אינדקס עמודי הרפרנס</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @font-face { font-family: 'Asimon'; src: url('fonts/asimon-regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Asimon'; src: url('fonts/asimon-medium.otf') format('opentype'); font-weight: 500 600; font-display: swap; }
+  @font-face { font-family: 'Asimon'; src: url('fonts/asimon-bold.otf') format('opentype'); font-weight: 700 900; font-display: swap; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #FAF4EA; color: #2E2318; font-family: 'Asimon','Assistant',sans-serif; padding: 60px 24px; }
+  .wrap { max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 40px; font-weight: 900; margin: 0 0 8px; }
+  p.sub { font-size: 17px; color: #6B5D4C; margin: 0 0 36px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  a.card { display: block; text-decoration: none; background: #FFFCF6; border: 1px solid #EADCC6; border-radius: 18px; padding: 22px 24px; transition: transform .18s ease, box-shadow .22s ease; }
+  a.card:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(70,50,25,.12); }
+  a.card .t { font-weight: 800; font-size: 20px; color: #2E2318; }
+  a.card .d { font-size: 14px; color: #6B5D4C; margin-top: 6px; line-height: 1.5; }
+  .note { margin-top: 34px; background: #FBF3E4; border: 1px solid #EED9B2; border-radius: 14px; padding: 18px 20px; font-size: 14.5px; color: #8A5A12; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>תהילים — עמודי רפרנס סטטיים</h1>
+  <p class="sub">שחזור מדויק של העיצוב כ־HTML/CSS נקי (inline styles, ללא runtime). זהו מקור האמת לבנייה בוורדפרס.</p>
+  <div class="grid">
+    <a class="card" href="home.html"><div class="t">דף הבית</div><div class="d">הרו, סטטיסטיקות, קמפיינים אחרונים, איך זה עובד, תכונות, ציטוטים, שאלות נפוצות, CTA, פוטר.</div></a>
+    <a class="card" href="archive.html"><div class="t">כל הקמפיינים (ארכיון)</div><div class="d">סינון לפי מטרה + גריד כרטיסי קמפיין.</div></a>
+    <a class="card" href="campaign.html"><div class="t">עמוד קמפיין</div><div class="d">מד התקדמות, קורא תהילים, שגרירים, פיד, sidebar שיתוף.</div></a>
+    <a class="card" href="ambassador-public.html"><div class="t">עמוד שגריר (ציבורי)</div><div class="d">הדף שהשגריר מפיץ — טבעת אישית, קורא שנזקף לזכותו, שיתוף אישי.</div></a>
+    <a class="card" href="ambassador-dashboard.html"><div class="t">אזור אישי לשגריר</div><div class="d">דשבורד פרטי: טבעת, סטטיסטיקות, קישור אישי.</div></a>
+    <a class="card" href="create.html"><div class="t">פתיחת קמפיין</div><div class="d">טופס: מטרה, שמות, בורר יעד.</div></a>
+  </div>
+  <div class="note">
+    <b>הערות לבנייה:</b> כל קובץ עצמאי לחלוטין (inline styles + הפונט Asimon בתיקיית <code>fonts/</code>). מעברי hover נשמרו כ־<code>data-hover-style</code> / <code>data-active-style</code> על האלמנטים הרלוונטיים — יש להמיר אותם ל־<code>:hover</code> / <code>:active</code> ב־CSS של התבנית. אזורי תמונה מסומנים ב־<code>data-image-slot</code> (בוורדפרס → featured image). הכפתורים כאן אינם מקושרים (רפרנס ויזואלי); ההתנהגות מתועדת ב־README.
+  </div>
+</div>
+</body>
+</html>

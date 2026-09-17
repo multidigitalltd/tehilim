@@ -7,7 +7,7 @@ on:
 
 defaults:
   run:
-    working-directory: tehillim-campaign-manager
+    working-directory: tehilim-theme
 
 jobs:
   quality:
@@ -23,25 +23,10 @@ jobs:
           tools: composer
           coverage: none
 
-      - name: Validate composer.json
-        run: composer validate --no-check-publish
-
-      - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist
-
-      - name: PHP syntax lint
+      - name: PHP syntax lint (theme files)
         run: |
-          find src tehillim-campaign-manager.php uninstall.php -name '*.php' -print0 \
+          find . -name '*.php' -print0 \
             | xargs -0 -n1 -P4 php -l
-
-      - name: PHPCS (coding standards)
-        run: composer lint
-
-      - name: PHPStan (static analysis)
-        run: composer analyze
-
-      - name: Unit tests
-        run: composer test
 
   encoding:
     name: Encoding (no mojibake)

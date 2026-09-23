@@ -209,14 +209,51 @@ function savta_form_messages(): array {
 }
 
 /**
- * A privacy-preserving key for the visitor, for rate limiting only.
+ * The visitor's address, for rate limiting only.
+ *
+ * REMOTE_ADDR is the connecting peer. Behind a reverse proxy or CDN that is
+ * the proxy, and every visitor would share one allowance — so a site that
+ * sits behind one names the header its proxy sets in wp-config.php:
+ *
+ *     define( 'SAVTA_CLIENT_IP_HEADER', 'HTTP_CF_CONNECTING_IP' );
+ *
+ * Only that header is read, and only when the site owner named it: a header
+ * is set by whoever sends the request, so trusting one nobody vouched for
+ * would let a bot pick its own allowance.
+ *
+ * @return string
+ */
+function savta_client_ip(): string {
+	$header = defined( 'SAVTA_CLIENT_IP_HEADER' ) ? (string) SAVTA_CLIENT_IP_HEADER : '';
+
+	/**
+	 * Filters the $_SERVER key that carries the real client address.
+	 *
+	 * @param string $header Server key, e.g. HTTP_X_FORWARDED_FOR. Empty means REMOTE_ADDR.
+	 */
+	$header = (string) apply_filters( 'savta_client_ip_header', $header );
+
+	if ( '' !== $header && isset( $_SERVER[ $header ] ) ) {
+		// X-Forwarded-For style headers list the client first, then each proxy.
+		$forwarded = explode( ',', sanitize_text_field( wp_unslash( $_SERVER[ $header ] ) ) );
+		$candidate = trim( (string) $forwarded[0] );
+
+		if ( false !== filter_var( $candidate, FILTER_VALIDATE_IP ) ) {
+			return $candidate;
+		}
+	}
+
+	return isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+}
+
+/**
+ * A privacy-preserving key for the visitor: the address is hashed with a
+ * salt and never stored.
  *
  * @return string
  */
 function savta_visitor_key(): string {
-	$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
-
-	return 'savta_rl_' . hash( 'sha256', $ip . wp_salt( 'nonce' ) );
+	return 'savta_rl_' . hash( 'sha256', savta_client_ip() . wp_salt( 'nonce' ) );
 }
 
 /**
@@ -239,6 +276,60 @@ function savta_rate_limited(): bool {
 function savta_rate_count(): void {
 	$key = savta_visitor_key();
 	set_transient( $key, (int) get_transient( $key ) + 1, SAVTA_RATE_WINDOW );
+}
+
+/**
+ * Takes the submission lock, so the allowance check, the slot check and the
+ * insert run one submission at a time.
+ *
+ * Two requests that both read "four sent" or both see a slot free, and both
+ * store, are the race this closes. With a persistent object cache the lock
+ * is an atomic add; without one it falls back to an option, whose add is
+ * checked-then-written and can in theory let two requests through in the
+ * same millisecond — WordPress offers nothing stronger without raw SQL. A
+ * lock older than ten seconds is a crashed request and is taken over.
+ *
+ * @return bool Whether the lock was taken.
+ */
+function savta_lock_acquire(): bool {
+	$key = 'savta_submit_lock';
+
+	for ( $attempt = 0; $attempt < 20; $attempt++ ) {
+		if ( wp_using_ext_object_cache() ) {
+			if ( wp_cache_add( $key, time(), 'savta', 10 ) ) {
+				return true;
+			}
+		} else {
+			$held = (int) get_option( $key, 0 );
+
+			if ( $held > 0 && time() - $held > 10 ) {
+				delete_option( $key );
+				$held = 0;
+			}
+
+			if ( 0 === $held && add_option( $key, time(), '', 'no' ) ) {
+				return true;
+			}
+		}
+
+		usleep( 50000 );
+	}
+
+	return false;
+}
+
+/**
+ * Releases the submission lock.
+ *
+ * @return void
+ */
+function savta_lock_release(): void {
+	if ( wp_using_ext_object_cache() ) {
+		wp_cache_delete( 'savta_submit_lock', 'savta' );
+		return;
+	}
+
+	delete_option( 'savta_submit_lock' );
 }
 
 /**
@@ -372,6 +463,13 @@ function savta_process_submission(): array {
 		$contact = 'phone';
 	}
 
+	if ( ! $consent ) {
+		return array(
+			'ok'   => false,
+			'code' => 'consent',
+		);
+	}
+
 	if ( '' !== $slot && ! savta_valid_slot( $slot ) ) {
 		return array(
 			'ok'   => false,
@@ -379,10 +477,33 @@ function savta_process_submission(): array {
 		);
 	}
 
-	if ( ! $consent ) {
+	/*
+	 * From here to the stored lead, one submission at a time: the allowance
+	 * and the slot are re-checked under the lock, so two requests racing for
+	 * the last allowance or the same evening cannot both get it.
+	 */
+	if ( ! savta_lock_acquire() ) {
 		return array(
 			'ok'   => false,
-			'code' => 'consent',
+			'code' => 'server',
+		);
+	}
+
+	if ( savta_rate_limited() ) {
+		savta_lock_release();
+
+		return array(
+			'ok'   => false,
+			'code' => 'rate',
+		);
+	}
+
+	if ( '' !== $slot && in_array( $slot, savta_booked_slots(), true ) ) {
+		savta_lock_release();
+
+		return array(
+			'ok'   => false,
+			'code' => 'slot',
 		);
 	}
 
@@ -396,6 +517,8 @@ function savta_process_submission(): array {
 	);
 
 	if ( is_wp_error( $lead_id ) ) {
+		savta_lock_release();
+
 		return array(
 			'ok'   => false,
 			'code' => 'server',
@@ -422,6 +545,7 @@ function savta_process_submission(): array {
 	}
 
 	savta_rate_count();
+	savta_lock_release();
 
 	savta_notify_lead( $lead_id, $values );
 

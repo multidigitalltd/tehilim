@@ -209,10 +209,6 @@ function savta_render_repeater( array $definition, array $rows, string $name_att
 	$sub_fields = $definition['fields'] ?? array();
 	$max        = (int) ( $definition['max'] ?? 20 );
 
-	if ( array() === $rows ) {
-		$rows = (array) ( $definition['default'] ?? array() );
-	}
-
 	echo '<div class="sv-repeater" data-sv-repeater data-max="' . esc_attr( (string) $max ) . '">';
 	printf( '<p class="sv-field__label">%s</p>', esc_html( $definition['label'] ?? '' ) );
 
@@ -366,8 +362,12 @@ function savta_save_meta_boxes( int $post_id, WP_Post $post ): void {
 	$submitted = isset( $_POST['savta'] ) && is_array( $_POST['savta'] ) ? wp_unslash( $_POST['savta'] ) : array();
 
 	foreach ( savta_fields_flat() as $name => $definition ) {
-		// Unchecked checkboxes are absent from the payload and must still be stored as 0.
-		if ( ! array_key_exists( $name, $submitted ) && 'checkbox' !== $definition['type'] ) {
+		/*
+		 * Two kinds of field send nothing when they are empty: an unchecked
+		 * box, and a list whose every row was removed. Both must still be
+		 * stored — as 0 and as an empty list — or the old value would come back.
+		 */
+		if ( ! array_key_exists( $name, $submitted ) && ! in_array( $definition['type'], array( 'checkbox', 'repeater' ), true ) ) {
 			continue;
 		}
 

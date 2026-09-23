@@ -65,22 +65,27 @@ function savta_get( string $name, ?int $post_id = null ) {
 		return $default;
 	}
 
+	/*
+	 * The default only stands in for a field that was never saved (a field
+	 * added in a later version). A field the editor cleared, or a list they
+	 * emptied, stays that way — the seed wrote every default into the page,
+	 * so a stored blank is a choice.
+	 */
+	if ( ! metadata_exists( 'post', $post_id, SAVTA_META_PREFIX . $name ) ) {
+		return 'checkbox' === $definition['type'] ? (int) $default : $default;
+	}
+
 	$stored = get_post_meta( $post_id, SAVTA_META_PREFIX . $name, true );
 
 	if ( 'checkbox' === $definition['type'] ) {
-		return '' === $stored ? (int) $default : (int) $stored;
+		return (int) $stored;
 	}
 
 	if ( 'repeater' === $definition['type'] ) {
-		return is_array( $stored ) && array() !== $stored ? $stored : (array) $default;
+		return is_array( $stored ) ? $stored : array();
 	}
 
-	if ( 'image' === $definition['type'] ) {
-		// An image the editor cleared on purpose stays cleared.
-		return metadata_exists( 'post', $post_id, SAVTA_META_PREFIX . $name ) ? $stored : $default;
-	}
-
-	return '' === $stored || null === $stored ? $default : $stored;
+	return is_string( $stored ) ? $stored : (string) $default;
 }
 
 /**

@@ -185,7 +185,7 @@ add_action( 'after_switch_theme', 'savta_seed' );
  * Runs the setup on the first dashboard visit if activation did not, and
  * fills in fields added in a later theme version on existing installs.
  *
- * after_switch_theme fires on the request after activation; a site where
+ * The after_switch_theme hook fires on the request after activation; a site where
  * that request never reached the theme (a preview, a CLI switch, a cached
  * admin) would otherwise stay on the posts index with no homepage.
  * Only fields with no stored value are touched, so edits are never lost.
@@ -204,7 +204,7 @@ function savta_seed_upgrade(): void {
 		return;
 	}
 
-	if ( $seeded === SAVTA_VERSION ) {
+	if ( SAVTA_VERSION === $seeded ) {
 		return;
 	}
 

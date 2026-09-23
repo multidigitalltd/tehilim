@@ -1,0 +1,145 @@
+/* ==========================================================================
+   Inner pages: accessibility statement, privacy policy, 404, archives.
+   ========================================================================== */
+
+.sv-page {
+	padding: 72px 28px 96px;
+}
+
+.sv-page__inner {
+	max-width: 860px;
+	margin: 0 auto;
+}
+
+.sv-page__inner--center {
+	text-align: center;
+}
+
+.sv-page__head {
+	margin: 0 0 32px;
+	padding: 0 0 24px;
+	border-bottom: 1px solid var(--line);
+}
+
+.sv-page__title {
+	font-size: clamp(30px, 4.4vw, 46px);
+	font-weight: 900;
+	line-height: 1.05;
+}
+
+.sv-prose {
+	font-size: 1.125rem;
+	line-height: 1.85;
+	color: var(--ink);
+}
+
+.sv-prose p,
+.sv-prose ul,
+.sv-prose ol {
+	margin: 0 0 20px;
+}
+
+.sv-prose ul,
+.sv-prose ol {
+	padding-inline-start: 24px;
+}
+
+.sv-prose ul {
+	list-style: disc;
+}
+
+.sv-prose ol {
+	list-style: decimal;
+}
+
+.sv-prose h2 {
+	font-size: 1.625rem;
+	font-weight: 700;
+	margin: 36px 0 12px;
+}
+
+.sv-prose h3 {
+	font-size: 1.25rem;
+	font-weight: 700;
+	margin: 28px 0 10px;
+}
+
+.sv-prose a {
+	color: var(--rose-deep);
+	text-underline-offset: 3px;
+}
+
+.sv-prose img {
+	border-radius: 18px;
+}
+
+.sv-prose blockquote {
+	margin: 0 0 20px;
+	padding-inline-start: 22px;
+	border-inline-start: 2px solid var(--rose);
+	font-size: 1.25rem;
+	font-weight: 500;
+}
+
+.sv-list {
+	display: grid;
+	gap: 18px;
+}
+
+.sv-list__item {
+	padding: 0 0 18px;
+	border-bottom: 1px solid var(--line);
+}
+
+.sv-list__link {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--ink);
+	text-decoration: none;
+}
+
+.sv-list__link:hover {
+	color: var(--rose-deep);
+}
+
+.sv-list__excerpt {
+	margin: 6px 0 0;
+	color: var(--ink-2);
+}
+
+.sv-page__pages {
+	margin-top: 24px;
+}
+
+.pagination {
+	margin-top: 32px;
+}
+
+.pagination .nav-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.pagination .page-numbers {
+	display: inline-block;
+	min-width: 44px;
+	padding: 10px 14px;
+	text-align: center;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	color: var(--ink);
+	text-decoration: none;
+}
+
+.pagination .page-numbers.current {
+	background: var(--sage);
+	border-color: var(--sage);
+	color: var(--cream);
+}
+
+@media (max-width: 640px) {
+	.sv-page {
+		padding: 48px 16px 72px;
+	}
+}

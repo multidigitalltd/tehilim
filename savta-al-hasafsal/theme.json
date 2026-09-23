@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 2,
+  "settings": {
+    "appearanceTools": false,
+    "color": {
+      "custom": false,
+      "defaultPalette": false,
+      "defaultGradients": false,
+      "palette": [
+        { "slug": "cream", "color": "#FFF8EF", "name": "קרם" },
+        { "slug": "card", "color": "#FFFDF8", "name": "כרטיס" },
+        { "slug": "sand", "color": "#F2E3D0", "name": "חול" },
+        { "slug": "blush", "color": "#FDF4EE", "name": "סומק" },
+        { "slug": "sage-band", "color": "#EFF0E7", "name": "מרווה בהיר" },
+        { "slug": "ink", "color": "#4F4035", "name": "טקסט" },
+        { "slug": "ink-2", "color": "#5C4C40", "name": "טקסט משני" },
+        { "slug": "rose", "color": "#C98573", "name": "ורוד" },
+        { "slug": "rose-deep", "color": "#8F4531", "name": "ורוד עמוק" },
+        { "slug": "sage", "color": "#5F6B49", "name": "מרווה" }
+      ]
+    },
+    "typography": {
+      "customFontSize": false,
+      "fontFamilies": [
+        { "slug": "asimon", "fontFamily": "Asimon, system-ui, sans-serif", "name": "Asimon" }
+      ],
+      "fontSizes": [
+        { "slug": "small", "size": "0.9375rem", "name": "קטן" },
+        { "slug": "medium", "size": "1.125rem", "name": "רגיל" },
+        { "slug": "large", "size": "1.5rem", "name": "גדול" },
+        { "slug": "x-large", "size": "2.25rem", "name": "גדול מאוד" }
+      ]
+    },
+    "layout": {
+      "contentSize": "860px",
+      "wideSize": "1160px"
+    }
+  },
+  "styles": {
+    "color": { "background": "#FFF8EF", "text": "#4F4035" },
+    "typography": { "fontFamily": "Asimon, system-ui, sans-serif" }
+  }
+}

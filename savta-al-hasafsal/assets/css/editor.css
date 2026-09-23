@@ -1,0 +1,33 @@
+/* Block editor: the site's font and colours, for the inner pages. */
+
+@font-face {
+	font-family: "Asimon";
+	src: url("../fonts/asimon-regular.woff2") format("woff2"), url("../fonts/asimon-regular.woff") format("woff");
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Asimon";
+	src: url("../fonts/asimon-bold.woff2") format("woff2"), url("../fonts/asimon-bold.woff") format("woff");
+	font-weight: 700;
+	font-display: swap;
+}
+
+.editor-styles-wrapper {
+	font-family: "Asimon", system-ui, sans-serif;
+	background: #FFF8EF;
+	color: #4F4035;
+	font-size: 18px;
+	line-height: 1.85;
+}
+
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3 {
+	font-weight: 700;
+}
+
+.editor-styles-wrapper a {
+	color: #8F4531;
+}

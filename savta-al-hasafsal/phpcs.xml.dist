@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<ruleset name="Savta al HaSafsal">
+	<description>WordPress Coding Standards ruleset for the theme.</description>
+
+	<file>.</file>
+	<exclude-pattern>*/assets/*</exclude-pattern>
+
+	<arg name="basepath" value="."/>
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="sp"/>
+
+	<rule ref="WordPress">
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+	</rule>
+
+	<config name="minimum_wp_version" value="6.4"/>
+	<config name="testVersion" value="8.1-"/>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="savta-al-hasafsal"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="savta"/>
+				<element value="SAVTA"/>
+			</property>
+		</properties>
+	</rule>
+</ruleset>

@@ -56,7 +56,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.3"
-          tools: composer, cs2pr
+          tools: composer
           coverage: none
 
       - name: PHP syntax lint
@@ -74,7 +74,7 @@ jobs:
 
       - name: PHPCS (WordPress Coding Standards)
         run: |
-          "$(composer global config home)/vendor/bin/phpcs" --standard=phpcs.xml.dist --report=checkstyle | cs2pr
+          "$(composer global config home)/vendor/bin/phpcs" --standard=phpcs.xml.dist -q --report=full
 
       - name: Render the homepage under E_ALL
         run: |

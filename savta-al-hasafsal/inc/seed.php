@@ -144,14 +144,15 @@ function savta_seed(): void {
 	}
 
 	$home_id = (int) get_option( 'page_on_front' );
+	$home    = get_post( $home_id );
 
-	if ( $home_id <= 0 || ! get_post( $home_id ) instanceof WP_Post ) {
+	if ( ! $home instanceof WP_Post || 'trash' === $home->post_status ) {
 		$home_id = savta_seed_page( 'home', __( 'דף הבית', 'savta-al-hasafsal' ) );
+	}
 
-		if ( $home_id > 0 ) {
-			update_option( 'show_on_front', 'page' );
-			update_option( 'page_on_front', $home_id );
-		}
+	if ( $home_id > 0 ) {
+		update_option( 'show_on_front', 'page' );
+		update_option( 'page_on_front', $home_id );
 	}
 
 	if ( $home_id > 0 ) {
@@ -181,26 +182,38 @@ function savta_seed(): void {
 add_action( 'after_switch_theme', 'savta_seed' );
 
 /**
- * Fills in fields added in a later theme version on existing installs.
+ * Runs the setup on the first dashboard visit if activation did not, and
+ * fills in fields added in a later theme version on existing installs.
  *
+ * after_switch_theme fires on the request after activation; a site where
+ * that request never reached the theme (a preview, a CLI switch, a cached
+ * admin) would otherwise stay on the posts index with no homepage.
  * Only fields with no stored value are touched, so edits are never lost.
  *
  * @return void
  */
 function savta_seed_upgrade(): void {
-	if ( ! is_admin() || ! current_user_can( 'edit_theme_options' ) ) {
+	if ( ! is_admin() || wp_doing_ajax() || ! current_user_can( 'edit_theme_options' ) ) {
 		return;
 	}
 
-	if ( get_option( SAVTA_SEED_OPTION ) === SAVTA_VERSION ) {
+	$seeded = get_option( SAVTA_SEED_OPTION );
+
+	if ( ! $seeded ) {
+		savta_seed();
+		return;
+	}
+
+	if ( $seeded === SAVTA_VERSION ) {
 		return;
 	}
 
 	$home_id = (int) get_option( 'page_on_front' );
 
-	if ( $home_id > 0 && get_option( SAVTA_SEED_OPTION ) ) {
+	if ( $home_id > 0 ) {
 		savta_seed_page_content( $home_id );
-		update_option( SAVTA_SEED_OPTION, SAVTA_VERSION );
 	}
+
+	update_option( SAVTA_SEED_OPTION, SAVTA_VERSION );
 }
 add_action( 'admin_init', 'savta_seed_upgrade' );

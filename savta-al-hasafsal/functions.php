@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Theme version. Also part of the asset cache key.
  */
-const SAVTA_VERSION = '1.0.0';
+const SAVTA_VERSION = '1.0.1';
 
 require_once get_theme_file_path( 'inc/fields.php' );
 require_once get_theme_file_path( 'inc/helpers.php' );
@@ -25,4 +25,5 @@ require_once get_theme_file_path( 'inc/seed.php' );
 
 if ( is_admin() ) {
 	require_once get_theme_file_path( 'inc/meta-boxes.php' );
+	require_once get_theme_file_path( 'inc/dashboard.php' );
 }
